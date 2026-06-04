@@ -1,0 +1,1585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Charantra Mandates | Executive Workspace</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    borderRadius: {
+                        'none': '0',
+                        'sm': '16px',
+                        DEFAULT: '16px',
+                        'md': '16px',
+                        'lg': '16px',
+                        'xl': '16px',
+                        '2xl': '16px',
+                        '3xl': '16px',
+                        'full': '9999px'
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --charantra-orange: #F97316;
+            --charantra-orange-hover: #EA580C;
+            --sidebar-bg: #0B0C0E;
+            --workspace-bg: #F8F9FC;
+            --slate-border: #E2E8F0;
+        }
+
+        body {
+            font-family: 'Titillium Web', sans-serif;
+            font-size: 13.5px;
+            background-color: var(--workspace-bg);
+            color: #1E293B;
+            overflow-x: hidden;
+        }
+
+        /* Clean animations */
+        .fade-in-view {
+            animation: cubicFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes cubicFadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Premium rounded scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #E2E8F0;
+            border-radius: 99px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #CBD5E1;
+        }
+
+        /* Sidebar active style - Rounded pill with thin outline precisely matching original mockup style */
+        .sidebar-item-active {
+            border-radius: 6px !important;
+            background: #1E2128 !important;
+            color: #FFFFFF !important;
+            border: 1px solid #3F3F46 !important;
+        }
+
+        /* Tab highlights */
+        .subtab-active {
+            color: var(--charantra-orange);
+            border-bottom: 2px solid var(--charantra-orange);
+        }
+
+        /* Smooth interactive card effects */
+        .interactive-card {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .interactive-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.04), 0 4px 10px -2px rgba(0, 0, 0, 0.02);
+        }
+        
+        /* Modal Overlay Transition */
+        .modal-active {
+            display: flex !important;
+            animation: fadeInOverlay 0.2s ease forwards;
+        }
+        @keyframes fadeInOverlay {
+            from { background-color: rgba(0,0,0,0); }
+            to { background-color: rgba(15, 17, 21, 0.6); }
+        }
+
+        /* Sticky bottom action bar smooth transitions */
+        .review-sticky-bar {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-orange-100">
+
+    <div class="flex min-h-screen">
+                <!-- SIDEBAR -->
+        <aside class="w-80 bg-[#0B0C0E] text-[#94A3B8] flex flex-col fixed h-screen z-50">
+            <!-- Brand Identity -->
+            <div class="p-6 border-b border-zinc-900 flex-shrink-0">
+                <a href="/index.html">
+                    <img src="/assets/logo.png" width="200" alt="Charantra Logo" style="width: 200px; height: auto;">
+                </a>
+            </div>
+
+            <!-- Sidebar Navigation Menu -->
+            <div class="flex-1 overflow-y-auto sidebar-scroll p-4 space-y-1.5">
+                <p class="text-[10px] uppercase font-bold tracking-widest text-zinc-600 px-3.5 mb-2 mt-2">Executive Desk</p>
+                
+                <a href="/pages/dashboard.html" class="block">
+                    <button id="nav-dashboard" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 text-[13px] font-medium rounded-md text-[#94A3B8] hover:text-white hover:bg-[#1E2128]/40 transition-all">
+                        <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
+                        <span>Dashboard</span>
+                    </button>
+                </a>
+                
+                <a href="/pages/crm.html" class="block">
+                    <button id="nav-crm" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 text-[13px] font-medium rounded-md text-[#94A3B8] hover:text-white hover:bg-[#1E2128]/40 transition-all">
+                        <i data-lucide="contact-2" class="w-4 h-4"></i>
+                        <span>CRM & Users</span>
+                    </button>
+                </a>
+                
+                <a href="/pages/deals.html" class="block">
+                    <button id="nav-deals" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 text-[13px] font-medium rounded-md text-[#94A3B8] hover:text-white hover:bg-[#1E2128]/40 transition-all">
+                        <i data-lucide="git-pull-request" class="w-4 h-4"></i>
+                        <span>Deals & M&A Pipeline</span>
+                    </button>
+                </a>
+
+                <a href="/pages/mandates.html" class="block">
+                    <button id="nav-mandates" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 text-[13px] font-medium rounded-md text-[#94A3B8] hover:text-white hover:bg-[#1E2128]/40 transition-all">
+                        <i data-lucide="file-signature" class="w-4 h-4"></i>
+                        <span>Mandates & Projects</span>
+                    </button>
+                </a>
+
+                <p class="text-[10px] uppercase font-bold tracking-widest text-zinc-600 px-3.5 mb-2 mt-4">Audits & Governance</p>
+                
+                <a href="/pages/dataroom.html" class="block">
+                    <button id="nav-data-room" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 text-[13px] font-medium rounded-md text-[#94A3B8] hover:text-white hover:bg-[#1E2128]/40 transition-all">
+                        <i data-lucide="hard-drive" class="w-4 h-4"></i>
+                        <span>Data Room</span>
+                    </button>
+                </a>
+
+                <a href="/pages/team.html" class="block">
+                    <button id="nav-team-management" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 text-[13px] font-medium rounded-md text-[#94A3B8] hover:text-white hover:bg-[#1E2128]/40 transition-all">
+                        <i data-lucide="users-2" class="w-4 h-4"></i>
+                        <span>Team Management</span>
+                    </button>
+                </a>
+
+                <a href="/pages/payments.html" class="block">
+                    <button id="nav-payments-invoices" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 text-[13px] font-medium rounded-md text-[#94A3B8] hover:text-white hover:bg-[#1E2128]/40 transition-all">
+                        <i data-lucide="receipt" class="w-4 h-4"></i>
+                        <span>Payments</span>
+                    </button>
+                </a>
+
+                <a href="/pages/reports.html" class="block">
+                    <button id="nav-reports-analytics" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 text-[13px] font-medium rounded-md text-[#94A3B8] hover:text-white hover:bg-[#1E2128]/40 transition-all">
+                        <i data-lucide="bar-chart-3" class="w-4 h-4"></i>
+                        <span>Reports & Analytics</span>
+                    </button>
+                </a>
+
+                <a href="/pages/settings.html" class="block">
+                    <button id="nav-settings" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 text-[13px] font-medium rounded-md text-[#94A3B8] hover:text-white hover:bg-[#1E2128]/40 transition-all">
+                        <i data-lucide="settings" class="w-4 h-4"></i>
+                        <span>Settings</span>
+                    </button>
+                </a>
+            </div>
+        </aside>
+
+        <!-- MAIN LAYOUT -->
+        <main class="flex-1 ml-80 flex flex-col min-h-screen bg-[#F8F9FC]">
+            <!-- APP HEADER -->
+            <header class="h-20 bg-white border-b border-slate-100 flex items-center justify-between px-8 sticky top-0 z-40 shadow-sm shadow-slate-100/30">
+                <div class="relative w-96">
+                    <i data-lucide="search" class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4"></i>
+                    <input type="text" id="global-search" oninput="executeGlobalSearch()" placeholder="Search mandates, templates, companies, or users..." class="w-full pl-10 pr-4 py-2 bg-slate-50 border border-transparent rounded-md text-xs focus:ring-2 focus:ring-orange-500/10 focus:border-orange-500 focus:bg-white outline-none transition-all">
+                </div>
+
+                <!-- Actions / Session -->
+                <div class="flex items-center gap-6">
+                    <div class="flex items-center gap-2 bg-slate-50 px-3 py-1.5 rounded-md border border-slate-100">
+                        <span class="text-xs font-bold text-slate-700">INR (₹)</span>
+                        <i data-lucide="chevron-down" class="w-3 h-3 text-slate-400"></i>
+                    </div>
+
+                    <!-- Theme Switcher -->
+                    <button class="text-slate-400 hover:text-orange-500 transition-colors">
+                        <i data-lucide="sun" class="w-4 h-4"></i>
+                    </button>
+
+
+                    <div class="relative">
+                        <span class="absolute -top-1 -right-1 w-4 h-4 bg-orange-600 text-[9px] font-extrabold text-white rounded-md flex items-center justify-center">3</span>
+                        <button onclick="triggerToast('Viewing active system alerts...')" class="p-2.5 bg-slate-50 border border-slate-100 rounded-md text-slate-500 hover:text-slate-800 transition-colors">
+                            <i data-lucide="bell" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+
+                    <div class="flex items-center gap-3 border-l border-slate-100 pl-6">
+                        <div class="text-right">
+                            <p class="text-xs font-bold text-slate-900 leading-none">KARTHIK</p>
+                            <p class="text-[10px] text-orange-500 font-bold uppercase tracking-wider mt-1">SUPER ADMIN</p>
+                        </div>
+                        <div class="w-10 h-10 bg-orange-600 rounded-md flex items-center justify-center text-white font-bold tracking-tight shadow-md shadow-orange-500/15">
+                            K
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- WORKSPACE CONTAINER -->
+            <div class="p-8 flex-1 flex flex-col max-w-[1600px] w-full mx-auto" id="workspace-target">
+                <!-- Dynamic Mandates Views Rendered Here -->
+            </div>
+        </main>
+    </div>
+
+    
+        <div class="flex-1 min-w-0">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-orange-500 leading-none mb-1">System Action</h4>
+            <p id="toast-text" class="text-xs text-zinc-300"></p>
+        </div>
+        <button onclick="dismissToast()" class="text-zinc-500 hover:text-white transition-colors">
+            <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+    </div>
+
+    <!-- MODAL OVERLAYS CONTAINER -->
+    <div id="modal-container" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
+        <!-- Content gets loaded dynamically here -->
+    </div>
+
+    <script>
+        const appState = {
+            viewMode: 'list', // list | create | review
+            selectedMandateId: 'MAN-2025-001',
+            searchQuery: '',
+
+            // Create flow states
+            selectedCompanyId: 'TV-101',
+            uploadedFile: { name: 'Investee_Onboarding_Mandate_2025.pdf', size: '1.2 MB' },
+            previewPage: 1,
+
+            // Fields in edit state for Create View
+            formFields: {
+                mandateType: 'Investee Onboarding Mandate',
+                duration: '12 Months from Effective Date',
+                feeStructure: '₹2.5L + 2% Success Fee',
+                expenses: 'As per agreement',
+                governingLaw: 'Laws of India',
+                jurisdiction: 'Arbitration, Bengaluru'
+            },
+
+            // High-fidelity mandates directory
+            mandates: [
+                {
+                    id: 'MAN-2025-001',
+                    name: 'Investee Onboarding Mandate',
+                    template: 'Investee Onboarding',
+                    userType: 'INVESTEE',
+                    company: 'TechVenture Solutions',
+                    representative: 'Sarah Chen',
+                    role: 'CEO',
+                    assignedOn: '10 Apr 2025',
+                    status: 'ASSIGNED',
+                    signatureStatus: 'PENDING',
+                    duration: '12 Months from Effective Date',
+                    fees: '₹2.5L + 2% Success Fee',
+                    expenses: 'As per agreement',
+                    governingLaw: 'Laws of India',
+                    jurisdiction: 'Arbitration, Bengaluru',
+                    submittedOn: '12 Apr 2025',
+                    submittedBy: 'Sarah Chen, CEO',
+                    paymentSubmittedOn: '13 Apr 2025',
+                    paymentAmount: '₹2,50,000',
+                    checklist: {
+                        received: true,
+                        signature: true,
+                        paymentProof: true,
+                        paymentVerified: false,
+                        kycAvailable: false,
+                        infoComplete: true
+                    },
+                    internalNotes: [
+                        {
+                            text: 'Requested updated GST certificate. Waiting for response from company.',
+                            author: 'Karthik',
+                            date: '14 Apr 2025, 10:42 AM'
+                        }
+                    ]
+                },
+                {
+                    id: 'MAN-2025-002',
+                    name: 'Seller Onboarding Mandate',
+                    template: 'Seller Onboarding',
+                    userType: 'SELLER',
+                    company: 'Apex Retail Logistics',
+                    representative: 'Neha Verma',
+                    role: 'Director',
+                    assignedOn: '08 Apr 2025',
+                    status: 'ASSIGNED',
+                    signatureStatus: 'PENDING',
+                    duration: '12 Months from Effective Date',
+                    fees: '₹3.0L + 1.5% Success Fee',
+                    expenses: 'Actuals capped at ₹50K',
+                    governingLaw: 'Laws of India',
+                    jurisdiction: 'Arbitration, Mumbai',
+                    submittedOn: '10 Apr 2025',
+                    submittedBy: 'Neha Verma, Director',
+                    paymentSubmittedOn: '11 Apr 2025',
+                    paymentAmount: '₹3,00,000',
+                    checklist: {
+                        received: true,
+                        signature: false,
+                        paymentProof: false,
+                        paymentVerified: false,
+                        kycAvailable: false,
+                        infoComplete: false
+                    },
+                    internalNotes: []
+                },
+                {
+                    id: 'MAN-2025-003',
+                    name: 'Investee Onboarding Mandate',
+                    template: 'Investee Onboarding',
+                    userType: 'INVESTEE',
+                    company: 'TechCore Industries',
+                    representative: 'Priya Sharma',
+                    role: 'CEO',
+                    assignedOn: '05 Apr 2025',
+                    status: 'COMPLETED',
+                    signatureStatus: 'SIGNED',
+                    duration: '6 Months',
+                    fees: '₹2.5L + 2% Success Fee',
+                    expenses: 'As per agreement',
+                    governingLaw: 'Laws of India',
+                    jurisdiction: 'Arbitration, Bengaluru',
+                    submittedOn: '07 Apr 2025',
+                    submittedBy: 'Priya Sharma, CEO',
+                    paymentSubmittedOn: '08 Apr 2025',
+                    paymentAmount: '₹2,50,000',
+                    checklist: {
+                        received: true,
+                        signature: true,
+                        paymentProof: true,
+                        paymentVerified: true,
+                        kycAvailable: true,
+                        infoComplete: true
+                    },
+                    internalNotes: []
+                },
+                {
+                    id: 'MAN-2025-004',
+                    name: 'Seller Onboarding Mandate',
+                    template: 'Seller Onboarding',
+                    userType: 'SELLER',
+                    company: 'GreenField Investments',
+                    representative: 'Dr. Alok Sen',
+                    role: 'Managing Partner',
+                    assignedOn: '03 Apr 2025',
+                    status: 'COMPLETED',
+                    signatureStatus: 'SIGNED',
+                    duration: '18 Months',
+                    fees: '₹5.0L + 3% Success Fee',
+                    expenses: 'Included in Fee',
+                    governingLaw: 'Laws of India',
+                    jurisdiction: 'Arbitration, Hyderabad',
+                    submittedOn: '05 Apr 2025',
+                    submittedBy: 'Dr. Alok Sen',
+                    paymentSubmittedOn: '05 Apr 2025',
+                    paymentAmount: '₹5,00,000',
+                    checklist: {
+                        received: true,
+                        signature: true,
+                        paymentProof: true,
+                        paymentVerified: true,
+                        kycAvailable: true,
+                        infoComplete: true
+                    },
+                    internalNotes: []
+                },
+                {
+                    id: 'MAN-2025-005',
+                    name: 'Investee Onboarding Mandate',
+                    template: 'Investee Onboarding',
+                    userType: 'INVESTEE',
+                    company: 'Innova Energy Pvt Ltd',
+                    representative: 'Rahul Kapoor',
+                    role: 'Founder',
+                    assignedOn: '01 Apr 2025',
+                    status: 'PENDING',
+                    signatureStatus: 'PENDING',
+                    duration: '12 Months',
+                    fees: '₹2.0L + 2% Success Fee',
+                    expenses: 'As per agreement',
+                    governingLaw: 'Laws of India',
+                    jurisdiction: 'Arbitration, Chennai',
+                    checklist: {
+                        received: false,
+                        signature: false,
+                        paymentProof: false,
+                        paymentVerified: false,
+                        kycAvailable: false,
+                        infoComplete: false
+                    },
+                    internalNotes: []
+                },
+                {
+                    id: 'MAN-2025-006',
+                    name: 'Investee Onboarding Mandate',
+                    template: 'Investee Onboarding',
+                    userType: 'INVESTEE',
+                    company: 'BlueAshva Capital',
+                    representative: 'Vikram Iyer',
+                    role: 'Investment Director',
+                    assignedOn: '28 Mar 2025',
+                    status: 'ON HOLD',
+                    signatureStatus: 'PENDING',
+                    duration: '12 Months',
+                    fees: '₹2.5L + 2% Success Fee',
+                    expenses: 'As per agreement',
+                    governingLaw: 'Laws of India',
+                    jurisdiction: 'Arbitration, Bengaluru',
+                    checklist: {
+                        received: false,
+                        signature: false,
+                        paymentProof: false,
+                        paymentVerified: false,
+                        kycAvailable: false,
+                        infoComplete: false
+                    },
+                    internalNotes: []
+                }
+            ],
+
+            // User entities to assign to
+            companies: [
+                { id: 'TV-101', name: 'TechVenture Solutions', rep: 'Sarah Chen, CEO' },
+                { id: 'AL-102', name: 'Apex Retail Logistics', rep: 'Neha Verma, Director' },
+                { id: 'TC-103', name: 'TechCore Industries', rep: 'Priya Sharma, CEO' },
+                { id: 'GF-104', name: 'GreenField Investments', rep: 'Dr. Alok Sen, Managing Partner' }
+            ]
+        };
+
+        window.addEventListener('DOMContentLoaded', () => {
+            renderWorkspace();
+            window.addEventListener('scroll', handleWindowScroll);
+            window.addEventListener('resize', handleWindowScroll);
+        });
+
+        function changeSection(mode, mandateId = null) {
+            appState.viewMode = mode;
+            if (mandateId) {
+                appState.selectedMandateId = mandateId;
+            }
+            renderWorkspace();
+            // Trigger layout recalculations for the floating CTA bar
+            setTimeout(handleWindowScroll, 100);
+        }
+
+        function triggerToast(msg) {}
+
+        function dismissToast() {
+            const toast = document.getElementById('toast-notif');
+            toast.classList.add('translate-y-20', 'opacity-0');
+            toast.classList.remove('translate-y-0', 'opacity-100');
+        }
+
+        function executeGlobalSearch() {
+            appState.searchQuery = document.getElementById('global-search').value.toLowerCase();
+            if (appState.viewMode === 'list') {
+                renderWorkspace();
+            }
+        }
+
+        function navigateFlow(id) {
+            triggerToast(`Consultation flow: Accessing private workspace logs for "${id}"`);
+        }
+    </script>
+
+    <!-- WORKSPACE RENDERING ENGINES -->
+    <script>
+        // --- 1. VIEW: MANDATES LIST (image_77bd23.jpg) ---
+        function getMandateDirectoryHTML() {
+            const filtered = appState.mandates.filter(m => {
+                return m.name.toLowerCase().includes(appState.searchQuery) ||
+                       m.company.toLowerCase().includes(appState.searchQuery) ||
+                       m.representative.toLowerCase().includes(appState.searchQuery) ||
+                       m.id.toLowerCase().includes(appState.searchQuery);
+            });
+
+            // Calculate telemetry metrics matching the original card indicators
+            const total = appState.mandates.length;
+            const assignedCount = appState.mandates.filter(m => m.status === 'ASSIGNED').length;
+            const completedCount = appState.mandates.filter(m => m.status === 'COMPLETED').length;
+            const pendingCount = appState.mandates.filter(m => m.status === 'PENDING').length;
+
+            return `
+                <div class="fade-in-view space-y-6">
+                    <!-- Title banner block -->
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">Mandates</h1>
+                            <p class="text-slate-500 font-medium text-xs mt-1">Create, manage and assign mandate templates to users.</p>
+                        </div>
+                        <div class="flex gap-3">
+                            <button onclick="changeSection('create')" class="bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-bold text-xs py-2.5 px-6 rounded-md transition-all shadow-xs flex items-center gap-1.5">
+                                <i data-lucide="edit" class="w-4 h-4 text-slate-400"></i>
+                                <span>Create Template Mandate</span>
+                            </button>
+                            <button onclick="triggerAssignMandateModal()" class="bg-[#F97316] hover:bg-[#EA580C] text-white font-bold text-xs py-2.5 px-6 rounded-md transition-all shadow-md shadow-orange-500/10 flex items-center gap-1.5">
+                                <i data-lucide="plus" class="w-4 h-4"></i>
+                                <span>Assign Mandate</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Telemetry KPI Stats Display -->
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        <div class="bg-white p-5 rounded-md border border-slate-200/50 shadow-xs flex items-center gap-4 interactive-card">
+                            <div class="p-3 bg-purple-50 text-purple-600 rounded-md">
+                                <i data-lucide="file-text" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <p class="text-[10px] text-slate-400 font-extrabold uppercase tracking-wider">Total Mandates</p>
+                                <h4 class="text-xl font-bold text-slate-900 leading-tight">${total}</h4>
+                                <span class="text-[9px] text-slate-400 font-semibold">All time</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-md border border-slate-200/50 shadow-xs flex items-center gap-4 interactive-card">
+                            <div class="p-3 bg-orange-50 text-orange-600 rounded-md">
+                                <i data-lucide="user" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <p class="text-[10px] text-slate-400 font-extrabold uppercase tracking-wider">Assigned</p>
+                                <h4 class="text-xl font-bold text-slate-900 leading-tight">${assignedCount}</h4>
+                                <span class="text-[9px] text-slate-400 font-semibold">To users</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-md border border-slate-200/50 shadow-xs flex items-center gap-4 interactive-card">
+                            <div class="p-3 bg-emerald-50 text-emerald-600 rounded-md">
+                                <i data-lucide="check-circle" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <p class="text-[10px] text-slate-400 font-extrabold uppercase tracking-wider">Completed</p>
+                                <h4 class="text-xl font-bold text-slate-900 leading-tight">${completedCount}</h4>
+                                <span class="text-[9px] text-slate-400 font-semibold">Signed & submitted</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-md border border-slate-200/50 shadow-xs flex items-center gap-4 interactive-card">
+                            <div class="p-3 bg-rose-50 text-rose-600 rounded-md">
+                                <i data-lucide="clock" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <p class="text-[10px] text-slate-400 font-extrabold uppercase tracking-wider">Pending</p>
+                                <h4 class="text-xl font-bold text-slate-900 leading-tight">${pendingCount}</h4>
+                                <span class="text-[9px] text-slate-400 font-semibold">Awaiting action</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Filter panel controls toolbar -->
+                    <div class="bg-white p-6 rounded-md border border-slate-200/50 shadow-xs space-y-4">
+                        <div class="flex gap-4 items-center justify-between">
+                            <div class="relative flex-1">
+                                <i data-lucide="search" class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4"></i>
+                                <input type="text" id="directory-search" oninput="appState.searchQuery = this.value.toLowerCase(); renderWorkspace();" placeholder="Search by mandate name, template, company or user..." value="${appState.searchQuery}" class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-100 rounded-md text-xs outline-none focus:bg-white focus:ring-1 focus:ring-orange-500 transition-all">
+                            </div>
+                            <div class="flex gap-2">
+                                <button onclick="triggerToast('Applying active filters...')" class="p-2.5 bg-slate-50 hover:bg-slate-100 border border-slate-100 rounded-md text-slate-600 flex items-center gap-1.5 transition-all text-xs font-semibold">
+                                    <i data-lucide="sliders-horizontal" class="w-4 h-4 text-slate-400"></i>
+                                    <span>Filter</span>
+                                </button>
+                                <button onclick="triggerToast('Dispatched export CSV task')" class="p-2.5 bg-slate-50 hover:bg-slate-100 border border-slate-100 rounded-md text-slate-600 flex items-center gap-1.5 transition-all text-xs font-semibold">
+                                    <i data-lucide="download" class="w-4 h-4 text-slate-400"></i>
+                                    <span>Export</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Data table logs list -->
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-xs">
+                                <thead>
+                                    <tr class="bg-slate-50/50 text-slate-400 text-[10px] uppercase font-bold tracking-wider border-b border-slate-100">
+                                        <th class="px-6 py-4">MANDATE NAME</th>
+                                        <th class="px-6 py-4">TEMPLATE</th>
+                                        <th class="px-6 py-4">USER TYPE</th>
+                                        <th class="px-6 py-4">ASSIGNED TO</th>
+                                        <th class="px-6 py-4">ASSIGNED ON</th>
+                                        <th class="px-6 py-4">STATUS</th>
+                                        <th class="px-6 py-4">SIGNATURE STATUS</th>
+                                        <th class="px-6 py-4 text-center">ACTIONS</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-100 text-slate-700">
+                                    ${filtered.map(item => {
+                                        // Specific visual color badges conforming to mockup specifications
+                                        const typeColor = item.userType === 'INVESTEE' ? 'bg-orange-50 text-orange-600 border border-orange-100' : 'bg-green-50 text-green-700 border border-green-100';
+                                        
+                                        let statusClass = 'bg-blue-50 text-blue-700 border border-blue-100';
+                                        if (item.status === 'COMPLETED') statusClass = 'bg-green-50 text-green-700 border border-green-100';
+                                        if (item.status === 'PENDING') statusClass = 'bg-amber-50 text-amber-700 border border-amber-100';
+                                        if (item.status === 'ON HOLD') statusClass = 'bg-rose-50 text-rose-700 border border-rose-100';
+
+                                        const signatureClass = item.signatureStatus === 'SIGNED' ? 'bg-green-50 text-green-700 border border-green-100' : 'bg-amber-50 text-amber-700 border border-amber-100';
+                                        const templateIconColor = item.template.includes('Investee') ? 'text-purple-600 bg-purple-50' : 'text-emerald-600 bg-emerald-50';
+
+                                        return `
+                                            <tr class="hover:bg-slate-50/30 transition-colors">
+                                                <td class="px-6 py-4">
+                                                    <div class="flex flex-col">
+                                                        <span onclick="changeSection('review', '${item.id}')" class="font-bold text-slate-900 text-xs cursor-pointer hover:text-orange-500 transition-colors">${item.name}</span>
+                                                        <span class="text-[10px] text-slate-400 font-semibold mt-0.5">${item.id}</span>
+                                                    </div>
+                                                </td>
+                                                <td class="px-6 py-4">
+                                                    <div class="flex items-center gap-1.5">
+                                                        <span class="p-1 rounded-md ${templateIconColor}"><i data-lucide="file-text" class="w-3.5 h-3.5"></i></span>
+                                                        <span class="font-semibold text-slate-700">${item.template}</span>
+                                                    </div>
+                                                </td>
+                                                <td class="px-6 py-4">
+                                                    <span class="px-2 py-0.5 rounded text-[9px] font-extrabold tracking-wider ${typeColor}">${item.userType}</span>
+                                                </td>
+                                                <td class="px-6 py-4">
+                                                    <div class="flex flex-col">
+                                                        <span class="font-bold text-slate-900">${item.company}</span>
+                                                        <span class="text-[10px] text-slate-400 font-semibold mt-0.5">${item.representative}</span>
+                                                    </div>
+                                                </td>
+                                                <td class="px-6 py-4 font-semibold text-slate-500">${item.assignedOn}</td>
+                                                <td class="px-6 py-4">
+                                                    <span class="px-2 py-0.5 rounded text-[9px] font-extrabold tracking-wider ${statusClass}">${item.status}</span>
+                                                </td>
+                                                <td class="px-6 py-4">
+                                                    <span class="px-2 py-0.5 rounded text-[9px] font-extrabold tracking-wider ${signatureClass}">${item.signatureStatus}</span>
+                                                </td>
+                                                <td class="px-6 py-4">
+                                                    <div class="flex items-center justify-center gap-1.5">
+                                                        <button onclick="changeSection('review', '${item.id}')" class="p-1.5 hover:bg-slate-100 rounded-md text-slate-500 hover:text-slate-800 transition-colors" title="View Review Logs">
+                                                            <i data-lucide="eye" class="w-4 h-4"></i>
+                                                        </button>
+                                                        <button onclick="triggerToast('Action ledger configuration')" class="p-1.5 hover:bg-slate-100 rounded-md text-slate-400 hover:text-slate-700 transition-colors">
+                                                            <i data-lucide="more-vertical" class="w-4 h-4"></i>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        `;
+                                    }).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Table Pagination Tracker -->
+                        <div class="flex justify-between items-center pt-4 border-t border-slate-100 text-xs font-semibold">
+                            <span class="text-slate-400">Showing 1 to ${filtered.length} of ${total} mandates</span>
+                            <div class="flex gap-1.5 items-center">
+                                <button class="p-1 bg-slate-50 border border-slate-200 rounded-md text-slate-400 hover:bg-slate-100"><i data-lucide="chevron-left" class="w-4 h-4"></i></button>
+                                <button class="px-3 py-1 bg-orange-600 text-white rounded-md">1</button>
+                                <button class="px-3 py-1 bg-slate-50 border border-slate-200 rounded-md hover:bg-slate-100">2</button>
+                                <button class="px-3 py-1 bg-slate-50 border border-slate-200 rounded-md hover:bg-slate-100">3</button>
+                                <button class="p-1 bg-slate-50 border border-slate-200 rounded-md text-slate-400 hover:bg-slate-100"><i data-lucide="chevron-right" class="w-4 h-4"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contextual bottom Alert Banner -->
+                    <div class="bg-blue-50/70 border border-blue-100 rounded-md p-4 flex items-start gap-3">
+                        <i data-lucide="info" class="w-4 h-4 text-blue-600 mt-0.5"></i>
+                        <div class="text-xs text-blue-800">
+                            <span class="font-bold">Mandates are assigned to users based on their role.</span> Users must review, sign, and submit the mandates to unlock dynamic private vaults. <a href="#" onclick="triggerToast('Opening training vault documentation')" class="underline font-bold text-blue-900">Learn more</a>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+    </script>
+
+    <script>
+        // --- 2. VIEW: CREATE & ASSIGN MANDATE (image_77a9e1.jpg) ---
+        function getCreateMandateHTML() {
+            // Pick current assigned company object details dynamically to sync UI summary
+            const activeCo = appState.companies.find(c => c.id === appState.selectedCompanyId) || appState.companies[0];
+
+            return `
+                <div class="fade-in-view space-y-6">
+                    <!-- Back path breadcrumb link -->
+                    <button onclick="changeSection('list')" class="text-xs font-bold text-orange-500 hover:text-orange-600 flex items-center gap-1.5 mb-2 transition-all">
+                        <i data-lucide="arrow-left" class="w-4 h-4"></i> Back to Mandates
+                    </button>
+
+                    <!-- Profile Header banner layout -->
+                    <div>
+                        <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">Create Mandate & Assign</h1>
+                        <p class="text-slate-500 font-medium text-xs mt-1">Upload mandate, review & edit key fields, and assign to a company.</p>
+                    </div>
+
+                    <!-- Steps Timeline Bar (High-Fidelity Stepper) -->
+                    <div class="bg-white px-6 py-4 rounded-md border border-slate-200/50 shadow-xs flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 bg-orange-600 text-white rounded-md flex items-center justify-center font-bold text-xs">1</div>
+                            <div>
+                                <p class="text-xs font-bold text-slate-900">Create & Upload</p>
+                                <p class="text-[10px] text-slate-400 font-semibold">Upload mandate and edit fields</p>
+                            </div>
+                        </div>
+                        <div class="h-px bg-slate-200 flex-1 mx-6 hidden md:block"></div>
+                        <div class="flex items-center gap-3 opacity-60">
+                            <div class="w-8 h-8 bg-slate-200 text-slate-600 rounded-md flex items-center justify-center font-bold text-xs">2</div>
+                            <div>
+                                <p class="text-xs font-bold text-slate-900">Review & Sign</p>
+                                <p class="text-[10px] text-slate-400 font-semibold">Review and sign mandate</p>
+                            </div>
+                        </div>
+                        <div class="h-px bg-slate-200 flex-1 mx-6 hidden md:block"></div>
+                        <div class="flex items-center gap-3 opacity-60">
+                            <div class="w-8 h-8 bg-slate-200 text-slate-600 rounded-md flex items-center justify-center font-bold text-xs">3</div>
+                            <div>
+                                <p class="text-xs font-bold text-slate-900">Assign</p>
+                                <p class="text-[10px] text-slate-400 font-semibold">Assign to company / user</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Main Columns Display -->
+                    <div class="grid grid-cols-12 gap-6">
+                        
+                        <!-- Column 1: Document Upload & Metadata Editor -->
+                        <div class="col-span-12 lg:col-span-4 space-y-6">
+                            <!-- Drag & Drop Container -->
+                            <div class="bg-white p-6 rounded-md border border-slate-200/50 shadow-xs space-y-4">
+                                <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest">Upload Mandate Document</h3>
+                                
+                                <div class="border-2 border-dashed border-slate-200 rounded-md p-6 text-center hover:border-orange-400 transition-all cursor-pointer relative bg-slate-50/50">
+                                    <input type="file" id="pdf-file-picker" onchange="handlePDFSelection(this)" class="absolute inset-0 opacity-0 cursor-pointer">
+                                    <div class="flex flex-col items-center">
+                                        <i data-lucide="file-text" class="w-8 h-8 text-slate-400 mb-3"></i>
+                                        <p class="text-xs font-bold text-slate-700">Drag & drop your PDF here, or click to upload</p>
+                                        <span class="text-[10px] text-slate-400 mt-1 block">Supported formats: PDF (Max 10MB)</span>
+                                        <button class="mt-4 px-4 py-2 bg-white border border-slate-200 text-slate-700 font-bold text-xs rounded-md hover:bg-slate-50 transition-colors">Choose PDF File</button>
+                                    </div>
+                                </div>
+
+                                <!-- Current Uploaded File display -->
+                                ${appState.uploadedFile ? `
+                                    <div class="p-3 bg-slate-50 border border-slate-100 rounded-md flex items-center justify-between">
+                                        <div class="flex items-center gap-2">
+                                            <i data-lucide="file" class="w-4 h-4 text-rose-500"></i>
+                                            <div>
+                                                <p class="text-xs font-bold text-slate-700 truncate max-w-[180px]">${appState.uploadedFile.name}</p>
+                                                <p class="text-[10px] text-slate-400 font-semibold">${appState.uploadedFile.size}</p>
+                                            </div>
+                                        </div>
+                                        <button onclick="removeUploadedFile()" class="p-1 hover:bg-slate-200 rounded text-slate-400 hover:text-slate-700"><i data-lucide="x" class="w-3.5 h-3.5"></i></button>
+                                    </div>
+                                ` : ''}
+                            </div>
+
+                            <!-- Extract & Edit Key Fields -->
+                            <div class="bg-white p-6 rounded-md border border-slate-200/50 shadow-xs space-y-4">
+                                <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest">Extract & Edit Key Fields</h3>
+                                
+                                <div class="space-y-4">
+                                    <div>
+                                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-1">Mandate Type</label>
+                                        <select onchange="updateFormField('mandateType', this.value)" class="w-full p-2.5 bg-slate-50 border border-slate-100 rounded-md text-xs outline-none font-semibold text-slate-800">
+                                            <option value="Investee Onboarding Mandate" ${appState.formFields.mandateType === 'Investee Onboarding Mandate' ? 'selected' : ''}>Investee Onboarding Mandate</option>
+                                            <option value="Seller Onboarding Mandate" ${appState.formFields.mandateType === 'Seller Onboarding Mandate' ? 'selected' : ''}>Seller Onboarding Mandate</option>
+                                        </select>
+                                    </div>
+
+                                    <div>
+                                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-1">Duration</label>
+                                        <select onchange="updateFormField('duration', this.value)" class="w-full p-2.5 bg-slate-50 border border-slate-100 rounded-md text-xs outline-none font-semibold text-slate-800">
+                                            <option value="12 Months from Effective Date" ${appState.formFields.duration === '12 Months from Effective Date' ? 'selected' : ''}>12 Months from Effective Date</option>
+                                            <option value="6 Months from Effective Date" ${appState.formFields.duration === '6 Months from Effective Date' ? 'selected' : ''}>6 Months from Effective Date</option>
+                                            <option value="18 Months from Effective Date" ${appState.formFields.duration === '18 Months from Effective Date' ? 'selected' : ''}>18 Months from Effective Date</option>
+                                        </select>
+                                    </div>
+
+                                    <div>
+                                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-1">Fee Structure</label>
+                                        <input type="text" oninput="updateFormField('feeStructure', this.value)" value="${appState.formFields.feeStructure}" class="w-full p-2.5 bg-slate-50 border border-slate-100 rounded-md text-xs outline-none text-slate-800 font-bold focus:bg-white focus:ring-1 focus:ring-orange-500">
+                                    </div>
+
+                                    <div>
+                                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-1">Expenses</label>
+                                        <input type="text" oninput="updateFormField('expenses', this.value)" value="${appState.formFields.expenses}" class="w-full p-2.5 bg-slate-50 border border-slate-100 rounded-md text-xs outline-none text-slate-800 font-bold focus:bg-white focus:ring-1 focus:ring-orange-500">
+                                    </div>
+
+                                    <div>
+                                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-1">Governing Law</label>
+                                        <input type="text" oninput="updateFormField('governingLaw', this.value)" value="${appState.formFields.governingLaw}" class="w-full p-2.5 bg-slate-50 border border-slate-100 rounded-md text-xs outline-none text-slate-800 font-bold focus:bg-white focus:ring-1 focus:ring-orange-500">
+                                    </div>
+
+                                    <div>
+                                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-1">Jurisdiction</label>
+                                        <input type="text" oninput="updateFormField('jurisdiction', this.value)" value="${appState.formFields.jurisdiction}" class="w-full p-2.5 bg-slate-50 border border-slate-100 rounded-md text-xs outline-none text-slate-800 font-bold focus:bg-white focus:ring-1 focus:ring-orange-500">
+                                    </div>
+                                </div>
+
+                                <button onclick="saveAndAssignMandate()" class="w-full py-3 bg-[#F97316] hover:bg-[#EA580C] text-white font-extrabold text-xs rounded-md shadow-md shadow-orange-500/10 uppercase tracking-wider transition-colors mt-2">
+                                    Save & Continue
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Column 2: Document Preview Panel -->
+                        <div class="col-span-12 lg:col-span-5 bg-white p-5 rounded-md border border-slate-200/50 shadow-xs space-y-4">
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest">Document Preview</h3>
+                                <div class="flex items-center gap-1 bg-slate-50 p-1 rounded-md border border-slate-100">
+                                    <button class="p-1 hover:bg-white rounded text-slate-500"><i data-lucide="menu" class="w-3.5 h-3.5"></i></button>
+                                    <button class="p-1 hover:bg-white rounded text-slate-500"><i data-lucide="search" class="w-3.5 h-3.5"></i></button>
+                                    <div class="h-3 w-px bg-slate-200 mx-1"></div>
+                                    <button onclick="changePage(false)" class="p-1 hover:bg-white rounded text-slate-500"><i data-lucide="chevron-left" class="w-3.5 h-3.5"></i></button>
+                                    <span class="text-[10px] font-bold text-slate-700 px-1 font-mono">${appState.previewPage} / 12</span>
+                                    <button onclick="changePage(true)" class="p-1 hover:bg-white rounded text-slate-500"><i data-lucide="chevron-right" class="w-3.5 h-3.5"></i></button>
+                                    <div class="h-3 w-px bg-slate-200 mx-1"></div>
+                                    <button class="p-1 hover:bg-white rounded text-slate-500"><i data-lucide="zoom-out" class="w-3.5 h-3.5"></i></button>
+                                    <span class="text-[10px] font-bold text-slate-600 px-1 font-mono">100%</span>
+                                    <button class="p-1 hover:bg-white rounded text-slate-500"><i data-lucide="zoom-in" class="w-3.5 h-3.5"></i></button>
+                                </div>
+                            </div>
+
+                            <!-- Styled Simulated Document PDF content view -->
+                            <div class="border border-slate-100 bg-slate-50 rounded-md p-6 min-h-[500px] flex flex-col justify-between shadow-inner overflow-y-auto max-h-[600px]">
+                                <div class="space-y-6 bg-white p-8 rounded-md shadow-sm border border-slate-200/50">
+                                    <div class="flex flex-col items-center text-center border-b pb-4 space-y-2">
+                                        <div class="w-10 h-10 bg-orange-600 rounded-md flex items-center justify-center text-white font-extrabold tracking-tight">C</div>
+                                        <span class="text-[10px] font-bold uppercase tracking-widest text-slate-400">CHARANTRA</span>
+                                        <h2 id="pdf-header-title" class="text-sm font-black text-slate-900 tracking-tight uppercase">${appState.formFields.mandateType} AGREEMENT</h2>
+                                    </div>
+
+                                    <div class="text-[11px] text-slate-600 space-y-4 leading-relaxed font-semibold">
+                                        <p>This Mandate Agreement ("Agreement") is made on this <span class="border-b border-slate-300 px-4 font-mono">_____</span> day of <span class="border-b border-slate-300 px-6 font-mono">___________</span> 2025, between:</p>
+                                        <p><span class="text-slate-900 font-extrabold">CHARANTRA Advisors Pvt. Ltd.</span>, a company incorporated under the laws of India, having its registered office at Bengaluru, Karnataka (hereinafter referred to as "Advisor").</p>
+                                        <p class="font-bold text-slate-400 uppercase tracking-wider text-[9px]">AND</p>
+                                        <p><span class="text-slate-950 font-extrabold text-orange-600">[Company Legal Name]</span>, a company incorporated under the laws of India, having its registered office at <span class="border-b border-slate-300 px-8"></span> (hereinafter referred to as "Company" or "Client").</p>
+                                        <p>WHEREAS, the Company desires to engage the Advisor to provide certain advisory services in relation to fundraising;</p>
+                                        <p>NOW, THEREFORE, in consideration of the mutual covenants and agreements contained herein, the parties agree as follows:</p>
+                                        
+                                        <p class="font-bold text-slate-900 border-t pt-3">1. APPOINTMENT</p>
+                                        <p>The Company hereby appoints the Advisor as its exclusive advisor for fundraising services on the terms and conditions set out in this Agreement.</p>
+                                    </div>
+                                </div>
+                                <div class="text-center text-[10px] text-slate-400 font-semibold pt-4">Previewing Page ${appState.previewPage} of 12</div>
+                            </div>
+                        </div>
+
+                        <!-- Column 3: Assign & Summary parameters -->
+                        <div class="col-span-12 lg:col-span-3 space-y-6">
+                            <!-- Assign Mandate To -->
+                            <div class="bg-white p-6 rounded-md border border-slate-200/50 shadow-xs space-y-4">
+                                <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest">Assign Mandate To</h3>
+                                <p class="text-[11px] text-slate-400 font-medium">Assign this mandate to a company and primary contact.</p>
+                                
+                                <div class="space-y-4 pt-1">
+                                    <div>
+                                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-1">Company / User</label>
+                                        <select onchange="updateAssignedCompany(this.value)" class="w-full p-2.5 bg-slate-50 border border-slate-100 rounded-md text-xs outline-none font-bold text-slate-800">
+                                            ${appState.companies.map(c => `
+                                                <option value="${c.id}" ${appState.selectedCompanyId === c.id ? 'selected' : ''}>${c.name}</option>
+                                            `).join('')}
+                                        </select>
+                                    </div>
+
+                                    <div>
+                                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-1">Primary Contact (Optional)</label>
+                                        <select class="w-full p-2.5 bg-slate-50 border border-slate-100 rounded-md text-xs outline-none font-bold text-slate-800">
+                                            <option>${activeCo.rep}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Mandate Summary Panel -->
+                            <div class="bg-white p-6 rounded-md border border-slate-200/50 shadow-xs space-y-4">
+                                <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest">Mandate Summary</h3>
+                                
+                                <div class="space-y-3 font-semibold text-xs text-slate-700">
+                                    <div class="flex items-start gap-2.5">
+                                        <i data-lucide="file-signature" class="w-4 h-4 text-slate-400 mt-0.5"></i>
+                                        <div>
+                                            <p class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Mandate Type</p>
+                                            <p class="text-slate-800 font-extrabold mt-0.5" id="summary-type">${appState.formFields.mandateType}</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex items-start gap-2.5">
+                                        <i data-lucide="calendar" class="w-4 h-4 text-slate-400 mt-0.5"></i>
+                                        <div>
+                                            <p class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Duration</p>
+                                            <p class="text-slate-800 font-bold mt-0.5" id="summary-duration">${appState.formFields.duration}</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex items-start gap-2.5">
+                                        <i data-lucide="receipt" class="w-4 h-4 text-slate-400 mt-0.5"></i>
+                                        <div>
+                                            <p class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Fee Structure</p>
+                                            <p class="text-slate-800 font-bold mt-0.5" id="summary-fees">${appState.formFields.feeStructure}</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex items-start gap-2.5">
+                                        <i data-lucide="info" class="w-4 h-4 text-slate-400 mt-0.5"></i>
+                                        <div>
+                                            <p class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Expenses</p>
+                                            <p class="text-slate-800 font-bold mt-0.5" id="summary-expenses">${appState.formFields.expenses}</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex items-start gap-2.5">
+                                        <i data-lucide="scale" class="w-4 h-4 text-slate-400 mt-0.5"></i>
+                                        <div>
+                                            <p class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Governing Law</p>
+                                            <p class="text-slate-800 font-bold mt-0.5" id="summary-law">${appState.formFields.governingLaw}</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex items-start gap-2.5">
+                                        <i data-lucide="map-pin" class="w-4 h-4 text-slate-400 mt-0.5"></i>
+                                        <div>
+                                            <p class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Jurisdiction</p>
+                                            <p class="text-slate-800 font-bold mt-0.5" id="summary-jurisdiction">${appState.formFields.jurisdiction}</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="bg-blue-50/70 border border-blue-100 rounded-md p-3 flex gap-2">
+                                    <i data-lucide="info" class="w-4 h-4 text-blue-600 mt-0.5 shrink-0"></i>
+                                    <p class="text-[10px] text-blue-800 leading-relaxed font-semibold">
+                                        You will be able to review and sign the mandate in the next step before assigning.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- INTERACTIVE TRIGGERS FOR CREATE MANDATE SCREEN ---
+        function updateFormField(key, val) {
+            appState.formFields[key] = val;
+            
+            // Sync summary panel immediately for instant high-fidelity interaction
+            if (key === 'mandateType') {
+                document.getElementById('summary-type').innerText = val;
+                document.getElementById('pdf-header-title').innerText = val.toUpperCase() + ' AGREEMENT';
+            }
+            if (key === 'duration') document.getElementById('summary-duration').innerText = val;
+            if (key === 'feeStructure') document.getElementById('summary-fees').innerText = val;
+            if (key === 'expenses') document.getElementById('summary-expenses').innerText = val;
+            if (key === 'governingLaw') document.getElementById('summary-law').innerText = val;
+            if (key === 'jurisdiction') document.getElementById('summary-jurisdiction').innerText = val;
+        }
+
+        function updateAssignedCompany(id) {
+            appState.selectedCompanyId = id;
+            renderWorkspace();
+        }
+
+        function handlePDFSelection(input) {
+            if (input.files && input.files[0]) {
+                const file = input.files[0];
+                appState.uploadedFile = {
+                    name: file.name,
+                    size: (file.size / (1024 * 1024)).toFixed(1) + ' MB'
+                };
+                triggerToast(`Uploaded document "${file.name}" ready for OCR metadata extraction.`);
+                renderWorkspace();
+            }
+        }
+
+        function removeUploadedFile() {
+            appState.uploadedFile = null;
+            renderWorkspace();
+        }
+
+        function changePage(increment) {
+            if (increment && appState.previewPage < 12) {
+                appState.previewPage++;
+            } else if (!increment && appState.previewPage > 1) {
+                appState.previewPage--;
+            }
+            renderWorkspace();
+        }
+
+        function saveAndAssignMandate() {
+            // Push dynamic newly assigned mandate record directly to global directory state array
+            const activeCo = appState.companies.find(c => c.id === appState.selectedCompanyId) || appState.companies[0];
+            const newId = 'MAN-2025-00' + (appState.mandates.length + 1);
+            
+            const newMandate = {
+                id: newId,
+                name: appState.formFields.mandateType,
+                template: appState.formFields.mandateType.replace(' Mandate', ''),
+                userType: activeCo.id === 'AL-102' ? 'SELLER' : 'INVESTEE',
+                company: activeCo.name,
+                representative: activeCo.rep.split(',')[0],
+                role: activeCo.rep.split(',')[1] || 'CEO',
+                assignedOn: 'Today',
+                status: 'ASSIGNED',
+                signatureStatus: 'PENDING',
+                duration: appState.formFields.duration,
+                fees: appState.formFields.feeStructure,
+                expenses: appState.formFields.expenses,
+                governingLaw: appState.formFields.governingLaw,
+                jurisdiction: appState.formFields.jurisdiction,
+                submittedOn: '',
+                submittedBy: '',
+                checklist: {
+                    received: true,
+                    signature: false,
+                    paymentProof: false,
+                    paymentVerified: false,
+                    kycAvailable: false,
+                    infoComplete: true
+                },
+                internalNotes: []
+            };
+
+            appState.mandates.unshift(newMandate);
+            triggerToast(`Mandate successfully created and assigned to ${activeCo.name}`);
+            changeSection('review', newId);
+        }
+    </script>
+
+    <script>
+        // --- 3. VIEW: MANDATE COMPLIANCE REVIEW & WORKSPACE DETAILS (image_7740ca.jpg) ---
+        function getMandateReviewHTML() {
+            const item = appState.mandates.find(m => m.id === appState.selectedMandateId) || appState.mandates[0];
+
+            return `
+                <div class="fade-in-view space-y-6 pb-24"> <!-- Added bottom padding to accommodate sticky bottom CTA bar -->
+                    <!-- Back path breadcrumb link -->
+                    <button onclick="changeSection('list')" class="text-xs font-bold text-orange-500 hover:text-orange-600 flex items-center gap-1.5 mb-2 transition-all">
+                        <i data-lucide="arrow-left" class="w-4 h-4"></i> Back to Mandates
+                    </button>
+
+                    <!-- Mandate Review Header Details Layout precisely matching image_7740ca.jpg -->
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center pb-4 border-b border-slate-100 gap-4">
+                        <div class="space-y-2">
+                            <div class="flex items-center flex-wrap gap-2.5">
+                                <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">Mandate Review</h1>
+                                <span class="px-2 py-0.5 bg-slate-100 border border-slate-200 text-slate-700 text-[9px] font-extrabold tracking-wide rounded uppercase">${item.id}</span>
+                                <span class="px-2 py-0.5 bg-orange-50 border border-orange-100 text-orange-700 text-[9px] font-extrabold tracking-wide rounded uppercase">${item.userType}</span>
+                                <span class="text-xs font-bold text-slate-800 font-mono">${item.company}</span>
+                                <span class="px-2 py-0.5 bg-emerald-50 border border-emerald-100 text-emerald-700 text-[9px] font-extrabold tracking-wide rounded uppercase">Fundraising Mandate</span>
+                            </div>
+                            
+                            <!-- Latency status horizontal metadata row -->
+                            <div class="flex items-center gap-6 text-[11px] text-slate-400 font-semibold pt-1">
+                                <span class="flex items-center gap-1"><i data-lucide="calendar" class="w-3.5 h-3.5"></i> Assigned On: <strong class="text-slate-600">${item.assignedOn}</strong></span>
+                                ${item.submittedOn ? `
+                                    <span class="flex items-center gap-1"><i data-lucide="check-circle" class="w-3.5 h-3.5 text-green-500"></i> Submitted On: <strong class="text-slate-600">${item.submittedOn}</strong></span>
+                                    <span class="flex items-center gap-1"><i data-lucide="user" class="w-3.5 h-3.5"></i> Submitted By: <strong class="text-slate-600">${item.submittedBy}</strong></span>
+                                ` : '<span class="text-rose-500 font-bold">No Client Submission Yet</span>'}
+                            </div>
+                        </div>
+
+                        <!-- Header control utilities -->
+                        <div class="flex gap-2">
+                            <button onclick="triggerToast('Downloading PDF contract...')" class="px-4 py-2 bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-bold text-xs rounded-md flex items-center gap-1.5 shadow-xs transition-colors">
+                                <i data-lucide="download" class="w-4 h-4"></i>
+                                <span>Download PDF</span>
+                            </button>
+                            <button onclick="triggerToast('Opening action ledger')" class="p-2 bg-white hover:bg-slate-50 border border-slate-200 text-slate-500 rounded-md">
+                                <i data-lucide="more-horizontal" class="w-4.5 h-4.5"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Horizontal Progress Checklist Bar precisely matches image_7740ca.jpg -->
+                    <div class="bg-white p-5 rounded-md border border-slate-200/50 shadow-xs flex flex-wrap items-center justify-between gap-4">
+                        <div class="flex items-center gap-2">
+                            <div class="w-5 h-5 bg-green-500 text-white rounded-md flex items-center justify-center"><i data-lucide="check" class="w-3 h-3"></i></div>
+                            <div>
+                                <p class="text-[11px] font-bold text-slate-950">Mandate Assigned</p>
+                                <p class="text-[9px] text-slate-400 font-semibold">${item.assignedOn}</p>
+                            </div>
+                        </div>
+                        <i data-lucide="chevron-right" class="w-4 h-4 text-slate-300 hidden md:block"></i>
+
+                        <div class="flex items-center gap-2">
+                            <div class="w-5 h-5 ${item.signatureStatus === 'SIGNED' ? 'bg-green-500 text-white' : 'bg-slate-100 text-slate-400'} rounded-md flex items-center justify-center">
+                                ${item.signatureStatus === 'SIGNED' ? '<i data-lucide="check" class="w-3 h-3"></i>' : '2'}
+                            </div>
+                            <div>
+                                <p class="text-[11px] font-bold text-slate-950">Signed By Company</p>
+                                <p class="text-[9px] text-slate-400 font-semibold">${item.submittedOn || 'Pending'}</p>
+                            </div>
+                        </div>
+                        <i data-lucide="chevron-right" class="w-4 h-4 text-slate-300 hidden md:block"></i>
+
+                        <div class="flex items-center gap-2">
+                            <div class="w-5 h-5 ${item.checklist.paymentProof ? 'bg-green-500 text-white' : 'bg-slate-100 text-slate-400'} rounded-md flex items-center justify-center">
+                                ${item.checklist.paymentProof ? '<i data-lucide="check" class="w-3 h-3"></i>' : '3'}
+                            </div>
+                            <div>
+                                <p class="text-[11px] font-bold text-slate-950">Payment Submitted</p>
+                                <p class="text-[9px] text-slate-400 font-semibold">${item.paymentSubmittedOn || 'Pending'}</p>
+                            </div>
+                        </div>
+                        <i data-lucide="chevron-right" class="w-4 h-4 text-slate-300 hidden md:block"></i>
+
+                        <div class="flex items-center gap-2">
+                            <div class="w-5 h-5 bg-orange-500 text-white rounded-md flex items-center justify-center"><i data-lucide="clock" class="w-3 h-3"></i></div>
+                            <div>
+                                <p class="text-[11px] font-bold text-slate-950">Under Review</p>
+                                <p class="text-[9px] text-orange-500 font-extrabold">In Progress</p>
+                            </div>
+                        </div>
+                        <i data-lucide="chevron-right" class="w-4 h-4 text-slate-300 hidden md:block"></i>
+
+                        <div class="flex items-center gap-2 opacity-60">
+                            <div class="w-5 h-5 bg-slate-100 text-slate-400 rounded-md flex items-center justify-center"><i data-lucide="lock" class="w-3 h-3"></i></div>
+                            <div>
+                                <p class="text-[11px] font-bold text-slate-950">Access Activation</p>
+                                <p class="text-[9px] text-slate-400 font-semibold">Pending</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Review Layout Columns -->
+                    <div class="grid grid-cols-12 gap-8">
+                        
+                        <!-- Left Panel: Interactive PDF View -->
+                        <div class="col-span-12 lg:col-span-6 bg-white p-5 rounded-md border border-slate-200/50 shadow-xs space-y-4">
+                            <div class="flex items-center justify-between pb-2">
+                                <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest">Mandate Document</h3>
+                                <div class="flex items-center gap-1 bg-slate-50 p-1 rounded-md border border-slate-100">
+                                    <button class="p-1 hover:bg-white rounded text-slate-500"><i data-lucide="menu" class="w-3.5 h-3.5"></i></button>
+                                    <button class="p-1 hover:bg-white rounded text-slate-500"><i data-lucide="search" class="w-3.5 h-3.5"></i></button>
+                                    <div class="h-3 w-px bg-slate-200 mx-1"></div>
+                                    <span class="text-[10px] font-bold text-slate-700 px-2 font-mono">1 / 12</span>
+                                    <div class="h-3 w-px bg-slate-200 mx-1"></div>
+                                    <span class="text-[10px] font-bold text-slate-600 px-1 font-mono">100%</span>
+                                </div>
+                            </div>
+
+                            <div class="border border-slate-100 bg-slate-50 rounded-md p-6 min-h-[500px] flex flex-col justify-between shadow-inner">
+                                <div class="space-y-6 bg-white p-8 rounded-md shadow-sm border border-slate-200/50">
+                                    <div class="flex flex-col items-center text-center border-b pb-4 space-y-2">
+                                        <div class="w-10 h-10 bg-orange-600 rounded-md flex items-center justify-center text-white font-extrabold tracking-tight">C</div>
+                                        <h2 class="text-sm font-black text-slate-950 tracking-tight uppercase">${item.name} AGREEMENT</h2>
+                                    </div>
+
+                                    <div class="text-[11px] text-slate-600 space-y-4 leading-relaxed font-semibold">
+                                        <p>This Mandate Agreement ("Agreement") is made on this <span class="border-b border-slate-300 px-4 font-mono">10th</span> day of <span class="border-b border-slate-300 px-6 font-mono">April</span> 2025, between:</p>
+                                        <p><span class="text-slate-900 font-extrabold">CHARANTRA Advisors Pvt. Ltd.</span>, having its registered office at Bengaluru, Karnataka (hereinafter referred to as "Advisor").</p>
+                                        <p class="font-bold text-slate-400 uppercase tracking-wider text-[9px]">AND</p>
+                                        <p><span class="text-slate-950 font-extrabold text-orange-600">${item.company}</span>, having its registered office at Bengaluru, Karnataka (hereinafter referred to as "Company").</p>
+                                        <p>WHEREAS, the Company desires to engage the Advisor to provide certain advisory services in relation to fundraising;</p>
+                                        
+                                        <p class="font-bold text-slate-900 border-t pt-3">1. ENGAGEMENT SUMMARY</p>
+                                        <p>1.1 The Company hereby appoints the Advisor as its exclusive fundraising partner to assist in securing target venture development parameters.</p>
+                                    </div>
+                                </div>
+                                <p class="text-center text-[10px] text-slate-400 font-semibold mt-4">Previewing Page 1 of 12</p>
+                            </div>
+                        </div>
+
+                        <!-- Right Panel: Checklist, verification details, and payments cards -->
+                        <div class="col-span-12 lg:col-span-6 space-y-6">
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <!-- Mandate Summary Checklist -->
+                                <div class="bg-white p-5 rounded-md border border-slate-200/50 shadow-xs space-y-4">
+                                    <div class="flex justify-between items-center border-b pb-2">
+                                        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest">Mandate Summary</h3>
+                                        <button onclick="triggerToast('Edit Mandate Details Enabled')" class="text-orange-500 hover:text-orange-600 flex items-center gap-1 text-[11px] font-bold"><i data-lucide="edit" class="w-3.5 h-3.5"></i> Edit Info</button>
+                                    </div>
+                                    <div class="space-y-3 text-xs font-semibold text-slate-700">
+                                        <div class="flex justify-between">
+                                            <span class="text-slate-400">Mandate Type</span>
+                                            <span class="text-slate-900 text-right">${item.name}</span>
+                                        </div>
+                                        <div class="flex justify-between">
+                                            <span class="text-slate-400">Duration</span>
+                                            <span class="text-slate-900 text-right">${item.duration}</span>
+                                        </div>
+                                        <div class="flex justify-between">
+                                            <span class="text-slate-400">Fee Structure</span>
+                                            <span class="text-slate-900 text-right font-bold text-orange-600">${item.fees}</span>
+                                        </div>
+                                        <div class="flex justify-between">
+                                            <span class="text-slate-400">Expenses</span>
+                                            <span class="text-slate-900 text-right">${item.expenses}</span>
+                                        </div>
+                                        <div class="flex justify-between">
+                                            <span class="text-slate-400">Governing Law</span>
+                                            <span class="text-slate-900 text-right">${item.governingLaw}</span>
+                                        </div>
+                                        <div class="flex justify-between">
+                                            <span class="text-slate-400">Jurisdiction</span>
+                                            <span class="text-slate-900 text-right">${item.jurisdiction}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Checklist Review Grid -->
+                                <div class="bg-white p-5 rounded-md border border-slate-200/50 shadow-xs space-y-4">
+                                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest border-b pb-2">Review Checklist</h3>
+                                    
+                                    <div class="space-y-3 text-xs font-semibold">
+                                        <div onclick="toggleChecklist('received')" class="flex items-center gap-2.5 cursor-pointer">
+                                            <span class="w-4 h-4 rounded flex items-center justify-center border ${item.checklist.received ? 'bg-green-500 border-green-500 text-white' : 'border-slate-300'}">
+                                                ${item.checklist.received ? '<i data-lucide="check" class="w-3 h-3"></i>' : ''}
+                                            </span>
+                                            <span class="text-slate-700">Mandate document received</span>
+                                        </div>
+
+                                        <div onclick="toggleChecklist('signature')" class="flex items-center gap-2.5 cursor-pointer">
+                                            <span class="w-4 h-4 rounded flex items-center justify-center border ${item.checklist.signature ? 'bg-green-500 border-green-500 text-white' : 'border-slate-300'}">
+                                                ${item.checklist.signature ? '<i data-lucide="check" class="w-3 h-3"></i>' : ''}
+                                            </span>
+                                            <span class="text-slate-700">Company signature verified</span>
+                                        </div>
+
+                                        <div onclick="toggleChecklist('paymentProof')" class="flex items-center gap-2.5 cursor-pointer">
+                                            <span class="w-4 h-4 rounded flex items-center justify-center border ${item.checklist.paymentProof ? 'bg-green-500 border-green-500 text-white' : 'border-slate-300'}">
+                                                ${item.checklist.paymentProof ? '<i data-lucide="check" class="w-3 h-3"></i>' : ''}
+                                            </span>
+                                            <span class="text-slate-700">Payment proof received</span>
+                                        </div>
+
+                                        <div onclick="toggleChecklist('paymentVerified')" class="flex items-center gap-2.5 cursor-pointer">
+                                            <span class="w-4 h-4 rounded flex items-center justify-center border ${item.checklist.paymentVerified ? 'bg-green-500 border-green-500 text-white' : 'border-amber-500 text-amber-500'}">
+                                                ${item.checklist.paymentVerified ? '<i data-lucide="check" class="w-3 h-3"></i>' : '<i data-lucide="clock" class="w-3.5 h-3.5"></i>'}
+                                            </span>
+                                            <span class="text-slate-700">Payment verified</span>
+                                        </div>
+
+                                        <div onclick="toggleChecklist('kycAvailable')" class="flex items-center gap-2.5 cursor-pointer">
+                                            <span class="w-4 h-4 rounded-md border border-slate-300 flex items-center justify-center ${item.checklist.kycAvailable ? 'bg-green-500 border-green-500 text-white' : ''}">
+                                                ${item.checklist.kycAvailable ? '<i data-lucide="check" class="w-3 h-3"></i>' : ''}
+                                            </span>
+                                            <span class="text-slate-700">KYC documents available</span>
+                                        </div>
+
+                                        <div onclick="toggleChecklist('infoComplete')" class="flex items-center gap-2.5 cursor-pointer">
+                                            <span class="w-4 h-4 rounded flex items-center justify-center border ${item.checklist.infoComplete ? 'bg-green-500 border-green-500 text-white' : 'border-slate-300'}">
+                                                ${item.checklist.infoComplete ? '<i data-lucide="check" class="w-3 h-3"></i>' : ''}
+                                            </span>
+                                            <span class="text-slate-700">Company information complete</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <!-- Signature Details Card -->
+                                <div class="bg-white p-5 rounded-md border border-slate-200/50 shadow-xs space-y-4">
+                                    <div class="flex justify-between items-center border-b pb-2">
+                                        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest">Signature Details</h3>
+                                        <span class="px-2 py-0.5 bg-green-50 text-green-700 border border-green-100 rounded text-[9px] font-extrabold uppercase">Verified</span>
+                                    </div>
+                                    <div class="space-y-2.5 text-xs font-semibold text-slate-700">
+                                        <div class="flex justify-between">
+                                            <span class="text-slate-400">Signed By</span>
+                                            <span class="text-slate-900">${item.representative}, ${item.role}</span>
+                                        </div>
+                                        <div class="flex justify-between">
+                                            <span class="text-slate-400">Method</span>
+                                            <span class="text-slate-900">Zoho Sign</span>
+                                        </div>
+                                        <div class="flex justify-between">
+                                            <span class="text-slate-400">Signed On</span>
+                                            <span class="text-slate-900">${item.submittedOn || 'Pending'}</span>
+                                        </div>
+                                        <div class="flex justify-between">
+                                            <span class="text-slate-400">IP Address</span>
+                                            <span class="text-slate-900 font-mono">106.51.22.11</span>
+                                        </div>
+                                        <div class="flex justify-between pt-1 text-green-600 border-t border-slate-50">
+                                            <span>Verification</span>
+                                            <span class="flex items-center gap-1"><i data-lucide="check" class="w-3 h-3"></i> Legally Valid</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Payment Details Card -->
+                                <div class="bg-white p-5 rounded-md border border-slate-200/50 shadow-xs space-y-4">
+                                    <div class="flex justify-between items-center border-b pb-2">
+                                        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest">Payment Details</h3>
+                                        <span class="px-2 py-0.5 bg-green-50 text-green-700 border border-green-100 rounded text-[9px] font-extrabold uppercase">Verified</span>
+                                    </div>
+                                    <div class="space-y-2.5 text-xs font-semibold text-slate-700">
+                                        <div class="flex justify-between">
+                                            <span class="text-slate-400">Amount Paid</span>
+                                            <span class="text-slate-900 font-bold text-slate-900">${item.paymentAmount || 'Pending'}</span>
+                                        </div>
+                                        <div class="flex justify-between">
+                                            <span class="text-slate-400">Paid On</span>
+                                            <span class="text-slate-900">${item.paymentSubmittedOn || 'Pending'}</span>
+                                        </div>
+                                        <div class="flex justify-between">
+                                            <span class="text-slate-400">Transaction ID</span>
+                                            <span class="text-slate-900 font-mono">TXN82939393</span>
+                                        </div>
+                                        <div class="flex justify-between">
+                                            <span class="text-slate-400">Payment Mode</span>
+                                            <span class="text-slate-900">Bank Transfer</span>
+                                        </div>
+                                        <div class="flex items-center justify-between gap-1.5 pt-2 border-t border-slate-50">
+                                            <span class="text-[10px] text-slate-400 font-bold truncate max-w-[120px]">payment_receipt.pdf</span>
+                                            <div class="flex gap-1.5 shrink-0">
+                                                <button onclick="triggerToast('Viewing secure proof PDF...')" class="px-2 py-1 bg-slate-50 border border-slate-100 hover:bg-slate-100 rounded text-[10px] font-bold text-slate-600 transition-colors">View Proof</button>
+                                                <button onclick="triggerToast('Downloading invoice payment receipt...')" class="px-2 py-1 bg-slate-50 border border-slate-100 hover:bg-slate-100 rounded text-[10px] font-bold text-slate-600 transition-colors"><i data-lucide="download" class="w-3 h-3"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Internal Review Notes Area -->
+                            <div class="bg-white p-5 rounded-md border border-slate-200/50 shadow-xs space-y-4">
+                                <div class="flex justify-between items-center border-b pb-2">
+                                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest">Internal Notes</h3>
+                                    <button onclick="triggerAddNotePrompt()" class="text-orange-500 hover:text-orange-600 flex items-center gap-1 text-[11px] font-bold"><i data-lucide="edit" class="w-3.5 h-3.5"></i> Add Note</button>
+                                </div>
+                                <div class="space-y-3 max-h-[160px] overflow-y-auto pr-1">
+                                    ${item.internalNotes.length === 0 ? `
+                                        <p class="text-xs text-slate-400 italic text-center py-4 font-semibold">No internal review notes added yet.</p>
+                                    ` : item.internalNotes.map(n => `
+                                        <div class="p-3 bg-amber-50/70 border border-amber-100 rounded-md space-y-1.5">
+                                            <p class="text-xs text-slate-700 font-semibold">${n.text}</p>
+                                            <div class="flex justify-between text-[9px] text-slate-400 font-extrabold tracking-wider uppercase">
+                                                <span>Added by ${n.author}</span>
+                                                <span>${n.date}</span>
+                                            </div>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Dynamic Review Actions Bottom CTA Bar -->
+                    <div id="review-actions-bar" class="bg-white border border-slate-200/60 shadow-xs rounded-md p-5 flex flex-col md:flex-row justify-between items-center gap-4 transition-all duration-300">
+                        <div class="flex items-center gap-2.5">
+                            <div class="p-2 bg-orange-50 text-orange-600 rounded-md"><i data-lucide="file-signature" class="w-4 h-4"></i></div>
+                            <div>
+                                <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider leading-none">Review Actions</h4>
+                                <p class="text-[11px] text-slate-400 font-semibold mt-1">Verify all transaction compliance checklists and execute target action.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3.5 flex-wrap">
+                            <button onclick="approveAndActivateMandate()" class="px-5 py-2.5 bg-[#F97316] hover:bg-[#EA580C] text-white font-extrabold text-xs rounded-md shadow-md shadow-orange-500/10 uppercase tracking-wider transition-colors flex items-center gap-1.5">
+                                <i data-lucide="check-circle" class="w-4 h-4"></i>
+                                <span>Approve & Activate</span>
+                            </button>
+                            <button onclick="triggerToast('Information Request template generated')" class="px-4 py-2.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 font-bold text-xs rounded-md transition-colors flex items-center gap-1.5">
+                                <i data-lucide="info" class="w-4 h-4 text-slate-400"></i>
+                                <span>Request Information</span>
+                            </button>
+                            <button onclick="toggleOnHoldState('${item.id}')" class="px-4 py-2.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 font-bold text-xs rounded-md transition-colors flex items-center gap-1.5">
+                                <i data-lucide="pause-circle" class="w-4 h-4 text-slate-400"></i>
+                                <span>Place On Hold</span>
+                            </button>
+                            <button onclick="archiveMandate('${item.id}')" class="px-4 py-2.5 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-100 font-bold text-xs rounded-md transition-colors flex items-center gap-1.5">
+                                <i data-lucide="trash-2" class="w-4 h-4"></i>
+                                <span>Archive Mandate</span>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            `;
+        }
+
+        // --- DYNAMIC INTERACTIONS FOR DETAILED WORKSPACE ---
+        function toggleChecklist(key) {
+            const item = appState.mandates.find(m => m.id === appState.selectedMandateId) || appState.mandates[0];
+            item.checklist[key] = !item.checklist[key];
+            triggerToast(`Checklist parameter "${key}" toggled dynamically.`);
+            renderWorkspace();
+        }
+
+        function toggleOnHoldState(id) {
+            const item = appState.mandates.find(m => m.id === id);
+            if (item.status === 'ON HOLD') {
+                item.status = 'ASSIGNED';
+                triggerToast('Mandate operational active status resumed.');
+            } else {
+                item.status = 'ON HOLD';
+                triggerToast('Mandate successfully put on administrative hold.');
+            }
+            renderWorkspace();
+        }
+
+        function archiveMandate(id) {
+            appState.mandates = appState.mandates.filter(m => m.id !== id);
+            triggerToast('Mandate successfully archived and cleared from operational rosters.');
+            changeSection('list');
+        }
+
+        function approveAndActivateMandate() {
+            const item = appState.mandates.find(m => m.id === appState.selectedMandateId) || appState.mandates[0];
+            item.status = 'COMPLETED';
+            item.signatureStatus = 'SIGNED';
+            item.checklist.paymentVerified = true;
+            item.checklist.kycAvailable = true;
+            triggerToast('Compliance checklists verified! Mandate successfully Approved and secure workspace activated.');
+            changeSection('list');
+        }
+
+        function triggerAddNotePrompt() {
+            const container = document.getElementById('modal-container');
+            container.innerHTML = `
+                <div class="bg-white rounded-md p-6 max-w-md w-full shadow-2xl border border-slate-100 space-y-4 fade-in-view">
+                    <div>
+                        <h3 class="text-sm font-black text-slate-900 tracking-tight">Add Internal Review Memo</h3>
+                        <p class="text-[11px] text-slate-400 font-semibold mt-0.5">Memos are encrypted and stored inside supervisory audit logs.</p>
+                    </div>
+                    <textarea id="memo-input" placeholder="Enter compliance audit comments..." class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-md text-xs outline-none h-24 font-semibold text-slate-700"></textarea>
+                    <div class="flex justify-end gap-2.5 pt-2">
+                        <button onclick="closeModal()" class="px-4 py-2 border rounded-md text-xs font-bold text-slate-500">Cancel</button>
+                        <button onclick="submitInternalMemo()" class="px-4 py-2 bg-orange-600 text-white font-bold text-xs rounded-md">Add Note</button>
+                    </div>
+                </div>
+            `;
+            container.classList.remove('hidden');
+            container.classList.add('modal-active');
+            lucide.createIcons();
+        }
+
+        function submitInternalMemo() {
+            const text = document.getElementById('memo-input').value;
+            if (!text) return;
+            const item = appState.mandates.find(m => m.id === appState.selectedMandateId) || appState.mandates[0];
+            item.internalNotes.unshift({
+                text: text,
+                author: 'Karthik',
+                date: 'Just Now'
+            });
+            triggerToast('Compliance note recorded on secure transaction logs.');
+            closeModal();
+            renderWorkspace();
+        }
+    </script>
+
+    <!-- CORE WORKSPACE CONTROLLER AND SCROLL-SENSITIVE CTA LAYOUTS -->
+    <script>
+        function renderWorkspace() {
+            const container = document.getElementById('workspace-target');
+            if (!container) return;
+            container.innerHTML = '';
+
+            let content = '';
+            if (appState.viewMode === 'list') {
+                content = getDirectoryView();
+            } else if (appState.viewMode === 'create') {
+                content = getCreateMandateHTML();
+            } else {
+                content = getMandateReviewHTML();
+            }
+
+            container.innerHTML = content;
+            lucide.createIcons();
+            
+            // Recalculate layout constraints for sticky bottom CTA bar
+            setTimeout(handleWindowScroll, 50);
+        }
+
+        // Support fallback view mapping CRM list seamlessly
+        function getDirectoryView() {
+            return getMandateDirectoryHTML();
+        }
+
+        function closeModal() {
+            const container = document.getElementById('modal-container');
+            container.classList.add('hidden');
+            container.classList.remove('modal-active');
+        }
+
+        // --- SCROLL ACTION FOR DYNAMIC FLOATING CTA BAR ---
+        function handleWindowScroll() {
+            const bar = document.getElementById('review-actions-bar');
+            if (!bar) return;
+
+            const rect = bar.getBoundingClientRect();
+            const totalHeight = document.documentElement.scrollHeight;
+            const visibleHeight = document.documentElement.clientHeight;
+            const currentScroll = window.scrollY;
+
+            // If page is scrollable, and the user hasn't scrolled all the way to the static bottom bar
+            if (totalHeight > visibleHeight && (currentScroll + visibleHeight < totalHeight - 140)) {
+                // Dock/Float CTAs beautifully to the viewport bottom with professional blur shadow
+                bar.classList.add('fixed', 'bottom-4', 'right-8', 'shadow-[0_-12px_40px_rgba(0,0,0,0.06)]', 'bg-white/95', 'backdrop-blur-md', 'z-40');
+                bar.style.left = 'calc(20rem + 2rem)'; // Sidebar (80 / 20rem) + Workspace Padding (2rem / 8px)
+            } else {
+                // Sit statically inside the parent layout
+                bar.classList.remove('fixed', 'bottom-4', 'right-8', 'shadow-[0_-12px_40px_rgba(0,0,0,0.06)]', 'bg-white/95', 'backdrop-blur-md', 'z-40');
+                bar.style.left = 'auto';
+            }
+        }
+
+        // --- PRIVATE ADVISOR CONSULTATION MODAL DIALOG ---
+        function triggerAdvisorChat() {
+            const container = document.getElementById('modal-container');
+            container.innerHTML = `
+                <div class="bg-white rounded-md p-6 max-w-md w-full shadow-2xl border border-slate-100 space-y-4 fade-in-view">
+                    <div class="flex justify-between items-center border-b pb-3">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 bg-green-500 rounded-md animate-pulse"></span>
+                            <h3 class="text-sm font-black text-slate-900 tracking-tight">Secure Consultation Desk</h3>
+                        </div>
+                        <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-4 h-4"></i></button>
+                    </div>
+                    <div class="h-48 overflow-y-auto space-y-2.5 p-2 bg-slate-50/50 rounded-md text-xs">
+                        <p class="text-slate-400 text-center text-[10px] uppercase font-bold py-2 tracking-widest border-b border-slate-100">Private Escrow Thread Verified</p>
+                        <div class="p-3 bg-white rounded-md shadow-xs border border-slate-100 max-w-[90%]">
+                            <p class="font-bold text-orange-600">Akash Kumar <span class="text-[9px] text-slate-400 font-normal">Advisor Desk</span></p>
+                            <p class="text-slate-700 leading-relaxed font-semibold mt-1">Hello, I have updated the automated checks on the Series-A prospectus guidelines. Please approve the current onboarded client agreements as soon as you have finished auditing the compliance proofs.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-2">
+                        <input id="adv-msg-input" type="text" placeholder="Write secure message to Akash..." class="flex-1 p-2.5 border rounded-md text-xs outline-none focus:border-orange-500 transition-all font-semibold">
+                        <button onclick="triggerToast('Consultation message encrypted and logged on transaction ledger.'); closeModal();" class="px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs rounded-md font-semibold">Send</button>
+                    </div>
+                </div>
+            `;
+            container.classList.remove('hidden');
+            container.classList.add('modal-active');
+            lucide.createIcons();
+        }
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const currentPath = window.location.pathname;
+            const buttons = document.querySelectorAll('.sidebar-btn');
+            buttons.forEach(btn => {
+                const parent = btn.parentElement;
+                if (parent && parent.tagName === 'A') {
+                    const href = parent.getAttribute('href');
+                    if (currentPath.includes(href.split('/').pop()) || (currentPath === '/' && href.includes('dashboard.html'))) {
+                        btn.classList.add('sidebar-item-active');
+                    }
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

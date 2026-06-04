@@ -1,0 +1,2194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Charantra Executive Workspace | Deals & M&A Pipeline</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    borderRadius: {
+                        'none': '0',
+                        'sm': '16px',
+                        DEFAULT: '16px',
+                        'md': '16px',
+                        'lg': '16px',
+                        'xl': '16px',
+                        '2xl': '16px',
+                        '3xl': '16px',
+                        'full': '9999px'
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --charantra-orange: #F97316;
+            --charantra-orange-hover: #EA580C;
+            --sidebar-bg: #0B0C0E;
+            --workspace-bg: #F8F9FC;
+            --slate-border: #E2E8F0;
+        }
+
+        body {
+            font-family: 'Titillium Web', sans-serif;
+            font-size: 13.5px;
+            background-color: var(--workspace-bg);
+            color: #1E293B;
+            overflow-x: hidden;
+        }
+
+        /* Clean animations */
+        .fade-in-view {
+            animation: cubicFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes cubicFadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Premium rounded scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #E2E8F0;
+            border-radius: 99px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #CBD5E1;
+        }
+
+        /* Sidebar active style - Orange block matching your mockup exactly */
+        .sidebar-item-active {
+            border-radius: 6px !important;
+            background: var(--charantra-orange) !important;
+            color: #FFFFFF !important;
+            border: none !important;
+        }
+
+        /* Tab highlights */
+        .subtab-active {
+            color: var(--charantra-orange);
+            border-bottom: 2px solid var(--charantra-orange);
+        }
+
+        /* Smooth interactive card effects */
+        .interactive-card {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .interactive-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.04), 0 4px 10px -2px rgba(0, 0, 0, 0.02);
+        }
+        
+        /* Modal Overlay Transition */
+        .modal-active {
+            display: flex !important;
+            animation: fadeInOverlay 0.2s ease forwards;
+        }
+        @keyframes fadeInOverlay {
+            from { background-color: rgba(0,0,0,0); }
+            to { background-color: rgba(15, 17, 21, 0.6); }
+        }
+
+        /* Audio Waveform animation */
+        @keyframes barPulse {
+            0%, 100% { height: 4px; }
+            50% { height: 28px; }
+        }
+        .waveform-bar-active {
+            animation: barPulse 1.2s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-orange-100">
+
+    <div class="flex min-h-screen">
+                <!-- SIDEBAR -->
+        <aside class="w-80 bg-[#0B0C0E] text-[#94A3B8] flex flex-col fixed h-screen z-50">
+            <!-- Brand Identity -->
+            <div class="p-6 border-b border-zinc-900 flex-shrink-0">
+                <a href="/index.html">
+                    <img src="/assets/logo.png" width="200" alt="Charantra Logo" style="width: 200px; height: auto;">
+                </a>
+            </div>
+
+            <!-- Sidebar Navigation Menu -->
+            <div class="flex-1 overflow-y-auto sidebar-scroll p-4 space-y-1.5">
+                <p class="text-[10px] uppercase font-bold tracking-widest text-zinc-600 px-3.5 mb-2 mt-2">Executive Desk</p>
+                
+                <a href="/pages/dashboard.html" class="block">
+                    <button id="nav-dashboard" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 text-[13px] font-medium rounded-md text-[#94A3B8] hover:text-white hover:bg-[#1E2128]/40 transition-all">
+                        <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
+                        <span>Dashboard</span>
+                    </button>
+                </a>
+                
+                <a href="/pages/crm.html" class="block">
+                    <button id="nav-crm" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 text-[13px] font-medium rounded-md text-[#94A3B8] hover:text-white hover:bg-[#1E2128]/40 transition-all">
+                        <i data-lucide="contact-2" class="w-4 h-4"></i>
+                        <span>CRM & Users</span>
+                    </button>
+                </a>
+                
+                <a href="/pages/deals.html" class="block">
+                    <button id="nav-deals" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 text-[13px] font-medium rounded-md text-[#94A3B8] hover:text-white hover:bg-[#1E2128]/40 transition-all">
+                        <i data-lucide="git-pull-request" class="w-4 h-4"></i>
+                        <span>Deals & M&A Pipeline</span>
+                    </button>
+                </a>
+
+                <a href="/pages/mandates.html" class="block">
+                    <button id="nav-mandates" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 text-[13px] font-medium rounded-md text-[#94A3B8] hover:text-white hover:bg-[#1E2128]/40 transition-all">
+                        <i data-lucide="file-signature" class="w-4 h-4"></i>
+                        <span>Mandates & Projects</span>
+                    </button>
+                </a>
+
+                <p class="text-[10px] uppercase font-bold tracking-widest text-zinc-600 px-3.5 mb-2 mt-4">Audits & Governance</p>
+                
+                <a href="/pages/dataroom.html" class="block">
+                    <button id="nav-data-room" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 text-[13px] font-medium rounded-md text-[#94A3B8] hover:text-white hover:bg-[#1E2128]/40 transition-all">
+                        <i data-lucide="hard-drive" class="w-4 h-4"></i>
+                        <span>Data Room</span>
+                    </button>
+                </a>
+
+                <a href="/pages/team.html" class="block">
+                    <button id="nav-team-management" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 text-[13px] font-medium rounded-md text-[#94A3B8] hover:text-white hover:bg-[#1E2128]/40 transition-all">
+                        <i data-lucide="users-2" class="w-4 h-4"></i>
+                        <span>Team Management</span>
+                    </button>
+                </a>
+
+                <a href="/pages/payments.html" class="block">
+                    <button id="nav-payments-invoices" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 text-[13px] font-medium rounded-md text-[#94A3B8] hover:text-white hover:bg-[#1E2128]/40 transition-all">
+                        <i data-lucide="receipt" class="w-4 h-4"></i>
+                        <span>Payments</span>
+                    </button>
+                </a>
+
+                <a href="/pages/reports.html" class="block">
+                    <button id="nav-reports-analytics" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 text-[13px] font-medium rounded-md text-[#94A3B8] hover:text-white hover:bg-[#1E2128]/40 transition-all">
+                        <i data-lucide="bar-chart-3" class="w-4 h-4"></i>
+                        <span>Reports & Analytics</span>
+                    </button>
+                </a>
+
+                <a href="/pages/settings.html" class="block">
+                    <button id="nav-settings" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 text-[13px] font-medium rounded-md text-[#94A3B8] hover:text-white hover:bg-[#1E2128]/40 transition-all">
+                        <i data-lucide="settings" class="w-4 h-4"></i>
+                        <span>Settings</span>
+                    </button>
+                </a>
+            </div>
+        </aside>
+
+        <!-- MAIN LAYOUT -->
+        <main class="flex-1 ml-80 flex flex-col min-h-screen">
+            <!-- APP HEADER -->
+            <header class="h-20 bg-white border-b border-slate-100 flex items-center justify-between px-8 sticky top-0 z-40 shadow-sm shadow-slate-100/30">
+                <div class="relative w-96">
+                    <i data-lucide="search" class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4"></i>
+                    <input type="text" id="global-search" oninput="executeGlobalSearch()" placeholder="Search investors, deals, documents..." class="w-full pl-10 pr-4 py-2 bg-slate-50 border border-transparent rounded-md text-xs focus:ring-2 focus:ring-orange-500/10 focus:border-orange-500 focus:bg-white outline-none transition-all">
+                </div>
+
+                <!-- Actions / Session -->
+                <div class="flex items-center gap-6">
+                    <div class="flex items-center gap-2 bg-slate-50 px-3 py-1.5 rounded-md border border-slate-100">
+                        <span class="text-xs font-bold text-slate-700">INR (₹)</span>
+                        <i data-lucide="chevron-down" class="w-3 h-3 text-slate-400"></i>
+                    </div>
+
+                    <!-- Theme Switcher -->
+                    <button class="text-slate-400 hover:text-orange-500 transition-colors">
+                        <i data-lucide="sun" class="w-4 h-4"></i>
+                    </button>
+
+
+                    <div class="relative">
+                        <span class="absolute -top-1 -right-1 w-4 h-4 bg-orange-600 text-[9px] font-extrabold text-white rounded-md flex items-center justify-center">3</span>
+                        <button onclick="triggerToast('Viewing active system alerts...')" class="p-2.5 bg-slate-50 border border-slate-100 rounded-md text-slate-500 hover:text-slate-800 transition-colors">
+                            <i data-lucide="bell" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+
+                    <div class="flex items-center gap-3 border-l border-slate-100 pl-6">
+                        <div class="text-right">
+                            <p class="text-xs font-bold text-slate-900 leading-none">KARTHIK</p>
+                            <p class="text-[10px] text-orange-500 font-bold uppercase tracking-wider mt-1">SUPER ADMIN</p>
+                        </div>
+                        <div class="w-10 h-10 bg-[#0B0C0E] rounded-md flex items-center justify-center text-white font-bold tracking-tight shadow-md">
+                            K
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- WORKSPACE CONTAINER -->
+            <div class="p-8 flex-1 flex flex-col max-w-[1600px] w-full mx-auto" id="workspace-target">
+                <!-- Dynamic templates rendered here -->
+            </div>
+        </main>
+    </div>
+
+    
+        <div class="flex-1 min-w-0">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-orange-500 leading-none mb-1">Terminal Alert</h4>
+            <p id="toast-text" class="text-xs text-zinc-300"></p>
+        </div>
+        <button onclick="dismissToast()" class="text-zinc-500 hover:text-white transition-colors">
+            <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+    </div>
+
+    <!-- MODAL OVERLAYS CONTAINER -->
+    <div id="modal-container" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
+        <!-- Content gets loaded dynamically here -->
+    </div>
+
+    <script>
+        // High fidelity state architecture for multiple dynamic modules
+        const appState = {
+            activeModule: 'deals', // 'crm' | 'deals'
+            
+            // CRM State variables
+            currentTab: 'investees', // investees | investors | sellers | buyers | advisors
+            viewMode: 'list', // list | detail
+            selectedUserId: 'TV-101', 
+            searchQuery: '',
+            isAudioPlaying: false,
+            isVideoPlaying: false,
+
+            // Deals & M&A Pipeline State variables
+            dealsFlow: 'equity', // 'equity' | 'ma'
+            dealsViewMode: 'list', // 'list' | 'kanban' | 'detail'
+            selectedDealId: 'EQ-101', 
+
+            counts: {
+                investees: 48,
+                investors: 29,
+                sellers: 21,
+                buyers: 18,
+                advisors: 26,
+                totalDeals: 48,
+                equityDeals: 28,
+                maDeals: 20,
+                activeDeals: 36,
+                dealsAtRisk: 7,
+                dealsClosed: 5
+            },
+
+            // High-fidelity User Register for CRM module
+            users: [
+                {
+                    id: 'TV-101',
+                    name: 'TechVenture Solutions',
+                    founder: 'Sarah Chen',
+                    role: 'CEO',
+                    email: 'sarah@techventure.com',
+                    phone: '+91 98765 43211',
+                    roleType: 'INVESTEE',
+                    completeness: 92,
+                    lastActivity: '2 days ago',
+                    joinedOn: '21 Apr 2025',
+                    status: 'ACTIVE',
+                    industry: 'SaaS / AI',
+                    location: 'Bengaluru, India',
+                    teamSize: '25 Members',
+                    desc: 'AI-powered customer support platform automating resolutions for top e-commerce brands.',
+                    about: 'TechVenture Solutions is revolutionizing the customer service industry with state-of-the-art AI. Our proprietary engine automates up to 70% of support tickets while maintaining human-like empathy and resolution accuracy. We currently partner with over 150 enterprise clients globally.',
+                    fundingRequired: '₹5.00 Cr',
+                    preMoneyValuation: '₹25 Cr',
+                    equityOffered: '20%',
+                    useOfFunds: ['Product Expansion', 'Sales & Marketing', 'Team Building'],
+                    tags: ['AI Powered', 'SaaS', 'B2B', 'Cloud Native'],
+                    reviewSummary: { created: true, kyc: true, docs: true, media: true, infoReq: true },
+                    onboarding: { created: '21 Apr 2025', approved: '21 Apr 2025', submitted: '21 Apr 2025', lastAct: '2 hours ago' },
+                    engagement: { sent: 3, requested: 2, received: 1, pending: 2 },
+                    rmName: 'Rahul Mehta',
+                    rmEmail: 'rmehta@charantra.com'
+                },
+                {
+                    id: 'TC-102',
+                    name: 'TechCore Industries',
+                    founder: 'Priya Sharma',
+                    role: 'CEO',
+                    email: 'priya@techcore.com',
+                    phone: '+91 98765 43211',
+                    roleType: 'INVESTEE',
+                    completeness: 78,
+                    lastActivity: '1 day ago',
+                    joinedOn: '20 Apr 2025',
+                    status: 'ACTIVE',
+                    industry: 'IoT Hardware',
+                    location: 'Pune, MH',
+                    teamSize: '14 Members',
+                    desc: 'Real-time telemetry and edge analytics pipelines designed for manufacturing assemblies.',
+                    about: 'Real-time telemetry and edge analytics pipelines designed for manufacturing assemblies and legacy heavy machinery interfaces.',
+                    fundingRequired: '₹6.50 Cr',
+                    preMoneyValuation: '₹35 Cr',
+                    equityOffered: '18%',
+                    useOfFunds: ['R&D', 'Hardware Procurement', 'Scaling Sales'],
+                    tags: ['IoT', 'Hardware', 'Industrial', 'Edge AI'],
+                    reviewSummary: { created: true, kyc: true, docs: true, media: false, infoReq: false },
+                    onboarding: { created: '20 Apr 2025', approved: '20 Apr 2025', submitted: '20 Apr 2025', lastAct: '1 day ago' },
+                    engagement: { sent: 1, requested: 0, received: 0, pending: 1 },
+                    rmName: 'Rahul Mehta',
+                    rmEmail: 'rmehta@charantra.com'
+                },
+                {
+                    id: 'GF-103',
+                    name: 'GreenField Investments',
+                    founder: 'Dr. Alok Sen',
+                    role: 'Managing Partner',
+                    email: 'alok@greenfield.com',
+                    phone: '+91 98765 43212',
+                    roleType: 'INVESTEE',
+                    completeness: 65,
+                    lastActivity: '3 days ago',
+                    joinedOn: '19 Apr 2025',
+                    status: 'INFO REQUESTED',
+                    industry: 'AgriTech Infrastructure',
+                    location: 'Hyderabad, India',
+                    teamSize: '40 Members',
+                    desc: 'GreenField is deploying micro-grid battery arrays targeting zero-transmission losses.',
+                    about: 'GreenField is deploying micro-grid battery arrays targeting zero-transmission losses for clean power setups.',
+                    fundingRequired: '₹18.00 Cr',
+                    preMoneyValuation: '₹90 Cr',
+                    equityOffered: '20%',
+                    useOfFunds: ['Battery Arrays', 'Microgrid setup', 'Logistics'],
+                    tags: ['CleanTech', 'Infrastructure', 'AgriTech', 'Battery'],
+                    reviewSummary: { created: true, kyc: true, docs: false, media: false, infoReq: true },
+                    onboarding: { created: '19 Apr 2025', approved: '19 Apr 2025', submitted: '19 Apr 2025', lastAct: '3 days ago' },
+                    engagement: { sent: 4, requested: 2, received: 1, pending: 3 },
+                    rmName: 'Rahul Mehta',
+                    rmEmail: 'rmehta@charantra.com'
+                }
+            ],
+
+            // High Fidelity Deals and Milestone Datasets mirroring mockups
+            equityDeals: [
+                {
+                    id: 'EQ-101',
+                    investee: 'TechVenture Solutions',
+                    investor: 'Sequoia Capital India',
+                    round: 'Series A Round',
+                    amount: '₹25.0 Cr',
+                    stage: 'Due Diligence',
+                    health: 'Healthy',
+                    lastActivity: '2 hours ago',
+                    createdOn: '12 Apr 2026',
+                    owner: 'Akash Kumar',
+                    age: '48 Days',
+                    indicativeValuation: '₹125.0 Cr',
+                    equityOffered: '20%',
+                    expectedClose: '15 Jun 2026',
+                    probability: '78%',
+                    milestones: [
+                        { name: 'Investor Interest', status: 'completed', date: '15 Apr 2026', desc: 'Sequoia Capital India showed interest' },
+                        { name: 'NDA Signed', status: 'completed', date: '18 Apr 2026', desc: 'NDA signed by both parties' },
+                        { name: 'Data Room Access', status: 'completed', date: '21 Apr 2026', desc: 'Investor granted access to data room' },
+                        { name: 'Discussions', status: 'completed', date: '25 Apr 2026', desc: 'Finalized preliminary commercial discussion logs' },
+                        { name: 'Due Diligence', status: 'active', date: '25 Apr 2026', desc: 'Due diligence audits in progress' },
+                        { name: 'Term Sheet', status: 'upcoming', date: 'Upcoming', desc: 'Drafting Series A term sheet' },
+                        { name: 'Closing', status: 'upcoming', date: 'Upcoming', desc: 'Final documentation and escrow funding' }
+                    ],
+                    keyMetrics: { targetRaise: '₹25.0 Cr', valuation: '₹125.0 Cr', equity: '20%', committed: '₹0.0 Cr', investorsCount: 0, lastUpdated: '12 May 2026' },
+                    activities: [
+                        { time: 'Today, 10:24 AM', type: 'view', text: 'Sequoia Capital India viewed Financial Model.xlsx' },
+                        { time: 'Today, 09:15 AM', type: 'upload', text: 'TechVenture Solutions uploaded Revised Forecast Q2.xlsx' },
+                        { time: 'Yesterday, 04:30 PM', type: 'meeting', text: 'Management meeting completed with Sequoia team' },
+                        { time: 'Yesterday, 11:45 AM', type: 'checklist', text: 'Due Diligence checklist updated by Akash Kumar' }
+                    ]
+                },
+                {
+                    id: 'EQ-102',
+                    investee: 'GreenField Innovations',
+                    investor: 'Matrix Partners India',
+                    round: 'Seed Round',
+                    amount: '₹12.0 Cr',
+                    stage: 'Due Diligence',
+                    health: 'At Risk',
+                    lastActivity: '1 day ago',
+                    createdOn: '05 Apr 2026',
+                    owner: 'Akash Kumar',
+                    age: '55 Days',
+                    indicativeValuation: '₹60.0 Cr',
+                    equityOffered: '20%',
+                    expectedClose: '30 Jun 2026',
+                    probability: '45%',
+                    milestones: [
+                        { name: 'Investor Interest', status: 'completed', date: '08 Apr 2026', desc: 'Seed interest logged' },
+                        { name: 'NDA Signed', status: 'completed', date: '12 Apr 2026', desc: 'NDA signed' },
+                        { name: 'Data Room Access', status: 'completed', date: '18 Apr 2026', desc: 'Authorized VDR access' },
+                        { name: 'Discussions', status: 'completed', date: '25 Apr 2026', desc: 'Discussions finalized' },
+                        { name: 'Due Diligence', status: 'active', date: '01 May 2026', desc: 'Due diligence review on-going' },
+                        { name: 'Term Sheet', status: 'upcoming', date: 'Upcoming', desc: 'Upcoming' },
+                        { name: 'Closing', status: 'upcoming', date: 'Upcoming', desc: 'Upcoming' }
+                    ],
+                    keyMetrics: { targetRaise: '₹12.0 Cr', valuation: '₹60.0 Cr', equity: '20%', committed: '₹2.0 Cr', investorsCount: 1, lastUpdated: '01 Jun 2026' },
+                    activities: [{ time: '1 day ago', type: 'comment', text: 'Discrepancy in revenue projections raised' }]
+                },
+                {
+                    id: 'EQ-103',
+                    investee: 'Finova Labs',
+                    investor: 'Accel India',
+                    round: 'Pre-Series A',
+                    amount: '₹18.0 Cr',
+                    stage: 'Data Room Access',
+                    health: 'Healthy',
+                    lastActivity: '3 days ago',
+                    createdOn: '18 Apr 2026',
+                    owner: 'Sanjay Dutt',
+                    age: '32 Days',
+                    indicativeValuation: '₹90.0 Cr',
+                    equityOffered: '20%',
+                    expectedClose: '10 Jul 2026',
+                    probability: '82%',
+                    milestones: [
+                        { name: 'Investor Interest', status: 'completed', date: '20 Apr 2026', desc: 'Interest established' },
+                        { name: 'NDA Signed', status: 'completed', date: '25 Apr 2026', desc: 'Mutual NDA digitally completed' },
+                        { name: 'Data Room Access', status: 'active', date: '30 Apr 2026', desc: 'VDR audit opened for Accel' },
+                        { name: 'Discussions', status: 'upcoming', date: 'Upcoming', desc: 'Upcoming' },
+                        { name: 'Due Diligence', status: 'upcoming', date: 'Upcoming', desc: 'Upcoming' },
+                        { name: 'Term Sheet', status: 'upcoming', date: 'Upcoming', desc: 'Upcoming' },
+                        { name: 'Closing', status: 'upcoming', date: 'Upcoming', desc: 'Upcoming' }
+                    ],
+                    keyMetrics: { targetRaise: '₹18.0 Cr', valuation: '₹90.0 Cr', equity: '20%', committed: '₹0.0 Cr', investorsCount: 0, lastUpdated: '01 Jun 2026' },
+                    activities: [{ time: '3 days ago', type: 'system', text: 'Accel analysts logged into workspace' }]
+                },
+                {
+                    id: 'EQ-104',
+                    investee: 'AgriNext Technologies',
+                    investor: 'Blume Ventures',
+                    round: 'Seed Round',
+                    amount: '₹8.5 Cr',
+                    stage: 'Investor Interest',
+                    health: 'Healthy',
+                    lastActivity: '5 days ago',
+                    createdOn: '25 Apr 2026',
+                    owner: 'Akash Kumar',
+                    age: '25 Days',
+                    indicativeValuation: '₹42.5 Cr',
+                    equityOffered: '20%',
+                    expectedClose: '20 Jul 2026',
+                    probability: '90%',
+                    milestones: [
+                        { name: 'Investor Interest', status: 'active', date: '28 Apr 2026', desc: 'Exploration call scheduled' },
+                        { name: 'NDA Signed', status: 'upcoming', date: 'Upcoming', desc: 'Upcoming' },
+                        { name: 'Data Room Access', status: 'upcoming', date: 'Upcoming', desc: 'Upcoming' },
+                        { name: 'Discussions', status: 'upcoming', date: 'Upcoming', desc: 'Upcoming' },
+                        { name: 'Due Diligence', status: 'upcoming', date: 'Upcoming', desc: 'Upcoming' },
+                        { name: 'Term Sheet', status: 'upcoming', date: 'Upcoming', desc: 'Upcoming' },
+                        { name: 'Closing', status: 'upcoming', date: 'Upcoming', desc: 'Upcoming' }
+                    ],
+                    keyMetrics: { targetRaise: '₹8.5 Cr', valuation: '₹42.5 Cr', equity: '20%', committed: '₹0.0 Cr', investorsCount: 0, lastUpdated: '02 Jun 2026' },
+                    activities: [{ time: '5 days ago', type: 'call', text: 'Blume Ventures partner call completed' }]
+                }
+            ],
+            maDeals: [
+                {
+                    id: 'MA-201',
+                    seller: 'Retail Corp Pvt. Ltd.',
+                    buyer: 'Reliance Retail',
+                    round: '100% Acquisition',
+                    amount: '₹120.0 Cr',
+                    stage: 'Due Diligence',
+                    health: 'At Risk',
+                    lastActivity: '4 hours ago',
+                    createdOn: '01 Mar 2026',
+                    owner: 'Akash Kumar',
+                    age: '90 Days',
+                    indicativeValuation: '₹120.0 Cr',
+                    equityOffered: '100%',
+                    expectedClose: '15 Jul 2026',
+                    probability: '55%',
+                    milestones: [
+                        { name: 'Investor Interest', status: 'completed', date: '05 Mar 2026', desc: 'Retail Corp prospectus dispatched' },
+                        { name: 'NDA Signed', status: 'completed', date: '15 Mar 2026', desc: 'Acquisition NDA executed' },
+                        { name: 'Data Room Access', status: 'completed', date: '25 Mar 2026', desc: 'Reliance corp dev team granted access' },
+                        { name: 'Discussions', status: 'completed', date: '10 Apr 2026', desc: 'Valuation negotiations finalized' },
+                        { name: 'Due Diligence', status: 'active', date: '01 May 2026', desc: 'Legal and financial due diligence in progress' },
+                        { name: 'Term Sheet', status: 'upcoming', date: 'Upcoming', desc: 'Upcoming' },
+                        { name: 'Closing', status: 'upcoming', date: 'Upcoming', desc: 'Upcoming' }
+                    ],
+                    keyMetrics: { targetRaise: '₹120.0 Cr', valuation: '₹120.0 Cr', equity: '100%', committed: '₹0.0 Cr', investorsCount: 0, lastUpdated: '03 Jun 2026' },
+                    activities: [{ time: '4 hours ago', type: 'alert', text: 'Reliance requested store operations balance sheets' }]
+                },
+                {
+                    id: 'MA-202',
+                    seller: 'HealthPlus Pvt. Ltd.',
+                    buyer: 'Tata Consumer',
+                    round: 'Strategic Acquisition',
+                    amount: '₹85.0 Cr',
+                    stage: 'Discussions',
+                    health: 'Healthy',
+                    lastActivity: '1 day ago',
+                    createdOn: '10 Mar 2026',
+                    owner: 'Akash Kumar',
+                    age: '81 Days',
+                    indicativeValuation: '₹85.0 Cr',
+                    equityOffered: '100%',
+                    expectedClose: '30 Jun 2026',
+                    probability: '85%',
+                    milestones: [
+                        { name: 'Investor Interest', status: 'completed', date: '12 Mar 2026', desc: 'Initial pitch meeting' },
+                        { name: 'NDA Signed', status: 'completed', date: '22 Mar 2026', desc: 'NDA signed' },
+                        { name: 'Data Room Access', status: 'completed', date: '05 Apr 2026', desc: 'VDR audit opened' },
+                        { name: 'Discussions', status: 'active', date: '20 Apr 2026', desc: 'Tata Consumer reviewing integration timelines' },
+                        { name: 'Due Diligence', status: 'upcoming', date: 'Upcoming', desc: 'Upcoming' },
+                        { name: 'Term Sheet', status: 'upcoming', date: 'Upcoming', desc: 'Upcoming' },
+                        { name: 'Closing', status: 'upcoming', date: 'Upcoming', desc: 'Upcoming' }
+                    ],
+                    keyMetrics: { targetRaise: '₹85.0 Cr', valuation: '₹85.0 Cr', equity: '100%', committed: '₹0.0 Cr', investorsCount: 0, lastUpdated: '01 Jun 2026' },
+                    activities: [{ time: '1 day ago', type: 'meeting', text: 'Strategic integration review completed with Tata dev team' }]
+                },
+                {
+                    id: 'MA-203',
+                    seller: 'EduBridge Solutions',
+                    buyer: "Byju's Acquisitions",
+                    round: 'Acqui-hire',
+                    amount: '₹45.0 Cr',
+                    stage: 'NDA Signed',
+                    health: 'Healthy',
+                    lastActivity: '2 days ago',
+                    createdOn: '15 Apr 2026',
+                    owner: 'Rahul Mehta',
+                    age: '32 Days',
+                    indicativeValuation: '₹45.0 Cr',
+                    equityOffered: '100%',
+                    expectedClose: '25 Aug 2026',
+                    probability: '70%',
+                    milestones: [
+                        { name: 'Investor Interest', status: 'completed', date: '18 Apr 2026', desc: 'Acqui-hire pitch logged' },
+                        { name: 'NDA Signed', status: 'active', date: '28 Apr 2026', desc: 'Acquisition NDA executed' },
+                        { name: 'Data Room Access', status: 'upcoming', date: 'Upcoming', desc: 'Upcoming' },
+                        { name: 'Discussions', status: 'upcoming', date: 'Upcoming', desc: 'Upcoming' },
+                        { name: 'Due Diligence', status: 'upcoming', date: 'Upcoming', desc: 'Upcoming' },
+                        { name: 'Term Sheet', status: 'upcoming', date: 'Upcoming', desc: 'Upcoming' },
+                        { name: 'Closing', status: 'upcoming', date: 'Upcoming', desc: 'Upcoming' }
+                    ],
+                    keyMetrics: { targetRaise: '₹45.0 Cr', valuation: '₹45.0 Cr', equity: '100%', committed: '₹0.0 Cr', investorsCount: 0, lastUpdated: '02 Jun 2026' },
+                    activities: [{ time: '2 days ago', type: 'sign', text: 'NDA executed by both parties' }]
+                }
+            ]
+        };
+
+        // Render target elements globally on window load
+        window.addEventListener('DOMContentLoaded', () => {
+            renderWorkspace();
+        });
+
+        // Main Navigation handler for the preservation of existing links
+        function navigateFlow(secId) {
+            if (secId === 'crm') {
+                appState.activeModule = 'crm';
+                appState.viewMode = 'list';
+                renderWorkspace();
+            } else if (secId === 'deals') {
+                appState.activeModule = 'deals';
+                appState.dealsViewMode = 'list';
+                renderWorkspace();
+            } else {
+                triggerToast(`Entering dynamic canvas for: "${secId}"`);
+            }
+        }
+
+        // Active state indicator for left menu
+        function updateSidebar() {
+            document.querySelectorAll('.sidebar-btn').forEach(btn => {
+                btn.classList.remove('sidebar-item-active');
+            });
+            const activeNav = document.getElementById(`nav-${appState.activeModule}`);
+            if (activeNav) {
+                activeNav.classList.add('sidebar-item-active');
+            }
+        }
+
+        // Trigger Toast notifications
+        function triggerToast(msg) {}
+
+        function dismissToast() {
+            const toast = document.getElementById('toast-notif');
+            toast.classList.add('translate-y-20', 'opacity-0');
+            toast.classList.remove('translate-y-0', 'opacity-100');
+        }
+
+        // Global search execution
+        function executeGlobalSearch() {
+            const q = document.getElementById('global-search').value.toLowerCase();
+            appState.searchQuery = q;
+            renderWorkspace();
+        }
+
+        function setCrmTab(tabId) {
+            appState.currentTab = tabId;
+            renderWorkspace();
+        }
+
+        function setViewMode(mode, userId = null) {
+            appState.viewMode = mode;
+            if (userId) {
+                appState.selectedUserId = userId;
+            }
+            renderWorkspace();
+        }
+
+        // Deals tab filters
+        function setDealsFlow(flow) {
+            appState.dealsFlow = flow;
+            renderWorkspace();
+        }
+
+        function setDealsViewMode(mode) {
+            appState.dealsViewMode = mode;
+            renderWorkspace();
+        }
+
+        function viewDealDetails(dealId) {
+            appState.selectedDealId = dealId;
+            appState.dealsViewMode = 'detail';
+            renderWorkspace();
+        }
+    </script>
+
+    <!-- VIEWS ENGINE FOR DEALS AND CRM -->
+    <script>
+        // --- DEALS MODULE ENGINE (Image 7731aa & 76c4cd Layouts) ---
+        function getDealsDashboardView() {
+            const activeDealsList = appState.dealsFlow === 'equity' ? appState.equityDeals : appState.maDeals;
+            
+            // Filter list based on search queries
+            const filteredDeals = activeDealsList.filter(d => {
+                const searchStr = appState.searchQuery.toLowerCase();
+                if (appState.dealsFlow === 'equity') {
+                    return d.id.toLowerCase().includes(searchStr) || 
+                           d.investee.toLowerCase().includes(searchStr) || 
+                           d.investor.toLowerCase().includes(searchStr);
+                } else {
+                    return d.id.toLowerCase().includes(searchStr) || 
+                           d.seller.toLowerCase().includes(searchStr) || 
+                           d.buyer.toLowerCase().includes(searchStr);
+                }
+            });
+
+            // If detail view is selected
+            if (appState.dealsViewMode === 'detail') {
+                return getDealDetailView();
+            }
+
+            return `
+                <div class="fade-in-view flex flex-col space-y-6">
+                    <!-- Title banner block -->
+                    <div class="flex justify-between items-center pb-2">
+                        <div>
+                            <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">Deals & M&A Pipeline</h1>
+                            <p class="text-slate-500 font-medium text-xs mt-1">Monitor all equity and M&A deals across the platform.</p>
+                        </div>
+                    </div>
+
+                    <!-- Flow toggles and view filters layout matching Image 7731aa -->
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-slate-200 pb-4">
+                        <!-- Left Flow Switches -->
+                        <div class="flex gap-4">
+                            <!-- Equity Flow Card Toggle -->
+                            <button onclick="setDealsFlow('equity')" class="flex items-center gap-3 p-4 rounded-md border text-left transition-all ${appState.dealsFlow === 'equity' ? 'bg-orange-50 border-orange-500 text-orange-900 shadow-md shadow-orange-500/5' : 'bg-white border-slate-200 text-slate-600 hover:border-slate-300'}">
+                                <div class="p-2.5 rounded-md ${appState.dealsFlow === 'equity' ? 'bg-orange-600 text-white' : 'bg-slate-50 text-slate-400'}">
+                                    <i data-lucide="network" class="w-5 h-5"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-xs font-extrabold uppercase tracking-wider">Equity Flow</h4>
+                                    <p class="text-[10px] text-slate-400 font-medium mt-0.5">Investee &harr; Investor</p>
+                                </div>
+                            </button>
+
+                            <!-- M&A Flow Card Toggle -->
+                            <button onclick="setDealsFlow('ma')" class="flex items-center gap-3 p-4 rounded-md border text-left transition-all ${appState.dealsFlow === 'ma' ? 'bg-orange-50 border-orange-500 text-orange-900 shadow-md shadow-orange-500/5' : 'bg-white border-slate-200 text-slate-600 hover:border-slate-300'}">
+                                <div class="p-2.5 rounded-md ${appState.dealsFlow === 'ma' ? 'bg-orange-600 text-white' : 'bg-slate-50 text-slate-400'}">
+                                    <i data-lucide="git-pull-request" class="w-5 h-5"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-xs font-extrabold uppercase tracking-wider">M&A Flow</h4>
+                                    <p class="text-[10px] text-slate-400 font-medium mt-0.5">Seller &harr; Buyer</p>
+                                </div>
+                            </button>
+                        </div>
+
+                        <!-- Right Controls -->
+                        <div class="flex items-center gap-3 self-stretch md:self-auto">
+                            <!-- Toggle layout buttons -->
+                            <div class="flex bg-slate-100 p-1 rounded-md border border-slate-200/50">
+                                <button onclick="setDealsViewMode('list')" class="px-3 py-1.5 rounded-md flex items-center gap-1.5 text-xs font-bold transition-all ${appState.dealsViewMode === 'list' ? 'bg-white text-slate-900 shadow-xs' : 'text-slate-500 hover:text-slate-900'}">
+                                    <i data-lucide="list" class="w-4 h-4"></i>
+                                    <span>List View</span>
+                                </button>
+                                <button onclick="setDealsViewMode('kanban')" class="px-3 py-1.5 rounded-md flex items-center gap-1.5 text-xs font-bold transition-all ${appState.dealsViewMode === 'kanban' ? 'bg-white text-slate-900 shadow-xs' : 'text-slate-500 hover:text-slate-900'}">
+                                    <i data-lucide="kanban" class="w-4 h-4"></i>
+                                    <span>Kanban View</span>
+                                </button>
+                            </div>
+
+                            <button onclick="openNewDealModal()" class="flex items-center gap-2 bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs py-2.5 px-4 rounded-md transition-all shadow-md">
+                                <i data-lucide="plus" class="w-4 h-4"></i>
+                                <span>New Deal</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Stat cards segment aligning exactly with Image 7731aa telemetry counts -->
+                    <div class="grid grid-cols-2 md:grid-cols-6 gap-4">
+                        <div class="bg-white p-4 rounded-md border border-slate-200/50 shadow-sm flex items-center gap-3.5 interactive-card">
+                            <div class="p-2.5 bg-orange-50 text-orange-600 rounded-md">
+                                <i data-lucide="bar-chart-2" class="w-4 h-4"></i>
+                            </div>
+                            <div>
+                                <p class="text-[9px] text-slate-400 font-extrabold uppercase tracking-wider leading-none">Total Deals</p>
+                                <h4 class="text-lg font-bold text-slate-900 mt-1">${appState.counts.totalDeals}</h4>
+                                <span class="text-[9px] text-slate-400 font-medium">Across all flows</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-4 rounded-md border border-slate-200/50 shadow-sm flex items-center gap-3.5 interactive-card">
+                            <div class="p-2.5 bg-blue-50 text-blue-600 rounded-md">
+                                <i data-lucide="network" class="w-4 h-4"></i>
+                            </div>
+                            <div>
+                                <p class="text-[9px] text-slate-400 font-extrabold uppercase tracking-wider leading-none">Equity Deals</p>
+                                <h4 class="text-lg font-bold text-slate-900 mt-1">${appState.counts.equityDeals}</h4>
+                                <span class="text-[9px] text-slate-400 font-medium">Investee &harr; Investor</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-4 rounded-md border border-slate-200/50 shadow-sm flex items-center gap-3.5 interactive-card">
+                            <div class="p-2.5 bg-purple-50 text-purple-600 rounded-md">
+                                <i data-lucide="git-pull-request" class="w-4 h-4"></i>
+                            </div>
+                            <div>
+                                <p class="text-[9px] text-slate-400 font-extrabold uppercase tracking-wider leading-none">M&A Deals</p>
+                                <h4 class="text-lg font-bold text-slate-900 mt-1">${appState.counts.maDeals}</h4>
+                                <span class="text-[9px] text-slate-400 font-medium">Seller &harr; Buyer</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-4 rounded-md border border-slate-200/50 shadow-sm flex items-center gap-3.5 interactive-card">
+                            <div class="p-2.5 bg-emerald-50 text-emerald-600 rounded-md">
+                                <i data-lucide="activity" class="w-4 h-4"></i>
+                            </div>
+                            <div>
+                                <p class="text-[9px] text-slate-400 font-extrabold uppercase tracking-wider leading-none">Active Deals</p>
+                                <h4 class="text-lg font-bold text-slate-900 mt-1">${appState.counts.activeDeals}</h4>
+                                <span class="text-[9px] text-slate-400 font-medium">In progress stage</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-4 rounded-md border border-slate-200/50 shadow-sm flex items-center gap-3.5 interactive-card">
+                            <div class="p-2.5 bg-rose-50 text-rose-600 rounded-md">
+                                <i data-lucide="alert-triangle" class="w-4 h-4"></i>
+                            </div>
+                            <div>
+                                <p class="text-[9px] text-slate-400 font-extrabold uppercase tracking-wider leading-none">Deals at Risk</p>
+                                <h4 class="text-lg font-bold text-slate-900 mt-1">${appState.counts.dealsAtRisk}</h4>
+                                <span class="text-[9px] text-red-500 font-bold flex items-center gap-0.5 mt-0.5">&uarr; 2 <span class="text-[8px] text-slate-400 font-medium">from last week</span></span>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-4 rounded-md border border-slate-200/50 shadow-sm flex items-center gap-3.5 interactive-card">
+                            <div class="p-2.5 bg-teal-50 text-teal-600 rounded-md">
+                                <i data-lucide="check-square" class="w-4 h-4"></i>
+                            </div>
+                            <div>
+                                <p class="text-[9px] text-slate-400 font-extrabold uppercase tracking-wider leading-none">Deals Closed</p>
+                                <h4 class="text-lg font-bold text-slate-900 mt-1">${appState.counts.dealsClosed}</h4>
+                                <span class="text-[9px] text-green-600 font-bold flex items-center gap-0.5 mt-0.5">&uarr; 1 <span class="text-[8px] text-slate-400 font-medium">from last week</span></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Conditional rendering: List vs Kanban Board -->
+                    ${appState.dealsViewMode === 'list' ? getDealsListView(filteredDeals) : getDealsKanbanView()}
+                </div>
+            `;
+        }
+
+        // --- PIPELINE DATA TABLE LISTING VIEW ---
+        function getDealsListView(filteredDeals) {
+            return `
+                <div class="bg-white p-6 rounded-md border border-slate-200/50 shadow-sm space-y-6">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h3 class="text-sm font-extrabold text-slate-900 capitalize">${appState.dealsFlow} Flow Deals</h3>
+                            <p class="text-xs text-slate-400 mt-0.5">${appState.dealsFlow === 'equity' ? 'Fundraising transactions between Investees and Investors.' : 'Acquisition transactions between Sellers and Buyers.'}</p>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="triggerToast('Opening filters...')" class="p-2.5 bg-slate-50 hover:bg-slate-100 border border-slate-100 rounded-md text-slate-600 flex items-center gap-1.5 transition-all text-xs font-semibold">
+                                <i data-lucide="sliders" class="w-4 h-4 text-slate-400"></i>
+                                <span>Filter</span>
+                            </button>
+                            <button onclick="triggerToast('Exporting deal metrics...')" class="p-2.5 bg-slate-50 hover:bg-slate-100 border border-slate-100 rounded-md text-slate-600 flex items-center gap-1.5 transition-all text-xs font-semibold">
+                                <i data-lucide="download" class="w-4 h-4 text-slate-400"></i>
+                                <span>Export</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs">
+                            <thead>
+                                <tr class="bg-slate-50/50 text-slate-400 text-[10px] uppercase font-bold tracking-wider border-b border-slate-100">
+                                    <th class="px-6 py-4">DEAL ID</th>
+                                    <th class="px-6 py-4">${appState.dealsFlow === 'equity' ? 'INVESTEE' : 'SELLER'}</th>
+                                    <th class="px-6 py-4">${appState.dealsFlow === 'equity' ? 'TARGET INVESTOR' : 'BUYER'}</th>
+                                    <th class="px-6 py-4">${appState.dealsFlow === 'equity' ? 'RAISE AMOUNT' : 'DEAL VALUE'}</th>
+                                    <th class="px-6 py-4">CURRENT STAGE</th>
+                                    <th class="px-6 py-4">DEAL HEALTH</th>
+                                    <th class="px-6 py-4">LAST ACTIVITY</th>
+                                    <th class="px-6 py-4 text-center">ACTIONS</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100 text-slate-700">
+                                ${filteredDeals.map(deal => {
+                                    const healthColor = deal.health === 'Healthy' ? 'bg-green-50 text-green-700 border-green-100' : 'bg-amber-50 text-amber-700 border-amber-100';
+                                    
+                                    return `
+                                        <tr class="hover:bg-slate-50/30 transition-colors">
+                                            <td class="px-6 py-4 font-bold text-slate-900">${deal.id}</td>
+                                            <td class="px-6 py-4 font-bold text-slate-800">${appState.dealsFlow === 'equity' ? deal.investee : deal.seller}</td>
+                                            <td class="px-6 py-4 font-bold text-slate-600">${appState.dealsFlow === 'equity' ? deal.investor : deal.buyer}</td>
+                                            <td class="px-6 py-4 font-extrabold text-slate-900">${deal.amount}</td>
+                                            <td class="px-6 py-4">
+                                                <span class="px-2.5 py-1 bg-blue-50 text-blue-700 text-[9px] font-bold rounded uppercase tracking-wide">
+                                                    ${deal.stage}
+                                                </span>
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <span class="px-2.5 py-0.5 border rounded text-[10px] font-bold uppercase tracking-wider ${healthColor}">
+                                                    ${deal.health}
+                                                </span>
+                                            </td>
+                                            <td class="px-6 py-4 text-slate-500 font-semibold">${deal.lastActivity}</td>
+                                            <td class="px-6 py-4 text-center">
+                                                <button onclick="viewDealDetails('${deal.id}')" class="px-4 py-1.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-md text-xs font-bold text-slate-700 hover:text-slate-900 transition-all shadow-xs">
+                                                    View Details
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    `;
+                                }).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- DYNAMIC PIPELINE KANBAN BOARD VIEW ---
+        function getDealsKanbanView() {
+            // Standardizing Kanban columns according to Image tracker milestones
+            const stages = ['Investor Interest', 'NDA Signed', 'Data Room Access', 'Discussions', 'Due Diligence', 'Term Sheet / Closing'];
+            const activeDealsList = appState.dealsFlow === 'equity' ? appState.equityDeals : appState.maDeals;
+
+            return `
+                <div class="grid grid-cols-1 md:grid-cols-6 gap-4 overflow-x-auto pb-4">
+                    ${stages.map(stage => {
+                        // Gather deals belonging to this column/stage
+                        const colDeals = activeDealsList.filter(d => d.stage.toLowerCase().trim().replace(/\s+/g, '') === stage.toLowerCase().trim().replace(/\s+/g, ''));
+                        
+                        return `
+                            <div class="bg-slate-50/70 p-4 rounded-md border border-slate-200/40 min-h-[500px] flex flex-col space-y-4">
+                                <!-- Column Header -->
+                                <div class="flex justify-between items-center px-1">
+                                    <span class="text-xs font-bold text-slate-800 uppercase tracking-wider truncate mr-1" title="${stage}">${stage}</span>
+                                    <span class="w-5 h-5 bg-slate-200 text-slate-700 text-[10px] font-bold rounded-md flex items-center justify-center">${colDeals.length}</span>
+                                </div>
+
+                                <!-- Columns Container for Cards -->
+                                <div class="flex-1 space-y-3 overflow-y-auto max-h-[550px] pr-1">
+                                    ${colDeals.map(deal => {
+                                        const healthColor = deal.health === 'Healthy' ? 'bg-green-500' : 'bg-amber-500';
+                                        const partyName = appState.dealsFlow === 'equity' ? deal.investee : deal.seller;
+                                        const targetName = appState.dealsFlow === 'equity' ? deal.investor : deal.buyer;
+                                        const avatarInitials = deal.owner.split(' ').map(n => n[0]).join('').slice(0, 2);
+
+                                        return `
+                                            <div class="bg-white p-4 rounded-md border border-slate-200/50 shadow-xs hover:shadow-md transition-all space-y-3 interactive-card">
+                                                <div class="flex justify-between items-start">
+                                                    <span class="text-[9px] font-mono text-slate-400 font-extrabold">${deal.id}</span>
+                                                    <span class="w-2.5 h-2.5 rounded-md ${healthColor}" title="Health: ${deal.health}"></span>
+                                                </div>
+
+                                                <div>
+                                                    <h4 class="text-xs font-bold text-slate-900 cursor-pointer hover:text-orange-500 transition-colors" onclick="viewDealDetails('${deal.id}')">
+                                                        ${partyName} &harr; ${targetName}
+                                                    </h4>
+                                                    <p class="text-[10px] text-slate-400 mt-1">${deal.round || 'Strategic Transaction'}</p>
+                                                </div>
+
+                                                <div class="flex justify-between items-center pt-2 border-t border-slate-100">
+                                                    <span class="text-xs font-black text-slate-900">${deal.amount}</span>
+                                                    
+                                                    <!-- Owner Badge initials -->
+                                                    <div class="w-6 h-6 bg-slate-900 text-white rounded-md flex items-center justify-center text-[8px] font-bold uppercase" title="Owner: ${deal.owner}">
+                                                        ${avatarInitials}
+                                                    </div>
+                                                </div>
+
+                                                <!-- Kanban workflow progressors -->
+                                                <div class="grid grid-cols-2 gap-1.5 pt-1.5 border-t border-slate-50 text-[9px] font-bold">
+                                                    <button onclick="shiftStage('${deal.id}', -1)" class="p-1 bg-slate-50 hover:bg-slate-100 border rounded flex items-center justify-center gap-1 text-slate-500">
+                                                        <i data-lucide="arrow-left" class="w-3 h-3"></i> Move Back
+                                                    </button>
+                                                    <button onclick="shiftStage('${deal.id}', 1)" class="p-1 bg-slate-50 hover:bg-slate-100 border rounded flex items-center justify-center gap-1 text-orange-600">
+                                                        Advance <i data-lucide="arrow-right" class="w-3 h-3"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        `;
+                                    }).join('')}
+
+                                    ${colDeals.length === 0 ? `
+                                        <div class="h-32 border border-dashed border-slate-200 rounded-md flex items-center justify-center text-slate-400 text-xs font-semibold">
+                                            No Deals in stage
+                                        </div>
+                                    ` : ''}
+                                </div>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            `;
+        }
+
+        // Action workflow to advance/regress stages in real-time
+        function shiftStage(dealId, direction) {
+            const list = appState.dealsFlow === 'equity' ? appState.equityDeals : appState.maDeals;
+            const deal = list.find(d => d.id === dealId);
+            if (!deal) return;
+
+            const stages = ['Investor Interest', 'NDA Signed', 'Data Room Access', 'Discussions', 'Due Diligence', 'Term Sheet / Closing'];
+            let currentIdx = stages.findIndex(s => s.toLowerCase().replace(/\s+/g, '') === deal.stage.toLowerCase().replace(/\s+/g, ''));
+            
+            // Loose fallback for slight differences in stage namings
+            if (currentIdx === -1) {
+                if (deal.stage.includes('Interest')) currentIdx = 0;
+                else if (deal.stage.includes('NDA')) currentIdx = 1;
+                else if (deal.stage.includes('Room') || deal.stage.includes('Meeting')) currentIdx = 2;
+                else if (deal.stage.includes('Discussion')) currentIdx = 3;
+                else if (deal.stage.includes('Diligence')) currentIdx = 4;
+                else currentIdx = 5;
+            }
+
+            let newIdx = currentIdx + direction;
+            if (newIdx >= 0 && newIdx < stages.length) {
+                deal.stage = stages[newIdx];
+                
+                // Update milestone structure status
+                if (deal.milestones && deal.milestones[newIdx]) {
+                    deal.milestones.forEach((m, idx) => {
+                        if (idx < newIdx) m.status = 'completed';
+                        else if (idx === newIdx) m.status = 'active';
+                        else m.status = 'upcoming';
+                    });
+                }
+
+                triggerToast(`Deal "${dealId}" moved to stage: "${stages[newIdx]}"`);
+                renderWorkspace();
+            }
+        }
+    </script>
+
+    <!-- VIEWS ENGINE FOR DEAL DETAILS -->
+    <script>
+        // --- DEAL TRACKER DETAIL VIEW (Image 76c4cd Layout) ---
+        function getDealDetailView() {
+            const list = appState.dealsFlow === 'equity' ? appState.equityDeals : appState.maDeals;
+            const deal = list.find(d => d.id === appState.selectedDealId) || list[0];
+
+            const isEquity = appState.dealsFlow === 'equity';
+            const partyName = isEquity ? deal.investee : deal.seller;
+            const targetName = isEquity ? deal.investor : deal.buyer;
+
+            // Health color class mapping
+            const healthColor = deal.health === 'Healthy' ? 'bg-green-50 text-green-700 border-green-200' : 'bg-amber-50 text-amber-700 border-amber-200';
+
+            return `
+                <div class="fade-in-view space-y-6">
+                    <!-- Back path breadcrumb link -->
+                    <button onclick="setDealsViewMode('list')" class="text-xs font-bold text-orange-500 hover:text-orange-600 flex items-center gap-1.5 mb-2 transition-all">
+                        <i data-lucide="arrow-left" class="w-4 h-4"></i> Back to Deals
+                    </button>
+
+                    <!-- Profile Header banner layout replicating Image 76c4cd exactly -->
+                    <div class="flex flex-col md:flex-row justify-between items-start gap-4 pb-4 border-b border-slate-100">
+                        <div class="space-y-2">
+                            <div class="flex flex-wrap items-center gap-2.5">
+                                <span class="px-2.5 py-0.5 bg-purple-50 text-purple-700 text-[10px] font-mono font-bold rounded">${deal.id}</span>
+                                <h1 class="text-2xl font-bold text-slate-900 tracking-tight">${partyName} &harr; ${targetName}</h1>
+                                <span class="px-2.5 py-0.5 bg-green-50 border border-green-100 text-green-700 text-[9px] font-bold tracking-wide rounded uppercase">${appState.dealsFlow === 'equity' ? 'Equity Flow' : 'M&A Flow'}</span>
+                            </div>
+                            <p class="text-xs text-slate-500 font-medium">${deal.round || 'Series A Round'} &bull; ${deal.amount} Raise Target</p>
+
+                            <!-- Profile metadata metrics horizontal display -->
+                            <div class="flex flex-wrap items-center gap-6 pt-2 text-xs text-slate-500">
+                                <div class="flex items-center gap-1.5">
+                                    <i data-lucide="calendar" class="w-4 h-4 text-slate-400"></i>
+                                    <span>Created On: <strong class="text-slate-800">${deal.createdOn}</strong></span>
+                                </div>
+                                <div class="flex items-center gap-1.5">
+                                    <i data-lucide="user" class="w-4 h-4 text-slate-400"></i>
+                                    <span>Deal Owner: <strong class="text-slate-800">${deal.owner}</strong></span>
+                                </div>
+                                <div class="flex items-center gap-1.5">
+                                    <i data-lucide="hourglass" class="w-4 h-4 text-slate-400"></i>
+                                    <span>Deal Age: <strong class="text-slate-800">${deal.age}</strong></span>
+                                </div>
+                                <div class="flex items-center gap-1.5">
+                                    <i data-lucide="heart" class="w-4 h-4 text-slate-400"></i>
+                                    <span>Deal Health: <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${healthColor}">${deal.health}</span></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Top-right CTA action controls replicating Image 76c4cd exactly -->
+                        <div class="flex flex-wrap gap-2.5">
+                            <button onclick="triggerDealMessage('${deal.id}')" class="bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-bold text-xs py-2 px-4 rounded-md transition-all flex items-center gap-1.5 shadow-sm">
+                                <i data-lucide="message-square" class="w-4 h-4 text-slate-500"></i>
+                                <span>Message Parties</span>
+                            </button>
+                            <button onclick="openMeetingsModal('${deal.id}')" class="bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-bold text-xs py-2 px-4 rounded-md transition-all flex items-center gap-1.5 shadow-sm">
+                                <i data-lucide="calendar-plus" class="w-4 h-4 text-slate-500"></i>
+                                <span>Schedule Meeting</span>
+                            </button>
+                            <button onclick="triggerToast('Managing operations...')" class="bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-bold text-xs py-2 px-3.5 rounded-md transition-all flex items-center gap-1 shadow-sm">
+                                <span>More</span>
+                                <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-slate-400"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Deal Progress Tracker Section replicating Image 76c4cd exactly -->
+                    <div class="bg-white p-6 rounded-md border border-slate-200/50 shadow-sm space-y-4">
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Deal Progress Tracker</p>
+                        
+                        <!-- Flow Nodes Pathway Container -->
+                        <div class="flex flex-col lg:flex-row items-center justify-between gap-6 lg:gap-2 pt-2 overflow-x-auto">
+                            ${deal.milestones.map((m, idx) => {
+                                let circleBg = 'border-slate-200 bg-white text-slate-400';
+                                let lineBg = 'bg-slate-100';
+                                let statusLabel = 'Upcoming';
+                                let circleContent = `<span class="text-xs">${idx + 1}</span>`;
+
+                                if (m.status === 'completed') {
+                                    circleBg = 'border-emerald-500 bg-emerald-500 text-white';
+                                    lineBg = 'bg-emerald-500';
+                                    statusLabel = m.date || 'Completed';
+                                    circleContent = `<i data-lucide="check" class="w-3.5 h-3.5"></i>`;
+                                } else if (m.status === 'active') {
+                                    circleBg = 'border-orange-500 bg-orange-50 ring-4 ring-orange-500/10 text-orange-600';
+                                    lineBg = 'bg-orange-500/50 border-dashed';
+                                    statusLabel = 'In Progress';
+                                    circleContent = `<i data-lucide="play" class="w-3.5 h-3.5 fill-orange-600"></i>`;
+                                }
+
+                                const isLast = idx === deal.milestones.length - 1;
+
+                                return `
+                                    <div class="flex-1 flex items-center w-full lg:w-auto">
+                                        <div class="flex items-center gap-3">
+                                            <!-- Node circular ring -->
+                                            <div class="w-9 h-9 rounded-md border-2 flex items-center justify-center font-bold shadow-xs flex-shrink-0 ${circleBg}">
+                                                ${circleContent}
+                                            </div>
+                                            <div class="min-w-[100px]">
+                                                <h4 class="text-xs font-bold text-slate-800 leading-tight">${m.name}</h4>
+                                                <p class="text-[9px] font-semibold text-slate-400 mt-0.5">${statusLabel}</p>
+                                            </div>
+                                        </div>
+
+                                        <!-- Connecting pathway segment line -->
+                                        ${!isLast ? `
+                                            <div class="hidden lg:block flex-1 h-0.5 mx-4 ${lineBg}"></div>
+                                        ` : ''}
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    </div>
+
+                    <!-- Horizontal Stat box rows aligning exactly with layout specs -->
+                    <div class="grid grid-cols-2 md:grid-cols-6 gap-4">
+                        <div class="bg-white p-5 rounded-md border border-slate-200/50 shadow-sm">
+                            <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Current Stage</span>
+                            <h4 class="text-sm font-black text-slate-900 mt-2">${deal.stage}</h4>
+                            <p class="text-[9px] text-orange-500 font-bold mt-1">Since ${deal.createdOn}</p>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-md border border-slate-200/50 shadow-sm">
+                            <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Deal Value (Ask)</span>
+                            <h4 class="text-xl font-black text-slate-900 mt-2">${deal.amount}</h4>
+                            <p class="text-[9px] text-slate-400 font-semibold mt-1">100% Target Ask</p>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-md border border-slate-200/50 shadow-sm">
+                            <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Indicative Valuation</span>
+                            <h4 class="text-xl font-black text-slate-900 mt-2">${deal.indicativeValuation || 'N/A'}</h4>
+                            <p class="text-[9px] text-slate-400 font-semibold mt-1">Pre-Money standard</p>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-md border border-slate-200/50 shadow-sm">
+                            <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Equity Offered</span>
+                            <h4 class="text-xl font-black text-slate-900 mt-2">${deal.equityOffered || 'N/A'}</h4>
+                            <p class="text-[9px] text-slate-400 font-semibold mt-1">Strategic Shares %</p>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-md border border-slate-200/50 shadow-sm">
+                            <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Expected Close Date</span>
+                            <h4 class="text-sm font-black text-slate-900 mt-2">${deal.expectedClose}</h4>
+                            <p class="text-[9px] text-orange-500 font-bold mt-1">In 23 Days</p>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-md border border-slate-200/50 shadow-sm">
+                            <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Probability of Close</span>
+                            <h4 class="text-xl font-black text-slate-900 mt-2">${deal.probability}</h4>
+                            <p class="text-[9px] text-emerald-600 font-bold mt-1">High Probability</p>
+                        </div>
+                    </div>
+
+                    <!-- Details sections layout split -->
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                        <!-- Left panel: Parties and Timeline -->
+                        <div class="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+                            
+                            <!-- Parties Involved block -->
+                            <div class="bg-white p-6 rounded-md border border-slate-200/50 shadow-sm space-y-6">
+                                <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest pb-3 border-b border-slate-100">Parties Involved</h3>
+                                
+                                <div class="space-y-6">
+                                    <!-- Party 1: Investee / Seller -->
+                                    <div class="space-y-3.5">
+                                        <p class="text-[9px] text-slate-400 uppercase tracking-widest font-extrabold">${isEquity ? 'Investee (Company)' : 'Seller'}</p>
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-10 h-10 bg-indigo-100 text-indigo-700 rounded-md flex items-center justify-center font-bold text-xs uppercase shadow-xs">
+                                                ${partyName.slice(0,2)}
+                                            </div>
+                                            <div>
+                                                <h4 class="text-sm font-bold text-slate-900">${partyName}</h4>
+                                                <p class="text-[10px] text-slate-400">Founder &bull; Sarah Chen</p>
+                                            </div>
+                                        </div>
+                                        <table class="w-full text-xs text-left text-slate-600 space-y-1">
+                                            <tbody>
+                                                <tr><td class="py-1 text-slate-400 font-medium">Industry</td><td class="py-1 font-bold text-slate-800 text-right">SaaS / Enterprise Tech</td></tr>
+                                                <tr><td class="py-1 text-slate-400 font-medium">Email</td><td class="py-1 font-mono text-slate-800 text-right">sarah@techventure.com</td></tr>
+                                                <tr><td class="py-1 text-slate-400 font-medium">Location</td><td class="py-1 font-bold text-slate-800 text-right">Bengaluru, India</td></tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <!-- Party 2: Investor / Buyer -->
+                                    <div class="space-y-3.5 pt-4 border-t border-slate-100">
+                                        <p class="text-[9px] text-slate-400 uppercase tracking-widest font-extrabold">${isEquity ? 'Investor' : 'Buyer'}</p>
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-10 h-10 bg-emerald-100 text-emerald-700 rounded-md flex items-center justify-center font-bold text-xs uppercase shadow-xs">
+                                                ${targetName.slice(0,2)}
+                                            </div>
+                                            <div>
+                                                <h4 class="text-sm font-bold text-slate-900">${targetName}</h4>
+                                                <p class="text-[10px] text-slate-400">Relationship &bull; Partner</p>
+                                            </div>
+                                        </div>
+                                        <table class="w-full text-xs text-left text-slate-600 space-y-1">
+                                            <tbody>
+                                                <tr><td class="py-1 text-slate-400 font-medium">Partner</td><td class="py-1 font-bold text-slate-800 text-right">Raj Mehta</td></tr>
+                                                <tr><td class="py-1 text-slate-400 font-medium">Email</td><td class="py-1 font-mono text-slate-800 text-right">raj.mehta@sequoia.com</td></tr>
+                                                <tr><td class="py-1 text-slate-400 font-medium">Ticket Size</td><td class="py-1 font-bold text-slate-800 text-right">₹20 - 50 Cr</td></tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Parties Timeline Block -->
+                            <div class="bg-white p-6 rounded-md border border-slate-200/50 shadow-sm space-y-6">
+                                <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest pb-3 border-b border-slate-100">Parties Timeline</h3>
+                                
+                                <div class="relative pl-6 space-y-6 border-l border-slate-100 ml-2">
+                                    ${deal.milestones.map(node => {
+                                        let dotColor = 'border-slate-200 bg-white';
+                                        let textStyle = 'text-slate-400';
+                                        let detailsStyle = 'text-slate-400';
+
+                                        if (node.status === 'completed') {
+                                            dotColor = 'border-emerald-500 bg-emerald-500';
+                                            textStyle = 'text-slate-900 font-bold';
+                                            detailsStyle = 'text-slate-500 font-semibold';
+                                        } else if (node.status === 'active') {
+                                            dotColor = 'border-orange-500 bg-orange-500 ring-4 ring-orange-500/10';
+                                            textStyle = 'text-orange-600 font-bold';
+                                            detailsStyle = 'text-slate-600 font-semibold';
+                                        }
+
+                                        return `
+                                            <div class="relative">
+                                                <!-- Left chronology node circle -->
+                                                <span class="absolute -left-[31px] top-1 w-3.5 h-3.5 rounded-md border-2 ${dotColor}"></span>
+                                                <div>
+                                                    <span class="text-[9px] font-mono text-slate-400 font-bold">${node.date || 'Upcoming'}</span>
+                                                    <h4 class="text-xs ${textStyle} mt-0.5">${node.name}</h4>
+                                                    <p class="text-[11px] ${detailsStyle} mt-1 leading-relaxed">${node.desc || 'Upcoming milestone validation step.'}</p>
+                                                </div>
+                                            </div>
+                                        `;
+                                    }).join('')}
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Right panel: Key Metrics and Activity -->
+                        <div class="lg:col-span-4 space-y-6">
+                            <!-- Deal Key Metrics -->
+                            <div class="bg-white p-6 rounded-md border border-slate-200/50 shadow-sm space-y-4">
+                                <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest pb-3 border-b border-slate-100">Deal Key Metrics</h3>
+                                
+                                <div class="space-y-3.5 text-xs text-slate-600 font-semibold">
+                                    <div class="flex justify-between items-center">
+                                        <span class="flex items-center gap-2 text-slate-400">
+                                            <i data-lucide="target" class="w-4 h-4"></i>
+                                            <span>Target Raise Amount</span>
+                                        </span>
+                                        <span class="font-bold text-slate-900">${deal.keyMetrics.targetRaise}</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="flex items-center gap-2 text-slate-400">
+                                            <i data-lucide="line-chart" class="w-4 h-4"></i>
+                                            <span>Indicative Valuation</span>
+                                        </span>
+                                        <span class="font-bold text-slate-900">${deal.keyMetrics.valuation}</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="flex items-center gap-2 text-slate-400">
+                                            <i data-lucide="pie-chart" class="w-4 h-4"></i>
+                                            <span>Equity Offered</span>
+                                        </span>
+                                        <span class="font-bold text-slate-900">${deal.keyMetrics.equity}</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="flex items-center gap-2 text-slate-400">
+                                            <i data-lucide="coins" class="w-4 h-4"></i>
+                                            <span>Amount Committed</span>
+                                        </span>
+                                        <span class="font-bold text-slate-900">${deal.keyMetrics.committed}</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="flex items-center gap-2 text-slate-400">
+                                            <i data-lucide="users" class="w-4 h-4"></i>
+                                            <span>Committed Investors</span>
+                                        </span>
+                                        <span class="font-bold text-slate-900">${deal.keyMetrics.investorsCount}</span>
+                                    </div>
+                                    <div class="flex justify-between items-center pt-2 border-t border-slate-100 text-slate-400 text-[10px]">
+                                        <span>Last Updated</span>
+                                        <span>${deal.keyMetrics.lastUpdated}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Recent Activity list block -->
+                            <div class="bg-white p-6 rounded-md border border-slate-200/50 shadow-sm space-y-4">
+                                <div class="flex justify-between items-center">
+                                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest">Recent Activity</h3>
+                                    <button onclick="triggerToast('Viewing log archives...')" class="text-[10px] font-bold text-orange-500 hover:underline uppercase tracking-wide">View All</button>
+                                </div>
+
+                                <div class="space-y-4">
+                                    ${deal.activities.map(act => {
+                                        let icon = 'eye';
+                                        let iconColor = 'text-blue-500 bg-blue-50';
+                                        if (act.type === 'upload') {
+                                            icon = 'file-up';
+                                            iconColor = 'text-indigo-500 bg-indigo-50';
+                                        } else if (act.type === 'meeting') {
+                                            icon = 'calendar';
+                                            iconColor = 'text-purple-500 bg-purple-50';
+                                        } else if (act.type === 'checklist') {
+                                            icon = 'check-square';
+                                            iconColor = 'text-emerald-500 bg-emerald-50';
+                                        } else if (act.type === 'alert') {
+                                            icon = 'alert-triangle';
+                                            iconColor = 'text-red-500 bg-red-50';
+                                        }
+
+                                        return `
+                                            <div class="flex items-start gap-3">
+                                                <div class="p-2 rounded-md ${iconColor} flex-shrink-0 mt-0.5">
+                                                    <i data-lucide="${icon}" class="w-3.5 h-3.5"></i>
+                                                </div>
+                                                <div class="min-w-0">
+                                                    <p class="text-xs text-slate-700 font-semibold leading-normal">${act.text}</p>
+                                                    <span class="text-[9px] font-mono text-slate-400 mt-1 block">${act.time}</span>
+                                                </div>
+                                            </div>
+                                        `;
+                                    }).join('')}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+    </script>
+
+    <!-- VIEWS ENGINE FOR CRM DIRECTORY -->
+    <script>
+        // --- VIEW TEMPLATE: USER DIRECTORY LISTING ---
+        function getDirectoryView() {
+            // Filter users based on tab category and search term
+            const filteredUsers = appState.users.filter(u => {
+                const matchesSearch = u.name.toLowerCase().includes(appState.searchQuery) ||
+                                      u.founder.toLowerCase().includes(appState.searchQuery) ||
+                                      u.email.toLowerCase().includes(appState.searchQuery) ||
+                                      u.phone.includes(appState.searchQuery);
+
+                if (appState.currentTab === 'investees') return u.roleType === 'INVESTEE' && matchesSearch;
+                if (appState.currentTab === 'investors') return u.roleType === 'INVESTOR' && matchesSearch;
+                if (appState.currentTab === 'sellers') return u.roleType === 'SELLER' && matchesSearch;
+                if (appState.currentTab === 'buyers') return u.roleType === 'BUYER' && matchesSearch;
+                if (appState.currentTab === 'advisors') return u.roleType === 'ADVISOR' && matchesSearch;
+                return matchesSearch;
+            });
+
+            return `
+                <div class="fade-in-view flex flex-col space-y-6">
+                    <!-- Title banner block -->
+                    <div class="flex justify-between items-center pb-2">
+                        <div>
+                            <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">CRM & Users</h1>
+                            <p class="text-slate-500 font-medium text-xs mt-1">Monitor all onboarded users, review profiles, and engage as needed.</p>
+                        </div>
+                    </div>
+
+                    <!-- Category filter subtabs with exact metrics -->
+                    <div class="flex gap-6 border-b border-slate-200 text-xs font-bold uppercase tracking-wider pb-1">
+                        <button onclick="setCrmTab('investees')" class="pb-3 transition-all ${appState.currentTab === 'investees' ? 'subtab-active text-orange-500' : 'text-slate-400 hover:text-slate-600'}">Investees (${appState.counts.investees})</button>
+                        <button onclick="setCrmTab('investors')" class="pb-3 transition-all ${appState.currentTab === 'investors' ? 'subtab-active text-orange-500' : 'text-slate-400 hover:text-slate-600'}">Investors (${appState.counts.investors})</button>
+                        <button onclick="setCrmTab('sellers')" class="pb-3 transition-all ${appState.currentTab === 'sellers' ? 'subtab-active text-orange-500' : 'text-slate-400 hover:text-slate-600'}">Sellers (${appState.counts.sellers})</button>
+                        <button onclick="setCrmTab('buyers')" class="pb-3 transition-all ${appState.currentTab === 'buyers' ? 'subtab-active text-orange-500' : 'text-slate-400 hover:text-slate-600'}">Buyers (${appState.counts.buyers})</button>
+                        <button onclick="setCrmTab('advisors')" class="pb-3 transition-all ${appState.currentTab === 'advisors' ? 'subtab-active text-orange-500' : 'text-slate-400 hover:text-slate-600'}">Advisors (${appState.counts.advisors})</button>
+                    </div>
+
+                    <!-- Stat cards segment -->
+                    <div class="grid grid-cols-1 md:grid-cols-5 gap-4 pt-2">
+                        <div class="bg-white p-5 rounded-md border border-slate-200/50 shadow-sm flex items-center gap-4 interactive-card">
+                            <div class="p-3 bg-purple-50 text-purple-600 rounded-md">
+                                <i data-lucide="users" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <p class="text-[10px] text-slate-400 font-extrabold uppercase tracking-wider">Total Users</p>
+                                <h4 class="text-xl font-bold text-slate-900 leading-tight">142</h4>
+                                <span class="text-[9px] text-slate-400 font-semibold">All onboarded users</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-md border border-slate-200/50 shadow-sm flex items-center gap-4 interactive-card">
+                            <div class="p-3 bg-green-50 text-green-600 rounded-md">
+                                <i data-lucide="check-circle" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <p class="text-[10px] text-slate-400 font-extrabold uppercase tracking-wider">Active</p>
+                                <h4 class="text-xl font-bold text-slate-900 leading-tight">118</h4>
+                                <span class="text-[9px] text-green-600 font-bold">Active profiles</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-md border border-slate-200/50 shadow-sm flex items-center gap-4 interactive-card">
+                            <div class="p-3 bg-amber-50 text-amber-600 rounded-md">
+                                <i data-lucide="pause-circle" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <p class="text-[10px] text-slate-400 font-extrabold uppercase tracking-wider">On Hold</p>
+                                <h4 class="text-xl font-bold text-slate-900 leading-tight">21</h4>
+                                <span class="text-[9px] text-amber-500 font-semibold">Temporarily on hold</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-md border border-slate-200/50 shadow-sm flex items-center gap-4 interactive-card">
+                            <div class="p-3 bg-blue-50 text-blue-600 rounded-md">
+                                <i data-lucide="message-square" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <p class="text-[10px] text-slate-400 font-extrabold uppercase tracking-wider">Engaged Today</p>
+                                <h4 class="text-xl font-bold text-slate-900 leading-tight">16</h4>
+                                <span class="text-[9px] text-blue-500 font-semibold">Messaged or contacted</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-md border border-slate-200/50 shadow-sm flex items-center gap-4 interactive-card">
+                            <div class="p-3 bg-pink-50 text-pink-600 rounded-md">
+                                <i data-lucide="file-warning" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <p class="text-[10px] text-slate-400 font-extrabold uppercase tracking-wider">Info Requested</p>
+                                <h4 class="text-xl font-bold text-slate-900 leading-tight">9</h4>
+                                <span class="text-[9px] text-red-500 font-semibold">Awaiting user response</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Directory controls & search toolbar -->
+                    <div class="bg-white p-6 rounded-md border border-slate-200/50 shadow-sm space-y-6">
+                        <div class="flex gap-4 items-center justify-between">
+                            <div class="relative flex-1">
+                                <i data-lucide="search" class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4"></i>
+                                <input type="text" id="crm-search" oninput="handleSearchChange(this)" placeholder="Search by company, contact name, email or phone..." value="${appState.searchQuery}" class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-100 rounded-md text-xs outline-none focus:bg-white focus:ring-1 focus:ring-orange-500 transition-all">
+                            </div>
+                            <div class="flex gap-2">
+                                <button onclick="triggerToast('Opening filters panel...')" class="p-2.5 bg-slate-50 hover:bg-slate-100 border border-slate-100 rounded-md text-slate-600 flex items-center gap-1.5 transition-all text-xs font-semibold">
+                                    <i data-lucide="sliders" class="w-4 h-4 text-slate-400"></i>
+                                    <span>Filter</span>
+                                </button>
+                                <button onclick="triggerToast('Exporting active directory reports...')" class="p-2.5 bg-slate-50 hover:bg-slate-100 border border-slate-100 rounded-md text-slate-600 flex items-center gap-1.5 transition-all text-xs font-semibold">
+                                    <i data-lucide="download" class="w-4 h-4 text-slate-400"></i>
+                                    <span>Export</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="text-xs text-slate-400 font-semibold">
+                            Showing ${filteredUsers.length} active logs
+                        </div>
+
+                        <!-- User Records Data Table -->
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-xs">
+                                <thead>
+                                    <tr class="bg-slate-50/50 text-slate-400 text-[10px] uppercase font-bold tracking-wider border-b border-slate-100">
+                                        <th class="px-6 py-4">COMPANY / CONTACT</th>
+                                        <th class="px-6 py-4">ROLE TYPE</th>
+                                        <th class="px-6 py-4">PROFILE COMPLETION</th>
+                                        <th class="px-6 py-4">LAST ACTIVITY</th>
+                                        <th class="px-6 py-4">JOINED ON</th>
+                                        <th class="px-6 py-4">STATUS</th>
+                                        <th class="px-6 py-4 text-center">ACTIONS</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-100 text-slate-700">
+                                    ${filteredUsers.map(item => {
+                                        const initials = item.name.split(' ').map(n => n[0]).join('').slice(0, 2);
+                                        
+                                        let roleColor = 'bg-orange-50 text-orange-600';
+                                        if (item.roleType === 'INVESTOR') roleColor = 'bg-blue-50 text-blue-600';
+                                        if (item.roleType === 'SELLER') roleColor = 'bg-sky-50 text-sky-600';
+                                        if (item.roleType === 'BUYER') roleColor = 'bg-purple-50 text-purple-600';
+                                        if (item.roleType === 'ADVISOR') roleColor = 'bg-teal-50 text-teal-600';
+
+                                        let statusColor = 'bg-green-50 text-green-700 border border-green-200/50';
+                                        if (item.status === 'INFO REQUESTED') statusColor = 'bg-blue-50 text-blue-700 border border-blue-200/50';
+                                        if (item.status === 'ON HOLD') statusColor = 'bg-amber-50 text-amber-700 border border-amber-200/50';
+
+                                        let avatarColor = 'bg-purple-100 text-purple-700';
+                                        if (item.id === 'TC-102') avatarColor = 'bg-emerald-100 text-emerald-700';
+                                        if (item.id === 'GF-103') avatarColor = 'bg-indigo-100 text-indigo-700';
+
+                                        return `
+                                            <tr class="hover:bg-slate-50/30 transition-colors">
+                                                <td class="px-6 py-4">
+                                                    <div class="flex items-center gap-3">
+                                                        <div class="w-9 h-9 ${avatarColor} font-bold text-xs rounded-md flex items-center justify-center shadow-xs">
+                                                            ${initials}
+                                                        </div>
+                                                        <div class="flex flex-col">
+                                                            <span class="font-bold text-slate-900 text-sm cursor-pointer hover:text-orange-500 transition-colors" onclick="setViewMode('detail', '${item.id}')">${item.name}</span>
+                                                            <span class="text-[11px] text-slate-400 font-semibold mt-0.5">${item.founder} • <span class="text-[10px] font-mono">${item.email}</span></span>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="px-6 py-4">
+                                                    <span class="px-2.5 py-1 ${roleColor} text-[9px] font-bold rounded uppercase tracking-wide">
+                                                        ${item.roleType}
+                                                    </span>
+                                                </td>
+                                                <td class="px-6 py-4">
+                                                    <div class="flex items-center gap-3 min-w-[120px]">
+                                                        <span class="font-bold text-slate-800 text-xs">${item.completeness}%</span>
+                                                        <div class="w-full bg-slate-100 h-1.5 rounded-md overflow-hidden">
+                                                            <div class="bg-emerald-500 h-1.5 rounded-md" style="width: ${item.completeness}%"></div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="px-6 py-4 text-slate-500 font-semibold">${item.lastActivity}</td>
+                                                <td class="px-6 py-4 text-slate-400 font-semibold">${item.joinedOn}</td>
+                                                <td class="px-6 py-4">
+                                                    <span class="px-2.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${statusColor}">
+                                                        ${item.status}
+                                                    </span>
+                                                </td>
+                                                <td class="px-6 py-4">
+                                                    <div class="flex items-center justify-center gap-2">
+                                                        <button onclick="triggerDirectChat('${item.founder}')" class="w-9 h-9 flex items-center justify-center bg-slate-50 hover:bg-slate-100 border border-slate-200/50 rounded-md text-slate-600 hover:text-slate-900 transition-all shadow-sm" title="Message User">
+                                                            <i data-lucide="message-square" class="w-4 h-4 text-blue-600"></i>
+                                                        </button>
+                                                        <button onclick="triggerToast('Opening secure vault documents for validation...')" class="w-9 h-9 flex items-center justify-center bg-slate-50 hover:bg-slate-100 border border-slate-200/50 rounded-md text-slate-600 hover:text-slate-900 transition-all shadow-sm" title="View Secure Documents">
+                                                            <i data-lucide="file-text" class="w-4 h-4 text-slate-500"></i>
+                                                        </button>
+                                                        <button onclick="triggerToast('Auditing mandate records...')" class="w-9 h-9 flex items-center justify-center bg-slate-50 hover:bg-slate-100 border border-slate-200/50 rounded-md text-slate-600 hover:text-slate-900 transition-all shadow-sm" title="Mandates Log">
+                                                            <i data-lucide="book-open" class="w-4 h-4 text-orange-600"></i>
+                                                        </button>
+                                                        <button onclick="setViewMode('detail', '${item.id}')" class="w-9 h-9 flex items-center justify-center bg-slate-50 hover:bg-slate-100 border border-slate-200/50 rounded-md text-slate-600 hover:text-slate-900 transition-all shadow-sm" title="Enter Profile Detail Workspace">
+                                                            <i data-lucide="eye" class="w-4 h-4 text-slate-600"></i>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        `;
+                                    }).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Table Pagination tracker -->
+                        <div class="flex justify-between items-center pt-4 border-t border-slate-100 text-xs font-semibold">
+                            <span class="text-slate-400">Showing 1 to ${filteredUsers.length} of ${filteredUsers.length} users</span>
+                            <div class="flex gap-1.5 items-center">
+                                <button class="p-1 bg-slate-50 border border-slate-200 rounded-md text-slate-400 hover:bg-slate-100"><i data-lucide="chevron-left" class="w-4 h-4"></i></button>
+                                <button class="px-3 py-1 bg-orange-600 text-white rounded-md">1</button>
+                                <button class="p-1 bg-slate-50 border border-slate-200 rounded-md text-slate-400 hover:bg-slate-100"><i data-lucide="chevron-right" class="w-4 h-4"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- VIEW TEMPLATE: USER DETAILED PROFILE WORKSPACE ---
+        function getCrmDetailView() {
+            const user = appState.users.find(u => u.id === appState.selectedUserId) || appState.users[0];
+
+            return `
+                <div class="fade-in-view space-y-6">
+                    <!-- Back path breadcrumb link -->
+                    <button onclick="setViewMode('list')" class="text-xs font-bold text-orange-500 hover:text-orange-600 flex items-center gap-1.5 mb-2 transition-all">
+                        <i data-lucide="arrow-left" class="w-4 h-4"></i> Back to CRM & Users
+                    </button>
+
+                    <!-- Profile Header banner layout -->
+                    <div class="flex justify-between items-start pb-4 border-b border-slate-100">
+                        <div class="space-y-2">
+                            <div class="flex items-center gap-2.5">
+                                <h1 class="text-3xl font-bold text-slate-900 tracking-tight">${user.name}</h1>
+                                <span class="px-2 py-0.5 bg-orange-50 border border-orange-100 text-orange-700 text-[9px] font-bold tracking-wide rounded uppercase">${user.roleType}</span>
+                                <span class="px-2 py-0.5 bg-blue-50 border border-blue-100 text-blue-700 text-[9px] font-bold tracking-wide rounded uppercase">SAAS</span>
+                                <span class="px-2 py-0.5 bg-purple-50 border border-purple-100 text-purple-700 text-[9px] font-bold tracking-wide rounded uppercase">SERIES A</span>
+                            </div>
+                            <p class="text-xs text-slate-500 font-medium">${user.desc}</p>
+
+                            <!-- Profile metadata metrics horizontal display -->
+                            <div class="flex flex-wrap items-center gap-6 pt-2 text-xs text-slate-500">
+                                <div class="flex items-center gap-1.5">
+                                    <i data-lucide="calendar" class="w-4 h-4 text-slate-400"></i>
+                                    <span>Joined On: <strong class="text-slate-800">${user.joinedOn}</strong></span>
+                                </div>
+                                <div class="flex items-center gap-1.5">
+                                    <i data-lucide="user" class="w-4 h-4 text-slate-400"></i>
+                                    <span>Primary Contact: <strong class="text-slate-800">${user.founder}, CEO</strong></span>
+                                </div>
+                                <div class="flex items-center gap-1.5">
+                                    <i data-lucide="map-pin" class="w-4 h-4 text-slate-400"></i>
+                                    <span>Location: <strong class="text-slate-800">${user.location}</strong></span>
+                                </div>
+                                <div class="flex items-center gap-1.5">
+                                    <i data-lucide="users-2" class="w-4 h-4 text-slate-400"></i>
+                                    <span>Team Size: <strong class="text-slate-800">${user.teamSize}</strong></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Top-right CTA action controls -->
+                        <div class="flex gap-2.5">
+                            <button onclick="triggerToast('Dispatched request details checklist...')" class="bg-[#F97316] hover:bg-[#EA580C] text-white font-bold text-xs py-2 px-4 rounded-md transition-all shadow-md flex items-center gap-1.5">
+                                <i data-lucide="edit-3" class="w-4 h-4"></i>
+                                <span>Request Information</span>
+                            </button>
+                            <button onclick="toggleUserHoldState('${user.id}')" class="bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-bold text-xs py-2 px-4 rounded-md transition-all flex items-center gap-1.5">
+                                <i data-lucide="pause-circle" class="w-4 h-4"></i>
+                                <span>Put On Hold</span>
+                            </button>
+                            <button onclick="triggerDirectChat('${user.founder}')" class="bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-bold text-xs py-2 px-4 rounded-md transition-all flex items-center gap-1.5">
+                                <i data-lucide="message-square" class="w-4 h-4"></i>
+                                <span>Message User</span>
+                            </button>
+                            <button onclick="triggerToast('Opening strategic operations panel...')" class="bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-bold text-xs py-2 px-3.5 rounded-md transition-all flex items-center gap-1">
+                                <span>More</span>
+                                <i data-lucide="chevron-down" class="w-3.5 h-3.5"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Inner detail tabs matching specs exactly -->
+                    <div class="flex gap-6 border-b border-slate-100 overflow-x-auto pb-1 text-xs font-bold uppercase tracking-wider">
+                        <button class="pb-3 subtab-active text-orange-500 font-bold">Overview</button>
+                        <button onclick="triggerToast('Financial metrics locked...')" class="pb-3 text-slate-400 hover:text-slate-600 transition-colors">Financials</button>
+                        <button onclick="triggerToast('Funding scope parameters locked...')" class="pb-3 text-slate-400 hover:text-slate-600 transition-colors">Funding Ask</button>
+                        <button onclick="triggerToast('Team roster cataloged...')" class="pb-3 text-slate-400 hover:text-slate-600 transition-colors">Team</button>
+                        <button onclick="triggerToast('Secure Vault files locked...')" class="pb-3 text-slate-400 hover:text-slate-600 transition-colors">Documents</button>
+                        <button onclick="triggerToast('Communications desk locked...')" class="pb-3 text-slate-400 hover:text-slate-600 transition-colors">Communications</button>
+                    </div>
+
+                    <!-- Two column details grid layout -->
+                    <div class="grid grid-cols-12 gap-8">
+                        <!-- Left Panel Area: Media players, Metadata structures & tags -->
+                        <div class="col-span-12 lg:col-span-8 space-y-6">
+                            <!-- Media Pitch Block (Founder Video & Audio) -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <!-- Video Player Placeholder -->
+                                <div class="bg-white p-5 rounded-md border border-slate-200/50 shadow-sm space-y-4">
+                                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest">Founder Introduction Video</h3>
+                                    <div class="relative h-44 rounded-md bg-zinc-950 overflow-hidden group border border-slate-200/30 flex items-center justify-center">
+                                        <div class="absolute inset-0 bg-cover bg-center filter brightness-75 animate-pulse" style="background-image: url('https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=600&auto=format&fit=crop');"></div>
+                                        ${appState.isVideoPlaying ? `
+                                            <div class="absolute inset-0 bg-[#0B0C0E]/90 flex flex-col items-center justify-center z-10 space-y-3">
+                                                <div class="w-12 h-12 bg-orange-600 rounded-md flex items-center justify-center text-white font-bold animate-ping">
+                                                    <i data-lucide="play" class="w-5 h-5"></i>
+                                                </div>
+                                                <span class="text-xs font-mono text-zinc-300">Streaming secure media thread...</span>
+                                            </div>
+                                        ` : ''}
+                                        <button onclick="toggleVideoState()" class="absolute w-12 h-12 bg-white/95 hover:bg-orange-600 hover:text-white rounded-md flex items-center justify-center shadow-lg transition-all transform hover:scale-105 z-20">
+                                            <i data-lucide="${appState.isVideoPlaying ? 'pause' : 'play'}" class="w-5 h-5 text-slate-900"></i>
+                                        </button>
+                                        <div class="absolute bottom-3 left-3 bg-black/60 px-2 py-0.5 rounded text-[10px] font-mono text-white">03:42</div>
+                                    </div>
+                                </div>
+
+                                <!-- Audio Player Placeholder with custom visual waveform wave -->
+                                <div class="bg-white p-5 rounded-md border border-slate-200/50 shadow-sm space-y-4">
+                                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest">Founder Audio Pitch</h3>
+                                    <div class="p-4 bg-slate-50 border border-slate-100 rounded-md flex flex-col justify-between h-44">
+                                        <div class="flex items-center gap-3">
+                                            <button onclick="toggleAudioState()" class="w-10 h-10 bg-orange-600 hover:bg-orange-700 text-white rounded-md flex items-center justify-center shadow transition-all transform active:scale-95">
+                                                <i data-lucide="${appState.isAudioPlaying ? 'pause' : 'play'}" class="w-4 h-4"></i>
+                                            </button>
+                                            <div>
+                                                <p class="font-bold text-slate-800 text-xs">Audio_Pitch_SARAH.mp3</p>
+                                                <span class="text-[10px] text-slate-400 font-mono">01:28</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="flex items-end gap-1 h-14 pb-1 overflow-hidden" id="audio-wave">
+                                            ${Array.from({length: 24}).map((_, i) => {
+                                                const h = [10, 20, 24, 15, 30, 12, 18, 28, 14, 22, 26, 11, 25, 17, 32, 15, 23, 27, 10, 21, 16, 29, 12, 18][i];
+                                                return `<div class="flex-1 bg-orange-500 rounded-md transition-all duration-300 ${appState.isAudioPlaying ? 'waveform-bar-active' : ''}" style="height: ${h}px;"></div>`;
+                                            }).join('')}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Company Details Overview Grid -->
+                            <div class="bg-white p-6 rounded-md border border-slate-200/50 shadow-sm space-y-6">
+                                <h3 class="text-sm font-extrabold text-slate-900 border-b border-slate-100 pb-3">Company Overview</h3>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div class="space-y-4">
+                                        <table class="w-full text-xs text-left text-slate-600">
+                                            <tbody class="divide-y divide-slate-100">
+                                                <tr class="py-2"><td class="font-semibold text-slate-400 uppercase tracking-widest text-[9px] py-2">Company Name</td><td class="font-bold text-slate-900 text-right py-2">${user.name}</td></tr>
+                                                <tr class="py-2"><td class="font-semibold text-slate-400 uppercase tracking-widest text-[9px] py-2">Industry</td><td class="font-bold text-slate-900 text-right py-2">${user.industry}</td></tr>
+                                                <tr class="py-2"><td class="font-semibold text-slate-400 uppercase tracking-widest text-[9px] py-2">Founded</td><td class="font-bold text-slate-900 text-right py-2">Jan 2024</td></tr>
+                                                <tr class="py-2"><td class="font-semibold text-slate-400 uppercase tracking-widest text-[9px] py-2">Website</td><td class="font-bold text-orange-600 text-right py-2 cursor-pointer hover:underline">www.techventure.com <i data-lucide="external-link" class="inline w-3 h-3 ml-0.5"></i></td></tr>
+                                                <tr class="py-2"><td class="font-semibold text-slate-400 uppercase tracking-widest text-[9px] py-2">Email</td><td class="font-bold text-slate-900 text-right py-2 font-mono">${user.email}</td></tr>
+                                                <tr class="py-2"><td class="font-semibold text-slate-400 uppercase tracking-widest text-[9px] py-2">Phone</td><td class="font-bold text-slate-900 text-right py-2">${user.phone}</td></tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <!-- About description and pills -->
+                                    <div class="space-y-4">
+                                        <p class="font-bold text-slate-400 uppercase tracking-widest text-[9px]">About the Company</p>
+                                        <p class="text-xs text-slate-600 leading-relaxed font-semibold">${user.about}</p>
+                                        <div class="flex flex-wrap gap-2 pt-2">
+                                            ${user.tags.map(tag => `<span class="px-2.5 py-1 bg-slate-100 text-slate-600 text-[10px] font-bold tracking-wider rounded uppercase">${tag}</span>`).join('')}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Financial and valuation targets row -->
+                            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                                <div class="bg-white p-5 rounded-md border border-slate-200/50 shadow-sm">
+                                    <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Funding Required</p>
+                                    <p class="text-2xl font-black text-slate-900 mt-2">${user.fundingRequired}</p>
+                                    <span class="text-[9px] text-slate-400 font-semibold">Amount</span>
+                                </div>
+
+                                <div class="bg-white p-5 rounded-md border border-slate-200/50 shadow-sm">
+                                    <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Pre-Money Valuation</p>
+                                    <p class="text-2xl font-black text-slate-900 mt-2">${user.preMoneyValuation}</p>
+                                    <span class="text-[9px] text-slate-400 font-semibold">Standard Model</span>
+                                </div>
+
+                                <div class="bg-white p-5 rounded-md border border-slate-200/50 shadow-sm">
+                                    <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Equity Offered</p>
+                                    <p class="text-2xl font-black text-slate-900 mt-2">${user.equityOffered}</p>
+                                    <span class="text-[9px] text-slate-400 font-semibold">For ${user.fundingRequired}</span>
+                                </div>
+
+                                <div class="bg-white p-5 rounded-md border border-slate-200/50 shadow-sm flex flex-col justify-between">
+                                    <div>
+                                        <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Use of Funds</p>
+                                        <div class="space-y-1 mt-1 text-[11px] text-slate-600 font-semibold">
+                                            <p>• Product Expansion</p>
+                                            <p>• Sales & Marketing</p>
+                                            <p>• Team Building</p>
+                                        </div>
+                                    </div>
+                                    <div class="w-full flex justify-end">
+                                        <!-- Donut chart mockup SVG -->
+                                        <svg class="w-8 h-8 transform rotate-45" viewBox="0 0 36 36">
+                                            <path class="text-slate-100" stroke-width="6" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                            <path class="text-orange-500" stroke-width="6" stroke-dasharray="70, 100" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Panel Area: Onboarding steps, Engagement counters, Review summary -->
+                        <div class="col-span-12 lg:col-span-4 space-y-6">
+                            <!-- Review Summary Tracker checklist -->
+                            <div class="bg-white p-6 rounded-md border border-slate-200/50 shadow-sm space-y-4">
+                                <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest">Review Summary</h3>
+                                <div class="space-y-3 font-semibold text-xs text-slate-700">
+                                    <div class="flex items-center justify-between">
+                                        <span class="flex items-center gap-2">
+                                            <i data-lucide="check-circle" class="w-4 h-4 text-green-500"></i>
+                                            <span>Profile Created</span>
+                                        </span>
+                                        <i data-lucide="check" class="w-4 h-4 text-green-500"></i>
+                                    </div>
+                                    <div class="flex items-center justify-between">
+                                        <span class="flex items-center gap-2">
+                                            <i data-lucide="check-circle" class="w-4 h-4 text-green-500"></i>
+                                            <span>KYC Verified</span>
+                                        </span>
+                                        <i data-lucide="check" class="w-4 h-4 text-green-500"></i>
+                                    </div>
+                                    <div class="flex items-center justify-between">
+                                        <span class="flex items-center gap-2">
+                                            <i data-lucide="check-circle" class="w-4 h-4 text-green-500"></i>
+                                            <span>Documents Uploaded</span>
+                                        </span>
+                                        <i data-lucide="check" class="w-4 h-4 text-green-500"></i>
+                                    </div>
+                                    <div class="flex items-center justify-between pt-1 border-t border-slate-100">
+                                        <span class="flex items-center gap-2 text-amber-600">
+                                            <i data-lucide="alert-triangle" class="w-4 h-4 text-amber-500"></i>
+                                            <span>Additional Info Pending</span>
+                                        </span>
+                                    </div>
+                                    <p class="text-[10px] text-slate-400 font-bold mt-2">Last Updated: 2 days ago</p>
+                                </div>
+                            </div>
+
+                            <!-- Onboarding Status Milestones -->
+                            <div class="bg-white p-6 rounded-md border border-slate-200/50 shadow-sm space-y-4">
+                                <div class="flex justify-between items-center">
+                                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest">Onboarding Status</h3>
+                                    <span class="px-2 py-0.5 bg-green-50 text-green-700 border border-green-200/50 rounded text-[9px] font-bold uppercase tracking-wider">ACTIVE</span>
+                                </div>
+
+                                <div class="space-y-3 text-xs text-slate-600 font-semibold">
+                                    <div class="flex justify-between"><span>Profile Created</span><span class="text-slate-900">${user.onboarding.created}</span></div>
+                                    <div class="flex justify-between"><span>Auto Approved</span><span class="text-slate-900">${user.onboarding.approved}</span></div>
+                                    <div class="flex justify-between"><span>Documents Submitted</span><span class="text-slate-900">${user.onboarding.submitted}</span></div>
+                                    <div class="flex justify-between pt-2 border-t border-slate-50"><span>Last Activity</span><span class="text-orange-500 font-bold">${user.onboarding.lastAct}</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function handleSearchChange(e) {
+            appState.searchQuery = e.value.toLowerCase();
+            renderWorkspace();
+        }
+
+        // Resets holds
+        function toggleUserHoldState(userId) {
+            const user = appState.users.find(u => u.id === userId);
+            if (user.status === 'ON HOLD') {
+                user.status = 'ACTIVE';
+                triggerToast('Profile operational status resumed.');
+            } else {
+                user.status = 'ON HOLD';
+                triggerToast('Profile operational status set to HOLD.');
+            }
+            renderWorkspace();
+        }
+
+        // Media players state controls
+        function toggleAudioState() {
+            appState.isAudioPlaying = !appState.isAudioPlaying;
+            triggerToast(appState.isAudioPlaying ? 'Streaming founder pitch audio presentation...' : 'Audio pitch paused.');
+            renderWorkspace();
+        }
+
+        function toggleVideoState() {
+            appState.isVideoPlaying = !appState.isVideoPlaying;
+            triggerToast(appState.isVideoPlaying ? 'Buffering secure pitch video thread...' : 'Video streaming paused.');
+            renderWorkspace();
+        }
+    </script>
+
+    <!-- CORE CHAT & DYNAMIC MODALS -->
+    <script>
+        // Trigger generic secure communication window between deal groups
+        function triggerDealMessage(dealId) {
+            const list = appState.dealsFlow === 'equity' ? appState.equityDeals : appState.maDeals;
+            const deal = list.find(d => d.id === dealId);
+            const party = appState.dealsFlow === 'equity' ? deal.investee : deal.seller;
+            const target = appState.dealsFlow === 'equity' ? deal.investor : deal.buyer;
+
+            const container = document.getElementById('modal-container');
+            container.innerHTML = `
+                <div class="bg-white rounded-md p-6 max-w-md w-full shadow-2xl border border-slate-100 space-y-4 animate-scale-up">
+                    <div class="flex justify-between items-center border-b pb-3">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 bg-green-500 rounded-md animate-pulse"></span>
+                            <h3 class="text-sm font-bold text-slate-900">Secure Dealroom Escrow Room</h3>
+                        </div>
+                        <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-4 h-4"></i></button>
+                    </div>
+                    <p class="text-xs text-slate-400">Encrypted communications between <strong>${party}</strong> and <strong>${target}</strong> for Deal ID ${dealId}.</p>
+                    <div class="h-44 overflow-y-auto space-y-3 p-2 bg-slate-50 rounded-md text-xs" id="chat-scroller">
+                        <div class="p-2.5 bg-white rounded-md shadow-xs">
+                            <p class="font-bold text-orange-600">${party} <span class="text-[8px] font-mono font-normal text-slate-400">09:12 AM</span></p>
+                            <p class="text-slate-700 mt-0.5">We have uploaded the revised projections spreadsheet. Let us know if you require store performance metrics.</p>
+                        </div>
+                        <div class="p-2.5 bg-white rounded-md shadow-xs">
+                            <p class="font-bold text-blue-600">${target} <span class="text-[8px] font-mono font-normal text-slate-400">10:04 AM</span></p>
+                            <p class="text-slate-700 mt-0.5">Recieved. Our auditing division is auditing the figures. We will finalize term sheets post verification.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-2">
+                        <input id="deal-msg-input" type="text" placeholder="Draft secure response..." class="flex-1 p-2 bg-slate-50 border rounded-md text-xs outline-none focus:bg-white focus:border-orange-500 transition-all">
+                        <button onclick="sendSecureMessage('${party}')" class="px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs rounded-md transition-colors">Send</button>
+                    </div>
+                </div>
+            `;
+            container.classList.remove('hidden');
+            container.classList.add('modal-active');
+            lucide.createIcons();
+            document.getElementById('deal-msg-input').focus();
+        }
+
+        // Trigger dynamic message responses on modal
+        function sendSecureMessage(sender) {
+            const input = document.getElementById('deal-msg-input');
+            const msg = input.value.trim();
+            if (!msg) return;
+
+            const scroller = document.getElementById('chat-scroller');
+            const userMsg = document.createElement('div');
+            userMsg.className = 'p-2.5 bg-white rounded-md shadow-xs';
+            userMsg.innerHTML = `
+                <p class="font-bold text-slate-900">${sender} <span class="text-[8px] font-mono font-normal text-slate-400">Just Now</span></p>
+                <p class="text-slate-700 mt-0.5">${msg}</p>
+            `;
+            scroller.appendChild(userMsg);
+            input.value = '';
+            scroller.scrollTop = scroller.scrollHeight;
+            triggerToast('Encrypted secure response dispatched to room ledger.');
+        }
+
+        // Direct consultation desk popup
+        function triggerDirectChat(founderName = 'Sarah Chen') {
+            const container = document.getElementById('modal-container');
+            container.innerHTML = `
+                <div class="bg-white rounded-md p-6 max-w-md w-full shadow-2xl border border-slate-100 space-y-4">
+                    <div class="flex justify-between items-center border-b pb-3">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 bg-green-500 rounded-md animate-pulse"></span>
+                            <h3 class="text-sm font-bold text-slate-900">Direct Message: ${founderName}</h3>
+                        </div>
+                        <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-4 h-4"></i></button>
+                    </div>
+                    <div class="h-36 overflow-y-auto space-y-2 p-2 bg-slate-50 rounded-md text-xs">
+                        <div class="p-2.5 bg-white rounded-md shadow-xs">
+                            <p class="font-bold text-orange-600">${founderName}</p>
+                            <p class="text-slate-700">Thank you for opening the relationship channel. Let us know if you need our updated investor memo deck.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-2">
+                        <input id="direct-msg-input" type="text" placeholder="Write message to ${founderName}..." class="flex-1 p-2 border rounded-md text-xs outline-none focus:border-orange-500 transition-all">
+                        <button onclick="triggerToast('Message dispatched directly.'); closeModal();" class="px-4 py-2 bg-orange-600 text-white font-bold text-xs rounded-md hover:bg-orange-700">Send</button>
+                    </div>
+                </div>
+            `;
+            container.classList.remove('hidden');
+            container.classList.add('modal-active');
+            lucide.createIcons();
+        }
+
+        // Secure Relationship Desk with Advisor
+        function triggerAdvisorChat() {
+            const container = document.getElementById('modal-container');
+            container.innerHTML = `
+                <div class="bg-white rounded-md p-6 max-w-md w-full shadow-2xl border border-slate-100 space-y-4">
+                    <div class="flex justify-between items-center border-b pb-3">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 bg-green-500 rounded-md animate-pulse"></span>
+                            <h3 class="text-sm font-bold text-slate-900">Advisor Consultation Desk</h3>
+                        </div>
+                        <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-4 h-4"></i></button>
+                    </div>
+                    <div class="h-44 overflow-y-auto space-y-2 p-2 bg-slate-50 rounded-md text-xs">
+                        <p class="text-slate-400 text-center text-[9px] uppercase font-bold py-2">Private Escrow Thread Verified</p>
+                        <div class="p-2.5 bg-white rounded-md shadow-xs">
+                            <p class="font-bold text-orange-600">Akash Kumar <span class="text-[9px] text-slate-400 font-normal">Advisor Desk</span></p>
+                            <p class="text-slate-700 mt-1">Hello Karthik, I reviewed the compliance and KYC logs. Everything is healthy. Please let me know if we need to draft the next term sheet drafts.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-2">
+                        <input id="adv-msg-input" type="text" placeholder="Write message to Akash..." class="flex-1 p-2 border rounded-md text-xs outline-none focus:border-orange-500 transition-all">
+                        <button onclick="triggerToast('Consultation message encrypted and logged.'); closeModal();" class="px-4 py-2 bg-orange-600 text-white font-bold text-xs rounded-md hover:bg-orange-700">Send</button>
+                    </div>
+                </div>
+            `;
+            container.classList.remove('hidden');
+            container.classList.add('modal-active');
+            lucide.createIcons();
+        }
+
+        // Create "+ New Deal" Modal Panel
+        function openNewDealModal() {
+            const container = document.getElementById('modal-container');
+            container.innerHTML = `
+                <div class="bg-white rounded-md p-6 max-w-lg w-full shadow-2xl border border-slate-100 space-y-4">
+                    <div class="flex justify-between items-center border-b pb-3">
+                        <h3 class="text-sm font-extrabold text-slate-900">Initialize New Deal Transaction</h3>
+                        <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-4 h-4"></i></button>
+                    </div>
+                    <form id="new-deal-form" onsubmit="createNewDeal(event)" class="space-y-4 text-xs text-slate-600">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block font-bold mb-1 uppercase tracking-wider text-[10px]">Transaction Flow</label>
+                                <select id="nd-flow" class="w-full p-2.5 bg-slate-50 border rounded-md outline-none" required>
+                                    <option value="equity">Equity Flow (Raise)</option>
+                                    <option value="ma">M&A Flow (Buyout)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block font-bold mb-1 uppercase tracking-wider text-[10px]">Deal Stage</label>
+                                <select id="nd-stage" class="w-full p-2.5 bg-slate-50 border rounded-md outline-none" required>
+                                    <option>Investor Interest</option>
+                                    <option>NDA Signed</option>
+                                    <option>Data Room Access</option>
+                                    <option>Discussions</option>
+                                    <option>Due Diligence</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block font-bold mb-1 uppercase tracking-wider text-[10px]">Target Asset / Company</label>
+                                <input type="text" id="nd-company" placeholder="e.g. NeoGen Labs" class="w-full p-2.5 bg-slate-50 border rounded-md outline-none" required>
+                            </div>
+                            <div>
+                                <label class="block font-bold mb-1 uppercase tracking-wider text-[10px]">Counterparty / Investor</label>
+                                <input type="text" id="nd-partner" placeholder="e.g. Matrix Partners" class="w-full p-2.5 bg-slate-50 border rounded-md outline-none" required>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block font-bold mb-1 uppercase tracking-wider text-[10px]">Deal Size Amount (Cr)</label>
+                                <input type="text" id="nd-amount" placeholder="₹15.0 Cr" class="w-full p-2.5 bg-slate-50 border rounded-md outline-none" required>
+                            </div>
+                            <div>
+                                <label class="block font-bold mb-1 uppercase tracking-wider text-[10px]">Deal Health Status</label>
+                                <select id="nd-health" class="w-full p-2.5 bg-slate-50 border rounded-md outline-none" required>
+                                    <option>Healthy</option>
+                                    <option>At Risk</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="pt-2 border-t border-slate-100 flex justify-end gap-2.5">
+                            <button type="button" onclick="closeModal()" class="px-4 py-2 bg-slate-100 text-slate-700 font-bold rounded-md hover:bg-slate-200">Cancel</button>
+                            <button type="submit" class="px-5 py-2 bg-orange-600 text-white font-bold rounded-md hover:bg-orange-700 shadow-md">Create Deal</button>
+                        </div>
+                    </form>
+                </div>
+            `;
+            container.classList.remove('hidden');
+            container.classList.add('modal-active');
+            lucide.createIcons();
+        }
+
+        // Core business logic to push new deal to state
+        function createNewDeal(event) {
+            event.preventDefault();
+            const flow = document.getElementById('nd-flow').value;
+            const stage = document.getElementById('nd-stage').value;
+            const company = document.getElementById('nd-company').value.trim();
+            const partner = document.getElementById('nd-partner').value.trim();
+            const amount = document.getElementById('nd-amount').value.trim();
+            const health = document.getElementById('nd-health').value;
+
+            // Generate mock records based on selections
+            const newId = flow === 'equity' ? `EQ-10${appState.equityDeals.length + 1}` : `MA-20${appState.maDeals.length + 1}`;
+            const targetDeal = {
+                id: newId,
+                investee: company,
+                investor: partner,
+                seller: company,
+                buyer: partner,
+                round: flow === 'equity' ? 'Series A Round' : 'Strategic Buyout',
+                amount: amount.startsWith('₹') ? amount : `₹${amount}`,
+                stage: stage,
+                health: health,
+                lastActivity: 'Just Now',
+                createdOn: '04 Jun 2026',
+                owner: 'Karthik Super',
+                age: '1 Day',
+                indicativeValuation: '₹100.0 Cr',
+                equityOffered: '15%',
+                expectedClose: '30 Jul 2026',
+                probability: '75%',
+                milestones: [
+                    { name: 'Investor Interest', status: 'completed', date: '04 Jun 2026', desc: 'Exploration logged' },
+                    { name: 'NDA Signed', status: stage === 'Investor Interest' ? 'upcoming' : 'completed', date: '04 Jun 2026', desc: 'NDA Completed' },
+                    { name: 'Data Room Access', status: 'upcoming', desc: 'Secure VDR audit' },
+                    { name: 'Discussions', status: 'upcoming', desc: 'Commercial alignment' },
+                    { name: 'Due Diligence', status: 'upcoming', desc: 'Auditing step' },
+                    { name: 'Term Sheet', status: 'upcoming', desc: 'Upcoming' },
+                    { name: 'Closing', status: 'upcoming', desc: 'Upcoming' }
+                ],
+                keyMetrics: { targetRaise: amount, valuation: '₹100.0 Cr', equity: '15%', committed: '₹0.0 Cr', investorsCount: 0, lastUpdated: '04 Jun 2026' },
+                activities: [{ time: 'Just Now', type: 'system', text: 'Deal created inside active pipeline database.' }]
+            };
+
+            if (flow === 'equity') {
+                appState.equityDeals.unshift(newId === 'EQ-101' ? newId : targetDeal);
+                appState.counts.equityDeals++;
+            } else {
+                appState.maDeals.unshift(targetDeal);
+                appState.counts.maDeals++;
+            }
+
+            appState.counts.totalDeals++;
+            appState.dealsFlow = flow;
+
+            closeModal();
+            triggerToast(`New Transaction "${newId}" successfully launched.`);
+            renderWorkspace();
+        }
+
+        // Open Meeting Scheduler
+        function openMeetingsModal(dealId) {
+            const container = document.getElementById('modal-container');
+            container.innerHTML = `
+                <div class="bg-white rounded-md p-6 max-w-md w-full shadow-2xl border border-slate-100 space-y-4">
+                    <div class="flex justify-between items-center border-b pb-3">
+                        <h3 class="text-sm font-extrabold text-slate-900">Schedule Secure Escrow Meeting</h3>
+                        <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-4 h-4"></i></button>
+                    </div>
+                    <p class="text-xs text-slate-400">Establish encrypted visual meeting block with counter-parties of Deal <strong>${dealId}</strong>.</p>
+                    <div class="space-y-3.5 text-xs">
+                        <div>
+                            <label class="block font-bold mb-1 uppercase tracking-wider text-[9px]">Meeting Agenda / Title</label>
+                            <input type="text" value="Legal compliance and tax audit sync" class="w-full p-2 bg-slate-50 border rounded-md outline-none">
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block font-bold mb-1 uppercase tracking-wider text-[9px]">Meeting Date</label>
+                                <input type="date" value="2026-06-15" class="w-full p-2 bg-slate-50 border rounded-md outline-none">
+                            </div>
+                            <div>
+                                <label class="block font-bold mb-1 uppercase tracking-wider text-[9px]">Meeting Time</label>
+                                <input type="time" value="11:30" class="w-full p-2 bg-slate-50 border rounded-md outline-none">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex justify-end gap-2 pt-2 border-t border-slate-100">
+                        <button onclick="closeModal()" class="px-4 py-1.5 bg-slate-100 font-bold text-slate-600 rounded-md">Cancel</button>
+                        <button onclick="triggerToast('Secure meeting block registered inside deal agenda.'); closeModal();" class="px-4 py-1.5 bg-orange-600 text-white font-bold rounded-md hover:bg-orange-700 shadow-md">Register Sync</button>
+                    </div>
+                </div>
+            `;
+            container.classList.remove('hidden');
+            container.classList.add('modal-active');
+            lucide.createIcons();
+        }
+
+        function closeModal() {
+            const container = document.getElementById('modal-container');
+            container.classList.remove('modal-active');
+            container.classList.add('hidden');
+            container.innerHTML = '';
+        }
+    </script>
+
+    <!-- CORE RENDER DESK -->
+    <script>
+        function renderWorkspace() {
+            const container = document.getElementById('workspace-target');
+            if (!container) return;
+            container.innerHTML = '';
+
+            let template = '';
+
+            // Render workspace based on selected core module (SPA Routing)
+            if (appState.activeModule === 'deals') {
+                template = getDealsDashboardView();
+            } else if (appState.activeModule === 'crm') {
+                if (appState.viewMode === 'list') {
+                    template = getDirectoryView();
+                } else {
+                    template = getCrmDetailView();
+                }
+            }
+
+            container.innerHTML = template;
+            updateSidebar();
+            lucide.createIcons();
+        }
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const currentPath = window.location.pathname;
+            const buttons = document.querySelectorAll('.sidebar-btn');
+            buttons.forEach(btn => {
+                const parent = btn.parentElement;
+                if (parent && parent.tagName === 'A') {
+                    const href = parent.getAttribute('href');
+                    if (currentPath.includes(href.split('/').pop()) || (currentPath === '/' && href.includes('dashboard.html'))) {
+                        btn.classList.add('sidebar-item-active');
+                    }
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
