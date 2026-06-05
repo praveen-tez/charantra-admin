@@ -3,1204 +3,217 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Charantra CRM & Users | Executive Workspace</title>
-    <!-- Tailwind CSS -->
+    <title>Charantra - CRM & Users Directory</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    borderRadius: {
-                        'none': '0',
-                        'sm': '16px',
-                        DEFAULT: '16px',
-                        'md': '16px',
-                        'lg': '16px',
-                        'xl': '16px',
-                        '2xl': '16px',
-                        '3xl': '16px',
-                        'full': '9999px'
-                    }
-                }
-            }
-        }
+        tailwind.config = { theme: { extend: { colors: { brand: { orange: '#FF5E00', orangeHover: '#e04f00', navyDark: '#070C1E', navyMedium: '#0F172A', navyLight: '#1E293B', bgSlate: '#F8FAFC', borderGray: '#E2E8F0' } } } } }
     </script>
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --charantra-orange: #F97316;
-            --charantra-orange-hover: #EA580C;
-            --sidebar-bg: #0B0C0E;
-            --workspace-bg: #F8F9FC;
-            --slate-border: #E2E8F0;
-        }
-
-        body {
-            font-family: 'Titillium Web', sans-serif;
-            font-size: 13px;
-            background-color: var(--workspace-bg);
-            color: #1E293B;
-            overflow-x: hidden;
-        }
-
-        /* Clean animations */
-        .fade-in-view {
-            animation: cubicFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-
-        @keyframes cubicFadeIn {
-            from { opacity: 0; transform: translateY(4px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Premium rounded scrollbar */
-        ::-webkit-scrollbar {
-            width: 5px;
-            height: 5px;
-        }
-        ::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #E2E8F0;
-            border-radius: 6px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #CBD5E1;
-        }
-
-        /* Sidebar active style - Rounded with thin outline matching image exactly */
-        .sidebar-item-active {
-            border-radius: 6px !important;
-            background: var(--charantra-orange) !important;
-            color: #FFFFFF !important;
-            border: none !important;
-        }
-
-        /* Tab highlights */
-        .subtab-active {
-            color: var(--charantra-orange);
-            border-bottom: 2px solid var(--charantra-orange);
-        }
-
-        /* Smooth interactive card effects with semi-rounded layout standards */
-        .interactive-card {
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .interactive-card:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 8px 20px -8px rgba(0, 0, 0, 0.04), 0 2px 6px -2px rgba(0, 0, 0, 0.02);
-        }
-        
-        /* Modal Overlay Transition */
-        .modal-active {
-            display: flex !important;
-            animation: fadeInOverlay 0.15s ease forwards;
-        }
-        @keyframes fadeInOverlay {
-            from { background-color: rgba(0,0,0,0); }
-            to { background-color: rgba(15, 17, 21, 0.5); }
-        }
-
-        /* Audio Waveform animation */
-        @keyframes barPulse {
-            0%, 100% { height: 4px; }
-            50% { height: 24px; }
-        }
-        .waveform-bar-active {
-            animation: barPulse 1s infinite ease-in-out;
-        }
-
-        /* Tooltip configurations on action elements */
-        [title] {
-            position: relative;
-        }
+        body { font-family: 'Titillium Web', sans-serif; -webkit-font-smoothing: antialiased; background-color: #F8FAFC; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(0,0,0,0.02); }
+        ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.25); }
+        #app-sidebar.collapsed { width: 64px !important; }
+        #app-sidebar.collapsed .sidebar-label { display: none; }
+        #app-sidebar.collapsed .sidebar-arrow { display: none; }
+        #app-sidebar.collapsed .sidebar-logo { width: 32px !important; min-width: 32px !important; }
+        #app-sidebar.collapsed .sidebar-collapse-icon { transform: rotate(180deg); }
+        #app-sidebar.collapsed button { justify-content: center; padding-left: 8px; padding-right: 8px; }
+        #app-sidebar.collapsed nav > div > button { justify-content: center; }
+        #app-sidebar.collapsed .sidebar-section-div { max-height: 0 !important; }
+        .sub-active { background: #FF5E00 !important; color: #fff !important; font-weight: 600 !important; }
     </style>
 </head>
-<body class="antialiased selection:bg-orange-100">
+<body class="overflow-hidden h-screen flex text-slate-800 bg-brand-bgSlate">
 
-    <div class="flex min-h-screen">
-                <!-- SIDEBAR -->
-        <aside class="w-80 bg-[#0B0C0E] text-[#94A3B8] flex flex-col fixed h-screen z-50">
-            <!-- Brand Identity -->
-            <div class="p-6 border-b border-zinc-900 flex-shrink-0">
-                <a href="/index.html">
-                    <img src="/assets/logo.png" width="200" alt="Charantra Logo" style="width: 200px; height: auto;">
-                </a>
+    <div class="flex w-full h-full">
+        
+        <aside id="app-sidebar" class="w-64 bg-brand-navyDark text-slate-300 flex flex-col h-full shrink-0 border-r border-slate-900 z-30 justify-between select-none transition-all duration-300">
+            <div class="flex flex-col overflow-y-auto">
+                <div class="p-4 flex items-center justify-between border-b border-slate-900/60">
+                    <div class="flex items-center gap-3 overflow-hidden">
+                        <a href="/index.html"><img src="/assets/logo.png" width="160" alt="Charantra Logo" class="sidebar-logo" style="height: auto; min-width: 120px;"></a>
+                    </div>
+                    <button onclick="toggleSidebarCollapse()" class="text-slate-500 hover:text-white p-1 rounded transition shrink-0"><i class="fa-solid fa-outdent text-xs sidebar-collapse-icon"></i></button>
+                </div>
+                <nav class="px-3 space-y-1 text-sm">
+                    <a href="/pages/dashboard.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><i class="fa-solid fa-table-columns text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Dashboard</span></button></a>
+
+                    <div class="space-y-0.5">
+                        <button onclick="toggleSidebarSection('crm-section')" class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden">
+                            <span class="flex items-center gap-3"><i class="fa-solid fa-users text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">CRM & Users</span></span>
+                            <i class="fa-solid fa-chevron-down text-[9px] transition-transform duration-200 sidebar-arrow" id="arrow-crm-section" style="transform:rotate(180deg)"></i>
+                        </button>
+                        <div id="crm-section" class="pl-5 pr-1 space-y-0.5 overflow-hidden sidebar-section-div" style="max-height:200px;transition:max-height 0.3s ease">
+                            <a href="/pages/crm.html?type=Investor" class="block"><button id="sub-investor" class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-hand-holding-dollar text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Investors</span></button></a>
+                            <a href="/pages/crm.html?type=Investee" class="block"><button id="sub-investee" class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-rocket text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Investees</span></button></a>
+                            <a href="/pages/crm.html?type=Buyer" class="block"><button id="sub-buyer" class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-cart-shopping text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Buyers</span></button></a>
+                            <a href="/pages/crm.html?type=Seller" class="block"><button id="sub-seller" class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-tags text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Sellers</span></button></a>
+                            <a href="/pages/crm.html?type=Advisor" class="block"><button id="sub-advisor" class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-comments text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Advisors</span></button></a>
+                        </div>
+                    </div>
+
+                    <a href="/pages/mandates.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><i class="fa-solid fa-file-contract text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Mandates & Projects</span></button></a>
+
+                    <a href="/pages/deals.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><i class="fa-solid fa-briefcase text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Deals & Pipeline</span></button></a>
+
+                    <a href="/pages/dataroom.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><i class="fa-solid fa-hard-drive text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Data Room</span></button></a>
+
+                    <div class="space-y-0.5">
+                        <button onclick="toggleSidebarSection('team-section')" class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><span class="flex items-center gap-3"><i class="fa-solid fa-users-gear text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Team Management</span></span><i class="fa-solid fa-chevron-down text-[9px] sidebar-arrow" id="arrow-team-section"></i></button>
+                        <div id="team-section" class="pl-5 pr-1 space-y-0.5 overflow-hidden sidebar-section-div" style="max-height:0;transition:max-height 0.3s ease">
+                            <a href="/pages/team.html?view=members" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-user-group text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Team Members</span></button></a>
+                            <a href="/pages/team.html?view=roles" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-shield-halved text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Roles & Permissions</span></button></a>
+                        </div>
+                    </div>
+
+                    <div class="space-y-0.5">
+                        <button onclick="toggleSidebarSection('payments-section')" class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><span class="flex items-center gap-3"><i class="fa-solid fa-receipt text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Payments</span></span><i class="fa-solid fa-chevron-down text-[9px] sidebar-arrow" id="arrow-payments-section"></i></button>
+                        <div id="payments-section" class="pl-5 pr-1 space-y-0.5 overflow-hidden sidebar-section-div" style="max-height:0;transition:max-height 0.3s ease">
+                            <a href="/pages/payments.html?view=invoices" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-file-invoice text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Invoices</span></button></a>
+                            <a href="/pages/payments.html?view=ledger" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-book text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Ledger</span></button></a>
+                        </div>
+                    </div>
+
+                    <a href="/pages/reports.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><i class="fa-solid fa-chart-simple text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Reports</span></button></a>
+                    <a href="/pages/settings.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><i class="fa-solid fa-gear text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Settings & Logs</span></button></a>
+                </nav>
             </div>
-
-            <!-- Sidebar Navigation Menu -->
-            <div class="flex-1 overflow-y-auto sidebar-scroll p-4 space-y-1.5">
-                <p class="text-[10px] uppercase font-bold tracking-widest text-zinc-600 px-3.5 mb-2 mt-2">Executive Desk</p>
-                
-                <a href="/pages/dashboard.html" class="block">
-                    <button id="nav-dashboard" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 text-[13px] font-medium rounded-md text-[#94A3B8] hover:text-white hover:bg-[#1E2128]/40 transition-all">
-                        <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
-                        <span>Dashboard</span>
-                    </button>
-                </a>
-                
-                <a href="/pages/crm.html" class="block">
-                    <button id="nav-crm" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 text-[13px] font-medium rounded-md text-[#94A3B8] hover:text-white hover:bg-[#1E2128]/40 transition-all">
-                        <i data-lucide="contact-2" class="w-4 h-4"></i>
-                        <span>CRM & Users</span>
-                    </button>
-                </a>
-                
-                <a href="/pages/deals.html" class="block">
-                    <button id="nav-deals" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 text-[13px] font-medium rounded-md text-[#94A3B8] hover:text-white hover:bg-[#1E2128]/40 transition-all">
-                        <i data-lucide="git-pull-request" class="w-4 h-4"></i>
-                        <span>Deals & M&A Pipeline</span>
-                    </button>
-                </a>
-
-                <a href="/pages/mandates.html" class="block">
-                    <button id="nav-mandates" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 text-[13px] font-medium rounded-md text-[#94A3B8] hover:text-white hover:bg-[#1E2128]/40 transition-all">
-                        <i data-lucide="file-signature" class="w-4 h-4"></i>
-                        <span>Mandates & Projects</span>
-                    </button>
-                </a>
-
-                <p class="text-[10px] uppercase font-bold tracking-widest text-zinc-600 px-3.5 mb-2 mt-4">Audits & Governance</p>
-                
-                <a href="/pages/dataroom.html" class="block">
-                    <button id="nav-data-room" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 text-[13px] font-medium rounded-md text-[#94A3B8] hover:text-white hover:bg-[#1E2128]/40 transition-all">
-                        <i data-lucide="hard-drive" class="w-4 h-4"></i>
-                        <span>Data Room</span>
-                    </button>
-                </a>
-
-                <a href="/pages/team.html" class="block">
-                    <button id="nav-team-management" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 text-[13px] font-medium rounded-md text-[#94A3B8] hover:text-white hover:bg-[#1E2128]/40 transition-all">
-                        <i data-lucide="users-2" class="w-4 h-4"></i>
-                        <span>Team Management</span>
-                    </button>
-                </a>
-
-                <a href="/pages/payments.html" class="block">
-                    <button id="nav-payments-invoices" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 text-[13px] font-medium rounded-md text-[#94A3B8] hover:text-white hover:bg-[#1E2128]/40 transition-all">
-                        <i data-lucide="receipt" class="w-4 h-4"></i>
-                        <span>Payments</span>
-                    </button>
-                </a>
-
-                <a href="/pages/reports.html" class="block">
-                    <button id="nav-reports-analytics" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 text-[13px] font-medium rounded-md text-[#94A3B8] hover:text-white hover:bg-[#1E2128]/40 transition-all">
-                        <i data-lucide="bar-chart-3" class="w-4 h-4"></i>
-                        <span>Reports & Analytics</span>
-                    </button>
-                </a>
-
-                <a href="/pages/settings.html" class="block">
-                    <button id="nav-settings" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 text-[13px] font-medium rounded-md text-[#94A3B8] hover:text-white hover:bg-[#1E2128]/40 transition-all">
-                        <i data-lucide="settings" class="w-4 h-4"></i>
-                        <span>Settings</span>
-                    </button>
-                </a>
-            </div>
+            <div class="p-4 text-center text-xs text-slate-600 border-t border-slate-900"><p class="sidebar-label">© 2026 Charantra</p></div>
         </aside>
 
-        <!-- MAIN LAYOUT -->
-        <main class="flex-1 ml-80 flex flex-col min-h-screen">
-            <!-- APP HEADER -->
-            <header class="h-16 bg-white border-b border-slate-100 flex items-center justify-between px-6 sticky top-0 z-40 shadow-xs">
-                <div class="relative w-80">
-                    <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-3.5 h-3.5"></i>
-                    <input type="text" id="global-search" oninput="executeGlobalSearch()" placeholder="Search investors, deals, documents..." class="w-full pl-9 pr-3 py-1.5 bg-slate-50 border border-transparent rounded-md text-xs focus:ring-2 focus:ring-orange-500/10 focus:border-orange-500 focus:bg-white outline-none transition-all">
-                </div>
-
-                <!-- Actions / Session -->
-                <div class="flex items-center gap-4">
-                    <div class="flex items-center gap-1.5 bg-slate-50 px-2.5 py-1 rounded-md border border-slate-100">
-                        <span class="text-xs font-bold text-slate-700">INR (₹)</span>
-                        <i data-lucide="chevron-down" class="w-3 h-3 text-slate-400"></i>
-                    </div>
-
-                    <!-- Theme Switcher -->
-                    <button class="text-slate-400 hover:text-orange-500 transition-colors">
-                        <i data-lucide="sun" class="w-4 h-4"></i>
-                    </button>
-
-
-                    <div class="relative">
-                        <span class="absolute -top-1 -right-1 w-3.5 h-3.5 bg-orange-600 text-[8px] font-extrabold text-white rounded-md flex items-center justify-center">3</span>
-                        <button class="p-2 bg-slate-50 border border-slate-100 rounded-md text-slate-500 hover:text-slate-800 transition-colors">
-                            <i data-lucide="bell" class="w-3.5 h-3.5"></i>
-                        </button>
-                    </div>
-
-                    <div class="flex items-center gap-2.5 border-l border-slate-100 pl-4">
-                        <div class="text-right">
-                            <p class="text-xs font-bold text-slate-900 leading-none">KARTHIK</p>
-                            <p class="text-[9px] text-orange-500 font-bold uppercase tracking-wider mt-0.5">SUPER ADMIN</p>
-                        </div>
-                        <div class="w-8 h-8 bg-[#0B0C0E] rounded-md flex items-center justify-center text-white font-bold tracking-tight shadow-xs text-xs">
-                            K
-                        </div>
-                    </div>
+        <!-- MAIN CONTENT PANEL -->
+        <main class="flex-1 flex flex-col h-full overflow-hidden">
+            <header class="h-16 border-b border-brand-borderGray bg-white flex items-center justify-between px-8 shrink-0 select-none">
+                <div class="w-96 relative"><span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400"><i class="fa-solid fa-magnifying-glass text-xs"></i></span><input type="text" id="header-search" oninput="handleSearch(this.value)" class="w-full bg-slate-50 border border-slate-200 rounded-lg py-1.5 pl-9 pr-4 text-xs focus:outline-none focus:border-brand-orange transition" placeholder="Search mandates, companies, investors..."></div>
+                <div class="flex items-center gap-5">
+                    <div class="flex items-center gap-1 border border-slate-200 rounded-lg px-2.5 py-1 bg-slate-50 text-xs text-slate-600"><span class="font-semibold text-slate-700">INR (₹)</span><i class="fa-solid fa-chevron-down text-[9px] text-slate-400"></i></div>
+                    <div class="flex items-center gap-3 border-l border-slate-200 pl-4"><div class="text-right"><p class="text-xs font-bold text-slate-900 leading-none">KARTHIK</p><p class="text-[9px] text-brand-orange font-bold uppercase tracking-wider mt-0.5">SUPER ADMIN</p></div><div class="w-10 h-10 rounded-full bg-[#FF5E00] text-white font-extrabold text-sm flex items-center justify-center shadow">K</div></div>
                 </div>
             </header>
 
-            <!-- WORKSPACE CONTAINER -->
-            <div class="p-6 flex-1 flex flex-col max-w-[1600px] w-full mx-auto" id="workspace-target">
-                <!-- Dynamic templates rendered here -->
+            <div class="flex-1 overflow-y-auto p-8">
+                <section class="space-y-6">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                        <div><h2 class="text-2xl font-bold tracking-tight text-slate-900" id="crm-title-header">CRM Directory</h2><p class="text-slate-500 text-xs mt-1" id="crm-desc-header">Manage all onboarded platform participants.</p></div>
+                        <div class="flex items-center gap-2 select-none">
+                            <div class="relative inline-block">
+                                <button onclick="toggleDropdown('export-actions-menu')" class="bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 text-xs font-bold px-4 py-2 rounded-lg flex items-center gap-2 shadow-sm transition"><i class="fa-solid fa-download"></i> Export <i class="fa-solid fa-chevron-down text-[10px]"></i></button>
+                                <div id="export-actions-menu" class="hidden absolute right-0 mt-2 bg-white border border-slate-200 rounded-lg shadow-xl py-1 z-40 text-xs w-44">
+                                    <button onclick="simulateExport('PDF')" class="w-full text-left px-4 py-2 hover:bg-slate-50 text-slate-700 font-medium">Export as PDF</button>
+                                    <button onclick="simulateExport('CSV')" class="w-full text-left px-4 py-2 hover:bg-slate-50 text-slate-700 font-medium">Export as CSV</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-5 gap-4 select-none">
+                        <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-start gap-4 hover:shadow-md transition"><div class="p-3 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0"><i class="fa-solid fa-users text-lg"></i></div><div class="space-y-1"><span class="text-[11px] text-slate-400 font-bold uppercase tracking-wider block" id="crm-card-label-total">Total</span><h3 class="text-2xl font-extrabold text-slate-900" id="crm-card-total">14</h3><p class="text-[11px] font-bold text-emerald-600 flex items-center gap-0.5 mt-1"><i class="fa-solid fa-caret-up"></i><span id="crm-card-total-pct">—</span><span class="text-slate-400 font-medium">vs last month</span></p></div></div>
+                        <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-start gap-4 hover:shadow-md transition"><div class="p-3 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0"><i class="fa-solid fa-circle-user text-lg"></i></div><div class="space-y-1"><span class="text-[11px] text-slate-400 font-bold uppercase tracking-wider block">Active</span><h3 class="text-2xl font-extrabold text-slate-900" id="crm-card-active">10</h3><p class="text-[11px] font-bold text-emerald-600 flex items-center gap-0.5 mt-1"><i class="fa-solid fa-caret-up"></i><span id="crm-card-active-pct">—</span><span class="text-slate-400 font-medium">vs last month</span></p></div></div>
+                        <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-start gap-4 hover:shadow-md transition"><div class="p-3 rounded-xl bg-amber-50 text-amber-500 flex items-center justify-center shrink-0"><i class="fa-solid fa-clock-rotate-left text-lg"></i></div><div class="space-y-1"><span class="text-[11px] text-slate-400 font-bold uppercase tracking-wider block">On Hold</span><h3 class="text-2xl font-extrabold text-slate-900" id="crm-card-onhold">3</h3><p class="text-[11px] font-bold text-emerald-600 flex items-center gap-0.5 mt-1"><i class="fa-solid fa-caret-up"></i><span id="crm-card-onhold-pct">—</span><span class="text-slate-400 font-medium">vs last month</span></p></div></div>
+                        <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-start gap-4 hover:shadow-md transition"><div class="p-3 rounded-xl bg-red-50 text-red-500 flex items-center justify-center shrink-0"><i class="fa-solid fa-user-slash text-lg"></i></div><div class="space-y-1"><span class="text-[11px] text-slate-400 font-bold uppercase tracking-wider block">Inactive</span><h3 class="text-2xl font-extrabold text-slate-900" id="crm-card-inactive">1</h3><p class="text-[11px] font-bold text-emerald-600 flex items-center gap-0.5 mt-1"><i class="fa-solid fa-caret-down"></i><span id="crm-card-inactive-pct">—</span><span class="text-slate-400 font-medium">vs last month</span></p></div></div>
+                        <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-start gap-4 hover:shadow-md transition"><div class="p-3 rounded-xl bg-blue-50 text-blue-500 flex items-center justify-center shrink-0"><i class="fa-solid fa-user-plus text-lg"></i></div><div class="space-y-1"><span class="text-[11px] text-slate-400 font-bold uppercase tracking-wider block">New This Month</span><h3 class="text-2xl font-extrabold text-slate-900" id="crm-card-new">0</h3><p class="text-[11px] font-bold text-emerald-600 flex items-center gap-0.5 mt-1"><i class="fa-solid fa-caret-up"></i><span id="crm-card-new-pct">—</span><span class="text-slate-400 font-medium">vs last month</span></p></div></div>
+                    </div>
+
+                    <div class="bg-white border border-slate-100 rounded-2xl p-4 shadow-sm flex flex-col lg:flex-row gap-3 items-center">
+                        <div class="relative flex-1 w-full"><span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400"><i class="fa-solid fa-search text-xs"></i></span><input type="text" id="crm-search-input" oninput="applyCrmFilters()" class="w-full bg-slate-50 border border-slate-200 rounded-lg text-xs py-2 pl-9 focus:outline-none focus:border-brand-orange" placeholder="Search users by name, company, email..."></div>
+                        <select id="crm-filter-usertype" onchange="applyCrmFilters()" class="bg-slate-50 border border-slate-200 rounded-lg text-xs px-3 py-2 text-slate-600 focus:outline-none focus:border-brand-orange w-full lg:w-40"><option value="all">User Type</option><option value="Investor">Investor</option><option value="Investee">Investee</option><option value="Buyer">Buyer</option><option value="Seller">Seller</option><option value="Advisor">Advisor</option></select>
+                        <select id="crm-filter-status" onchange="applyCrmFilters()" class="bg-slate-50 border border-slate-200 rounded-lg text-xs px-3 py-2 text-slate-600 focus:outline-none focus:border-brand-orange w-full lg:w-40"><option value="all">Status</option><option value="Active">Active</option><option value="On Hold">On Hold</option><option value="Inactive">Inactive</option></select>
+                        <select id="crm-filter-assigned" onchange="applyCrmFilters()" class="bg-slate-50 border border-slate-200 rounded-lg text-xs px-3 py-2 text-slate-600 focus:outline-none focus:border-brand-orange w-full lg:w-40"><option value="all">Assigned To</option><option value="Sarah Chen">Sarah Chen</option><option value="Akash Kumar">Akash Kumar</option><option value="Raj Mehta">Raj Mehta</option><option value="Priya Sharma">Priya Sharma</option><option value="Vikram Gupta">Vikram Gupta</option></select>
+                        <div class="relative w-full lg:w-44"><span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400"><i class="fa-solid fa-calendar-alt text-xs"></i></span><input type="text" id="crm-filter-date" placeholder="Registration Date" class="w-full bg-slate-50 border border-slate-200 rounded-lg text-xs py-2 pl-9 pr-3 focus:outline-none focus:border-brand-orange cursor-pointer" onclick="(this.type='date')" onblur="(this.type='text')" onchange="applyCrmFilters()"></div>
+                        <div class="flex items-center gap-2 w-full lg:w-auto shrink-0">
+                            <button onclick="resetCrmFilters()" class="bg-white hover:bg-slate-50 border border-slate-200 text-slate-600 text-xs px-4 py-2 rounded-lg font-bold w-full lg:w-auto transition shadow-sm">Reset</button>
+                            <button onclick="applyCrmFilters()" class="bg-brand-orange hover:bg-brand-orangeHover text-white text-xs px-4 py-2 rounded-lg font-bold flex items-center justify-center gap-2 w-full lg:w-auto transition shadow-sm"><i class="fa-solid fa-filter text-[10px]"></i> Apply Filters</button>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-2xl border border-slate-100 overflow-hidden shadow-sm">
+                        <div class="overflow-x-auto"><table class="w-full text-left text-xs border-collapse"><thead><tr class="bg-slate-50 border-b border-slate-100 text-slate-500 text-[10px] uppercase font-bold tracking-wider"><th class="p-4 w-12 text-center"><input type="checkbox" onchange="toggleSelectAllCrm(this)" class="accent-brand-orange cursor-pointer rounded"></th><th class="p-4">Name</th><th class="p-4">Company</th><th class="p-4">User Type</th><th class="p-4">Status</th><th class="p-4">Registration Date</th><th class="p-4">Last Active</th><th class="p-4">Assigned To</th><th class="p-4 text-center">Actions</th></tr></thead><tbody id="crm-replicated-table-body" class="divide-y divide-slate-100"></tbody></table></div>
+                        <div class="p-4 bg-slate-50 border-t border-slate-100 flex flex-col sm:flex-row justify-between items-center text-slate-500 text-xs gap-3"><div>Showing <span id="crm-table-info-showing">1 to 8</span> of <span id="crm-table-info-total">356</span> results</div><div class="flex items-center gap-3"><div class="flex items-center gap-1"><button class="w-7 h-7 flex items-center justify-center border border-slate-200 rounded hover:bg-white text-slate-400 transition"><i class="fa-solid fa-chevron-left text-[10px]"></i></button><button class="w-7 h-7 flex items-center justify-center border border-brand-orange/20 bg-brand-orange/5 text-brand-orange font-bold rounded">1</button><button class="w-7 h-7 flex items-center justify-center border border-slate-200 rounded hover:bg-white text-slate-600 transition">2</button></div><select class="border border-slate-200 rounded px-2.5 py-1 text-slate-600 bg-white" onchange="handleCrmTableLimitChange(this.value)"><option value="10">10 / page</option><option value="25">25 / page</option><option value="50">50 / page</option></select></div></div>
+                    </div>
+                </section>
             </div>
         </main>
     </div>
 
-    <!-- MODAL OVERLAYS CONTAINER -->
-    <div id="modal-container" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
-        <!-- Content gets loaded dynamically here -->
-    </div>
-
     <script>
-        const appState = {
-            currentTab: 'investees', // investees | investors | sellers | buyers | advisors
-            viewMode: 'list', 
-            selectedUserId: 'TV-101', 
-            searchQuery: '',
-            isAudioPlaying: false,
-            isVideoPlaying: false,
+        const db = { users: [
+            { id:"USR-001",name:"Sequoia Capital India",email:"info@sequoiacap.com",company:"Sequoia Capital India",type:"Investor",status:"Active",date:"2026-04-12",lastActive:"2 hours ago",assigned:"Sarah Chen",initial:"SC",bgClass:"bg-emerald-50 text-emerald-600" },
+            { id:"USR-002",name:"TechVentures Fund",email:"contact@techventures.com",company:"TechVentures Fund",type:"Investor",status:"Active",date:"2026-04-10",lastActive:"1 day ago",assigned:"Akash Kumar",initial:"TV",bgClass:"bg-purple-50 text-purple-600" },
+            { id:"USR-003",name:"GreenField Capital",email:"hello@greenfieldcap.com",company:"GreenField Capital",type:"Investor",status:"On Hold",date:"2026-04-05",lastActive:"4 days ago",assigned:"Sarah Chen",initial:"GC",bgClass:"bg-amber-50 text-amber-500" },
+            { id:"USR-004",name:"Elevation Capital",email:"investor@elevation.in",company:"Elevation Capital",type:"Investor",status:"Active",date:"2026-04-01",lastActive:"3 hours ago",assigned:"Akash Kumar",initial:"EL",bgClass:"bg-blue-50 text-blue-600" },
+            { id:"USR-005",name:"Blume Ventures",email:"partners@blume.vc",company:"Blume Ventures",type:"Investor",status:"Inactive",date:"2026-03-28",lastActive:"15 days ago",assigned:"Raj Mehta",initial:"BC",bgClass:"bg-rose-50 text-rose-600" },
+            { id:"USR-006",name:"IndiaFund Advisors",email:"contact@indiafund.com",company:"IndiaFund Advisors",type:"Investor",status:"Active",date:"2026-03-22",lastActive:"1 day ago",assigned:"Priya Sharma",initial:"IF",bgClass:"bg-teal-50 text-teal-600" },
+            { id:"USR-007",name:"SV Capital",email:"info@svcapital.com",company:"SV Capital",type:"Investor",status:"On Hold",date:"2026-03-20",lastActive:"7 days ago",assigned:"Vikram Gupta",initial:"SV",bgClass:"bg-sky-50 text-sky-600" },
+            { id:"USR-008",name:"Apex Investments",email:"apex@invest.com",company:"Apex Investments",type:"Investor",status:"Active",date:"2026-03-18",lastActive:"2 hours ago",assigned:"Priya Sharma",initial:"AP",bgClass:"bg-indigo-50 text-indigo-600" },
+            { id:"USR-009",name:"TechVenture Solutions",email:"sarah@techventure.com",company:"TechVenture Solutions",type:"Investee",status:"Active",date:"2026-01-20",lastActive:"2 hours ago",assigned:"Akash Kumar",initial:"TV",bgClass:"bg-emerald-50 text-emerald-600" },
+            { id:"USR-010",name:"Hindustan Enterprises",email:"manda@hindustan.co.in",company:"Hindustan Corp",type:"Investee",status:"Active",date:"2026-02-28",lastActive:"12 hours ago",assigned:"Raj Mehta",initial:"HE",bgClass:"bg-red-50 text-red-500" },
+            { id:"USR-011",name:"Vertex Tech Partners",email:"info@vertexpartners.com",company:"Vertex Partners Ltd",type:"Buyer",status:"Active",date:"2026-03-22",lastActive:"1 day ago",assigned:"Priya Sharma",initial:"VP",bgClass:"bg-teal-50 text-teal-600" },
+            { id:"USR-012",name:"Teton Group Ventures",email:"cooper@tetongroup.com",company:"Teton Ventures",type:"Buyer",status:"Active",date:"2026-03-18",lastActive:"5 hours ago",assigned:"Vikram Gupta",initial:"TG",bgClass:"bg-slate-50 text-slate-700" },
+            { id:"USR-013",name:"Mittal Asset Holdings",email:"corp@mittalassets.in",company:"Mittal Assets",type:"Seller",status:"On Hold",date:"2026-03-01",lastActive:"3 days ago",assigned:"Sarah Chen",initial:"MA",bgClass:"bg-amber-50 text-amber-500" },
+            { id:"USR-014",name:"Pinnacle Corp",email:"deals@pinnaclecorp.com",company:"Pinnacle Corp",type:"Seller",status:"Active",date:"2026-02-15",lastActive:"8 hours ago",assigned:"Akash Kumar",initial:"PC",bgClass:"bg-indigo-50 text-indigo-600" },
+            { id:"USR-015",name:"Grant Thornton Advisory",email:"advisory@grantthornton.in",company:"Grant Thornton India",type:"Advisor",status:"Active",date:"2026-04-08",lastActive:"1 hour ago",assigned:"Sarah Chen",initial:"GT",bgClass:"bg-cyan-50 text-cyan-600" },
+            { id:"USR-016",name:"KPMG India",email:"dealadvisory@kpmg.co.in",company:"KPMG India LLP",type:"Advisor",status:"Active",date:"2026-03-15",lastActive:"3 hours ago",assigned:"Priya Sharma",initial:"KP",bgClass:"bg-lime-50 text-lime-600" },
+        ]};
+        let currentPage=1,pageSize=10;
 
-            // Replicated counts matching image_77450b.png precisely
-            counts: {
-                investees: 48,
-                investors: 29,
-                sellers: 21,
-                buyers: 18,
-                advisors: 26
-            },
+        function toggleSidebarCollapse(){document.getElementById('app-sidebar').classList.toggle('collapsed');document.querySelectorAll('.sidebar-section-div').forEach(el=>{if(document.getElementById('app-sidebar').classList.contains('collapsed'))el.style.maxHeight='0'});}
+        function toggleSidebarSection(id){if(document.getElementById('app-sidebar').classList.contains('collapsed'))return;const el=document.getElementById(id),arrow=document.getElementById('arrow-'+id);if(el){const open=el.style.maxHeight!=='0px'&&el.style.maxHeight!=='';el.style.maxHeight=open?'0':'200px'}if(arrow)arrow.style.transform=arrow.style.transform==='rotate(180deg)'?'rotate(0deg)':'rotate(180deg)'}
+        function toggleDropdown(id){const el=document.getElementById(id);if(el)el.classList.toggle('hidden')}
+        function handleSearch(term){document.getElementById('crm-search-input').value=term;applyCrmFilters()}
 
-            // Cleaned real dataset mapping to prevent tab switching data duplication
-            users: {
-                investees: [
-                    {
-                        id: 'TV-101',
-                        name: 'TechVenture Solutions',
-                        founder: 'Sarah Chen',
-                        role: 'CEO',
-                        email: 'sarah@techventure.com',
-                        phone: '+91 98765 43211',
-                        roleType: 'INVESTEE',
-                        completeness: 92,
-                        lastActivity: '2 days ago',
-                        joinedOn: '21 Apr 2025',
-                        status: 'ACTIVE',
-                        industry: 'SaaS / AI',
-                        location: 'Bengaluru, India',
-                        teamSize: '25 Members',
-                        desc: 'AI-powered customer support platform automating resolutions for top e-commerce brands.',
-                        about: 'TechVenture Solutions is revolutionizing the customer service industry with state-of-the-art AI. Our proprietary engine automates up to 70% of support tickets while maintaining human-like empathy and resolution accuracy. We currently partner with over 150 enterprise clients globally.',
-                        fundingRequired: '₹5.00 Cr',
-                        preMoneyValuation: '₹25 Cr',
-                        equityOffered: '20%',
-                        useOfFunds: ['Product Expansion', 'Sales & Marketing', 'Team Building'],
-                        tags: ['AI Powered', 'SaaS', 'B2B', 'Cloud Native'],
-                        reviewSummary: { created: true, kyc: true, docs: true, media: true, infoReq: true },
-                        onboarding: { created: '21 Apr 2025', approved: '21 Apr 2025', submitted: '21 Apr 2025', lastAct: '2 hours ago' },
-                        engagement: { sent: 3, requested: 2, received: 1, pending: 2 },
-                        rmName: 'Rahul Mehta',
-                        rmEmail: 'rmehta@charantra.com'
-                    },
-                    {
-                        id: 'TC-102',
-                        name: 'TechCore Industries',
-                        founder: 'Priya Sharma',
-                        role: 'CEO',
-                        email: 'priya@techcore.com',
-                        phone: '+91 98765 43211',
-                        roleType: 'INVESTEE',
-                        completeness: 78,
-                        lastActivity: '1 day ago',
-                        joinedOn: '20 Apr 2025',
-                        status: 'ACTIVE',
-                        industry: 'IoT Hardware',
-                        location: 'Pune, MH',
-                        teamSize: '14 Members',
-                        desc: 'Real-time telemetry and edge analytics pipelines designed for manufacturing assemblies.',
-                        about: 'Real-time telemetry and edge analytics pipelines designed for manufacturing assemblies and legacy heavy machinery interfaces.',
-                        fundingRequired: '₹6.50 Cr',
-                        preMoneyValuation: '₹35 Cr',
-                        equityOffered: '18%',
-                        useOfFunds: ['R&D', 'Hardware Procurement', 'Scaling Sales'],
-                        tags: ['IoT', 'Hardware', 'Industrial', 'Edge AI'],
-                        reviewSummary: { created: true, kyc: true, docs: true, media: false, infoReq: false },
-                        onboarding: { created: '20 Apr 2025', approved: '20 Apr 2025', submitted: '20 Apr 2025', lastAct: '1 day ago' },
-                        engagement: { sent: 1, requested: 0, received: 0, pending: 1 },
-                        rmName: 'Rahul Mehta',
-                        rmEmail: 'rmehta@charantra.com'
-                    },
-                    {
-                        id: 'GF-103',
-                        name: 'GreenField Investments',
-                        founder: 'Dr. Alok Sen',
-                        role: 'Managing Partner',
-                        email: 'alok@greenfield.com',
-                        phone: '+91 98765 43212',
-                        roleType: 'INVESTEE',
-                        completeness: 65,
-                        lastActivity: '3 days ago',
-                        joinedOn: '19 Apr 2025',
-                        status: 'INFO REQUESTED',
-                        industry: 'AgriTech Infrastructure',
-                        location: 'Hyderabad, India',
-                        teamSize: '40 Members',
-                        desc: 'GreenField is deploying micro-grid battery arrays targeting zero-transmission losses.',
-                        about: 'GreenField is deploying micro-grid battery arrays targeting zero-transmission losses for clean power setups.',
-                        fundingRequired: '₹18.00 Cr',
-                        preMoneyValuation: '₹90 Cr',
-                        equityOffered: '20%',
-                        useOfFunds: ['Battery Arrays', 'Microgrid setup', 'Logistics'],
-                        tags: ['CleanTech', 'Infrastructure', 'AgriTech', 'Battery'],
-                        reviewSummary: { created: true, kyc: true, docs: false, media: false, infoReq: true },
-                        onboarding: { created: '19 Apr 2025', approved: '19 Apr 2025', submitted: '19 Apr 2025', lastAct: '3 days ago' },
-                        engagement: { sent: 4, requested: 2, received: 1, pending: 3 },
-                        rmName: 'Rahul Mehta',
-                        rmEmail: 'rmehta@charantra.com'
-                    },
-                    {
-                        id: 'IN-105',
-                        name: 'Innova Energy Pvt Ltd',
-                        founder: 'Rahul Kapoor',
-                        role: 'Founder',
-                        email: 'rahul@innovaenergy.com',
-                        phone: '+91 98765 43214',
-                        roleType: 'INVESTEE',
-                        completeness: 71,
-                        lastActivity: '1 day ago',
-                        joinedOn: '17 Apr 2025',
-                        status: 'ON HOLD',
-                        industry: 'Solar Technology',
-                        location: 'Chennai, TN',
-                        teamSize: '10 Members',
-                        desc: 'Decentralized smart solar grid monitors and distribution controllers.',
-                        about: 'Decentralized smart solar grid monitors and distribution controllers.',
-                        fundingRequired: '₹4.50 Cr',
-                        preMoneyValuation: '₹22 Cr',
-                        equityOffered: '15%',
-                        useOfFunds: ['R&D', 'Product Release'],
-                        tags: ['Solar', 'Smart Grid', 'CleanTech'],
-                        reviewSummary: { created: true, kyc: true, docs: false, media: false, infoReq: true },
-                        onboarding: { created: '17 Apr 2025', approved: '17 Apr 2025', submitted: '17 Apr 2025', lastAct: '1 day ago' },
-                        engagement: { sent: 1, requested: 2, received: 0, pending: 2 },
-                        rmName: 'Rahul Mehta',
-                        rmEmail: 'rmehta@charantra.com'
-                    }
-                ],
-                investors: [
-                    {
-                        id: 'MP-106',
-                        name: 'Matrix Partners India',
-                        founder: 'Vikram Iyer',
-                        role: 'Investment Director',
-                        email: 'vikram@matrixpartners.com',
-                        phone: '+91 98765 43215',
-                        roleType: 'INVESTOR',
-                        completeness: 95,
-                        lastActivity: '2 hours ago',
-                        joinedOn: '16 Apr 2025',
-                        status: 'ACTIVE',
-                        industry: 'Growth Capital VC',
-                        location: 'Mumbai, India',
-                        teamSize: '50 Members',
-                        desc: 'Early stage & growth equity venture partners investing across SaaS and CleanTech.',
-                        about: 'Early stage & growth equity venture partners investing across SaaS and CleanTech.',
-                        fundingRequired: '₹200 Cr AUM',
-                        preMoneyValuation: 'N/A',
-                        equityOffered: 'N/A',
-                        useOfFunds: ['SaaS ventures', 'CleanTech', 'FinTech'],
-                        tags: ['VC', 'Growth', 'India', 'SaaS'],
-                        reviewSummary: { created: true, kyc: true, docs: true, media: true, infoReq: false },
-                        onboarding: { created: '16 Apr 2025', approved: '16 Apr 2025', submitted: '16 Apr 2025', lastAct: '2 hours ago' },
-                        engagement: { sent: 10, requested: 1, received: 3, pending: 0 },
-                        rmName: 'Rahul Mehta',
-                        rmEmail: 'rmehta@charantra.com'
-                    },
-                    {
-                        id: 'SC-107',
-                        name: 'Sequoia Capital India',
-                        founder: 'Karan Mehta',
-                        role: 'Partner',
-                        email: 'karan@sequoia.com',
-                        phone: '+91 98765 43216',
-                        roleType: 'INVESTOR',
-                        completeness: 90,
-                        lastActivity: '1 day ago',
-                        joinedOn: '15 Apr 2025',
-                        status: 'ACTIVE',
-                        industry: 'Tier-1 Institutional Venture',
-                        location: 'Bengaluru, India',
-                        teamSize: '120 Members',
-                        desc: 'Global investment firm funding visionary founders from seed to IPO stage.',
-                        about: 'Global investment firm funding visionary founders from seed to IPO stage.',
-                        fundingRequired: '₹12,000 Cr AUM',
-                        preMoneyValuation: 'N/A',
-                        equityOffered: 'N/A',
-                        useOfFunds: ['Consumer internet', 'SaaS', 'Enterprise'],
-                        tags: ['Institutional', 'Tier-1', 'IPO Target'],
-                        reviewSummary: { created: true, kyc: true, docs: true, media: true, infoReq: false },
-                        onboarding: { created: '15 Apr 2025', approved: '15 Apr 2025', submitted: '15 Apr 2025', lastAct: '1 day ago' },
-                        engagement: { sent: 15, requested: 3, received: 5, pending: 1 },
-                        rmName: 'Rahul Mehta',
-                        rmEmail: 'rmehta@charantra.com'
-                    }
-                ],
-                sellers: [
-                    {
-                        id: 'AR-104',
-                        name: 'Apex Retail Pvt Ltd',
-                        founder: 'Neha Verma',
-                        role: 'CEO',
-                        email: 'neha@apexretail.com',
-                        phone: '+91 98765 43213',
-                        roleType: 'SELLER',
-                        completeness: 88,
-                        lastActivity: '5 hours ago',
-                        joinedOn: '18 Apr 2025',
-                        status: 'ACTIVE',
-                        industry: 'Retail Tech / SaaS',
-                        location: 'Mumbai, MH',
-                        teamSize: '15 Members',
-                        desc: 'E-commerce logistics & digital storefront setup optimizer for enterprise operations.',
-                        about: 'E-commerce logistics & digital storefront setup optimizer for enterprise operations.',
-                        fundingRequired: '₹12.00 Cr',
-                        preMoneyValuation: '₹60 Cr',
-                        equityOffered: '20%',
-                        useOfFunds: ['Warehouse setups', 'App Development'],
-                        tags: ['E-commerce', 'Logistics', 'Retail', 'Enterprise'],
-                        reviewSummary: { created: true, kyc: true, docs: true, media: true, infoReq: false },
-                        onboarding: { created: '18 Apr 2025', approved: '18 Apr 2025', submitted: '18 Apr 2025', lastAct: '5 hours ago' },
-                        engagement: { sent: 2, requested: 1, received: 1, pending: 1 },
-                        rmName: 'Rahul Mehta',
-                        rmEmail: 'rmehta@charantra.com'
-                    }
-                ],
-                buyers: [
-                    {
-                        id: 'BY-108',
-                        name: 'Reliance Retail',
-                        founder: 'Alok Ambani',
-                        role: 'VP M&A',
-                        email: 'alok@reliance.com',
-                        phone: '+91 22 3555 5000',
-                        roleType: 'BUYER',
-                        completeness: 85,
-                        lastActivity: '2 days ago',
-                        joinedOn: '14 Apr 2025',
-                        status: 'ACTIVE',
-                        industry: 'Retail Tech / Automation',
-                        location: 'Mumbai, India',
-                        teamSize: '500+ Members',
-                        desc: 'Retail tech integration and strategic buyouts division.',
-                        about: 'Retail tech integration and strategic buyouts division seeking advanced retail automation platforms.',
-                        fundingRequired: '₹150 Cr Target',
-                        preMoneyValuation: 'N/A',
-                        equityOffered: 'N/A',
-                        useOfFunds: ['Buyouts', 'Retail Automation'],
-                        tags: ['Retail', 'Enterprise', 'Acquisition'],
-                        reviewSummary: { created: true, kyc: true, docs: true, media: false, infoReq: false },
-                        onboarding: { created: '14 Apr 2025', approved: '14 Apr 2025', submitted: '14 Apr 2025', lastAct: '2 days ago' },
-                        engagement: { sent: 5, requested: 1, received: 1, pending: 0 },
-                        rmName: 'Rahul Mehta',
-                        rmEmail: 'rmehta@charantra.com'
-                    }
-                ],
-                advisors: [
-                    {
-                        id: 'AD-109',
-                        name: 'KPMG Advisory Desk',
-                        founder: 'Karan Mehra',
-                        role: 'Lead Partner',
-                        email: 'karan@kpmg-desk.in',
-                        phone: '+91 22 6100 2000',
-                        roleType: 'ADVISOR',
-                        completeness: 92,
-                        lastActivity: '1 hour ago',
-                        joinedOn: '12 Apr 2025',
-                        status: 'ACTIVE',
-                        industry: 'Financial Advisory',
-                        location: 'Mumbai, India',
-                        teamSize: '150 Members',
-                        desc: 'Financial due diligence partner audit workspace.',
-                        about: 'Financial due diligence partner audit workspace specializing in transaction advisory and target verification.',
-                        fundingRequired: 'Financial Audit Partner',
-                        preMoneyValuation: 'N/A',
-                        equityOffered: 'N/A',
-                        useOfFunds: ['Audit'],
-                        tags: ['Advisor', 'Audit', 'Finance'],
-                        reviewSummary: { created: true, kyc: true, docs: true, media: true, infoReq: false },
-                        onboarding: { created: '12 Apr 2025', approved: '12 Apr 2025', submitted: '12 Apr 2025', lastAct: '1 hour ago' },
-                        engagement: { sent: 25, requested: 5, received: 4, pending: 0 },
-                        rmName: 'Rahul Mehta',
-                        rmEmail: 'rmehta@charantra.com'
-                    }
-                ]
-            }
-        };
-
-        window.addEventListener('DOMContentLoaded', () => {
-            renderWorkspace();
-        });
-
-        function setCrmTab(tabId) {
-            appState.currentTab = tabId;
-            renderWorkspace();
+        function highlightSidebarType(){
+            const params=new URLSearchParams(window.location.search);const type=params.get('type');
+            document.querySelectorAll('#crm-section button[id^="sub-"]').forEach(b=>{b.classList.remove('sub-active');b.classList.add('text-slate-400')});
+            if(type){const btn=document.getElementById('sub-'+type.toLowerCase());if(btn){btn.classList.add('sub-active');btn.classList.remove('text-slate-400');document.getElementById('crm-filter-usertype').value=type;
+            const titles={'Investor':'Investors','Investee':'Investees','Buyer':'Buyers','Seller':'Sellers','Advisor':'Advisors'};
+            document.getElementById('crm-title-header').innerText=titles[type]||'CRM';
+            document.getElementById('crm-desc-header').innerText='Manage all '+type.toLowerCase()+' profiles onboarded on the platform.';
+            }}
         }
 
-        function setViewMode(mode, userId = null) {
-            appState.viewMode = mode;
-            if (userId) {
-                appState.selectedUserId = userId;
-            }
-            renderWorkspace();
+        function renderCrmDirectory(users){
+            const tb=document.getElementById('crm-replicated-table-body');tb.innerHTML='';
+            if(!users.length){tb.innerHTML='<tr><td colspan="9" class="p-8 text-center text-slate-400 font-medium">No profiles matching selected filters.</td></tr>';document.getElementById('crm-table-info-showing').innerText='0';document.getElementById('crm-table-info-total').innerText='0';return}
+            const start=(currentPage-1)*pageSize,end=Math.min(start+pageSize,users.length),pu=users.slice(start,end);
+            pu.forEach(u=>{let sc="bg-emerald-50 text-emerald-700 border-emerald-100";if(u.status==='On Hold')sc="bg-amber-50 text-amber-700 border-amber-100";else if(u.status==='Inactive')sc="bg-slate-100 text-slate-500 border-slate-200";
+            tb.innerHTML+=`<tr class="hover:bg-slate-50/60 transition duration-150 border-b border-slate-100"><td class="p-4 text-center"><input type="checkbox" class="accent-brand-orange cursor-pointer rounded crm-select-checkbox" data-id="${u.id}"></td><td class="p-4 flex items-center gap-3"><div class="w-8 h-8 rounded-lg ${u.bgClass} flex items-center justify-center font-bold text-xs">${u.initial}</div><div><a href="/pages/crm-detail.html?user=${encodeURIComponent(u.name)}" class="font-bold text-slate-900 hover:text-brand-orange hover:underline transition">${u.name}</a><span class="text-[10px] text-slate-400 font-semibold lowercase block mt-0.5">${u.email}</span></div></td><td class="p-4 font-semibold text-slate-700">${u.company}</td><td class="p-4"><span class="bg-purple-50 text-purple-600 text-[10px] font-bold px-2 py-0.5 rounded-full">${u.type}</span></td><td class="p-4"><span class="text-[10px] font-bold px-2 py-0.5 rounded-full border ${sc}">${u.status}</span></td><td class="p-4 text-slate-500 font-medium">${u.date}</td><td class="p-4 text-slate-500 font-medium">${u.lastActive}</td><td class="p-4 font-bold text-slate-700">${u.assigned}</td><td class="p-4 text-center"><div class="flex items-center justify-center gap-1"><a href="/pages/crm-detail.html?user=${encodeURIComponent(u.name)}" class="text-slate-400 hover:text-brand-orange p-1.5 rounded transition" title="View"><i class="fa-solid fa-eye text-xs"></i></a><button onclick="simSend('${u.name}')" class="text-slate-400 hover:text-blue-500 p-1.5 rounded transition"><i class="fa-regular fa-comment-dots text-xs"></i></button><div class="relative"><button onclick="toggleActMenu(event,'${u.id}')" class="text-slate-400 hover:text-slate-700 p-1.5 rounded transition"><i class="fa-solid fa-ellipsis-vertical text-xs"></i></button><div id="act-menu-${u.id}" class="hidden absolute right-0 mt-1 bg-white border border-slate-200 rounded-lg shadow-xl py-1 z-50 text-xs w-40" style="top:100%"><button onclick="viewDocs('${u.name}')" class="w-full text-left px-4 py-2 hover:bg-slate-50 text-slate-700 font-medium flex items-center gap-2"><i class="fa-solid fa-file-lines text-[10px] text-slate-400"></i> View Documents</button><button onclick="delUser('${u.id}')" class="w-full text-left px-4 py-2 hover:bg-rose-50 text-rose-600 font-medium flex items-center gap-2"><i class="fa-solid fa-trash text-[10px]"></i> Delete</button></div></div></div></td></tr>`});
+            document.getElementById('crm-table-info-showing').innerText=`${start+1} to ${end}`;document.getElementById('crm-table-info-total').innerText=users.length;
         }
 
-        function executeGlobalSearch() {
-            const q = document.getElementById('global-search').value.toLowerCase();
-            appState.searchQuery = q;
-            renderWorkspace();
+        function updateCrmKpiCards(users){
+            const total=users.length;
+            const active=users.filter(u=>u.status==='Active').length;
+            const onhold=users.filter(u=>u.status==='On Hold').length;
+            const inactive=users.filter(u=>u.status==='Inactive').length;
+            const now=new Date();const m=String(now.getMonth()+1).padStart(2,'0');const y=now.getFullYear();const prefix=y+'-'+m;
+            const newThisMonth=users.filter(u=>u.date&&u.date.startsWith(prefix)).length;
+            document.getElementById('crm-card-total').innerText=total;
+            document.getElementById('crm-card-active').innerText=active;
+            document.getElementById('crm-card-onhold').innerText=onhold;
+            document.getElementById('crm-card-inactive').innerText=inactive;
+            document.getElementById('crm-card-new').innerText=newThisMonth;
+            const pct=(v,t)=>t===0?'—':Math.round(v/t*100)+'%';
+            document.getElementById('crm-card-active-pct').innerText=pct(active,total);
+            document.getElementById('crm-card-onhold-pct').innerText=pct(onhold,total);
+            document.getElementById('crm-card-inactive-pct').innerText=pct(inactive,total);
+            document.getElementById('crm-card-new-pct').innerText=pct(newThisMonth,total);
         }
+        function applyCrmFilters(){const s=document.getElementById('crm-search-input').value.toLowerCase(),t=document.getElementById('crm-filter-usertype').value,st=document.getElementById('crm-filter-status').value,a=document.getElementById('crm-filter-assigned').value,d=document.getElementById('crm-filter-date').value;const f=db.users.filter(u=>(!s||u.name.toLowerCase().includes(s)||u.company.toLowerCase().includes(s)||u.email.toLowerCase().includes(s))&&(t==='all'||u.type===t)&&(st==='all'||u.status===st)&&(a==='all'||u.assigned===a)&&(!d||u.date===d));updateCrmKpiCards(f);renderCrmDirectory(f)}
+        function resetCrmFilters(){['crm-search-input','crm-filter-usertype','crm-filter-status','crm-filter-assigned','crm-filter-date'].forEach(id=>{const el=document.getElementById(id);if(el.tagName==='SELECT')el.value='all';else el.value=''});currentPage=1;applyCrmFilters()}
+        function delUser(id){db.users=db.users.filter(u=>u.id!==id);applyCrmFilters()}
+        function toggleSelectAllCrm(cb){document.querySelectorAll('.crm-select-checkbox').forEach(c=>c.checked=cb.checked)}
+        function handleCrmTableLimitChange(v){console.log('Page size:',v)}
+        function simulateExport(f){console.log('Export as',f)}
+        function simSend(n){console.log('Message:',n)}
+        function toggleActMenu(e,id){e.stopPropagation();document.querySelectorAll('[id^="act-menu-"]').forEach(el=>{if(el.id!=='act-menu-'+id)el.classList.add('hidden')});const m=document.getElementById('act-menu-'+id);if(m)m.classList.toggle('hidden')}
+        function viewDocs(n){window.location.href='/pages/crm-detail.html?user='+encodeURIComponent(n)+'&tab=Documents'}
 
-        function handleSearchChange(e) {
-            appState.searchQuery = e.value.toLowerCase();
-            renderWorkspace();
-        }
-
-        function navigateFlow(secId) {
-            if (secId !== 'crm') {
-                console.log(`Navigating to section: ${secId}`);
-            }
-        }
+        window.addEventListener('click',function(e){if(!e.target.closest('.relative'))document.querySelectorAll('[id$="-menu"],[id^="act-menu-"]').forEach(el=>el.classList.add('hidden'))});
+        window.onload=function(){highlightSidebarType();applyCrmFilters()};
     </script>
-
-    <script>
-        // --- VIEW TEMPLATE: USER DIRECTORY LISTING (image_77450b.png & image_94bea3.jpg) ---
-        function getDirectoryView() {
-            // Get correct dataset based on active category switcher tab
-            const rawData = appState.users[appState.currentTab] || [];
-            
-            const filteredUsers = rawData.filter(u => {
-                return u.name.toLowerCase().includes(appState.searchQuery) ||
-                       u.founder.toLowerCase().includes(appState.searchQuery) ||
-                       u.email.toLowerCase().includes(appState.searchQuery) ||
-                       u.phone.includes(appState.searchQuery);
-            });
-
-            return `
-                <div class="fade-in-view space-y-4">
-                    <!-- Title banner block -->
-                    <div class="flex justify-between items-center">
-                        <div>
-                            <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight">CRM & Users</h1>
-                            <p class="text-slate-500 font-medium text-xs mt-0.5">Monitor all onboarded users, review profiles, and engage as needed.</p>
-                        </div>
-                    </div>
-
-                    <!-- Category filter subtabs with exact metrics and semi-rounded bounds -->
-                    <div class="flex gap-6 border-b border-slate-200 text-xs font-bold uppercase tracking-wider">
-                        <button onclick="setCrmTab('investees')" class="pb-2.5 transition-all ${appState.currentTab === 'investees' ? 'subtab-active text-orange-500' : 'text-slate-400 hover:text-slate-600'}">Investees (${appState.counts.investees})</button>
-                        <button onclick="setCrmTab('investors')" class="pb-2.5 transition-all ${appState.currentTab === 'investors' ? 'subtab-active text-orange-500' : 'text-slate-400 hover:text-slate-600'}">Investors (${appState.counts.investors})</button>
-                        <button onclick="setCrmTab('sellers')" class="pb-2.5 transition-all ${appState.currentTab === 'sellers' ? 'subtab-active text-orange-500' : 'text-slate-400 hover:text-slate-600'}">Sellers (${appState.counts.sellers})</button>
-                        <button onclick="setCrmTab('buyers')" class="pb-2.5 transition-all ${appState.currentTab === 'buyers' ? 'subtab-active text-orange-500' : 'text-slate-400 hover:text-slate-600'}">Buyers (${appState.counts.buyers})</button>
-                        <button onclick="setCrmTab('advisors')" class="pb-2.5 transition-all ${appState.currentTab === 'advisors' ? 'subtab-active text-orange-500' : 'text-slate-400 hover:text-slate-600'}">Advisors (${appState.counts.advisors})</button>
-                    </div>
-
-                    <!-- Stat cards segment with reduced paddings & margins -->
-                    <div class="grid grid-cols-1 md:grid-cols-5 gap-3.5">
-                        <div class="bg-white p-4 rounded-md border border-slate-200/50 shadow-xs flex items-center gap-3 interactive-card">
-                            <div class="p-2.5 bg-purple-50 text-purple-600 rounded-md">
-                                <i data-lucide="users" class="w-4.5 h-4.5"></i>
-                            </div>
-                            <div>
-                                <p class="text-[9px] text-slate-400 font-extrabold uppercase tracking-wider">Total Users</p>
-                                <h4 class="text-lg font-bold text-slate-900 leading-tight">142</h4>
-                                <span class="text-[8px] text-slate-400 font-semibold">All onboarded users</span>
-                            </div>
-                        </div>
-
-                        <div class="bg-white p-4 rounded-md border border-slate-200/50 shadow-xs flex items-center gap-3 interactive-card">
-                            <div class="p-2.5 bg-green-50 text-green-600 rounded-md">
-                                <i data-lucide="check-circle" class="w-4.5 h-4.5"></i>
-                            </div>
-                            <div>
-                                <p class="text-[9px] text-slate-400 font-extrabold uppercase tracking-wider">Active</p>
-                                <h4 class="text-lg font-bold text-slate-900 leading-tight">118</h4>
-                                <span class="text-[8px] text-green-600 font-bold">Active profiles</span>
-                            </div>
-                        </div>
-
-                        <div class="bg-white p-4 rounded-md border border-slate-200/50 shadow-xs flex items-center gap-3 interactive-card">
-                            <div class="p-2.5 bg-amber-50 text-amber-600 rounded-md">
-                                <i data-lucide="pause-circle" class="w-4.5 h-4.5"></i>
-                            </div>
-                            <div>
-                                <p class="text-[9px] text-slate-400 font-extrabold uppercase tracking-wider">On Hold</p>
-                                <h4 class="text-lg font-bold text-slate-900 leading-tight">21</h4>
-                                <span class="text-[8px] text-amber-500 font-semibold">Temporarily on hold</span>
-                            </div>
-                        </div>
-
-                        <div class="bg-white p-4 rounded-md border border-slate-200/50 shadow-xs flex items-center gap-3 interactive-card">
-                            <div class="p-2.5 bg-blue-50 text-blue-600 rounded-md">
-                                <i data-lucide="message-square" class="w-4.5 h-4.5"></i>
-                            </div>
-                            <div>
-                                <p class="text-[9px] text-slate-400 font-extrabold uppercase tracking-wider">Engaged Today</p>
-                                <h4 class="text-lg font-bold text-slate-900 leading-tight">16</h4>
-                                <span class="text-[8px] text-blue-500 font-semibold">Messaged or contacted</span>
-                            </div>
-                        </div>
-
-                        <div class="bg-white p-4 rounded-md border border-slate-200/50 shadow-xs flex items-center gap-3 interactive-card">
-                            <div class="p-2.5 bg-pink-50 text-pink-600 rounded-md">
-                                <i data-lucide="file-warning" class="w-4.5 h-4.5"></i>
-                            </div>
-                            <div>
-                                <p class="text-[9px] text-slate-400 font-extrabold uppercase tracking-wider">Info Requested</p>
-                                <h4 class="text-lg font-bold text-slate-900 leading-tight">9</h4>
-                                <span class="text-[8px] text-red-500 font-semibold">Awaiting user response</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Directory controls & search toolbar -->
-                    <div class="bg-white p-5 rounded-md border border-slate-200/50 shadow-xs space-y-4">
-                        <div class="flex gap-3 items-center justify-between">
-                            <div class="relative flex-1">
-                                <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-3.5 h-3.5"></i>
-                                <input type="text" id="crm-search" oninput="handleSearchChange(this)" placeholder="Search by company, contact name, email or phone..." value="${appState.searchQuery}" class="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-100 rounded-md text-xs outline-none focus:bg-white focus:ring-1 focus:ring-orange-500 transition-all">
-                            </div>
-                            <div class="flex gap-2">
-                                <button class="p-2 bg-slate-50 hover:bg-slate-100 border border-slate-100 rounded-md text-slate-600 flex items-center gap-1 transition-all text-xs font-semibold">
-                                    <i data-lucide="sliders" class="w-3.5 h-3.5 text-slate-400"></i>
-                                    <span>Filter</span>
-                                </button>
-                                <button class="p-2 bg-slate-50 hover:bg-slate-100 border border-slate-100 rounded-md text-slate-600 flex items-center gap-1 transition-all text-xs font-semibold">
-                                    <i data-lucide="download" class="w-3.5 h-3.5 text-slate-400"></i>
-                                    <span>Export</span>
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="text-xs text-slate-400 font-semibold">
-                            Showing ${filteredUsers.length} active logs
-                        </div>
-
-                        <!-- User Records Data Table -->
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-left text-xs">
-                                <thead>
-                                    <tr class="bg-slate-50/50 text-slate-400 text-[10px] uppercase font-bold tracking-wider border-b border-slate-100">
-                                        <th class="px-5 py-3">COMPANY / CONTACT</th>
-                                        <th class="px-5 py-3">ROLE TYPE</th>
-                                        <th class="px-5 py-3">PROFILE COMPLETION</th>
-                                        <th class="px-5 py-3">LAST ACTIVITY</th>
-                                        <th class="px-5 py-3">JOINED ON</th>
-                                        <th class="px-5 py-3">STATUS</th>
-                                        <th class="px-5 py-3 text-center">ACTIONS</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="divide-y divide-slate-100 text-slate-700">
-                                    ${filteredUsers.map(item => {
-                                        const initials = item.name.split(' ').map(n => n[0]).join('').slice(0, 2);
-                                        
-                                        // Colors mapping matches styling from mockup precisely
-                                        let roleColor = 'bg-orange-50 text-orange-600';
-                                        if (item.roleType === 'INVESTOR') roleColor = 'bg-blue-50 text-blue-600';
-                                        if (item.roleType === 'SELLER') roleColor = 'bg-sky-50 text-sky-600';
-                                        if (item.roleType === 'BUYER') roleColor = 'bg-purple-50 text-purple-600';
-                                        if (item.roleType === 'ADVISOR') roleColor = 'bg-teal-50 text-teal-600';
-
-                                        let statusColor = 'bg-green-50 text-green-700 border border-green-100';
-                                        if (item.status === 'INFO REQUESTED') statusColor = 'bg-blue-50 text-blue-700 border border-blue-100';
-                                        if (item.status === 'ON HOLD') statusColor = 'bg-amber-50 text-amber-700 border border-amber-100';
-
-                                        let avatarColor = 'bg-purple-100 text-purple-700';
-                                        if (item.id === 'TC-102') avatarColor = 'bg-emerald-100 text-emerald-700';
-                                        if (item.id === 'GF-103') avatarColor = 'bg-indigo-100 text-indigo-700';
-                                        if (item.id === 'AR-104') avatarColor = 'bg-sky-100 text-sky-700';
-                                        if (item.id === 'IN-105') avatarColor = 'bg-amber-100 text-amber-700';
-                                        if (item.id === 'MP-106') avatarColor = 'bg-blue-100 text-blue-700';
-                                        if (item.id === 'SC-107') avatarColor = 'bg-red-100 text-red-700';
-
-                                        return `
-                                            <tr class="hover:bg-slate-50/30 transition-colors">
-                                                <!-- Company and Contact detail block -->
-                                                <td class="px-5 py-3.5">
-                                                    <div class="flex items-center gap-2.5">
-                                                        <div class="w-8 h-8 ${avatarColor} font-bold text-xs rounded-md flex items-center justify-center shadow-xs">
-                                                            ${initials}
-                                                        </div>
-                                                        <div class="flex flex-col">
-                                                            <span class="font-bold text-slate-900 text-sm cursor-pointer hover:text-orange-500 transition-colors" onclick="setViewMode('detail', '${item.id}')">${item.name}</span>
-                                                            <span class="text-[11px] text-slate-400 font-semibold mt-0.5">${item.founder} • <span class="text-[10px] font-mono">${item.email}</span></span>
-                                                        </div>
-                                                    </div>
-                                                </td>
-
-                                                <!-- Role Type Identifier -->
-                                                <td class="px-5 py-3.5">
-                                                    <span class="px-2 py-0.5 ${roleColor} text-[9px] font-bold rounded uppercase tracking-wide">
-                                                        ${item.roleType}
-                                                    </span>
-                                                </td>
-
-                                                <!-- Completion Gauge bar -->
-                                                <td class="px-5 py-3.5">
-                                                    <div class="flex items-center gap-2.5 min-w-[120px]">
-                                                        <span class="font-bold text-slate-800 text-xs">${item.completeness}%</span>
-                                                        <div class="w-full bg-slate-100 h-1 rounded-md overflow-hidden">
-                                                            <div class="bg-emerald-500 h-1 rounded-md" style="width: ${item.completeness}%"></div>
-                                                        </div>
-                                                    </div>
-                                                </td>
-
-                                                <!-- Latency Tracking -->
-                                                <td class="px-5 py-3.5 text-slate-500 font-semibold">${item.lastActivity}</td>
-
-                                                <!-- Directory Entry Date -->
-                                                <td class="px-5 py-3.5 text-slate-400 font-semibold">${item.joinedOn}</td>
-
-                                                <!-- Operational Status pill -->
-                                                <td class="px-5 py-3.5">
-                                                    <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${statusColor}">
-                                                        ${item.status}
-                                                    </span>
-                                                </td>
-
-                                                <!-- Actions block styled with premium rounded buttons conforming to hover standards -->
-                                                <td class="px-5 py-3.5">
-                                                    <div class="flex items-center justify-center gap-1.5">
-                                                        <button class="w-7 h-7 flex items-center justify-center bg-slate-50 hover:bg-slate-100 border border-slate-200/50 rounded-md text-slate-600 hover:text-slate-950 transition-all" title="Message User">
-                                                            <i data-lucide="message-square" class="w-3.5 h-3.5 text-blue-600"></i>
-                                                        </button>
-                                                        <button class="w-7 h-7 flex items-center justify-center bg-slate-50 hover:bg-slate-100 border border-slate-200/50 rounded-md text-slate-600 hover:text-slate-950 transition-all" title="View Documents">
-                                                            <i data-lucide="file-text" class="w-3.5 h-3.5 text-slate-500"></i>
-                                                        </button>
-                                                        <button class="w-7 h-7 flex items-center justify-center bg-slate-50 hover:bg-slate-100 border border-slate-200/50 rounded-md text-slate-600 hover:text-slate-950 transition-all" title="Mandates Log">
-                                                            <i data-lucide="book-open" class="w-3.5 h-3.5 text-orange-600"></i>
-                                                        </button>
-                                                        <button onclick="setViewMode('detail', '${item.id}')" class="w-7 h-7 flex items-center justify-center bg-slate-50 hover:bg-slate-100 border border-slate-200/50 rounded-md text-slate-600 hover:text-slate-950 transition-all" title="View Details">
-                                                            <i data-lucide="eye" class="w-3.5 h-3.5 text-slate-600"></i>
-                                                        </button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        `;
-                                    }).join('')}
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <!-- Table Pagination tracker matching exactly -->
-                        <div class="flex justify-between items-center pt-3 border-t border-slate-100 text-xs font-semibold">
-                            <span class="text-slate-400">Showing 1 to ${filteredUsers.length} of ${filteredUsers.length} users</span>
-                            <div class="flex gap-1.5 items-center">
-                                <button class="p-1 bg-slate-50 border border-slate-200 rounded-md text-slate-400 hover:bg-slate-100"><i data-lucide="chevron-left" class="w-3.5 h-3.5"></i></button>
-                                <button class="px-2.5 py-0.5 bg-orange-600 text-white rounded-md">1</button>
-                                <button class="p-1 bg-slate-50 border border-slate-200 rounded-md text-slate-400 hover:bg-slate-100"><i data-lucide="chevron-right" class="w-3.5 h-3.5"></i></button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-    </script>
-
-    <script>
-        // --- VIEW TEMPLATE: USER DETAILED PROFILE WORKSPACE (image_7744e5.png) ---
-        function getDetailView() {
-            // Find active user across all possible user arrays
-            let user = null;
-            for (const category in appState.users) {
-                user = appState.users[category].find(u => u.id === appState.selectedUserId);
-                if (user) break;
-            }
-            if (!user) user = appState.users.investees[0];
-
-            return `
-                <div class="fade-in-view space-y-4">
-                    <!-- Back path breadcrumb link -->
-                    <button onclick="setViewMode('list')" class="text-xs font-bold text-orange-500 hover:text-orange-600 flex items-center gap-1.5 mb-1 transition-all">
-                        <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Back to CRM & Users
-                    </button>
-
-                    <!-- Profile Header banner layout replicating mockup exactly -->
-                    <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center pb-3 border-b border-slate-100 gap-4">
-                        <div class="space-y-1">
-                            <div class="flex items-center gap-2 flex-wrap">
-                                <h1 class="text-2xl font-bold text-slate-900 tracking-tight leading-tight">${user.name}</h1>
-                                <span class="px-1.5 py-0.5 bg-orange-50 border border-orange-100 text-orange-700 text-[9px] font-bold tracking-wide rounded uppercase">${user.roleType}</span>
-                                <span class="px-1.5 py-0.5 bg-blue-50 border border-blue-100 text-blue-700 text-[9px] font-bold tracking-wide rounded uppercase">SAAS</span>
-                                <span class="px-1.5 py-0.5 bg-purple-50 border border-purple-100 text-purple-700 text-[9px] font-bold tracking-wide rounded uppercase">SERIES A</span>
-                            </div>
-                            <p class="text-xs text-slate-500 font-medium">${user.desc}</p>
-
-                            <!-- Profile metadata metrics horizontal display with reduced padding -->
-                            <div class="flex flex-wrap items-center gap-4 pt-1 text-xs text-slate-500">
-                                <div class="flex items-center gap-1">
-                                    <i data-lucide="calendar" class="w-3.5 h-3.5 text-slate-400"></i>
-                                    <span>Joined On: <strong class="text-slate-800">${user.joinedOn}</strong></span>
-                                </div>
-                                <div class="flex items-center gap-1">
-                                    <i data-lucide="user" class="w-3.5 h-3.5 text-slate-400"></i>
-                                    <span>Primary Contact: <strong class="text-slate-800">${user.founder}, CEO</strong></span>
-                                </div>
-                                <div class="flex items-center gap-1">
-                                    <i data-lucide="map-pin" class="w-3.5 h-3.5 text-slate-400"></i>
-                                    <span>Location: <strong class="text-slate-800">${user.location}</strong></span>
-                                </div>
-                                <div class="flex items-center gap-1">
-                                    <i data-lucide="users" class="w-3.5 h-3.5 text-slate-400"></i>
-                                    <span>Team Size: <strong class="text-slate-800">${user.teamSize}</strong></span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Top-right CTA action controls replicating image_7744e5.png exactly -->
-                        <!-- Use of 'whitespace-nowrap flex-nowrap' prevents CTA double lines -->
-                        <div class="flex items-center gap-2 flex-nowrap overflow-x-auto max-w-full">
-                            <button onclick="console.log('Dispatching request info...')" class="whitespace-nowrap bg-[#F97316] hover:bg-[#EA580C] text-white font-bold text-xs py-2 px-3.5 rounded-md transition-all shadow-xs flex items-center gap-1.5 h-9">
-                                <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
-                                <span>Request Information</span>
-                            </button>
-                            <button onclick="toggleUserHoldState('${user.id}')" class="whitespace-nowrap bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-bold text-xs py-2 px-3.5 rounded-md transition-all flex items-center gap-1.5 h-9">
-                                <i data-lucide="pause-circle" class="w-3.5 h-3.5"></i>
-                                <span>Put On Hold</span>
-                            </button>
-                            <button onclick="triggerDirectChat('${user.founder}')" class="whitespace-nowrap bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-bold text-xs py-2 px-3.5 rounded-md transition-all flex items-center gap-1.5 h-9">
-                                <i data-lucide="message-square" class="w-3.5 h-3.5"></i>
-                                <span>Message User</span>
-                            </button>
-                            <button onclick="console.log('More options')" class="whitespace-nowrap bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-bold text-xs py-2 px-3 rounded-md transition-all flex items-center gap-1.5 h-9">
-                                <span>More</span>
-                                <i data-lucide="chevron-down" class="w-3 h-3"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Inner detail tabs matching image_94584e.jpg precisely -->
-                    <div class="flex gap-6 border-b border-slate-100 overflow-x-auto pb-1 text-xs font-bold uppercase tracking-wider">
-                        <button class="pb-2.5 subtab-active text-orange-500 font-bold">Overview</button>
-                        <button onclick="console.log('Financials loaded')" class="pb-2.5 text-slate-400 hover:text-slate-600 transition-colors">Financials</button>
-                        <button onclick="console.log('Funding Ask loaded')" class="pb-2.5 text-slate-400 hover:text-slate-600 transition-colors">Funding Ask</button>
-                        <button onclick="console.log('Team loaded')" class="pb-2.5 text-slate-400 hover:text-slate-600 transition-colors">Team</button>
-                        <button onclick="console.log('Documents loaded')" class="pb-2.5 text-slate-400 hover:text-slate-600 transition-colors">Documents</button>
-                        <button onclick="console.log('Market Opportunity loaded')" class="pb-2.5 text-slate-400 hover:text-slate-600 transition-colors">Market Opportunity</button>
-                        <button onclick="console.log('Communications loaded')" class="pb-2.5 text-slate-400 hover:text-slate-600 transition-colors">Communications</button>
-                        <button onclick="console.log('Notes loaded')" class="pb-2.5 text-slate-400 hover:text-slate-600 transition-colors">Notes</button>
-                    </div>
-
-                    <!-- Two column details grid layout replicating image_94584e.jpg -->
-                    <div class="grid grid-cols-12 gap-6">
-                        
-                        <!-- Left Panel Area: Media players, Metadata structures & tags -->
-                        <div class="col-span-12 lg:col-span-8 space-y-4">
-                            
-                            <!-- Media Pitch Block (Founder Video & Audio) -->
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <!-- Video Player Placeholder matching mockup thumbnail visual depth -->
-                                <div class="bg-white p-4 rounded-md border border-slate-200/50 shadow-xs space-y-3">
-                                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest">Founder Introduction Video</h3>
-                                    <div class="relative h-40 rounded-md bg-zinc-950 overflow-hidden group border border-slate-200/30 flex items-center justify-center">
-                                        <!-- Custom generated placeholder visual matching Sarah's visual thumbnail -->
-                                        <div class="absolute inset-0 bg-cover bg-center filter brightness-75" style="background-image: url('https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=600&auto=format&fit=crop');"></div>
-                                        ${appState.isVideoPlaying ? `
-                                            <div class="absolute inset-0 bg-[#0B0C0E]/90 flex flex-col items-center justify-center z-10 space-y-2">
-                                                <div class="w-10 h-10 bg-orange-600 rounded-md flex items-center justify-center text-white font-bold animate-ping">
-                                                    <i data-lucide="play" class="w-4 h-4"></i>
-                                                </div>
-                                                <span class="text-[11px] font-mono text-zinc-300">Streaming secure media thread...</span>
-                                            </div>
-                                        ` : ''}
-                                        <button onclick="toggleVideoState()" class="absolute w-10 h-10 bg-white/95 hover:bg-orange-600 hover:text-white rounded-md flex items-center justify-center shadow-md transition-all transform hover:scale-105 z-20">
-                                            <i data-lucide="${appState.isVideoPlaying ? 'pause' : 'play'}" class="w-4.5 h-4.5 text-slate-900"></i>
-                                        </button>
-                                        <div class="absolute bottom-2.5 left-2.5 bg-black/60 px-1.5 py-0.5 rounded text-[9px] font-mono text-white">03:42</div>
-                                    </div>
-                                </div>
-
-                                <!-- Audio Player Placeholder with custom visual waveform wave -->
-                                <div class="bg-white p-4 rounded-md border border-slate-200/50 shadow-xs space-y-3">
-                                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest">Founder Audio Pitch</h3>
-                                    <div class="p-3 bg-slate-50 border border-slate-100 rounded-md flex flex-col justify-between h-40">
-                                        <div class="flex items-center gap-2.5">
-                                            <button onclick="toggleAudioState()" class="w-8 h-8 bg-orange-600 hover:bg-orange-700 text-white rounded-md flex items-center justify-center shadow transition-all transform active:scale-95">
-                                                <i data-lucide="${appState.isAudioPlaying ? 'pause' : 'play'}" class="w-3.5 h-3.5"></i>
-                                            </button>
-                                            <div>
-                                                <p class="font-bold text-slate-800 text-xs">Audio_Pitch_SARAH.mp3</p>
-                                                <span class="text-[9px] text-slate-400 font-mono">01:28</span>
-                                            </div>
-                                        </div>
-
-                                        <!-- Custom animated visualizer matching visual wave -->
-                                        <div class="flex items-end gap-1 h-12 pb-1 overflow-hidden" id="audio-wave">
-                                            ${Array.from({length: 24}).map((_, i) => {
-                                                const h = [10, 16, 22, 12, 28, 10, 14, 26, 12, 18, 24, 10, 20, 14, 28, 12, 18, 22, 8, 16, 12, 24, 10, 14][i];
-                                                return `<div class="flex-1 bg-orange-500 rounded-md transition-all duration-300 ${appState.isAudioPlaying ? 'waveform-bar-active' : ''}" style="height: ${h}px;"></div>`;
-                                            }).join('')}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Company Details Overview Grid -->
-                            <div class="bg-white p-5 rounded-md border border-slate-200/50 shadow-xs space-y-4">
-                                <h3 class="text-xs font-bold text-slate-900 border-b border-slate-100 pb-2">Company Overview</h3>
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <div class="space-y-3">
-                                        <table class="w-full text-xs text-left text-slate-600">
-                                            <tbody class="divide-y divide-slate-100">
-                                                <tr class="py-1"><td class="font-semibold text-slate-400 uppercase tracking-widest text-[9px] py-1.5">Company Name</td><td class="font-bold text-slate-900 text-right py-1.5">${user.name}</td></tr>
-                                                <tr class="py-1"><td class="font-semibold text-slate-400 uppercase tracking-widest text-[9px] py-1.5">Industry</td><td class="font-bold text-slate-900 text-right py-1.5">${user.industry}</td></tr>
-                                                <tr class="py-1"><td class="font-semibold text-slate-400 uppercase tracking-widest text-[9px] py-1.5">Founded</td><td class="font-bold text-slate-900 text-right py-1.5">Jan 2024</td></tr>
-                                                <tr class="py-1"><td class="font-semibold text-slate-400 uppercase tracking-widest text-[9px] py-1.5">Website</td><td class="font-bold text-orange-600 text-right py-1.5 cursor-pointer hover:underline">www.techventure.com <i data-lucide="external-link" class="inline w-3 h-3 ml-0.5"></i></td></tr>
-                                                <tr class="py-1"><td class="font-semibold text-slate-400 uppercase tracking-widest text-[9px] py-1.5">LinkedIn</td><td class="font-bold text-orange-600 text-right py-1.5 cursor-pointer hover:underline">TechVenture Solutions <i data-lucide="external-link" class="inline w-3 h-3 ml-0.5"></i></td></tr>
-                                                <tr class="py-1"><td class="font-semibold text-slate-400 uppercase tracking-widest text-[9px] py-1.5">Email</td><td class="font-bold text-slate-900 text-right py-1.5 font-mono">${user.email}</td></tr>
-                                                <tr class="py-1"><td class="font-semibold text-slate-400 uppercase tracking-widest text-[9px] py-1.5">Phone</td><td class="font-bold text-slate-900 text-right py-1.5">${user.phone}</td></tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-
-                                    <!-- About description and pills -->
-                                    <div class="space-y-3">
-                                        <p class="font-bold text-slate-400 uppercase tracking-widest text-[9px]">About the Company</p>
-                                        <p class="text-xs text-slate-600 leading-relaxed font-semibold">${user.about}</p>
-                                        <div class="flex flex-wrap gap-1.5 pt-1">
-                                            ${user.tags.map(tag => `<span class="px-2 py-0.5 bg-slate-100 text-slate-600 text-[10px] font-bold tracking-wider rounded uppercase">${tag}</span>`).join('')}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Financial and valuation targets row -->
-                            <div class="grid grid-cols-1 md:grid-cols-4 gap-3.5">
-                                <div class="bg-white p-4 rounded-md border border-slate-200/50 shadow-xs">
-                                    <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Funding Required</p>
-                                    <p class="text-xl font-black text-slate-900 mt-1">${user.fundingRequired}</p>
-                                    <span class="text-[8px] text-slate-400 font-semibold">Amount</span>
-                                </div>
-
-                                <div class="bg-white p-4 rounded-md border border-slate-200/50 shadow-xs">
-                                    <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Pre-Money Valuation</p>
-                                    <p class="text-xl font-black text-slate-900 mt-1">${user.preMoneyValuation}</p>
-                                    <span class="text-[8px] text-slate-400 font-semibold">Last updated on 20 Apr 2025</span>
-                                </div>
-
-                                <div class="bg-white p-4 rounded-md border border-slate-200/50 shadow-xs">
-                                    <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Equity Offered</p>
-                                    <p class="text-xl font-black text-slate-900 mt-1">${user.equityOffered}</p>
-                                    <span class="text-[8px] text-slate-400 font-semibold">For ${user.fundingRequired}</span>
-                                </div>
-
-                                <div class="bg-white p-4 rounded-md border border-slate-200/50 shadow-xs flex flex-col justify-between">
-                                    <div>
-                                        <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Use of Funds</p>
-                                        <div class="space-y-1 mt-0.5 text-[10px] text-slate-600 font-semibold">
-                                            <p>• Product Expansion</p>
-                                            <p>• Sales & Marketing</p>
-                                        </div>
-                                    </div>
-                                    <div class="w-full flex justify-end">
-                                        <!-- Donut chart mockup SVG -->
-                                        <svg class="w-7 h-7 transform rotate-45" viewBox="0 0 36 36">
-                                            <circle cx="18" cy="18" r="15.9155" fill="none" stroke="#F1F5F9" stroke-width="6"/>
-                                            <circle cx="18" cy="18" r="15.9155" fill="none" stroke="#F97316" stroke-width="6" stroke-dasharray="70 100"/>
-                                        </svg>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Right Panel Area: Onboarding steps, Engagement counters, Review summary -->
-                        <div class="col-span-12 lg:col-span-4 space-y-4">
-                            
-                            <!-- Review Summary Tracker checklist -->
-                            <div class="bg-white p-5 rounded-md border border-slate-200/50 shadow-xs space-y-3">
-                                <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest">Review Summary</h3>
-                                <div class="space-y-2.5 font-semibold text-xs text-slate-700">
-                                    <div class="flex items-center justify-between">
-                                        <span class="flex items-center gap-1.5">
-                                            <i data-lucide="check-circle" class="w-3.5 h-3.5 text-green-500"></i>
-                                            <span>Profile Created</span>
-                                        </span>
-                                        <i data-lucide="check" class="w-3.5 h-3.5 text-green-500"></i>
-                                    </div>
-                                    <div class="flex items-center justify-between">
-                                        <span class="flex items-center gap-1.5">
-                                            <i data-lucide="check-circle" class="w-3.5 h-3.5 text-green-500"></i>
-                                            <span>KYC Verified</span>
-                                        </span>
-                                        <i data-lucide="check" class="w-3.5 h-3.5 text-green-500"></i>
-                                    </div>
-                                    <div class="flex items-center justify-between">
-                                        <span class="flex items-center gap-1.5">
-                                            <i data-lucide="check-circle" class="w-3.5 h-3.5 text-green-500"></i>
-                                            <span>Documents Uploaded</span>
-                                        </span>
-                                        <i data-lucide="check" class="w-3.5 h-3.5 text-green-500"></i>
-                                    </div>
-                                    <div class="flex items-center justify-between">
-                                        <span class="flex items-center gap-1.5">
-                                            <i data-lucide="check-circle" class="w-3.5 h-3.5 text-green-500"></i>
-                                            <span>Video / Audio Submitted</span>
-                                        </span>
-                                        <i data-lucide="check" class="w-3.5 h-3.5 text-green-500"></i>
-                                    </div>
-                                    <div class="flex items-center justify-between pt-1 border-t border-slate-100">
-                                        <span class="flex items-center gap-1.5 text-amber-600">
-                                            <i data-lucide="alert-triangle" class="w-3.5 h-3.5 text-amber-500"></i>
-                                            <span>Additional Information Requested</span>
-                                        </span>
-                                    </div>
-                                    <p class="text-[9px] text-slate-400 font-bold mt-1.5">Last Updated: 2 days ago</p>
-                                </div>
-                            </div>
-
-                            <!-- Onboarding Status Milestones -->
-                            <div class="bg-white p-5 rounded-md border border-slate-200/50 shadow-xs space-y-3">
-                                <div class="flex justify-between items-center">
-                                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest">Onboarding Status</h3>
-                                    <span class="px-2 py-0.5 bg-green-50 text-green-700 border border-green-200/50 rounded text-[9px] font-bold uppercase tracking-wider">ACTIVE</span>
-                                </div>
-
-                                <div class="space-y-2 text-xs text-slate-600 font-semibold">
-                                    <div class="flex justify-between"><span>Profile Created</span><span class="text-slate-900">${user.onboarding.created}</span></div>
-                                    <div class="flex justify-between"><span>Auto Approved</span><span class="text-slate-900">${user.onboarding.approved}</span></div>
-                                    <div class="flex justify-between"><span>Documents Submitted</span><span class="text-slate-900">${user.onboarding.submitted}</span></div>
-                                    <div class="flex justify-between pt-1.5 border-t border-slate-50"><span>Last Activity</span><span class="text-orange-500 font-bold">${user.onboarding.lastAct}</span></div>
-                                </div>
-                            </div>
-
-                            <!-- Engagement Telemetry Dashboard -->
-                            <div class="bg-white p-5 rounded-md border border-slate-200/50 shadow-xs space-y-3">
-                                <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest">Engagement Overview</h3>
-                                <div class="space-y-2.5 text-xs text-slate-700 font-semibold">
-                                    <div class="flex justify-between items-center">
-                                        <span class="flex items-center gap-1.5 text-slate-500">
-                                            <i data-lucide="message-square" class="w-3.5 h-3.5 text-slate-400"></i>
-                                            <span>Messages Sent</span>
-                                        </span>
-                                        <span class="font-bold text-slate-900">${user.engagement.sent}</span>
-                                    </div>
-                                    <div class="flex justify-between items-center">
-                                        <span class="flex items-center gap-1.5 text-slate-500">
-                                            <i data-lucide="info" class="w-3.5 h-3.5 text-slate-400"></i>
-                                            <span>Info Requested</span>
-                                        </span>
-                                        <span class="font-bold text-slate-900">${user.engagement.requested}</span>
-                                    </div>
-                                    <div class="flex justify-between items-center">
-                                        <span class="flex items-center gap-1.5 text-slate-500">
-                                            <i data-lucide="check-square" class="w-3.5 h-3.5 text-slate-400"></i>
-                                            <span>Responses Received</span>
-                                        </span>
-                                        <span class="font-bold text-slate-900">${user.engagement.received}</span>
-                                    </div>
-                                    <div class="flex justify-between items-center text-orange-600 pt-1.5 border-t border-slate-50">
-                                        <span class="flex items-center gap-1.5">
-                                            <i data-lucide="alert-circle" class="w-3.5 h-3.5"></i>
-                                            <span>Pending Actions</span>
-                                        </span>
-                                        <span class="font-black">${user.engagement.pending}</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Assigned Relationship Executive -->
-                            <div class="bg-white p-5 rounded-md border border-slate-200/50 shadow-xs space-y-3">
-                                <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest">Assigned Relationship Manager</h3>
-                                <div class="flex items-center justify-between">
-                                    <div class="flex items-center gap-2.5">
-                                        <div class="w-8 h-8 bg-slate-900 text-white rounded-md flex items-center justify-center font-bold text-xs">
-                                            RM
-                                        </div>
-                                        <div>
-                                            <p class="font-bold text-slate-900 text-xs">${user.rmName}</p>
-                                            <p class="text-[9px] text-slate-400 font-mono">${user.rmEmail}</p>
-                                        </div>
-                                    </div>
-                                    <button class="p-1.5 bg-slate-50 hover:bg-slate-100 rounded-md border border-slate-200/30 transition-colors">
-                                        <i data-lucide="mail" class="w-3.5 h-3.5 text-slate-500"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        // --- MEDIA STATE HANDLERS ---
-        function toggleAudioState() {
-            appState.isAudioPlaying = !appState.isAudioPlaying;
-            renderWorkspace();
-        }
-
-        function toggleVideoState() {
-            appState.isVideoPlaying = !appState.isVideoPlaying;
-            renderWorkspace();
-        }
-
-        function toggleUserHoldState(userId) {
-            // Traverse state users mapping
-            for (const category in appState.users) {
-                const targetUser = appState.users[category].find(u => u.id === userId);
-                if (targetUser) {
-                    targetUser.status = (targetUser.status === 'ON HOLD') ? 'ACTIVE' : 'ON HOLD';
-                    break;
-                }
-            }
-            renderWorkspace();
-        }
-
-        function closeModal() {
-            const container = document.getElementById('modal-container');
-            container.classList.remove('modal-active');
-            container.classList.add('hidden');
-            container.innerHTML = '';
-        }
-    </script>
-
-    <script>
-        // --- WORKSPACE CORE RENDER DESK ---
-        function renderWorkspace() {
-            const container = document.getElementById('workspace-target');
-            if (!container) return;
-            container.innerHTML = '';
-
-            let template = '';
-            if (appState.viewMode === 'list') {
-                template = getDirectoryView();
-            } else {
-                template = getDetailView();
-            }
-
-            container.innerHTML = template;
-            lucide.createIcons();
-        }
-    </script>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const currentPath = window.location.pathname;
-            const buttons = document.querySelectorAll('.sidebar-btn');
-            buttons.forEach(btn => {
-                const parent = btn.parentElement;
-                if (parent && parent.tagName === 'A') {
-                    const href = parent.getAttribute('href');
-                    if (currentPath.includes(href.split('/').pop()) || (currentPath === '/' && href.includes('dashboard.html'))) {
-                        btn.classList.add('sidebar-item-active');
-                    }
-                }
-            });
-        });
-    </script>
-
 </body>
 </html>

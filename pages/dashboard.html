@@ -3,1854 +3,320 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Charantra Super Admin | Core Workspace</title>
-    <!-- Tailwind CSS -->
+    <title>Charantra - Super Admin Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    borderRadius: {
-                        'none': '0',
-                        'sm': '16px',
-                        DEFAULT: '16px',
-                        'md': '16px',
-                        'lg': '16px',
-                        'xl': '16px',
-                        '2xl': '16px',
-                        '3xl': '16px',
-                        'full': '9999px'
+                    colors: {
+                        brand: {
+                            orange: '#FF5E00',
+                            orangeHover: '#e04f00',
+                            navyDark: '#070C1E',
+                            navyMedium: '#0F172A',
+                            navyLight: '#1E293B',
+                            bgSlate: '#F8FAFC',
+                            borderGray: '#E2E8F0'
+                        }
                     }
                 }
             }
         }
     </script>
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --charantra-orange: #F97316;
-            --sidebar-bg: #0B0C0E;
-            --workspace-bg: #F8F9FC;
-            --slate-border: #E2E8F0;
-        }
-
-        body {
-            font-family: 'Titillium Web', sans-serif;
-            font-size: 13.5px;
-            background-color: var(--workspace-bg);
-            color: #1E293B;
-            overflow-x: hidden;
-        }
-
-        /* Clean animations */
-        .fade-in-view {
-            animation: cubicFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-
-        @keyframes cubicFadeIn {
-            from { opacity: 0; transform: translateY(6px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Premium rounded scrollbar */
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #E2E8F0;
-            border-radius: 99px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #CBD5E1;
-        }
-
-        /* Sidebar active style - Rounded pill with thin outline matching image exactly */
-        .sidebar-item-active {
-            border-radius: 6px !important;
-            background: #1E2128 !important;
-            color: #FFFFFF !important;
-            border: 1px solid #3F3F46 !important;
-        }
-
-        /* Tab highlights */
-        .subtab-active {
-            color: var(--charantra-orange);
-            border-bottom: 2px solid var(--charantra-orange);
-        }
-
-        /* Smooth interactive card effects */
-        .interactive-card {
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .interactive-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.04), 0 4px 10px -2px rgba(0, 0, 0, 0.02);
-        }
-        
-        /* Modal Overlay Transition */
-        .modal-active {
-            display: flex !important;
-            animation: fadeInOverlay 0.2s ease forwards;
-        }
-        @keyframes fadeInOverlay {
-            from { background-color: rgba(0,0,0,0); }
-            to { background-color: rgba(15, 17, 21, 0.6); }
-        }
+        body { font-family: 'Titillium Web', sans-serif; -webkit-font-smoothing: antialiased; background-color: #F8FAFC; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(0,0,0,0.02); }
+        ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.25); }
+        #app-sidebar.collapsed { width: 64px !important; }
+        #app-sidebar.collapsed .sidebar-label { display: none; }
+        #app-sidebar.collapsed .sidebar-arrow { display: none; }
+        #app-sidebar.collapsed .sidebar-logo { width: 32px !important; min-width: 32px !important; }
+        #app-sidebar.collapsed .sidebar-collapse-icon { transform: rotate(180deg); }
+        #app-sidebar.collapsed button { justify-content: center; padding-left: 8px; padding-right: 8px; }
+        #app-sidebar.collapsed nav > div > button { justify-content: center; }
+        #app-sidebar.collapsed .sidebar-section-div { max-height: 0 !important; }
+        .sidebar-section-open { max-height: 200px !important; }
     </style>
 </head>
-<body class="antialiased selection:bg-orange-100">
+<body class="overflow-hidden h-screen flex text-slate-800 bg-brand-bgSlate">
 
-    <div class="flex min-h-screen">
-                <!-- SIDEBAR -->
-        <aside class="w-80 bg-[#0B0C0E] text-[#94A3B8] flex flex-col fixed h-screen z-50">
-            <!-- Brand Identity -->
-            <div class="p-6 border-b border-zinc-900 flex-shrink-0">
-                <a href="/index.html">
-                    <img src="/assets/logo.png" width="200" alt="Charantra Logo" style="width: 200px; height: auto;">
-                </a>
+    <div class="flex w-full h-full">
+
+        <aside id="app-sidebar" class="w-64 bg-brand-navyDark text-slate-300 flex flex-col h-full shrink-0 border-r border-slate-900 z-30 justify-between select-none transition-all duration-300">
+            <div class="flex flex-col overflow-y-auto">
+                <div class="p-4 flex items-center justify-between border-b border-slate-900/60">
+                    <div class="flex items-center gap-3 overflow-hidden">
+                        <a href="/index.html">
+                            <img src="/assets/logo.png" width="160" alt="Charantra Logo" class="sidebar-logo" style="height: auto; min-width: 120px;">
+                        </a>
+                    </div>
+                    <button onclick="toggleSidebarCollapse()" class="text-slate-500 hover:text-white p-1 rounded transition shrink-0" title="Toggle Sidebar">
+                        <i class="fa-solid fa-outdent text-xs sidebar-collapse-icon"></i>
+                    </button>
+                </div>
+
+                <nav class="px-3 space-y-1 text-sm">
+                    <a href="/pages/dashboard.html" class="block">
+                        <button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-bold text-white bg-brand-orange transition duration-150 overflow-hidden">
+                            <i class="fa-solid fa-table-columns text-sm shrink-0"></i>
+                            <span class="sidebar-label whitespace-nowrap">Dashboard</span>
+                        </button>
+                    </a>
+
+                    <div class="space-y-0.5">
+                        <button onclick="toggleSidebarSection('crm-section')" class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden">
+                            <span class="flex items-center gap-3"><i class="fa-solid fa-users text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">CRM & Users</span></span>
+                            <i class="fa-solid fa-chevron-down text-[9px] transition-transform duration-200 sidebar-arrow" id="arrow-crm-section"></i>
+                        </button>
+                        <div id="crm-section" class="pl-5 pr-1 space-y-0.5 overflow-hidden sidebar-section-div" style="max-height:0;transition:max-height 0.3s ease">
+                            <a href="/pages/crm.html?type=Investor" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-hand-holding-dollar text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Investors</span></button></a>
+                            <a href="/pages/crm.html?type=Investee" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-rocket text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Investees</span></button></a>
+                            <a href="/pages/crm.html?type=Buyer" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-cart-shopping text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Buyers</span></button></a>
+                            <a href="/pages/crm.html?type=Seller" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-tags text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Sellers</span></button></a>
+                            <a href="/pages/crm.html?type=Advisor" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-comments text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Advisors</span></button></a>
+                        </div>
+                    </div>
+
+                    <a href="/pages/mandates.html" class="block">
+                        <button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden">
+                            <i class="fa-solid fa-file-contract text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Mandates & Projects</span>
+                        </button>
+                    </a>
+
+                    <a href="/pages/deals.html" class="block">
+                        <button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden">
+                            <i class="fa-solid fa-briefcase text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Deals & Pipeline</span>
+                        </button>
+                    </a>
+
+                    <a href="/pages/dataroom.html" class="block">
+                        <button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden">
+                            <i class="fa-solid fa-hard-drive text-sm shrink-0"></i>
+                            <span class="sidebar-label whitespace-nowrap">Data Room</span>
+                        </button>
+                    </a>
+
+                    <div class="space-y-0.5">
+                        <button onclick="toggleSidebarSection('team-section')" class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden">
+                            <span class="flex items-center gap-3"><i class="fa-solid fa-user-group text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Team Management</span></span>
+                            <i class="fa-solid fa-chevron-down text-[9px] transition-transform duration-200 sidebar-arrow" id="arrow-team-section"></i>
+                        </button>
+                        <div id="team-section" class="pl-5 pr-1 space-y-0.5 overflow-hidden sidebar-section-div" style="max-height:0;transition:max-height 0.3s ease">
+                            <a href="/pages/team.html?view=members" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-users-gear text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Team Members</span></button></a>
+                            <a href="/pages/team.html?view=roles" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-shield-halved text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Roles & Permissions</span></button></a>
+                        </div>
+                    </div>
+
+                    <div class="space-y-0.5">
+                        <button onclick="toggleSidebarSection('payments-section')" class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden">
+                            <span class="flex items-center gap-3"><i class="fa-solid fa-receipt text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Payments</span></span>
+                            <i class="fa-solid fa-chevron-down text-[9px] transition-transform duration-200 sidebar-arrow" id="arrow-payments-section"></i>
+                        </button>
+                        <div id="payments-section" class="pl-5 pr-1 space-y-0.5 overflow-hidden sidebar-section-div" style="max-height:0;transition:max-height 0.3s ease">
+                            <a href="/pages/payments.html?view=invoices" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-file-invoice text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Invoices</span></button></a>
+                            <a href="/pages/payments.html?view=ledger" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-book text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Ledger</span></button></a>
+                        </div>
+                    </div>
+
+                    <a href="/pages/reports.html" class="block">
+                        <button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden">
+                            <i class="fa-solid fa-chart-simple text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Reports</span>
+                        </button>
+                    </a>
+
+                    <a href="/pages/settings.html" class="block">
+                        <button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden">
+                            <i class="fa-solid fa-gear text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Settings & Logs</span>
+                        </button>
+                    </a>
+                </nav>
             </div>
-
-            <!-- Sidebar Navigation Menu -->
-            <div class="flex-1 overflow-y-auto sidebar-scroll p-4 space-y-1.5">
-                <p class="text-[10px] uppercase font-bold tracking-widest text-zinc-600 px-3.5 mb-2 mt-2">Executive Desk</p>
-                
-                <a href="/pages/dashboard.html" class="block">
-                    <button id="nav-dashboard" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 text-[13px] font-medium rounded-md text-[#94A3B8] hover:text-white hover:bg-[#1E2128]/40 transition-all">
-                        <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
-                        <span>Dashboard</span>
-                    </button>
-                </a>
-                
-                <a href="/pages/crm.html" class="block">
-                    <button id="nav-crm" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 text-[13px] font-medium rounded-md text-[#94A3B8] hover:text-white hover:bg-[#1E2128]/40 transition-all">
-                        <i data-lucide="contact-2" class="w-4 h-4"></i>
-                        <span>CRM & Users</span>
-                    </button>
-                </a>
-                
-                <a href="/pages/deals.html" class="block">
-                    <button id="nav-deals" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 text-[13px] font-medium rounded-md text-[#94A3B8] hover:text-white hover:bg-[#1E2128]/40 transition-all">
-                        <i data-lucide="git-pull-request" class="w-4 h-4"></i>
-                        <span>Deals & M&A Pipeline</span>
-                    </button>
-                </a>
-
-                <a href="/pages/mandates.html" class="block">
-                    <button id="nav-mandates" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 text-[13px] font-medium rounded-md text-[#94A3B8] hover:text-white hover:bg-[#1E2128]/40 transition-all">
-                        <i data-lucide="file-signature" class="w-4 h-4"></i>
-                        <span>Mandates & Projects</span>
-                    </button>
-                </a>
-
-                <p class="text-[10px] uppercase font-bold tracking-widest text-zinc-600 px-3.5 mb-2 mt-4">Audits & Governance</p>
-                
-                <a href="/pages/dataroom.html" class="block">
-                    <button id="nav-data-room" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 text-[13px] font-medium rounded-md text-[#94A3B8] hover:text-white hover:bg-[#1E2128]/40 transition-all">
-                        <i data-lucide="hard-drive" class="w-4 h-4"></i>
-                        <span>Data Room</span>
-                    </button>
-                </a>
-
-                <a href="/pages/team.html" class="block">
-                    <button id="nav-team-management" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 text-[13px] font-medium rounded-md text-[#94A3B8] hover:text-white hover:bg-[#1E2128]/40 transition-all">
-                        <i data-lucide="users-2" class="w-4 h-4"></i>
-                        <span>Team Management</span>
-                    </button>
-                </a>
-
-                <a href="/pages/payments.html" class="block">
-                    <button id="nav-payments-invoices" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 text-[13px] font-medium rounded-md text-[#94A3B8] hover:text-white hover:bg-[#1E2128]/40 transition-all">
-                        <i data-lucide="receipt" class="w-4 h-4"></i>
-                        <span>Payments</span>
-                    </button>
-                </a>
-
-                <a href="/pages/reports.html" class="block">
-                    <button id="nav-reports-analytics" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 text-[13px] font-medium rounded-md text-[#94A3B8] hover:text-white hover:bg-[#1E2128]/40 transition-all">
-                        <i data-lucide="bar-chart-3" class="w-4 h-4"></i>
-                        <span>Reports & Analytics</span>
-                    </button>
-                </a>
-
-                <a href="/pages/settings.html" class="block">
-                    <button id="nav-settings" class="sidebar-btn w-full flex items-center gap-3 px-3.5 py-2.5 text-[13px] font-medium rounded-md text-[#94A3B8] hover:text-white hover:bg-[#1E2128]/40 transition-all">
-                        <i data-lucide="settings" class="w-4 h-4"></i>
-                        <span>Settings</span>
-                    </button>
-                </a>
+            <div class="p-4 text-center text-xs text-slate-600 border-t border-slate-900">
+                <p class="sidebar-label">© 2026 Charantra</p>
             </div>
         </aside>
 
-        <!-- MAIN LAYOUT -->
-        <main class="flex-1 ml-80 flex flex-col min-h-screen">
-            <!-- APP HEADER -->
-            <header class="h-20 bg-white border-b border-slate-100 flex items-center justify-between px-8 sticky top-0 z-40 shadow-sm shadow-slate-100/30">
-                <div class="relative w-96">
-                    <i data-lucide="search" class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4"></i>
-                    <input type="text" id="global-search" oninput="executeGlobalSearch()" placeholder="Global search for profiles, transactions, and mandates..." class="w-full pl-10 pr-4 py-2 bg-slate-50 border border-transparent rounded-md text-xs focus:ring-2 focus:ring-orange-500/10 focus:border-orange-500 focus:bg-white outline-none transition-all">
+        <main class="flex-1 flex flex-col h-full overflow-hidden">
+            <header class="h-16 border-b border-brand-borderGray bg-white flex items-center justify-between px-8 shrink-0 select-none">
+                <div class="w-96 relative">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400"><i class="fa-solid fa-magnifying-glass text-xs"></i></span>
+                    <input type="text" id="header-search" oninput="handleSearch(this.value)" class="w-full bg-slate-50 border border-slate-200 rounded-lg py-1.5 pl-9 pr-4 text-xs focus:outline-none focus:border-brand-orange transition" placeholder="Search mandates, companies, investors...">
                 </div>
-
-                <!-- Actions / Session -->
-                <div class="flex items-center gap-6">
-                    <div class="flex items-center gap-2 bg-slate-50 px-3 py-1.5 rounded-md border border-slate-100 cursor-pointer">
-                        <span class="text-xs font-bold text-slate-700">INR (₹)</span>
-                        <i data-lucide="chevron-down" class="w-3 h-3 text-slate-400"></i>
+                <div class="flex items-center gap-5">
+                    <div class="flex items-center gap-1 border border-slate-200 rounded-lg px-2.5 py-1 bg-slate-50 text-xs text-slate-600"><span class="font-semibold text-slate-700">INR (₹)</span><i class="fa-solid fa-chevron-down text-[9px] text-slate-400"></i></div>
+                    <div class="relative">
+                        <button onclick="toggleDropdown('alert-dropdown-tray')" class="p-2 text-slate-500 hover:text-brand-orange hover:bg-slate-100 rounded-full transition relative"><i class="fa-regular fa-bell text-lg"></i><span class="absolute top-1.5 right-1.5 w-4 h-4 bg-red-500 text-[10px] text-white font-extrabold flex items-center justify-center rounded-full">3</span></button>
+                        <div id="alert-dropdown-tray" class="hidden absolute right-0 mt-2 w-80 bg-white border border-slate-200 rounded-xl shadow-xl z-50 text-xs overflow-hidden"><div class="bg-slate-50 px-4 py-3 border-b border-slate-100 font-bold text-slate-700">Recent Activities Feed</div><div class="divide-y divide-slate-100 max-h-60 overflow-y-auto" id="alert-items-list"></div></div>
                     </div>
-
-                    <!-- Theme Switcher -->
-                    <button class="text-slate-400 hover:text-orange-500 transition-colors">
-                        <i data-lucide="sun" class="w-4 h-4"></i>
-                    </button>
-                    
-                    <!-- Notifications -->
-                    <button class="text-slate-400 hover:text-orange-500 transition-colors relative">
-                        <i data-lucide="bell" class="w-4 h-4"></i>
-                        <span class="absolute -top-1 -right-1 w-2 h-2 bg-orange-500 rounded-full"></span>
-                    </button>
-
-                    <div class="flex items-center gap-3 border-l border-slate-100 pl-6">
-                        <div class="text-right">
-                            <p class="text-xs font-bold text-slate-900 leading-none">KARTHIK</p>
-                            <p class="text-[10px] text-orange-500 font-bold uppercase tracking-wider mt-1">SUPER ADMIN</p>
-                        </div>
-                        <div class="w-10 h-10 bg-[#0B0C0E] text-white rounded-md flex items-center justify-center font-bold tracking-tight shadow-md">
-                            K
-                        </div>
+                    <div class="flex items-center gap-3 border-l border-slate-200 pl-4">
+                        <div class="text-right"><p class="text-xs font-bold text-slate-900 leading-none">KARTHIK</p><p class="text-[9px] text-brand-orange font-bold uppercase tracking-wider mt-0.5">SUPER ADMIN</p></div>
+                        <div class="w-10 h-10 rounded-full bg-[#FF5E00] text-white font-extrabold text-sm flex items-center justify-center shadow">K</div>
                     </div>
                 </div>
             </header>
 
-            <!-- WORKSPACE CONTAINER -->
-            <div class="p-8 flex-1 flex flex-col max-w-[1600px] w-full mx-auto" id="workspace-target">
-                <!-- Dynamic templates rendered here -->
+            <div class="flex-1 overflow-y-auto p-8">
+                <section class="space-y-6">
+                    <div class="flex justify-between items-center select-none">
+                        <div><h2 class="text-2xl font-bold tracking-tight text-slate-900">Dashboard Overview</h2><p class="text-slate-500 text-xs mt-1">Real-time business overview and key performance metrics.</p></div>
+                        <div class="relative">
+                            <button onclick="toggleDropdown('time-range-picker')" class="bg-white border border-slate-200 px-4 py-2 rounded-lg text-xs font-bold text-slate-700 flex items-center gap-2 shadow-sm hover:bg-slate-50"><i class="fa-regular fa-calendar-check text-slate-400"></i><span id="selected-range-label">This Month</span><i class="fa-solid fa-chevron-down text-[9px] text-slate-400"></i></button>
+                            <div id="time-range-picker" class="hidden absolute right-0 mt-2 bg-white border border-slate-200 rounded-lg shadow-xl py-1 z-40 text-xs w-40">
+                                <button onclick="selectTimeRange('This Month')" class="w-full text-left px-4 py-2 hover:bg-slate-50 text-slate-700 font-medium">This Month</button>
+                                <button onclick="selectTimeRange('Last Quarter')" class="w-full text-left px-4 py-2 hover:bg-slate-50 text-slate-700 font-medium">Last Quarter</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-5 gap-5">
+                        <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-start gap-4 hover:shadow-md transition"><div class="p-3 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0"><i class="fa-solid fa-briefcase text-lg"></i></div><div class="space-y-1"><span class="text-[11px] text-slate-400 font-bold uppercase tracking-wider block">Active Deals</span><h3 class="text-2xl font-extrabold text-slate-900" id="dash-kpi-deals">3</h3><p class="text-[11px] font-bold text-emerald-600 flex items-center gap-1 mt-1"><i class="fa-solid fa-caret-up"></i><span>—</span><span class="text-slate-400 font-medium">pipeline active</span></p></div></div>
+                        <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-start gap-4 hover:shadow-md transition"><div class="p-3 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0"><i class="fa-solid fa-file-signature text-lg"></i></div><div class="space-y-1"><span class="text-[11px] text-slate-400 font-bold uppercase tracking-wider block">Active Mandates</span><h3 class="text-2xl font-extrabold text-slate-900" id="dash-kpi-mandates">4</h3><p class="text-[11px] font-bold text-emerald-600 flex items-center gap-1 mt-1"><i class="fa-solid fa-caret-up"></i><span>—</span><span class="text-slate-400 font-medium">in progress</span></p></div></div>
+                        <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-start gap-4 hover:shadow-md transition"><div class="p-3 rounded-xl bg-violet-50 text-violet-600 flex items-center justify-center shrink-0"><i class="fa-solid fa-indian-rupee-sign text-lg"></i></div><div class="space-y-1"><span class="text-[11px] text-slate-400 font-bold uppercase tracking-wider block">Revenue (₹ Cr)</span><h3 class="text-2xl font-extrabold text-slate-900" id="dash-kpi-revenue">4.70</h3><p class="text-[11px] font-bold text-emerald-600 flex items-center gap-1 mt-1"><i class="fa-solid fa-caret-up"></i><span>—</span><span class="text-slate-400 font-medium">team aggregate</span></p></div></div>
+                        <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-start gap-4 hover:shadow-md transition"><div class="p-3 rounded-xl bg-amber-50 text-amber-500 flex items-center justify-center shrink-0"><i class="fa-solid fa-clock-rotate-left text-lg"></i></div><div class="space-y-1"><span class="text-[11px] text-slate-400 font-bold uppercase tracking-wider block">Pending Actions</span><h3 class="text-2xl font-extrabold text-slate-900" id="dash-kpi-pending">3</h3><p class="text-[11px] font-bold text-rose-600 flex items-center gap-1 mt-1"><i class="fa-solid fa-caret-down"></i><span>—</span><span class="text-slate-400 font-medium">requires attention</span></p></div></div>
+                        <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-start gap-4 hover:shadow-md transition"><div class="p-3 rounded-xl bg-blue-50 text-blue-500 flex items-center justify-center shrink-0"><i class="fa-solid fa-user-plus text-lg"></i></div><div class="space-y-1"><span class="text-[11px] text-slate-400 font-bold uppercase tracking-wider block">Team Members</span><h3 class="text-2xl font-extrabold text-slate-900" id="dash-kpi-team">5</h3><p class="text-[11px] font-bold text-emerald-600 flex items-center gap-1 mt-1"><i class="fa-solid fa-caret-up"></i><span>—</span><span class="text-slate-400 font-medium">advisory desk</span></p></div></div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <div class="lg:col-span-2 bg-white rounded-2xl border border-slate-100 p-5 shadow-sm"><div class="flex justify-between items-center border-b border-slate-50 pb-3"><div><h4 class="text-sm font-bold text-slate-800">Revenue Analytics</h4><p class="text-[11px] text-slate-400 mt-0.5">Monthly fee revenue trend growth insights.</p></div></div><div class="h-[220px] mt-3"><canvas id="chart-revenue-analytics"></canvas></div></div>
+                        <div class="bg-white rounded-2xl border border-slate-100 p-5 shadow-sm flex flex-col justify-between"><div class="border-b border-slate-50 pb-3"><h4 class="text-sm font-bold text-slate-800">Mandate Status</h4><p class="text-[11px] text-slate-400 mt-0.5">Current distribution of mandate workflow states.</p></div><div class="flex items-center gap-4 my-2"><div class="w-[140px] h-[140px] shrink-0"><canvas id="chart-mandate-donut"></canvas></div><div class="space-y-1.5 flex-1 text-[10px]" id="donut-legend-rows"></div></div></div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div class="bg-white rounded-2xl border border-slate-100 p-5 shadow-sm flex flex-col justify-between"><div class="border-b border-slate-50 pb-3 flex justify-between items-center"><div><h4 class="text-sm font-bold text-slate-800">Pending Actions</h4><p class="text-[11px] text-slate-400 mt-0.5">Awaiting super admin compliance clearance.</p></div><a href="/pages/dataroom.html" class="text-brand-orange hover:text-brand-orangeHover text-xs font-bold">View All</a></div><div class="divide-y divide-slate-50 flex-1 overflow-y-auto max-h-[220px]" id="pending-actions-stack-body"></div></div>
+                        <div class="bg-white rounded-2xl border border-slate-100 p-5 shadow-sm space-y-4"><div class="flex justify-between items-center border-b border-slate-50 pb-3"><div><h4 class="text-sm font-bold text-slate-800">Recent Activities</h4><p class="text-[11px] text-slate-400 mt-0.5">Real-time action audit trail logs.</p></div></div><div class="space-y-4 max-h-[300px] overflow-y-auto" id="recent-activities-list"></div></div>
+                    </div>
+
+                    <div class="bg-white rounded-2xl border border-slate-100 p-5 shadow-sm space-y-4"><div class="flex justify-between items-center border-b border-slate-50 pb-3"><div><h4 class="text-sm font-bold text-slate-800">Team Performance</h4><p class="text-[11px] text-slate-400 mt-0.5">Individual performance metrics of deal leaders.</p></div></div><div class="overflow-x-auto"><table class="w-full text-left text-xs text-slate-600 border-collapse"><thead><tr class="text-slate-400 uppercase tracking-wider text-[10px] border-b border-slate-100"><th class="pb-2 font-bold">Team Member</th><th class="pb-2 font-bold text-center">Deals Added</th><th class="pb-2 font-bold text-center">Mandates Signed</th><th class="pb-2 font-bold text-right">Revenue (₹)</th><th class="pb-2 font-bold text-right">Performance</th></tr></thead><tbody id="team-performance-table-body" class="divide-y divide-slate-50"></tbody></table></div></div>
+                </section>
             </div>
         </main>
     </div>
 
-    
-        <div class="flex-1 min-w-0">
-            <h4 class="text-xs font-bold uppercase tracking-wider text-orange-500 leading-none mb-1">Terminal Alert</h4>
-            <p id="toast-text" class="text-xs text-zinc-300"></p>
-        </div>
-        <button onclick="dismissToast()" class="text-zinc-500 hover:text-white transition-colors">
-            <i data-lucide="x" class="w-4 h-4"></i>
-        </button>
-    </div>
-
-    <!-- MODAL OVERLAYS CONTAINER -->
-    <div id="modal-container" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
-        <!-- Content gets loaded dynamically here -->
-    </div>
-
-    <!-- SYSTEM DATABASE & STATE ENGINE -->
     <script>
-        const appState = {
-            activeSection: 'dashboard',
-            activeSubTabs: {
-                'crm': 'investees', // investees | investors | sellers | buyers | advisors
-                'crm-detail': 'overview', // overview | financials | funding-ask | team | documents | market-opportunity | communications | notes
-                'deals': 'pipeline', // pipeline | kanban | workspace | escalated-deals
-                'mandates': 'pre-mandate', // pre-mandate | post-mandate | template-builder
-            },
-
-            selectedCrmId: 'TV-101', // Default selected CRM profile
-            selectedDealId: 'DEAL-101', 
-            selectedProjectId: 'PROJ-301', 
-            selectedMandateId: 'MND-9540', 
-            aiRetainerRate: 1.8,
-            aiExclusiveClauses: 'exclusive-brokerage',
-            dataRoomViewMode: 'grid', // grid | list
-            selectedDataRoomCompanyId: null, // Null initially, when clicked opens notion style directory
-
-            // Comprehensive Database for Charantra Operations
-            investees: [
-                { id: 'TV-101', name: 'TechVenture Solutions', founder: 'Sarah Chen', email: 'sarah@techventure.com', phone: '+91 98765 43211', type: 'Investee', status: 'CLARIFICATION', statusColor: 'bg-amber-100 text-amber-800 border-amber-200/50', completeness: 80, sector: 'AI, B2B', valuation: '₹25 Cr', ask: '₹5.00 Cr', equity: '20%', duration: 'Jan 2024', location: 'Bengaluru, KA', teamSize: '25 Members', desc: 'TechVenture Solutions is revolutionizing the customer service industry with state-of-the-art AI. Our proprietary engine allows brands to automate up to 70% of support tickets while maintaining human-like empathy and resolution accuracy. We currently partner with over 150 enterprise clients globally.' },
-                { id: 'TC-102', name: 'TechCore Industries', founder: 'Priya Sharma', email: 'priya@techcore.com', phone: '+91 98765 43211', type: 'Investee', status: 'PENDING REVIEW', statusColor: 'bg-amber-100 text-amber-800 border-amber-200/50', completeness: 65, sector: 'IoT Hardware', valuation: '₹35 Cr', ask: '₹6.50 Cr', equity: '18%', duration: 'Mar 2025', location: 'Pune, MH', teamSize: '14 Members', desc: 'Real-time telemetry and edge analytics pipelines designed for manufacturing assemblies and legacy heavy machinery interfaces.' },
-                { id: 'GF-103', name: 'GreenField Investments', founder: 'Dr. Alok Sen', email: 'alok@greenfield.com', phone: '+91 98765 43212', type: 'Investee', status: 'ACTIVATION READY', statusColor: 'bg-green-100 text-green-800 border-green-200/50', completeness: 90, sector: 'AgriTech Infrastructure', valuation: '₹90 Cr', ask: '₹18.00 Cr', equity: '20%', duration: 'Oct 2023', location: 'Hyderabad, TS', teamSize: '40 Members', desc: 'GreenField is deploying micro-grid battery arrays targeting zero-transmission losses for clean power setups.' }
+        const db = {
+            pendingActions: [
+                { id: "ACT-001", name: "GreenField Capital", subtitle: "Unreviewed NDA agreement with fund terms", status: "Critical", dueText: "Due in 3h", bg: "bg-rose-50 text-rose-700" },
+                { id: "ACT-002", name: "TechVentures Fund", subtitle: "Investor KYC verification form pending submission", status: "High", dueText: "Due in 1d", bg: "bg-amber-50 text-amber-700" },
+                { id: "ACT-003", name: "Elevation Capital", subtitle: "Mandate agreement awaiting counter signature block", status: "Medium", dueText: "Due in 2d", bg: "bg-blue-50 text-blue-700" },
             ],
-
-            investors: [
-                { id: 'INV-001', name: 'Sequoia Capital India', contact: 'Rajan Anandan', email: 'rajan@sequoia.com', phone: '+91 22 4012 3000', status: 'Active', type: 'VMC Partners', preferredSectors: 'SaaS, Renewable Power', underManagement: '₹12,000 Cr', networkScore: '9.8 / 10' },
-                { id: 'INV-002', name: 'Matrix Partners India', contact: 'Avnish Bajaj', email: 'avnish@matrix.com', phone: '+91 22 6100 2000', status: 'Active', type: 'Growth Equity', preferredSectors: 'EdTech, IoT, B2B', underManagement: '₹4,500 Cr', networkScore: '8.5 / 10' },
-                { id: 'INV-003', name: 'Ascent Capital Group', contact: 'Raja Kumar', email: 'raja@ascent.com', phone: '+91 80 4030 0000', status: 'Active', type: 'Private Equity', preferredSectors: 'Infrastructure, FinTech', underManagement: '₹8,000 Cr', networkScore: '9.1 / 10' }
-            ],
-
-            sellers: [
-                { id: 'SEL-201', name: 'Apex Retail Logics', liaison: 'Rajesh Mehra', email: 'rajesh@apexretail.com', phone: '+91 98765 00921', status: 'Active', askVolume: '₹12.0 Cr', terms: 'Exclusive M&A', matchesCount: 3 },
-                { id: 'SEL-202', name: 'SolarFlow Assemblies', liaison: 'Vikram Das', email: 'vikram@solarflow.in', phone: '+91 99321 00292', status: 'Pending Review', askVolume: '₹22.5 Cr', terms: 'Non-Exclusive Advisory', matchesCount: 1 }
-            ],
-
-            buyers: [
-                { id: 'BYR-301', name: 'Reliance Retail', liaison: 'Alok Ambani', email: 'm_a@reliance.com', phone: '+91 22 3555 5000', status: 'Active', buyingCriteria: 'Retail Automation, IoT Hardware', ticketSize: '₹15 - ₹50 Cr' }
-            ],
-
-            partners: [
-                { id: 'PT-301', name: 'Singhania & Co Law Offices', contact: 'Vipin Singhania', role: 'External Legal Review', email: 'vipin@singhanialaw.com', activeCases: 4, score: '9.5 / 10' },
-                { id: 'PT-302', name: 'KPMG Advisory Desk', contact: 'Karan Mehra', role: 'Financial Auditor', email: 'karan@kpmg-desk.in', activeCases: 2, score: '9.2 / 10' }
-            ],
-
-            smes: [
-                { id: 'SME-401', name: 'Dr. Harish Vyas', domain: 'Solar Grid Telemetry Expert', activeEngagements: 3, phone: '+91 98980 11223', rating: '9.7 / 10' },
-                { id: 'SME-402', name: 'Anita Desai', domain: 'AgriTech Cold-Chain Consultant', activeEngagements: 1, phone: '+91 90112 33445', rating: '9.4 / 10' }
-            ],
-
-            deals: [
-                { id: 'DEAL-101', companyId: 'TV-101', investorId: 'INV-001', userRoleType: 'INVESTEE', stage: 'TERM SHEET', health: 'Healthy', size: '₹25.0 Cr', preMoney: '₹120 Cr', closingDate: '2026-07-15', negotiationLog: 'Proposed 1.8% Retainer performance index.', flags: [] },
-                { id: 'DEAL-102', companyId: 'TC-102', investorId: 'INV-002', userRoleType: 'INVESTEE', stage: 'NDA ACCESS', health: 'Risk', size: '₹12.0 Cr', preMoney: '₹63 Cr', closingDate: '2026-08-30', negotiationLog: 'Awaiting clean PDF submissions of audited tax profiles.', flags: ['Missing Audited Profit & Loss Statements'] },
-                { id: 'DEAL-103', companyId: 'GF-103', investorId: 'INV-003', userRoleType: 'INVESTEE', stage: 'DUE DILIGENCE', health: 'Healthy', size: '₹18.0 Cr', preMoney: '₹72 Cr', closingDate: '2026-06-25', negotiationLog: 'Pre-money values locked and validated.', flags: [] },
-                { id: 'DEAL-104', companyId: 'SEL-201', investorId: 'BYR-301', userRoleType: 'SELLER', stage: 'CLOSING', health: 'Healthy', size: '₹12.0 Cr', preMoney: '₹60 Cr', closingDate: '2026-06-30', negotiationLog: 'Finalizing transfer documents on corporate registries.', flags: [] }
-            ],
-
-            mandatesList: [
-                { num: 'MND-9540', company: 'TechVenture Solutions', type: 'Advisory Advisory', amount: '₹3.5 Cr', status: 'DRAFT', date: '2026-05-10', expiry: '2026-11-06' },
-                { num: 'MND-2026-0523', company: 'Nexus Ventures Pvt Ltd', type: 'Investment Advisory', amount: '₹2.5 Cr', status: 'SIGNED', date: '2026-05-10', expiry: '2026-11-06' },
-                { num: 'MND-2026-0524', company: 'TechCore Industries', type: 'M&A Advisory', amount: '₹5.0 Cr', status: 'AWAITING SIGNATURE', date: '2026-05-12', expiry: '2026-11-08' },
-                { num: 'MND-2026-0525', company: 'GreenField Investments', type: 'Due Diligence', amount: '₹1.75 Cr', status: 'SIGNED', date: '2026-05-08', expiry: '2026-11-04' }
-            ],
-
-            projectsList: [
-                { 
-                    id: 'PROJ-301', 
-                    name: 'Nexus Renewable Grid Scale-up', 
-                    companyId: 'CO-201', 
-                    health: 'On Track', 
-                    deadline: '2026-08-01', 
-                    deliverables: ['CIM Dossier Complete', 'Treasury Verification', 'Valuation Matrix sign-off'],
-                    tasks: [
-                        { text: 'Validate clean energy performance metrics', state: 'Assigned', assignee: 'Priya Sharma' },
-                        { text: 'Escrow account audit setup', state: 'Pending', assignee: 'Karthik' },
-                        { text: 'Draft due diligence response dossier', state: 'Overdue', assignee: 'Rohan Mehra' }
-                    ]
-                }
-            ],
-
             recentActivities: [
-                { company: 'Nexus Ventures Pvt Ltd', action: 'Profile approved & CIM published', status: 'success', time: '10 mins ago' },
-                { company: 'TechCore Industries', action: 'Mandate sent for Board signatures', status: 'pending', time: '25 mins ago' },
-                { company: 'GreenField Investments', action: 'Success Token payment verified', status: 'success', time: '1 hour ago' }
+                { id: "ACTV-001", title: "Sequoia Capital NDA approved by Super Admin Karthik", timeText: "5 min ago", icon: "fa-circle-check text-emerald-600", bg: "bg-emerald-50" },
+                { id: "ACTV-002", title: "New mandate created: Elevation Capital - Series B $12M", timeText: "1 hour ago", icon: "fa-file-signature text-brand-orange", bg: "bg-orange-50" },
+                { id: "ACTV-003", title: "VDR access key authorized for TechVentures Fund diligence", timeText: "3 hours ago", icon: "fa-hard-drive text-indigo-600", bg: "bg-indigo-50" },
+                { id: "ACTV-004", title: "Blume Ventures profile moved to Inactive by system scheduler", timeText: "6 hours ago", icon: "fa-user-slash text-slate-500", bg: "bg-slate-100" },
+                { id: "ACTV-005", title: "Invoice #INV-042 posted for IndiaFund Advisors retainer fee", timeText: "Yesterday", icon: "fa-receipt text-emerald-600", bg: "bg-emerald-50" },
             ],
-
-            pendingTasks: [
-                { text: 'Review Alpha Startup Labs submission', priority: 'high', schedule: 'Today' },
-                { text: 'Verify GreenField payment proof', priority: 'medium', schedule: 'Today' },
-                { text: 'Send mandate reminder to TechCore', priority: 'low', schedule: 'Tomorrow' }
+            team: [
+                { name: "Sarah Chen", initial: "SC", role: "Investment Banker", deals: 28, revenue: "₹1.40 Cr", perf: "98%", color: "bg-indigo-600 text-white", mandates: 15 },
+                { name: "Akash Kumar", initial: "AK", role: "Admin", deals: 24, revenue: "₹1.20 Cr", perf: "94%", color: "bg-emerald-600 text-white", mandates: 18 },
+                { name: "Raj Mehta", initial: "RM", role: "Business Analyst", deals: 20, revenue: "₹0.90 Cr", perf: "89%", color: "bg-violet-600 text-white", mandates: 12 },
+                { name: "Priya Sharma", initial: "PS", role: "Investment Banker", deals: 18, revenue: "₹0.65 Cr", perf: "85%", color: "bg-amber-600 text-white", mandates: 10 },
+                { name: "Vikram Gupta", initial: "VG", role: "Business Analyst", deals: 15, revenue: "₹0.55 Cr", perf: "78%", color: "bg-sky-600 text-white", mandates: 8 },
             ],
-
-            paymentTransactions: [
-                { txnId: 'TXN-908122', company: 'Nexus Ventures Pvt Ltd', type: 'Engagement Fee Payment', amount: '₹2,50,000', status: 'Verified', utr: 'UTR90812239128', date: 'May 18, 2026' },
-                { txnId: 'TXN-908123', company: 'TechCore Industries', type: 'Deal Completion Payment', amount: '₹1,50,000', status: 'Pending Verification', utr: 'UTR10811902001', date: 'May 17, 2026' }
-            ],
-
-            ndaRequests: [
-                { company: 'Nexus Ventures Pvt Ltd', type: 'NDA Request', partner: 'Matrix Partners', status: 'Pending', date: 'May 16, 2026' },
-                { company: 'TechCore Industries', type: 'CIM Request', partner: 'Ascent Capital', status: 'Verified', date: 'May 15, 2026' }
-            ],
-
-            supervisors: [
-                { name: 'Karthik', role: 'Relationship Manager', performance: 'Exceeding Target', activeModules: ['FINANCIAL VERIFICATION', 'MANDATES'] },
-                { name: 'Priya Sharma', role: 'Senior Analyst', performance: 'On Target', activeModules: ['FINANCIAL VERIFICATION', 'DUE DILIGENCE'] }
+            deals: [
+                { id: "DEAL-101", stage: "Active" }, { id: "DEAL-102", stage: "Active" }, { id: "DEAL-103", stage: "Closing" }
             ]
         };
 
-        // UI navigation control
-        function changeSection(secId) {
-            appState.activeSection = secId;
-            document.querySelectorAll('.sidebar-btn').forEach(btn => {
-                btn.classList.remove('sidebar-item-active');
-            });
-            const activeBtn = document.getElementById(`nav-${secId}`);
-            if (activeBtn) activeBtn.classList.add('sidebar-item-active');
-
-            renderWorkspace();
-        }
-
-        function changeSubTab(secId, tabId) {
-            appState.activeSubTabs[secId] = tabId;
-            renderWorkspace();
-        }
-
-        // Fast state interactions
-        function triggerToast(msg) {}, 4000);
-        }
-
-        function dismissToast() {
-            const toast = document.getElementById('toast-notif');
-            toast.classList.remove('translate-y-0', 'opacity-100');
-            toast.classList.add('translate-y-20', 'opacity-0');
-        }
-
-        function executeGlobalSearch() {
-            const q = document.getElementById('global-search').value.toLowerCase();
-            if (q.length > 2) {
-                const results = appState.investees.filter(c => c.name.toLowerCase().includes(q))
-                    .concat(appState.investors.filter(i => i.name.toLowerCase().includes(q)));
-                if (results.length > 0) {
-                    triggerToast(`Found ${results.length} records dynamically.`);
+        function toggleSidebarCollapse() {
+            document.getElementById('app-sidebar').classList.toggle('collapsed');
+            document.querySelectorAll('.sidebar-section-div').forEach(el => {
+                if (document.getElementById('app-sidebar').classList.contains('collapsed')) {
+                    el.style.maxHeight = '0';
                 }
+            });
+        }
+
+        function toggleSidebarSection(sectionId) {
+            if (document.getElementById('app-sidebar').classList.contains('collapsed')) return;
+            const el = document.getElementById(sectionId);
+            const arrow = document.getElementById('arrow-' + sectionId);
+            if (el) {
+                const isOpen = el.style.maxHeight !== '0px' && el.style.maxHeight !== '';
+                el.style.maxHeight = isOpen ? '0' : '200px';
+            }
+            if (arrow) {
+                arrow.style.transform = arrow.style.transform === 'rotate(180deg)' ? 'rotate(0deg)' : 'rotate(180deg)';
             }
         }
 
-        function closeModal() {
-            const container = document.getElementById('modal-container');
-            container.classList.remove('modal-active');
-            container.classList.add('hidden');
-            container.innerHTML = '';
-        }
-    </script>
+        function toggleDropdown(id) { const el = document.getElementById(id); if(el) el.classList.toggle('hidden'); }
+        function selectTimeRange(r) { document.getElementById('selected-range-label').innerText = r; document.getElementById('time-range-picker').classList.add('hidden'); }
+        function handleSearch(t) { console.log('Search:', t); }
 
-    <!-- VIEWS ENGINE -->
-    <script>
-
-        // --- SCREEN 1: DASHBOARD ---
-        function getDashboardView() {
-            return `
-                <div class="fade-in-view space-y-8">
-                    <!-- Dashboard Header -->
-                    <div class="flex justify-between items-end">
-                        <div>
-                            <h2 class="text-2xl font-bold text-slate-900 tracking-tight">Dashboard Overview</h2>
-                            <p class="text-slate-500 font-medium text-xs mt-1">Super Admin operational overview and core activity monitoring.</p>
-                        </div>
-                    </div>
-
-                    <!-- Client-focused KPI Cards -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                        <div class="bg-white p-6 rounded-md shadow-sm border border-slate-200/50 interactive-card">
-                            <div class="flex justify-between items-start mb-4">
-                                <span class="p-2.5 bg-orange-50 text-orange-600 rounded-md"><i data-lucide="file-signature" class="w-5 h-5"></i></span>
-                                <span class="text-xs font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-md">+4%</span>
-                            </div>
-                            <h3 class="text-3xl font-bold text-slate-900">42</h3>
-                            <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1">Active Mandates</p>
-                        </div>
-
-                        <div class="bg-white p-6 rounded-md shadow-sm border border-slate-200/50 interactive-card">
-                            <div class="flex justify-between items-start mb-4">
-                                <span class="p-2.5 bg-blue-50 text-blue-600 rounded-md"><i data-lucide="clock-4" class="w-5 h-5"></i></span>
-                                <span class="text-xs font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-md">New</span>
-                            </div>
-                            <h3 class="text-3xl font-bold text-slate-900">12</h3>
-                            <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1">Pending Mandates</p>
-                        </div>
-
-                        <div class="bg-white p-6 rounded-md shadow-sm border border-slate-200/50 interactive-card">
-                            <div class="flex justify-between items-start mb-4">
-                                <span class="p-2.5 bg-indigo-50 text-indigo-600 rounded-md"><i data-lucide="git-pull-request" class="w-5 h-5"></i></span>
-                                <span class="text-xs font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-md">+8%</span>
-                            </div>
-                            <h3 class="text-3xl font-bold text-slate-900">18</h3>
-                            <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1">Total Deals</p>
-                        </div>
-
-                        <div class="bg-white p-6 rounded-md shadow-sm border border-slate-200/50 interactive-card">
-                            <div class="flex justify-between items-start mb-4">
-                                <span class="p-2.5 bg-emerald-50 text-emerald-600 rounded-md"><i data-lucide="landmark" class="w-5 h-5"></i></span>
-                                <span class="text-xs font-bold text-emerald-600 bg-green-50 px-2 py-0.5 rounded-md">+₹4.2 Cr</span>
-                            </div>
-                            <h3 class="text-3xl font-bold text-slate-900">₹14.25 Cr</h3>
-                            <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1">Retainer Earnings</p>
-                        </div>
-                    </div>
-
-                    <!-- Activity Row -->
-                    <div class="grid grid-cols-12 gap-8">
-                        <!-- Recent Activity List (Left) -->
-                        <div class="col-span-12 lg:col-span-8 bg-white p-6 rounded-md border border-slate-200/50 shadow-sm space-y-6">
-                            <div class="flex justify-between items-center">
-                                <h3 class="text-base font-bold text-slate-900">Recent Activity</h3>
-                                <button onclick="changeSection('crm')" class="text-xs font-bold text-orange-600 hover:text-orange-700 tracking-wider">View All</button>
-                            </div>
-                            <div class="space-y-4">
-                                ${appState.recentActivities.map(act => `
-                                    <div class="flex items-center justify-between p-4 bg-slate-50/50 hover:bg-slate-50 rounded-md transition-colors cursor-pointer" onclick="viewCompanyFromActivity('${act.company}')">
-                                        <div class="flex items-center gap-4">
-                                            <div class="w-10 h-10 bg-white border border-slate-200/50 rounded-md flex items-center justify-center font-bold text-slate-400">${act.company[0]}</div>
-                                            <div>
-                                                <p class="text-sm font-semibold text-slate-900">${act.company}</p>
-                                                <p class="text-xs text-slate-500">${act.action}</p>
-                                            </div>
-                                        </div>
-                                        <div class="text-right">
-                                            <span class="px-2.5 py-1 rounded text-[10px] font-bold tracking-wider uppercase ${
-                                                act.status === 'success' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'
-                                            }">${act.status}</span>
-                                            <p class="text-[10px] text-slate-400 mt-1">${act.time}</p>
-                                        </div>
-                                    </div>
-                                `).join('')}
-                            </div>
-                        </div>
-
-                        <!-- Pending Tasks (Right) -->
-                        <div class="col-span-12 lg:col-span-4 bg-white p-6 rounded-md border border-slate-200/50 shadow-sm space-y-6">
-                            <h3 class="text-base font-bold text-slate-900">Pending Tasks</h3>
-                            <div class="space-y-3">
-                                ${appState.pendingTasks.map(task => `
-                                    <div class="p-4 bg-slate-50 rounded-md space-y-2">
-                                        <div class="flex justify-between items-start">
-                                            <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded ${
-                                                task.priority === 'high' ? 'bg-red-100 text-red-700' : 
-                                                task.priority === 'medium' ? 'bg-orange-100 text-orange-700' : 'bg-yellow-100 text-yellow-700'
-                                            }">${task.priority}</span>
-                                            <span class="text-[10px] text-slate-400 font-bold">${task.schedule}</span>
-                                        </div>
-                                        <p class="text-xs font-semibold text-slate-800">${task.text}</p>
-                                    </div>
-                                `).join('')}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        function viewCompanyFromActivity(name) {
-            const match = appState.investees.find(item => item.name === name || name.includes(item.name));
-            if (match) {
-                appState.selectedCrmId = match.id;
-                changeSubTab('crm', 'detail');
-            } else {
-                triggerToast(`Details for ${name} are undergoing active compliance check.`);
+        function clearActionRequirement(actionId) {
+            const idx = db.pendingActions.findIndex(a => a.id === actionId);
+            if (idx > -1) {
+                db.pendingActions.splice(idx, 1);
+                db.recentActivities.unshift({ id: "ACTV-"+Math.floor(Math.random()*100000), title: `Super Admin cleared: ${db.pendingActions[idx]?.name || 'action'}`, timeText: "Just now", icon: "fa-circle-check text-emerald-600", bg: "bg-emerald-50" });
+                renderDashboardViews();
             }
         }
-    </script>
 
-    <script>
-        // --- SCREEN 2: CRM & RELATIONSHIPS ---
-        function getCrmView() {
-            const activeSubTab = appState.activeSubTabs['crm'];
-            
-            if (activeSubTab !== 'detail') {
-                let dataset = [];
-                if (activeSubTab === 'investees') dataset = appState.investees;
-                else if (activeSubTab === 'investors') dataset = appState.investors;
-                else if (activeSubTab === 'sellers') dataset = appState.sellers;
-                else if (activeSubTab === 'buyers') dataset = appState.buyers;
-                else if (activeSubTab === 'advisors') dataset = appState.partners;
-
-                return `
-                    <div class="fade-in-view space-y-6">
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <h1 class="text-3xl font-bold text-slate-900 tracking-tight">Users Workspace</h1>
-                                <p class="text-slate-500 font-medium text-xs mt-1">Platform user registers and interaction status audits.</p>
-                            </div>
-                            <button onclick="triggerAddUserModal()" class="bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs py-2.5 px-6 rounded-md transition-all shadow-md shadow-orange-500/10">
-                                Add User
-                            </button>
-                        </div>
-
-                        <!-- Data table filters -->
-                        <div class="bg-white p-6 rounded-md border border-slate-200/50 shadow-sm space-y-6">
-                            <div class="flex gap-4 items-center">
-                                <div class="relative flex-1">
-                                    <i data-lucide="search" class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4"></i>
-                                    <input type="text" placeholder="Search by name, email, or telephone ID..." class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-100 rounded-md text-xs outline-none focus:bg-white focus:ring-1 focus:ring-orange-500 transition-all">
-                                </div>
-                                <button class="p-2.5 bg-slate-50 border border-slate-100 rounded-md text-slate-400 hover:text-slate-600 transition-colors">
-                                    <i data-lucide="sliders-horizontal" class="w-4 h-4"></i>
-                                </button>
-                            </div>
-
-                            <!-- Tabs displaying count of users strictly as requested -->
-                            <div class="flex gap-8 border-b border-slate-100 text-xs font-bold uppercase tracking-wider">
-                                <button onclick="changeSubTab('crm', 'investees')" class="pb-3 transition-all ${activeSubTab === 'investees' ? 'subtab-active text-orange-600' : 'text-slate-400 hover:text-slate-600'}">Investee (${appState.investees.length})</button>
-                                <button onclick="changeSubTab('crm', 'investors')" class="pb-3 transition-all ${activeSubTab === 'investors' ? 'subtab-active text-orange-600' : 'text-slate-400 hover:text-slate-600'}">Investor (${appState.investors.length})</button>
-                                <button onclick="changeSubTab('crm', 'sellers')" class="pb-3 transition-all ${activeSubTab === 'sellers' ? 'subtab-active text-orange-600' : 'text-slate-400 hover:text-slate-600'}">Seller (${appState.sellers.length})</button>
-                                <button onclick="changeSubTab('crm', 'buyers')" class="pb-3 transition-all ${activeSubTab === 'buyers' ? 'subtab-active text-orange-600' : 'text-slate-400 hover:text-slate-600'}">Buyer (${appState.buyers.length})</button>
-                                <button onclick="changeSubTab('crm', 'advisors')" class="pb-3 transition-all ${activeSubTab === 'advisors' ? 'subtab-active text-orange-600' : 'text-slate-400 hover:text-slate-600'}">Advisors (${appState.partners.length})</button>
-                            </div>
-
-                            <div class="text-xs text-slate-400 font-semibold">
-                                Showing ${dataset.length} active logs
-                            </div>
-
-                            <!-- Data Grid (image_daabbd.png) -->
-                            <div class="overflow-x-auto">
-                                <table class="w-full text-left text-xs">
-                                    <thead>
-                                        <tr class="bg-slate-50/50 text-slate-400 text-[10px] uppercase font-bold tracking-wider border-b border-slate-100">
-                                            <th class="px-6 py-4">Company / Contact</th>
-                                            <th class="px-6 py-4">Email</th>
-                                            <th class="px-6 py-4">Phone</th>
-                                            <th class="px-6 py-4">Type</th>
-                                            <th class="px-6 py-4">Status Update</th>
-                                            <th class="px-6 py-4">Last Activity</th>
-                                            <th class="px-6 py-4 text-center">Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="divide-y divide-slate-100 text-slate-700">
-                                        ${dataset.map(item => `
-                                            <tr class="hover:bg-slate-50/30 transition-colors">
-                                                <td class="px-6 py-4">
-                                                    <div class="flex flex-col">
-                                                        <span class="font-bold text-slate-900 text-sm">${item.name}</span>
-                                                        <span class="text-[11px] text-slate-400 font-semibold mt-0.5">${item.founder || item.contact || item.liaison || 'Liaison Desk'}</span>
-                                                    </div>
-                                                </td>
-                                                <td class="px-6 py-4 text-slate-500 font-medium">${item.email}</td>
-                                                <td class="px-6 py-4 text-slate-500 font-medium">${item.phone}</td>
-                                                <td class="px-6 py-4">
-                                                    <span class="px-2 py-0.5 bg-blue-50 text-blue-700 border border-blue-100/50 text-[10px] font-bold rounded uppercase">${activeSubTab === 'advisors' ? 'Advisor' : activeSubTab.slice(0, -1)}</span>
-                                                </td>
-                                                <!-- Inline status update control for Super Admin as requested -->
-                                                <td class="px-6 py-4">
-                                                    <select onchange="updateUserStatus('${item.id}', this.value)" class="p-1.5 bg-slate-50 border border-slate-200 rounded-md text-[10px] font-bold text-slate-700 outline-none">
-                                                        <option value="PENDING REVIEW" ${item.status === 'PENDING REVIEW' || item.status === 'Pending Review' ? 'selected' : ''}>PENDING REVIEW</option>
-                                                        <option value="CLARIFICATION" ${item.status === 'CLARIFICATION' || item.status === 'CLARIFICATION REQUESTS' ? 'selected' : ''}>CLARIFICATION</option>
-                                                        <option value="ACTIVATION READY" ${item.status === 'ACTIVATION READY' || item.status === 'Active' || item.status === 'READY FOR ACTIVATION' ? 'selected' : ''}>ACTIVATION READY</option>
-                                                    </select>
-                                                </td>
-                                                <td class="px-6 py-4 text-slate-400 font-semibold">1 day ago</td>
-                                                <!-- Styled actions with Message, View, Delete buttons as requested -->
-                                                <td class="px-6 py-4">
-                                                    <div class="flex items-center justify-center gap-2">
-                                                        <button onclick="triggerDirectChat('${item.name}')" class="p-1.5 bg-slate-50 hover:bg-slate-100 text-slate-500 hover:text-slate-800 rounded-md transition-all" title="Message User">
-                                                            <i data-lucide="message-square" class="w-4 h-4 text-blue-600"></i>
-                                                        </button>
-                                                        <button onclick="appState.selectedCrmId='${item.id}'; changeSubTab('crm', 'detail');" class="p-1.5 bg-slate-50 hover:bg-slate-100 text-slate-500 hover:text-slate-800 rounded-md transition-all" title="View Profile Detail Workspace">
-                                                            <i data-lucide="eye" class="w-4 h-4"></i>
-                                                        </button>
-                                                        <button onclick="triggerToast('Removing credential profile permanently...')" class="p-1.5 bg-slate-50 hover:bg-red-50 text-red-500 hover:text-red-700 rounded-md transition-all">
-                                                            <i data-lucide="trash-2" class="w-4 h-4"></i>
-                                                        </button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        `).join('')}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }
-
-            // Layout of Detail View (image_e4b460.jpg styled)
-            let activeProfile = appState.investees.find(p => p.id === appState.selectedCrmId) || 
-                                appState.investors.find(p => p.id === appState.selectedCrmId) ||
-                                appState.sellers.find(p => p.id === appState.selectedCrmId) ||
-                                appState.buyers.find(p => p.id === appState.selectedCrmId) ||
-                                appState.partners.find(p => p.id === appState.selectedCrmId);
-            
-            if (!activeProfile) activeProfile = appState.investees[0];
-            const detailTab = appState.activeSubTabs['crm-detail'];
-
-            // Role specific details rendering as requested
-            let dynamicInfoArea = '';
-            if (activeProfile.type === 'Investee' || !activeProfile.type) {
-                dynamicInfoArea = `
-                    <div class="grid grid-cols-3 gap-6">
-                        <div class="bg-white p-6 rounded-md border border-slate-200/50 shadow-sm">
-                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">FOUNDING / ASK</p>
-                            <p class="text-2xl font-bold text-slate-900 mt-2">${activeProfile.ask || '₹5.00 Cr'}</p>
-                            <p class="text-xs text-green-600 font-bold mt-1">40% committed</p>
-                        </div>
-                        <div class="bg-white p-6 rounded-md border border-slate-200/50 shadow-sm">
-                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">PRE-MONEY VALUATION</p>
-                            <p class="text-2xl font-bold text-slate-900 mt-2">${activeProfile.valuation || '₹25 Cr'}</p>
-                            <p class="text-xs text-slate-400 font-semibold mt-1">Last updated Apr 20</p>
-                        </div>
-                        <div class="bg-white p-6 rounded-md border border-slate-200/50 shadow-sm">
-                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">EQUITY OFFERED</p>
-                            <p class="text-2xl font-bold text-slate-900 mt-2">${activeProfile.equity || '20%'}</p>
-                            <p class="text-xs text-slate-400 font-semibold mt-1">For ${activeProfile.ask || '₹5.00 Cr'}</p>
-                        </div>
-                    </div>
-                `;
-            } else if (activeProfile.type === 'Venture Capital' || activeProfile.type === 'Growth Equity' || activeProfile.type === 'Private Equity') {
-                dynamicInfoArea = `
-                    <div class="grid grid-cols-3 gap-6">
-                        <div class="bg-white p-6 rounded-md border border-slate-200/50 shadow-sm">
-                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">ASSETS UNDER MANAGEMENT</p>
-                            <p class="text-2xl font-bold text-slate-900 mt-2">${activeProfile.underManagement || '₹5,000 Cr'}</p>
-                            <p class="text-xs text-green-600 font-bold mt-1">Tier 1 institutional pool</p>
-                        </div>
-                        <div class="bg-white p-6 rounded-md border border-slate-200/50 shadow-sm">
-                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">PREFERRED SECTORS</p>
-                            <p class="text-lg font-bold text-slate-900 mt-2 truncate">${activeProfile.preferredSectors || 'FinTech, SaaS'}</p>
-                            <p class="text-xs text-slate-400 font-semibold mt-1">Matches pipeline algorithms</p>
-                        </div>
-                        <div class="bg-white p-6 rounded-md border border-slate-200/50 shadow-sm">
-                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">NETWORK TRUST SCORE</p>
-                            <p class="text-2xl font-bold text-slate-900 mt-2">${activeProfile.networkScore || '9.0/10'}</p>
-                            <p class="text-xs text-slate-400 font-semibold mt-1">Based on closed rounds</p>
-                        </div>
-                    </div>
-                `;
-            } else {
-                dynamicInfoArea = `
-                    <div class="grid grid-cols-3 gap-6">
-                        <div class="bg-white p-6 rounded-md border border-slate-200/50 shadow-sm">
-                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">M&A ASK VOLUME</p>
-                            <p class="text-2xl font-bold text-slate-900 mt-2">${activeProfile.askVolume || '₹15.0 Cr'}</p>
-                        </div>
-                        <div class="bg-white p-6 rounded-md border border-slate-200/50 shadow-sm">
-                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">TERMS OF ENGAGEMENT</p>
-                            <p class="text-lg font-bold text-slate-900 mt-2">${activeProfile.terms || 'Exclusive Brokerage'}</p>
-                        </div>
-                        <div class="bg-white p-6 rounded-md border border-slate-200/50 shadow-sm">
-                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">LIAISON CONTACT</p>
-                            <p class="text-sm font-bold text-slate-900 mt-2">${activeProfile.liaison || activeProfile.contact || 'Karthik'}</p>
-                        </div>
-                    </div>
-                `;
-            }
-
-            return `
-                <div class="fade-in-view space-y-6">
-                    <button onclick="changeSubTab('crm', 'investees')" class="text-xs font-bold text-orange-500 hover:text-orange-600 flex items-center gap-1.5 mb-2 transition-all">
-                        <i data-lucide="arrow-left" class="w-4 h-4"></i> Back to Users Workspace
-                    </button>
-
-                    <!-- Profile Header - Updated buttons to custom admin monitoring tools as requested -->
-                    <div class="flex justify-between items-center pb-4">
-                        <div>
-                            <h1 class="text-3xl font-bold text-slate-900 tracking-tight">${activeProfile.name}</h1>
-                            <p class="text-slate-500 font-medium text-xs mt-1">Manage fundraising persona, metrics, and network assets.</p>
-                        </div>
-                        <div class="flex gap-3">
-                            <select onchange="updateUserStatus('${activeProfile.id}', this.value)" class="bg-white border border-slate-200 text-slate-700 font-bold text-xs py-2.5 px-4 rounded-md shadow-sm outline-none">
-                                <option value="PENDING REVIEW" ${activeProfile.status === 'PENDING REVIEW' || activeProfile.status === 'Pending Review' ? 'selected' : ''}>Change Status: PENDING REVIEW</option>
-                                <option value="CLARIFICATION" ${activeProfile.status === 'CLARIFICATION' || activeProfile.status === 'CLARIFICATION REQUESTS' ? 'selected' : ''}>Change Status: CLARIFICATION</option>
-                                <option value="ACTIVATION READY" ${activeProfile.status === 'ACTIVATION READY' || activeProfile.status === 'Active' || activeProfile.status === 'READY FOR ACTIVATION' ? 'selected' : ''}>Change Status: READY ACTIVATION</option>
-                            </select>
-                            <button onclick="triggerToast('Logged engagement audit for ${activeProfile.name}.')" class="bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs py-2.5 px-6 rounded-md transition-all shadow-md shadow-orange-500/10">
-                                Log Engagement Audit
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Inner detail tabs matching image -->
-                    <div class="flex gap-6 border-b border-slate-100 overflow-x-auto pb-1 text-xs font-bold uppercase tracking-wider">
-                        <button onclick="changeSubTab('crm-detail', 'overview')" class="pb-3 transition-all ${detailTab === 'overview' ? 'subtab-active text-orange-600' : 'text-slate-400 hover:text-slate-600'}">Overview</button>
-                        <button onclick="changeSubTab('crm-detail', 'financials')" class="pb-3 transition-all ${detailTab === 'financials' ? 'subtab-active text-orange-600' : 'text-slate-400 hover:text-slate-600'}">Financials</button>
-                        <button onclick="changeSubTab('crm-detail', 'funding-ask')" class="pb-3 transition-all ${detailTab === 'funding-ask' ? 'subtab-active text-orange-600' : 'text-slate-400 hover:text-slate-600'}">Funding Ask</button>
-                        <button onclick="changeSubTab('crm-detail', 'team')" class="pb-3 transition-all ${detailTab === 'team' ? 'subtab-active text-orange-600' : 'text-slate-400 hover:text-slate-600'}">Team</button>
-                        <button onclick="changeSubTab('crm-detail', 'documents')" class="pb-3 transition-all ${detailTab === 'documents' ? 'subtab-active text-orange-600' : 'text-slate-400 hover:text-slate-600'}">Documents</button>
-                        <button onclick="changeSubTab('crm-detail', 'market-opportunity')" class="pb-3 transition-all ${detailTab === 'market-opportunity' ? 'subtab-active text-orange-600' : 'text-slate-400 hover:text-slate-600'}">Market Opportunity</button>
-                        <button onclick="changeSubTab('crm-detail', 'communications')" class="pb-3 transition-all ${detailTab === 'communications' ? 'subtab-active text-orange-600' : 'text-slate-400 hover:text-slate-600'}">Communications</button>
-                        <button onclick="changeSubTab('crm-detail', 'notes')" class="pb-3 transition-all ${detailTab === 'notes' ? 'subtab-active text-orange-600' : 'text-slate-400 hover:text-slate-600'}">Notes</button>
-                    </div>
-
-                    <!-- Layout matching image perfectly -->
-                    <div class="grid grid-cols-12 gap-8">
-                        <!-- Left major panel -->
-                        <div class="col-span-12 lg:col-span-8 space-y-6">
-                            <!-- Core overview details -->
-                            <div class="bg-white p-8 rounded-md border border-slate-200/50 shadow-sm space-y-6">
-                                <div class="flex justify-between items-start">
-                                    <div class="flex items-center gap-4">
-                                        <!-- Logo Box -->
-                                        <div class="w-16 h-16 bg-blue-600 text-white rounded-md flex items-center justify-center font-bold text-xl tracking-tight shadow-md">
-                                            ${activeProfile.name.split(' ').map(n=>n[0]).join('')}
-                                        </div>
-                                        <div>
-                                            <div class="flex items-center gap-2.5">
-                                                <h2 class="text-xl font-bold text-slate-900">${activeProfile.name}</h2>
-                                                <span class="px-2 py-0.5 bg-indigo-50 text-indigo-700 text-[10px] font-bold tracking-wide rounded border border-indigo-100/50 uppercase">SAAS</span>
-                                                <span class="px-2 py-0.5 bg-orange-50 text-orange-700 text-[10px] font-bold tracking-wide rounded border border-orange-100/50 uppercase">SERIES A</span>
-                                            </div>
-                                            <p class="text-xs text-slate-500 font-medium mt-1">Al-powered customer support platform automating resolutions for top e-commerce brands.</p>
-                                        </div>
-                                    </div>
-                                    <button class="text-slate-400 hover:text-slate-600"><i data-lucide="more-vertical" class="w-5 h-5"></i></button>
-                                </div>
-
-                                <!-- Standard details block -->
-                                <div class="grid grid-cols-4 gap-6 text-xs text-slate-500 border-t border-b border-slate-100 py-5">
-                                    <div>
-                                        <p class="font-bold text-slate-400 uppercase tracking-widest text-[9px]">FOUNDED</p>
-                                        <p class="text-slate-800 font-bold mt-1.5">${activeProfile.duration || 'Jan 2024'}</p>
-                                    </div>
-                                    <div>
-                                        <p class="font-bold text-slate-400 uppercase tracking-widest text-[9px]">LOCATION</p>
-                                        <p class="text-slate-800 font-bold mt-1.5">${activeProfile.location || 'Bengaluru, KA'}</p>
-                                    </div>
-                                    <div>
-                                        <p class="font-bold text-slate-400 uppercase tracking-widest text-[9px]">TEAM SIZE</p>
-                                        <p class="text-slate-800 font-bold mt-1.5">${activeProfile.teamSize || '25 Members'}</p>
-                                    </div>
-                                    <div>
-                                        <p class="font-bold text-slate-400 uppercase tracking-widest text-[9px]">SECTOR</p>
-                                        <p class="text-slate-800 font-bold mt-1.5">${activeProfile.sector || 'AI, B2B'}</p>
-                                    </div>
-                                </div>
-
-                                <!-- About description block -->
-                                <div class="space-y-2">
-                                    <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider">ABOUT THE COMPANY</h4>
-                                    <p class="text-sm text-slate-600 leading-relaxed">${activeProfile.desc || 'Standard transaction parameter profiles are reviewed and mapped recursively inside secure admin vaults.'}</p>
-                                </div>
-                            </div>
-
-                            <!-- Target Metrics Grid -->
-                            ${dynamicInfoArea}
-                        </div>
-
-                        <!-- Right panel stack -->
-                        <div class="col-span-12 lg:col-span-4 space-y-6">
-                            <!-- Pitch Deck Files -->
-                            <div class="bg-white p-6 rounded-md border border-slate-200/50 shadow-sm space-y-4">
-                                <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest">PITCH DECK FILES</h3>
-                                <div class="p-4 bg-slate-50/70 rounded-md flex items-center justify-between border border-slate-100">
-                                    <div class="flex items-center gap-3">
-                                        <div class="p-2.5 bg-red-50 text-red-500 rounded-md">
-                                            <i data-lucide="file-text" class="w-5 h-5"></i>
-                                        </div>
-                                        <div>
-                                            <p class="text-xs font-bold text-slate-900">TV_Series_A_Deck.pdf</p>
-                                            <p class="text-[10px] text-slate-400 font-semibold mt-0.5">12.4 MB • MAR 25</p>
-                                        </div>
-                                    </div>
-                                    <button onclick="triggerToast('Downloading latest pitch deck...')" class="p-1 text-slate-400 hover:text-slate-600 transition-colors">
-                                        <i data-lucide="download" class="w-4 h-4"></i>
-                                    </button>
-                                </div>
-                            </div>
-
-                            <!-- Profile Completion Circle -->
-                            <div class="bg-white p-6 rounded-md border border-slate-200/50 shadow-sm space-y-4">
-                                <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest">PROFILE COMPLETION</h3>
-                                <div class="flex items-center gap-6 py-2">
-                                    <div class="relative w-20 h-20 flex items-center justify-center">
-                                        <!-- Fixed dynamic SVG gauge stroke logic -->
-                                        <svg class="w-full h-full transform -rotate-90">
-                                            <circle cx="40" cy="40" r="34" stroke="#E2E8F0" stroke-width="5" fill="transparent" />
-                                            <circle cx="40" cy="40" r="34" stroke="#10B981" stroke-width="5" fill="transparent" 
-                                                    stroke-dasharray="213.6" stroke-dashoffset="${213.6 - (213.6 * (activeProfile.completeness || 80) / 100)}" />
-                                        </svg>
-                                        <span class="absolute text-sm font-extrabold text-slate-800">${activeProfile.completeness || 80}%</span>
-                                    </div>
-                                    <div class="space-y-1">
-                                        <p class="text-xs text-slate-500 font-medium">Profile completeness status is healthy. Clear of risk flags.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        function triggerAddUserModal() {
-            const container = document.getElementById('modal-container');
-            container.innerHTML = `
-                <div class="bg-white rounded-md p-8 max-w-md w-full shadow-2xl border border-slate-100 space-y-6">
-                    <div>
-                        <h3 class="text-lg font-bold text-slate-900 tracking-tight">Create User Persona</h3>
-                        <p class="text-xs text-slate-500 mt-1">Audit, register, and link direct users to investment platforms.</p>
-                    </div>
-                    <div class="space-y-4">
-                        <div>
-                            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-1">Company / User Name</label>
-                            <input id="new-user-name" type="text" placeholder="e.g. Beta Corp" class="w-full p-3 bg-slate-50 border border-slate-100 rounded-md text-xs outline-none">
-                        </div>
-                        <div>
-                            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-1">Founder / Liaison Name</label>
-                            <input id="new-user-founder" type="text" placeholder="e.g. Liam Smith" class="w-full p-3 bg-slate-50 border border-slate-100 rounded-md text-xs outline-none">
-                        </div>
-                        <div>
-                            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-1">Contact Email</label>
-                            <input id="new-user-email" type="email" placeholder="liam@betacorp.com" class="w-full p-3 bg-slate-50 border border-slate-100 rounded-md text-xs outline-none">
-                        </div>
-                    </div>
-                    <div class="flex justify-end gap-3">
-                        <button onclick="closeModal()" class="px-5 py-2.5 border border-slate-100 text-slate-500 font-bold rounded-md text-xs uppercase tracking-wider">Cancel</button>
-                        <button onclick="submitNewUser()" class="px-5 py-2.5 bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded-md text-xs uppercase tracking-wider">Save User</button>
-                    </div>
-                </div>
-            `;
-            container.classList.remove('hidden');
-            container.classList.add('modal-active');
-            lucide.createIcons();
-        }
-
-        function submitNewUser() {
-            const name = document.getElementById('new-user-name').value;
-            const founder = document.getElementById('new-user-founder').value;
-            const email = document.getElementById('new-user-email').value;
-
-            if (!name || !founder || !email) return;
-
-            appState.investees.push({
-                id: 'USER-' + Math.floor(Math.random() * 900 + 100),
-                name: name,
-                founder: founder,
-                email: email,
-                phone: '+91 98765 00000',
-                type: 'Investee',
-                status: 'PENDING REVIEW',
-                statusColor: 'bg-amber-100 text-amber-800 border-amber-200/50',
-                completeness: 50,
-                sector: 'FinTech, SaaS',
-                valuation: '₹12 Cr',
-                ask: '₹2.50 Cr',
-                equity: '15%',
-                duration: 'May 2026',
-                location: 'Mumbai, MH',
-                teamSize: '8 Members',
-                desc: 'Custom corporate workspace target profiling database entry created dynamically.'
+        function renderDashboardViews() {
+            const pEl = document.getElementById('pending-actions-stack-body');
+            pEl.innerHTML = '';
+            db.pendingActions.forEach(act => {
+                pEl.innerHTML += `<div class="py-3 flex justify-between items-center hover:bg-slate-50/50 px-1 rounded-lg transition"><div class="space-y-0.5"><h5 class="text-xs font-bold text-slate-800">${act.name}</h5><p class="text-[10px] text-slate-400 font-medium">${act.subtitle}</p></div><div class="flex items-center gap-2"><span class="text-[10px] font-bold px-2 py-0.5 rounded-md ${act.bg}">${act.status}</span><span class="text-[10px] text-rose-500 font-bold bg-rose-50 px-2 py-0.5 rounded-md">${act.dueText}</span><button onclick="clearActionRequirement('${act.id}')" class="bg-brand-orange hover:bg-brand-orangeHover text-white text-[10px] px-2.5 py-1 rounded transition font-bold">Clear</button></div></div>`;
+            });
+            const aEl = document.getElementById('recent-activities-list');
+            aEl.innerHTML = '';
+            db.recentActivities.forEach(item => {
+                aEl.innerHTML += `<div class="flex items-center gap-3 py-1 hover:bg-slate-50/50 px-2 rounded-lg transition"><div class="w-8 h-8 rounded-lg ${item.bg} flex items-center justify-center shrink-0"><i class="fa-solid ${item.icon}"></i></div><div class="flex-1 min-w-0"><p class="text-xs font-bold text-slate-800 truncate">${item.title}</p></div><span class="text-[10px] text-slate-400 font-semibold whitespace-nowrap">${item.timeText}</span></div>`;
+            });
+            const tEl = document.getElementById('team-performance-table-body');
+            tEl.innerHTML = '';
+            db.team.forEach(tm => {
+                const pc = parseInt(tm.perf) >= 90 ? 'text-emerald-600' : 'text-amber-600';
+                tEl.innerHTML += `<tr class="hover:bg-slate-50/60 transition duration-100"><td class="py-2.5 flex items-center gap-2.5"><div class="w-7 h-7 rounded-lg ${tm.color} flex items-center justify-center font-bold text-[10px]">${tm.initial}</div><div><span class="font-bold text-slate-800 text-xs">${tm.name}</span><span class="text-[9px] text-slate-400 block">${tm.role}</span></div></td><td class="py-2.5 text-center font-bold text-slate-700">${tm.deals}</td><td class="py-2.5 text-center font-bold text-slate-700">${tm.mandates}</td><td class="py-2.5 text-right font-extrabold text-brand-orange">${tm.revenue}</td><td class="py-2.5 text-right font-bold ${pc}">${tm.perf}</td></tr>`;
             });
 
-            triggerToast(`Successfully registered ${name} in target directory.`);
-            closeModal();
-            renderWorkspace();
+            updateDashboardKpis();
         }
 
-        function updateUserStatus(id, newStatus) {
-            const user = appState.investees.find(item => item.id === id) || 
-                         appState.investors.find(item => item.id === id) ||
-                         appState.sellers.find(item => item.id === id) ||
-                         appState.buyers.find(item => item.id === id);
-            if (user) {
-                user.status = newStatus;
-                triggerToast(`Operational status changed to ${newStatus}.`);
-                renderWorkspace();
+        function updateDashboardKpis() {
+            const activeDeals = (db.deals || []).filter(d => d.stage === 'Active').length;
+            const activeMandates = db.team.reduce((sum, t) => sum + (t.mandates || 0), 0);
+            const totalRevenue = db.team.reduce((sum, t) => {
+                const v = parseFloat((t.revenue || '0').replace(/[₹Cr\s]/g, ''));
+                return sum + (isNaN(v) ? 0 : v);
+            }, 0);
+            document.getElementById('dash-kpi-deals').innerText = activeDeals;
+            document.getElementById('dash-kpi-mandates').innerText = activeMandates;
+            document.getElementById('dash-kpi-revenue').innerText = totalRevenue.toFixed(2);
+            document.getElementById('dash-kpi-pending').innerText = db.pendingActions.length;
+            document.getElementById('dash-kpi-team').innerText = db.team.length;
+        }
+
+        function initDashboardCharts() {
+            const ctxLine = document.getElementById('chart-revenue-analytics').getContext('2d');
+            const grad = ctxLine.createLinearGradient(0, 0, 0, 200);
+            grad.addColorStop(0, 'rgba(255, 94, 0, 0.45)'); grad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+            new Chart(ctxLine, { type: 'line', data: { labels: ['1 May','8 May','15 May','22 May','29 May'], datasets: [{ data: [1.0,2.6,2.3,3.8,4.2], borderColor: '#FF5E00', borderWidth: 3.5, backgroundColor: grad, fill: true, tension: 0.35, pointBackgroundColor: '#FF5E00', pointBorderColor: '#ffffff', pointBorderWidth: 2, pointRadius: 5, pointHoverRadius: 7 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { min:0, max:5, ticks:{ callback: v => '₹'+v+' Cr', stepSize:1, font:{size:9,weight:'bold'} }, grid:{color:'#f3f4f6'} }, x: { grid:{display:false}, ticks:{font:{size:10,weight:'bold'}} } } } });
+
+            const lv = [{label:'Draft',val:18,pct:'20%',color:'#3b82f6'},{label:'Qualification Review',val:12,pct:'13%',color:'#38bdf8'},{label:'Sent',val:15,pct:'17%',color:'#FF5E00'},{label:'Awaiting Signature',val:20,pct:'22%',color:'#fbbf24'},{label:'Signed',val:16,pct:'18%',color:'#10b981'},{label:'Expired',val:5,pct:'6%',color:'#ec4899'},{label:'Closed',val:3,pct:'4%',color:'#1e293b'}];
+            const ctxDonut = document.getElementById('chart-mandate-donut').getContext('2d');
+            new Chart(ctxDonut, { type: 'doughnut', data: { labels: lv.map(l=>l.label), datasets: [{ data: lv.map(l=>l.val), backgroundColor: lv.map(l=>l.color), borderWidth: 2, borderColor: '#ffffff' }] }, options: { responsive: true, maintainAspectRatio: false, cutout: '72%', plugins: { legend: { display: false } } } });
+            const dl = document.getElementById('donut-legend-rows'); dl.innerHTML = '';
+            lv.forEach(item => { dl.innerHTML += `<div class="flex items-center justify-between font-medium"><div class="flex items-center gap-1.5 min-w-0"><span class="w-2.5 h-2.5 rounded-full shrink-0" style="background-color:${item.color}"></span><span class="text-slate-600 truncate text-[10px]">${item.label}</span></div><span class="text-slate-800 font-bold ml-2 shrink-0">${item.val} <span class="text-[9px] text-slate-400 font-medium">(${item.pct})</span></span></div>`; });
+        }
+
+        window.addEventListener('click', function(e) {
+            if (!e.target.closest('.relative')) {
+                document.querySelectorAll('[id$="-picker"], [id$="-tray"]').forEach(el => el.classList.add('hidden'));
             }
-        }
+        });
 
-        function triggerDirectChat(name) {
-            const container = document.getElementById('modal-container');
-            container.innerHTML = `
-                <div class="bg-white rounded-md p-6 max-w-md w-full shadow-2xl border border-slate-100 space-y-4">
-                    <div class="flex justify-between items-center border-b pb-3">
-                        <div class="flex items-center gap-2">
-                            <span class="w-2.5 h-2.5 bg-green-500 rounded-md animate-pulse"></span>
-                            <h3 class="text-sm font-bold text-slate-900">Secure Thread with ${name}</h3>
-                        </div>
-                        <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-4 h-4"></i></button>
-                    </div>
-                    <div class="h-48 overflow-y-auto space-y-2 p-2 bg-slate-50 rounded-md text-xs">
-                        <p class="text-slate-400 text-center text-[10px] uppercase font-bold py-2">Encrypted session initiated</p>
-                        <div class="p-2 bg-white rounded-md shadow-sm max-w-[80%]">
-                            <p class="font-bold text-orange-600">System Bot</p>
-                            <p class="text-slate-700">Audit checklist is generated. Please upload latest FY25 audits.</p>
-                        </div>
-                    </div>
-                    <div class="flex gap-2">
-                        <input id="chat-msg" type="text" placeholder="Write message..." class="flex-1 p-2 border rounded-md text-xs outline-none">
-                        <button onclick="triggerToast('Message sent to escrow secure ledger.'); closeModal();" class="px-4 py-2 bg-orange-600 text-white font-bold text-xs rounded-md font-semibold">Send</button>
-                    </div>
-                </div>
-            `;
-            container.classList.remove('hidden');
-            container.classList.add('modal-active');
-            lucide.createIcons();
-        }
-    </script>
-
-    <script>
-        // --- SCREEN 3: DEALS PIPELINE ---
-        function getDealsView() {
-            const activeTab = appState.activeSubTabs['deals'];
-            const dealObj = appState.deals.find(d => d.id === appState.selectedDealId) || appState.deals[0];
-            const co = appState.investees.find(c => c.id === dealObj.companyId) || appState.sellers.find(s => s.id === dealObj.companyId);
-            const inv = appState.investors.find(i => i.id === dealObj.investorId) || appState.buyers.find(b => b.id === dealObj.investorId);
-
-            return `
-                <div class="fade-in-view space-y-6">
-                    <div>
-                        <h2 class="text-2xl font-bold text-slate-900 tracking-tight">Deals & M&A Pipeline</h2>
-                        <p class="text-slate-500 font-medium text-xs mt-1">Configure performance metrics, negotiate caps, and monitor compliance flags.</p>
-                    </div>
-
-                    <!-- Deals internal subtabs -->
-                    <div class="flex gap-6 border-b border-slate-100 overflow-x-auto text-xs font-bold uppercase tracking-wider">
-                        <button onclick="changeSubTab('deals', 'pipeline')" class="pb-3 transition-all ${activeTab === 'pipeline' ? 'subtab-active text-orange-600' : 'text-slate-400 hover:text-slate-600'}">Active Pipeline</button>
-                        <button onclick="changeSubTab('deals', 'kanban')" class="pb-3 transition-all ${activeTab === 'kanban' ? 'subtab-active text-orange-600' : 'text-slate-400 hover:text-slate-600'}">Kanban View</button>
-                        <button onclick="changeSubTab('deals', 'detail-workspace')" class="pb-3 transition-all ${activeTab === 'detail-workspace' ? 'subtab-active text-orange-600' : 'text-slate-400 hover:text-slate-600'}">Deal Workspace</button>
-                    </div>
-
-                    ${activeTab === 'pipeline' ? `
-                        <div class="bg-white p-6 rounded-md border border-slate-200/50 shadow-sm space-y-4">
-                            <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest">Global Transactions Matrix</h3>
-                            <div class="overflow-x-auto">
-                                <table class="w-full text-left text-xs">
-                                    <thead>
-                                        <tr class="bg-slate-50 text-slate-400 text-[10px] uppercase font-bold tracking-wider">
-                                            <th class="px-4 py-3 rounded-l-lg">Deal ID</th>
-                                            <th class="px-4 py-3">Company Target</th>
-                                            <th class="px-4 py-3">User Type</th>
-                                            <th class="px-4 py-3">Target Investor</th>
-                                            <th class="px-4 py-3">Raise Volume</th>
-                                            <th class="px-4 py-3">Pipeline Stage</th>
-                                            <th class="px-4 py-3">Operational Health</th>
-                                            <th class="px-4 py-3 rounded-r-lg text-center">Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="divide-y divide-slate-100 text-slate-700">
-                                        ${appState.deals.map(dl => {
-                                            const dlCo = appState.investees.find(c => c.id === dl.companyId) || appState.sellers.find(s => s.id === dl.companyId) || {};
-                                            const dlInv = appState.investors.find(i => i.id === dl.investorId) || appState.buyers.find(b => b.id === dl.investorId) || {};
-                                            return `
-                                                <tr class="hover:bg-slate-50/50 transition-colors">
-                                                    <td class="px-4 py-4 font-bold text-slate-900">${dl.id}</td>
-                                                    <td class="px-4 py-4 font-semibold text-slate-800">${dlCo.name || 'Target Profile'}</td>
-                                                    <td class="px-4 py-4">
-                                                        <span class="px-2 py-0.5 bg-orange-50 text-orange-700 text-[9px] font-bold uppercase rounded border border-orange-100">${dl.userRoleType || 'INVESTEE'}</span>
-                                                    </td>
-                                                    <td class="px-4 py-4 text-slate-500">${dlInv.name || 'Private Acquire'}</td>
-                                                    <td class="px-4 py-4 font-bold text-slate-900">${dl.size}</td>
-                                                    <td class="px-4 py-4"><span class="px-2 py-0.5 bg-blue-50 text-blue-700 rounded text-[9px] font-bold uppercase tracking-wide border border-blue-100">${dl.stage}</span></td>
-                                                    <td class="px-4 py-4">
-                                                        <span class="px-2.5 py-0.5 rounded text-[10px] font-bold ${
-                                                            dl.health === 'Healthy' ? 'bg-green-100 text-green-700' : 
-                                                            dl.health === 'Risk' ? 'bg-amber-100 text-amber-700' : 'bg-red-100 text-red-700'
-                                                        }">${dl.health}</span>
-                                                    </td>
-                                                    <td class="px-4 py-4">
-                                                        <button onclick="appState.selectedDealId='${dl.id}'; changeSubTab('deals', 'detail-workspace');" class="bg-slate-900 hover:bg-slate-800 text-white text-[10px] px-3.5 py-1.5 rounded-md uppercase tracking-wider font-semibold">View Details</button>
-                                                    </td>
-                                                </tr>
-                                            `;
-                                        }).join('')}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    ` : ''}
-
-                    ${activeTab === 'kanban' ? `
-                        <div class="grid grid-cols-4 gap-6">
-                            ${['Active conversations', 'Term Sheet', 'Due Diligence', 'Closing'].map(colName => {
-                                const columnDeals = appState.deals.filter(d => {
-                                    if (colName === 'Active conversations') return d.stage === 'NDA ACCESS';
-                                    return d.stage === colName.toUpperCase();
-                                });
-                                return `
-                                    <div class="bg-slate-50 p-4 rounded-md border border-slate-200/50 space-y-4">
-                                        <div class="flex justify-between items-center pb-2 border-b border-slate-200">
-                                            <span class="text-xs font-bold text-slate-800 uppercase tracking-wider">${colName}</span>
-                                            <span class="bg-slate-200 text-slate-700 text-[10px] font-bold px-2 py-0.5 rounded-md">${columnDeals.length}</span>
-                                        </div>
-                                        <div class="space-y-3">
-                                            ${columnDeals.map(d => {
-                                                const dCo = appState.investees.find(c => c.id === d.companyId) || appState.sellers.find(s => s.id === d.companyId) || {};
-                                                return `
-                                                    <div class="bg-white p-4 rounded-md shadow-sm border border-slate-100 space-y-3 cursor-pointer hover:border-orange-500 transition-all" onclick="appState.selectedDealId='${d.id}'; changeSubTab('deals', 'detail-workspace');">
-                                                        <div class="flex justify-between items-center">
-                                                            <h4 class="font-bold text-xs text-slate-900">${dCo.name || 'Target Profile'}</h4>
-                                                            <span class="px-1.5 py-0.5 bg-orange-50 text-orange-700 rounded text-[8px] font-bold">${d.userRoleType || 'INVESTEE'}</span>
-                                                        </div>
-                                                        <div class="flex justify-between items-end text-[10px]">
-                                                            <span class="text-slate-400">Target Raise</span>
-                                                            <span class="font-bold text-slate-800">${d.size}</span>
-                                                        </div>
-                                                    </div>
-                                                `;
-                                            }).join('')}
-                                        </div>
-                                    </div>
-                                `;
-                            }).join('')}
-                        </div>
-                    ` : ''}
-
-                    ${activeTab === 'detail-workspace' ? `
-                        <div class="grid grid-cols-12 gap-8">
-                            <!-- Left: Deal Work Area -->
-                            <div class="col-span-12 lg:col-span-8 space-y-6">
-                                <div class="bg-white p-8 rounded-md border border-slate-200/50 shadow-sm space-y-6">
-                                    <div class="flex justify-between items-start">
-                                        <div class="flex items-center gap-4">
-                                            <div class="w-12 h-12 bg-orange-100 text-orange-600 rounded-md flex items-center justify-center font-bold text-sm">IA</div>
-                                            <div>
-                                                <h3 class="text-lg font-bold text-slate-900">${co ? co.name : 'Target'} M&A Workspace</h3>
-                                                <p class="text-xs text-slate-400 mt-1">Lead Intermediary Desk: Karthik (Super Admin) • Role: <span class="font-bold text-orange-600">${dealObj.userRoleType || 'INVESTEE'}</span></p>
-                                            </div>
-                                        </div>
-                                        <span class="px-3 py-1 bg-green-100 text-green-700 rounded-md text-xs font-bold uppercase">${dealObj.health}</span>
-                                    </div>
-
-                                    <!-- Overall Deal Trackers (Negotiation, Term Sheet, DD, Closing) -->
-                                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4 border-t border-slate-100 text-center">
-                                        <div class="p-3.5 bg-slate-50 rounded-md">
-                                            <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Negotiation</p>
-                                            <p class="text-xs font-bold text-slate-800 mt-1">Active</p>
-                                        </div>
-                                        <div class="p-3.5 bg-slate-50 rounded-md">
-                                            <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Term Sheet</p>
-                                            <p class="text-xs font-bold text-green-600 mt-1">Validated</p>
-                                        </div>
-                                        <div class="p-3.5 bg-slate-50 rounded-md">
-                                            <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Due Diligence</p>
-                                            <p class="text-xs font-bold text-slate-800 mt-1">Ongoing</p>
-                                        </div>
-                                        <div class="p-3.5 bg-slate-50 rounded-md">
-                                            <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Closing Tracker</p>
-                                            <p class="text-xs font-bold text-slate-800 mt-1">Pending Sign</p>
-                                        </div>
-                                    </div>
-
-                                    <!-- Additional monitoring parameters as requested for deals workspace -->
-                                    <div class="p-5 bg-orange-50/50 rounded-md border border-orange-100/50 space-y-3">
-                                        <h4 class="text-xs font-bold text-orange-800 uppercase tracking-wider flex items-center gap-1.5"><i data-lucide="shield-check" class="w-4 h-4"></i> Compliance & Security Protocol Mappings</h4>
-                                        <div class="grid grid-cols-2 gap-4 text-xs">
-                                            <div>
-                                                <p class="text-slate-400 uppercase tracking-widest text-[9px]">NDA Status</p>
-                                                <p class="font-bold text-slate-800 mt-0.5">Verified & Securely Executed</p>
-                                            </div>
-                                            <div>
-                                                <p class="text-slate-400 uppercase tracking-widest text-[9px]">Mandate Authority</p>
-                                                <p class="font-bold text-slate-800 mt-0.5">Advisory Agreement Signed</p>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Overview -->
-                                    <div class="space-y-2">
-                                        <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider">Transaction Overview</h4>
-                                        <p class="text-xs text-slate-600 leading-relaxed">Secured brokerage round linked to institutional capital with ${inv ? inv.name : 'Ascent Capital'}. Proposed pre-money threshold stands locked at ${dealObj.preMoney}.</p>
-                                    </div>
-                                </div>
-
-                                <!-- Conversations & Meetings Logs -->
-                                <div class="bg-white p-6 rounded-md border border-slate-200/50 shadow-sm space-y-4">
-                                    <h3 class="text-base font-bold text-slate-900">Conversations & Meetings History</h3>
-                                    <div class="space-y-3">
-                                        <div class="p-4 bg-slate-50 rounded-md">
-                                            <div class="flex justify-between items-center text-xs font-bold">
-                                                <span class="text-slate-800">Formal Boardroom Meeting</span>
-                                                <span class="text-slate-400">May 18, 2026</span>
-                                            </div>
-                                            <p class="text-xs text-slate-500 mt-1">Validated revenue metrics. Set initial due diligence response checklist to lock P&L reports.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Right Side Panel -->
-                            <div class="col-span-12 lg:col-span-4 space-y-6">
-                                <!-- Secure Vault Files -->
-                                <div class="bg-white p-6 rounded-md border border-slate-200/50 shadow-sm space-y-4">
-                                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest">Secured Vault Documents</h3>
-                                    <div class="space-y-2">
-                                        <div class="p-3 bg-slate-50 rounded-md flex items-center justify-between text-xs">
-                                            <span class="font-bold text-slate-800">CIM_Dossier_Nexus.pdf</span>
-                                            <button onclick="triggerToast('Downloading secured dossier...')" class="p-1 text-slate-400 hover:text-slate-600"><i data-lucide="download" class="w-3.5 h-3.5"></i></button>
-                                        </div>
-                                        <div class="p-3 bg-slate-50 rounded-md flex items-center justify-between text-xs">
-                                            <span class="font-bold text-slate-800">Audit_P&L_FY25.xlsx</span>
-                                            <button onclick="triggerToast('Downloading audited sheets...')" class="p-1 text-slate-400 hover:text-slate-600"><i data-lucide="download" class="w-3.5 h-3.5"></i></button>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Timeline Activity Tracker -->
-                                <div class="bg-white p-6 rounded-md border border-slate-200/50 shadow-sm space-y-4">
-                                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest">Transaction Timeline</h3>
-                                    <div class="space-y-3 font-mono text-[11px] text-slate-600">
-                                        <p class="flex items-center gap-2"><span class="w-2 h-2 rounded-md bg-green-500"></span> June 01 - Audit Verified</p>
-                                        <p class="flex items-center gap-2"><span class="w-2 h-2 rounded-md bg-green-500"></span> May 28 - Diligence Initialized</p>
-                                        <p class="flex items-center gap-2"><span class="w-2 h-2 rounded-md bg-blue-500"></span> May 18 - Term Sheet signed</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    ` : ''}
-                </div>
-            `;
-        }
-    </script>
-
-    <!-- MANDATES, DRAFTS & AI TEMPLATES -->
-    <script>
-        function getMandatesView() {
-            const activeTab = appState.activeSubTabs['mandates'];
-
-            return `
-                <div class="fade-in-view space-y-6">
-                    <div class="flex justify-between items-end">
-                        <div>
-                            <h2 class="text-2xl font-bold text-slate-900 tracking-tight">Mandates & Projects</h2>
-                            <p class="text-slate-500 font-medium text-xs mt-1">Assign mandates, build documents with AI assistance, and monitor operational task trackers.</p>
-                        </div>
-                        <button onclick="triggerAddMandateModal()" class="bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs py-2.5 px-6 rounded-md transition-all shadow-md shadow-orange-500/10">
-                            Create New Mandate
-                        </button>
-                    </div>
-
-                    <!-- Layout strictly mirroring image_daa8d4.png -->
-                    <div class="flex gap-6 border-b border-slate-100 text-xs font-bold uppercase tracking-wider">
-                        <button onclick="changeSubTab('mandates', 'pre-mandate')" class="pb-3 transition-all ${activeTab === 'pre-mandate' ? 'subtab-active text-orange-600' : 'text-slate-400 hover:text-slate-600'}">Pre-Mandate Desk</button>
-                        <button onclick="changeSubTab('mandates', 'post-mandate')" class="pb-3 transition-all ${activeTab === 'post-mandate' ? 'subtab-active text-orange-600' : 'text-slate-400 hover:text-slate-600'}">Post-Mandate Workspace</button>
-                        <button onclick="changeSubTab('mandates', 'template-builder')" class="pb-3 transition-all ${activeTab === 'template-builder' ? 'subtab-active text-orange-600' : 'text-slate-400 hover:text-slate-600'}">Template Draft Builder</button>
-                    </div>
-
-                    ${activeTab === 'pre-mandate' ? `
-                        <div class="bg-white p-6 rounded-md border border-slate-200/50 shadow-sm space-y-4">
-                            <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest">PRE-MANDATE LEDGER (SIGNATURES & FEE TRACKING)</h3>
-                            <div class="overflow-x-auto">
-                                <table class="w-full text-left text-xs">
-                                    <thead>
-                                        <tr class="bg-slate-50 text-slate-400 text-[10px] uppercase font-bold tracking-wider">
-                                            <th class="px-6 py-4">MANDATE NUMBER</th>
-                                            <th class="px-6 py-4">TARGET ENTITY</th>
-                                            <th class="px-6 py-4">FEE STRUCTURE MODEL</th>
-                                            <th class="px-6 py-4">RAISE AMOUNT</th>
-                                            <th class="px-6 py-4">SIGNATURE STATUS</th>
-                                            <th class="px-6 py-4 text-center">ACTIONS</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="divide-y divide-slate-100">
-                                        ${appState.mandatesList.map(m => `
-                                            <tr class="hover:bg-slate-50/20 transition-colors">
-                                                <td class="px-6 py-4 font-bold text-slate-900">${m.num}</td>
-                                                <td class="px-6 py-4 font-semibold text-slate-700">${m.company}</td>
-                                                <td class="px-6 py-4 text-slate-500">${m.type}</td>
-                                                <td class="px-6 py-4 font-bold text-slate-900">${m.amount}</td>
-                                                <td class="px-6 py-4">
-                                                    <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
-                                                        m.status === 'SIGNED' ? 'bg-green-100 text-green-700' : 
-                                                        m.status === 'AWAITING SIGNATURE' ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-700'
-                                                    }">${m.status}</span>
-                                                </td>
-                                                <td class="px-6 py-4">
-                                                    <div class="flex items-center justify-center gap-3">
-                                                        <button onclick="triggerToast('Viewing Cryptographic Log for ${m.company}...')" class="text-slate-400 hover:text-orange-500 transition-colors" title="View Logs">
-                                                            <i data-lucide="eye" class="w-4 h-4"></i>
-                                                        </button>
-                                                        <button onclick="triggerToast('Department Access Assigning...')" class="text-slate-400 hover:text-orange-500 transition-colors" title="Assign Department">
-                                                            <i data-lucide="user-plus" class="w-4 h-4"></i>
-                                                        </button>
-                                                        <button onclick="triggerToast('Drafting inline variables...')" class="text-slate-400 hover:text-orange-500 transition-colors" title="Edit Template">
-                                                            <i data-lucide="pencil" class="w-4 h-4"></i>
-                                                        </button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        `).join('')}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    ` : ''}
-
-                    ${activeTab === 'post-mandate' ? `
-                        <div class="grid grid-cols-12 gap-8">
-                            <div class="col-span-12 lg:col-span-7 bg-white p-6 rounded-md border border-slate-200/50 shadow-sm space-y-6">
-                                <h3 class="text-base font-bold text-slate-900">Project Deliverables & Checklists</h3>
-                                <div class="space-y-4">
-                                    <div class="p-4 bg-slate-50 rounded-md flex justify-between items-center text-xs font-bold">
-                                        <span class="text-slate-800">CIM Dossier Complete</span>
-                                        <span class="text-green-600 bg-green-50 px-2.5 py-1 rounded">Success</span>
-                                    </div>
-                                    <div class="p-4 bg-slate-50 rounded-md flex justify-between items-center text-xs font-bold">
-                                        <span class="text-slate-800">Treasury Verification</span>
-                                        <span class="text-amber-600 bg-amber-50 px-2.5 py-1 rounded">Pending</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-span-12 lg:col-span-5 bg-white p-6 rounded-md border border-slate-200/50 shadow-sm space-y-4">
-                                <h3 class="text-base font-bold text-slate-900">Operational Timeline Tracker</h3>
-                                <div class="space-y-2 text-xs">
-                                    <p class="text-slate-500"><strong class="text-slate-800">Assignee:</strong> Priya Sharma (Senior Analyst)</p>
-                                    <p class="text-slate-500"><strong class="text-slate-800">Audit Desk:</strong> Level 4 Cryptographic Vault</p>
-                                </div>
-                            </div>
-                        </div>
-                    ` : ''}
-
-                    ${activeTab === 'template-builder' ? `
-                        <div class="grid grid-cols-12 gap-8">
-                            <div class="col-span-12 lg:col-span-6 bg-white p-6 rounded-md border border-slate-200/50 shadow-sm space-y-6">
-                                <h3 class="text-base font-bold text-slate-900">AI-Assisted Template Builder</h3>
-                                <div class="space-y-4 text-xs">
-                                    <div>
-                                        <label class="block text-slate-400 font-bold mb-1">RETAINER PERFORMANCE FEE RATE (%)</label>
-                                        <input type="number" step="0.1" id="ai-retainer-input" value="${appState.aiRetainerRate}" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-md outline-none" oninput="appState.aiRetainerRate = parseFloat(this.value); updateAiTemplatePreview();">
-                                    </div>
-                                    <div>
-                                        <label class="block text-slate-400 font-bold mb-1">EXCLUSIVE BROKERAGE COVENANTS</label>
-                                        <select id="ai-clauses-input" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-md outline-none" onchange="appState.aiExclusiveClauses = this.value; updateAiTemplatePreview();">
-                                            <option value="exclusive-brokerage">Exclusive Buyout representation (Level 4 Audit)</option>
-                                            <option value="non-exclusive">Non-Exclusive General Placement Desk</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-span-12 lg:col-span-6 bg-white p-6 rounded-md border border-slate-200/50 shadow-sm space-y-4">
-                                <h3 class="text-base font-bold text-slate-900">Live Cryptographic Charter Preview</h3>
-                                <div class="p-4 bg-slate-50 font-mono text-[11px] rounded-md text-slate-600 h-64 overflow-y-auto" id="ai-template-preview-area">
-                                    <!-- Autogenerated AI Text -->
-                                </div>
-                            </div>
-                        </div>
-                    ` : ''}
-                </div>
-            `;
-        }
-
-        function updateAiTemplatePreview() {
-            const previewArea = document.getElementById('ai-template-preview-area');
-            if (previewArea) {
-                previewArea.innerHTML = `
-                    <p class="font-bold border-b pb-2 uppercase text-slate-800">Generated Advisory Covenants Contract</p>
-                    <p class="mt-3">Subject to the exclusive mandate conditions, the retainer success performance fee of the partner target is established at exactly <strong class="text-orange-600">${appState.aiRetainerRate}%</strong> of the verified gross raise volume.</p>
-                    <p class="mt-2">The client agrees to adhere strictly to the terms mapped in the <strong class="text-slate-800">${appState.aiExclusiveClauses === 'exclusive-brokerage' ? 'Exclusive Buyout representation' : 'Non-Exclusive General Placement Desk'}</strong> directory.</p>
-                `;
-            }
-        }
-
-        function triggerAddMandateModal() {
-            const container = document.getElementById('modal-container');
-            container.innerHTML = `
-                <div class="bg-white rounded-md p-8 max-w-2xl w-full shadow-2xl border border-slate-100 space-y-6 max-h-[90vh] overflow-y-auto">
-                    <div>
-                        <h3 class="text-lg font-bold text-slate-900 tracking-tight">Create Engagement Mandate</h3>
-                        <p class="text-xs text-slate-500 mt-1">Assign a mandate template to an Investee or Seller.</p>
-                    </div>
-                    <div class="space-y-4">
-                        <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-1">Target Role</label>
-                                <select id="new-mandate-role" onchange="updateMandateProfiles()" class="w-full p-3 bg-slate-50 border border-slate-100 rounded-md text-xs outline-none">
-                                    <option value="Investee">Investee</option>
-                                    <option value="Seller">Seller</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-1">Select Profile</label>
-                                <select id="new-mandate-target" class="w-full p-3 bg-slate-50 border border-slate-100 rounded-md text-xs outline-none">
-                                    ${appState.investees.map(item => `<option value="${item.name}">${item.name}</option>`).join('')}
-                                </select>
-                            </div>
-                        </div>
-                        <div>
-                            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-1">Select Agreement Template</label>
-                            <select id="new-mandate-template" class="w-full p-3 bg-slate-50 border border-slate-100 rounded-md text-xs outline-none" onchange="document.getElementById('new-mandate-editor').value = 'Template: ' + this.value + '\\n\\nStandard terms and conditions apply.\\n[Edit this document here...]';">
-                                <option value="Series A Investment Advisory Agreement">Series A Investment Advisory Agreement</option>
-                                <option value="M&A Exclusivity Covenants Charter">M&A Exclusivity Covenants Charter</option>
-                                <option value="Due Diligence Framework">Due Diligence Framework</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-1">Edit Template Form</label>
-                            <textarea id="new-mandate-editor" rows="6" class="w-full p-3 bg-slate-50 border border-slate-100 rounded-md text-xs outline-none font-mono">Template: Series A Investment Advisory Agreement
-
-Standard terms and conditions apply.
-[Edit this document here...]</textarea>
-                        </div>
-                    </div>
-                    <div class="flex justify-end gap-3 pt-2">
-                        <button onclick="closeModal()" class="px-5 py-2.5 border border-slate-100 text-slate-500 font-bold rounded-md text-xs uppercase tracking-wider">Cancel</button>
-                        <button onclick="submitNewMandate()" class="px-5 py-2.5 bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded-md text-xs uppercase tracking-wider">Assign Mandate</button>
-                    </div>
-                </div>
-            `;
-            container.classList.remove('hidden');
-            container.classList.add('modal-active');
-            lucide.createIcons();
-        }
-
-        function submitNewMandate() {
-            const role = document.getElementById('new-mandate-role').value;
-            const company = document.getElementById('new-mandate-target').value;
-            const template = document.getElementById('new-mandate-template').value;
-            const content = document.getElementById('new-mandate-editor').value;
-
-            appState.mandatesList.unshift({
-                num: 'MND-' + Math.floor(Math.random() * 9000 + 1000),
-                company: company,
-                targetType: role,
-                type: template,
-                amount: '₹0.0 Cr',
-                status: 'DRAFT',
-                date: new Date().toISOString().split('T')[0],
-                expiry: 'N/A',
-                templateHtml: content
-            });
-
-            triggerToast(`Mandate assigned to ${company} successfully.`);
-            appState.activeSubTabs['mandates'] = 'pre-mandate';
-            closeModal();
-            renderWorkspace();
-        }
-
-        function updateMandateProfiles() {
-            const role = document.getElementById('new-mandate-role').value;
-            const profileSelect = document.getElementById('new-mandate-target');
-            let options = '';
-            if (role === 'Investee') {
-                options = appState.investees.map(item => `<option value="${item.name}">${item.name}</option>`).join('');
-            } else {
-                options = appState.sellers.map(item => `<option value="${item.name}">${item.name}</option>`).join('');
-            }
-            profileSelect.innerHTML = options;
-        }
-    </script>
-
-    <script>
-        // --- SCREEN 5: DATA ROOM ---
-        function getDataRoomView() {
-            const selectedCompanyId = appState.selectedDataRoomCompanyId;
-
-            if (selectedCompanyId) {
-                // Notion style document detail view
-                const activeCo = appState.investees.find(c => c.id === selectedCompanyId) || appState.sellers.find(s => s.id === selectedCompanyId);
-                return `
-                    <div class="fade-in-view space-y-6">
-                        <button onclick="appState.selectedDataRoomCompanyId=null; renderWorkspace();" class="text-xs font-bold text-orange-500 hover:text-orange-600 flex items-center gap-1.5 mb-2 transition-all">
-                            <i data-lucide="arrow-left" class="w-4 h-4"></i> Back to Companies List
-                        </button>
-
-                        <div class="bg-white p-8 rounded-md border border-slate-200/50 shadow-sm space-y-6">
-                            <div class="flex justify-between items-center pb-4 border-b border-slate-100">
-                                <div>
-                                    <h3 class="text-lg font-bold text-slate-900">${activeCo.name} Vault Directory</h3>
-                                    <p class="text-xs text-slate-400 mt-1">Notion-style interactive document nesting tree</p>
-                                </div>
-                                <span class="text-xs bg-indigo-50 text-indigo-700 font-bold px-3 py-1 rounded-md">Level 4 Secure Encrypt</span>
-                            </div>
-
-                            <div class="space-y-4 font-mono text-xs text-slate-700">
-                                <!-- Nested folders tree layout -->
-                                <div class="space-y-2">
-                                    <p class="flex items-center gap-2 font-bold text-slate-800"><i data-lucide="folder" class="w-4 h-4 text-orange-500"></i> 📁 Financial Dossiers</p>
-                                    <div class="pl-6 space-y-1.5 text-slate-600">
-                                        <p class="flex items-center justify-between hover:bg-slate-50 p-2 rounded-md cursor-pointer" onclick="triggerToast('Downloading Q1 Balance Sheets...')"><span>📄 Q1_P&L_Statement.pdf <span class="text-slate-400 text-[10px] ml-2">(1.2 MB)</span></span> <i data-lucide="download" class="w-3.5 h-3.5"></i></p>
-                                        <p class="flex items-center justify-between hover:bg-slate-50 p-2 rounded-md cursor-pointer" onclick="triggerToast('Downloading projected tables...')"><span>📄 Projected_Cap_Table.xlsx <span class="text-slate-400 text-[10px] ml-2">(450 KB)</span></span> <i data-lucide="download" class="w-3.5 h-3.5"></i></p>
-                                    </div>
-                                </div>
-
-                                <div class="space-y-2 pt-2 border-t border-slate-50">
-                                    <p class="flex items-center gap-2 font-bold text-slate-800"><i data-lucide="folder" class="w-4 h-4 text-orange-500"></i> 📁 Compliance Registries</p>
-                                    <div class="pl-6 space-y-1.5 text-slate-600">
-                                        <p class="flex items-center justify-between hover:bg-slate-50 p-2 rounded-md cursor-pointer" onclick="triggerToast('Downloading incorporation certificates...')"><span>📄 Corporate_Incorporation_Cert.pdf <span class="text-slate-400 text-[10px] ml-2">(2.1 MB)</span></span> <i data-lucide="download" class="w-3.5 h-3.5"></i></p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }
-
-            // Central grid and list toggle for companies (image_daa8b4.png styled)
-            const viewMode = appState.dataRoomViewMode;
-            const combinedCompanies = appState.investees.concat(appState.sellers);
-
-            return `
-                <div class="fade-in-view space-y-6">
-                    <div class="flex justify-between items-center">
-                        <div>
-                            <h2 class="text-2xl font-bold text-slate-900 tracking-tight">Data Room & Vault Access</h2>
-                            <p class="text-slate-500 font-medium text-xs mt-1">Audit active NDA/CIM requests and structure dynamic watermark parameters.</p>
-                        </div>
-                        
-                        <!-- Toggle Controls -->
-                        <div class="flex items-center gap-1.5 bg-white p-1 rounded-md border border-slate-100 shadow-sm">
-                            <button onclick="appState.dataRoomViewMode='grid'; renderWorkspace();" class="p-2 rounded-md transition-all ${viewMode === 'grid' ? 'bg-[#0B0C0E] text-white' : 'text-slate-400 hover:text-slate-600'}"><i data-lucide="grid" class="w-4 h-4"></i></button>
-                            <button onclick="appState.dataRoomViewMode='list'; renderWorkspace();" class="p-2 rounded-md transition-all ${viewMode === 'list' ? 'bg-[#0B0C0E] text-white' : 'text-slate-400 hover:text-slate-600'}"><i data-lucide="list" class="w-4 h-4"></i></button>
-                        </div>
-                    </div>
-
-                    ${viewMode === 'grid' ? `
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            ${combinedCompanies.map(item => `
-                                <div onclick="appState.selectedDataRoomCompanyId='${item.id}'; renderWorkspace();" class="bg-white p-6 rounded-[12px] border border-slate-200/50 shadow-sm space-y-4 hover:border-orange-500 transition-all cursor-pointer">
-                                    <div class="flex justify-between items-start">
-                                        <i data-lucide="folder-lock" class="w-8 h-8 text-indigo-600"></i>
-                                        <span class="text-[9px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-bold">SECURE</span>
-                                    </div>
-                                    <div>
-                                        <h4 class="font-bold text-slate-900 text-sm">${item.name}</h4>
-                                        <p class="text-[11px] text-slate-400 mt-1">3 folders • 6 encrypted documents</p>
-                                    </div>
-                                </div>
-                            `).join('')}
-                        </div>
-                    ` : `
-                        <div class="bg-white p-6 rounded-md border border-slate-200/50 shadow-sm">
-                            <div class="overflow-x-auto">
-                                <table class="w-full text-left text-xs">
-                                    <thead>
-                                        <tr class="bg-slate-50 text-slate-400 text-[10px] uppercase font-bold tracking-wider">
-                                            <th class="px-6 py-4 rounded-l-lg">Company Name</th>
-                                            <th class="px-6 py-4">Total Documents</th>
-                                            <th class="px-6 py-4">Security Protocol</th>
-                                            <th class="px-6 py-4 rounded-r-lg text-center">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="divide-y divide-slate-100">
-                                        ${combinedCompanies.map(item => `
-                                            <tr class="hover:bg-slate-50/20 transition-colors">
-                                                <td class="px-6 py-4 font-bold text-slate-900">${item.name}</td>
-                                                <td class="px-6 py-4 text-slate-500 font-semibold">6 Encrypted files</td>
-                                                <td class="px-6 py-4"><span class="px-2 py-0.5 bg-green-50 text-green-700 text-[10px] font-bold rounded">Watermarked Vault</span></td>
-                                                <td class="px-6 py-4 text-center">
-                                                    <button onclick="appState.selectedDataRoomCompanyId='${item.id}'; renderWorkspace();" class="text-orange-500 hover:text-orange-600 bg-transparent font-bold hover:underline text-[10px] px-3.5 py-1.5 uppercase font-semibold">Enter Vault</button>
-                                                </td>
-                                            </tr>
-                                        `).join('')}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    `}
-                </div>
-            `;
-        }
-    </script>
-
-    <script>
-        // --- SCREEN 6: TEAM MANAGEMENT ---
-        function getTeamManagementView() {
-            return `
-                <div class="fade-in-view space-y-6">
-                    <div class="flex justify-between items-center">
-                        <div>
-                            <h1 class="text-3xl font-bold text-slate-900 tracking-tight">Internal Team</h1>
-                            <p class="text-slate-500 font-medium text-xs mt-1">Control supervisor authority, create secure login profiles, and view workspace logs.</p>
-                        </div>
-                        <button onclick="triggerCreateLoginModal()" class="bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs py-2.5 px-6 rounded-md transition-all shadow-md shadow-orange-500/10">
-                            Create Login
-                        </button>
-                    </div>
-
-                    <div class="bg-white p-8 rounded-md border border-slate-200/50 shadow-sm space-y-6">
-                        <h3 class="text-lg font-bold text-slate-900">Supervisor Roster</h3>
-                        
-                        <div class="space-y-4">
-                            ${appState.supervisors.map((sup, idx) => `
-                                <div class="p-6 bg-slate-50/50 border border-slate-100/50 rounded-md flex items-center justify-between">
-                                    <div class="space-y-3">
-                                        <div>
-                                            <p class="text-base font-bold text-slate-900 leading-tight">${sup.name}</p>
-                                            <p class="text-xs text-slate-400 mt-1 font-semibold">${sup.role} <span class="mx-1.5">•</span> Performance Index: ${sup.performance}</p>
-                                        </div>
-                                        <div class="flex flex-wrap gap-2 pt-1">
-                                            ${sup.activeModules.map(mod => `
-                                                <span class="px-2.5 py-1 bg-green-50 text-green-700 border border-green-100/30 text-[9px] font-bold uppercase tracking-wider rounded">${mod}</span>
-                                            `).join('')}
-                                        </div>
-                                    </div>
-                                    <div class="flex items-center gap-2">
-                                        <button onclick="triggerToast('Editing ${sup.name} credentials...')" class="bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 font-bold text-xs py-2 px-4 rounded-md transition-all">Edit</button>
-                                        <button onclick="deleteSupervisor(${idx})" class="p-2 bg-red-50 text-red-600 hover:bg-red-100 rounded-md"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
-                                    </div>
-                                </div>
-                            `).join('')}
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        function deleteSupervisor(idx) {
-            appState.supervisors.splice(idx, 1);
-            triggerToast('Supervisor deleted successfully.');
-            renderWorkspace();
-        }
-
-        function triggerCreateLoginModal() {
-            const container = document.getElementById('modal-container');
-            container.innerHTML = `
-                <div class="bg-white rounded-md p-8 max-w-md w-full shadow-2xl border border-slate-100 space-y-6">
-                    <div>
-                        <h3 class="text-lg font-bold text-slate-900 tracking-tight">Create Corporate Login</h3>
-                        <p class="text-xs text-slate-500 mt-1">Establish department access parameters and login keys for new team members.</p>
-                    </div>
-                    <div class="space-y-4">
-                        <div>
-                            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-1">Full Legal Name</label>
-                            <input id="new-member-name" type="text" placeholder="e.g. Amit Sharma" class="w-full p-3 bg-slate-50 border border-slate-100 rounded-md text-xs outline-none">
-                        </div>
-                        <div>
-                            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-1">Corporate Department Access</label>
-                            <select id="new-member-role" class="w-full p-3 bg-slate-50 border border-slate-100 rounded-md text-xs outline-none">
-                                <option value="Relationship Manager">Relationship Manager (Advisory)</option>
-                                <option value="Senior Analyst">Senior Financial Analyst</option>
-                                <option value="Compliance Partner">Compliance & Audits Desk</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="flex justify-end gap-3">
-                        <button onclick="closeModal()" class="px-5 py-2.5 border border-slate-100 text-slate-500 font-bold rounded-md text-xs uppercase tracking-wider">Cancel</button>
-                        <button onclick="submitNewMember()" class="px-5 py-2.5 bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded-md text-xs uppercase tracking-wider">Authorize Login</button>
-                    </div>
-                </div>
-            `;
-            container.classList.remove('hidden');
-            container.classList.add('modal-active');
-            lucide.createIcons();
-        }
-
-        function submitNewMember() {
-            const name = document.getElementById('new-member-name').value;
-            const role = document.getElementById('new-member-role').value;
-            if (!name) return;
-
-            appState.supervisors.push({
-                name: name,
-                role: role,
-                performance: 'On Target',
-                activeModules: ['MANDATES', 'DUE DILIGENCE']
-            });
-
-            triggerToast(`Keys generated successfully for ${name}.`);
-            closeModal();
-            renderWorkspace();
-        }
-    </script>
-
-    <script>
-        // --- SCREEN 7: PAYMENTS ---
-        function getPaymentsView() {
-            return `
-                <div class="fade-in-view space-y-6">
-                    <div>
-                        <h2 class="text-2xl font-bold text-slate-900 tracking-tight">Payments & Invoices</h2>
-                        <p class="text-slate-500 font-medium text-xs mt-1">Audit verification UTR files, success performance fee matrices, and verify billing proofs.</p>
-                    </div>
-
-                    <div class="bg-white p-6 rounded-md border border-slate-200/50 shadow-sm space-y-4">
-                        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest">Retainer & Success Fees Billing Registry</h3>
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-left text-xs">
-                                <thead>
-                                    <tr class="bg-slate-50 text-slate-400 text-[10px] uppercase font-bold tracking-wider">
-                                        <th class="px-6 py-4">Transaction ID</th>
-                                        <th class="px-6 py-4">Entity</th>
-                                        <th class="px-6 py-4">Payment Category</th>
-                                        <th class="px-6 py-4">Billing Amount</th>
-                                        <th class="px-6 py-4">Verification UTR</th>
-                                        <th class="px-6 py-4">Status</th>
-                                        <th class="px-6 py-4 text-center">Receipts</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="divide-y divide-slate-100">
-                                    ${appState.paymentTransactions.map(t => `
-                                        <tr class="hover:bg-slate-50/20 transition-colors">
-                                            <td class="px-6 py-4 font-bold text-slate-900">${t.txnId}</td>
-                                            <td class="px-6 py-4 font-semibold text-slate-700">${t.company}</td>
-                                            <td class="px-6 py-4 text-slate-500">${t.type}</td>
-                                            <td class="px-6 py-4 font-bold text-slate-800">${t.amount}</td>
-                                            <td class="px-6 py-4 font-mono text-[10px] text-slate-400">${t.utr}</td>
-                                            <td class="px-6 py-4">
-                                                <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
-                                                    t.status === 'Verified' ? 'bg-green-50 text-green-700' : 'bg-amber-50 text-amber-700'
-                                                }">${t.status}</span>
-                                            </td>
-                                            <td class="px-6 py-4 text-center">
-                                                <button onclick="triggerReceiptModal('${t.txnId}', '${t.company}', '${t.type}', '${t.amount}', '${t.utr}')" class="text-orange-500 hover:text-orange-600 bg-transparent font-bold hover:underline text-[10px] px-3.5 py-1.5 uppercase font-semibold">View Receipt</button>
-                                            </td>
-                                        </tr>
-                                    `).join('')}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        function triggerReceiptModal(id, co, type, amt, utr) {
-            const container = document.getElementById('modal-container');
-            container.innerHTML = `
-                <div class="bg-white rounded-md p-8 max-w-sm w-full shadow-2xl border border-slate-100 space-y-6">
-                    <div class="text-center pb-4 border-b border-slate-100">
-                        <h3 class="text-lg font-extrabold text-slate-900 tracking-wider">CHARANTRA TRANSACTION RECEIPT</h3>
-                        <p class="text-[10px] text-slate-400 uppercase tracking-widest mt-1">Level 4 Certified Audit Desk</p>
-                    </div>
-                    <div class="space-y-3 text-xs">
-                        <div class="flex justify-between"><span class="text-slate-400 font-semibold">Receipt Code:</span><span class="font-bold text-slate-800">${id}</span></div>
-                        <div class="flex justify-between"><span class="text-slate-400 font-semibold">Target Entity:</span><span class="font-bold text-slate-800">${co}</span></div>
-                        <div class="flex justify-between"><span class="text-slate-400 font-semibold">Category:</span><span class="font-bold text-slate-800">${type}</span></div>
-                        <div class="flex justify-between"><span class="text-slate-400 font-semibold">Volume Transacted:</span><span class="font-bold text-slate-800">${amt}</span></div>
-                        <div class="flex justify-between"><span class="text-slate-400 font-semibold">UTR Code:</span><span class="font-mono text-slate-800">${utr}</span></div>
-                    </div>
-                    <div class="flex justify-end pt-4 border-t border-slate-100">
-                        <button onclick="closeModal()" class="px-6 py-2 bg-slate-900 text-white rounded-md font-bold uppercase text-[10px]">Close Receipt</button>
-                    </div>
-                </div>
-            `;
-            container.classList.remove('hidden');
-            container.classList.add('modal-active');
-            lucide.createIcons();
-        }
-    </script>
-
-    <script>
-        // --- SCREEN 8: REPORTS & ANALYTICS ---
-        function getReportsView() {
-            return `
-                <div class="fade-in-view space-y-6">
-                    <div class="flex justify-between items-center">
-                        <div>
-                            <h2 class="text-2xl font-bold text-slate-900 tracking-tight">Reports & Analytics Console</h2>
-                            <p class="text-slate-500 font-medium text-xs mt-1">Platform advisory conversions, volume index charts, and retainer distributions.</p>
-                        </div>
-                        <button onclick="triggerToast('Exporting data reports to local storage...')" class="bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs py-2 px-4 rounded-md transition-all">
-                            Export Report
-                        </button>
-                    </div>
-
-                    <div class="grid grid-cols-12 gap-8">
-                        <div class="col-span-12 lg:col-span-8 bg-white p-6 rounded-md border border-slate-200/50 shadow-sm space-y-6">
-                            <h3 class="text-base font-bold text-slate-900">Advisory Pipeline Volume Conversion Chart</h3>
-                            
-                            <!-- Premium SVG Chart (image_daa83b.png) -->
-                            <div class="h-64 relative flex items-end justify-between pt-8">
-                                <svg class="absolute inset-0 w-full h-full overflow-visible" viewBox="0 0 500 200">
-                                    <!-- Linear grid guide lines -->
-                                    <line x1="0" y1="50" x2="500" y2="50" stroke="#f1f5f9" stroke-width="1" stroke-dasharray="4" />
-                                    <line x1="0" y1="100" x2="500" y2="100" stroke="#f1f5f9" stroke-width="1" stroke-dasharray="4" />
-                                    <line x1="0" y1="150" x2="500" y2="150" stroke="#f1f5f9" stroke-width="1" stroke-dasharray="4" />
-                                    
-                                    <!-- Area path under the curve -->
-                                    <path d="M 0 200 L 100 120 L 200 140 L 300 70 L 400 90 L 500 40 L 500 200 Z" fill="rgba(249, 115, 22, 0.08)" />
-                                    <!-- Trend line -->
-                                    <path d="M 0 200 L 100 120 L 200 140 L 300 70 L 400 90 L 500 40" fill="none" stroke="#f97316" stroke-width="3.5" stroke-linecap="round" />
-                                    
-                                    <!-- Points -->
-                                    <circle cx="100" cy="120" r="5" fill="#f97316" stroke="#ffffff" stroke-width="2" />
-                                    <circle cx="200" cy="140" r="5" fill="#f97316" stroke="#ffffff" stroke-width="2" />
-                                    <circle cx="300" cy="70" r="5" fill="#f97316" stroke="#ffffff" stroke-width="2" />
-                                    <circle cx="400" cy="90" r="5" fill="#f97316" stroke="#ffffff" stroke-width="2" />
-                                    <circle cx="500" cy="40" r="5" fill="#f97316" stroke="#ffffff" stroke-width="2" />
-                                </svg>
-                                <div class="w-full flex justify-between text-[10px] text-slate-400 font-semibold px-2 z-10">
-                                    <span>Outreach</span>
-                                    <span>NDA Signs</span>
-                                    <span>Checklists</span>
-                                    <span>Term Sheets</span>
-                                    <span>Closing</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-span-12 lg:col-span-4 bg-[#0B0C0E] text-white p-6 rounded-md space-y-4">
-                            <h3 class="text-base font-bold text-orange-500">Pipeline Performance Metrics</h3>
-                            <p class="text-xs text-zinc-400 leading-relaxed font-normal">Super Admin active metrics indicate clear 14.8% pipeline acceleration indexes across energy & portfolios over the current quarter.</p>
-                            <div class="space-y-2 pt-2 text-xs font-semibold">
-                                <div class="flex justify-between border-b border-zinc-800 pb-2"><span class="text-zinc-500">Total volume target:</span><span class="text-orange-500">₹67.0 Cr</span></div>
-                                <div class="flex justify-between border-b border-zinc-800 pb-2"><span class="text-zinc-500">Advisory retainers:</span><span>₹14.25 Cr</span></div>
-                                <div class="flex justify-between"><span class="text-zinc-500">Conversions target:</span><span>88% clear</span></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        // --- SCREEN 9: PLATFORM SETTINGS ---
-        function getSettingsView() {
-            return `
-                <div class="fade-in-view space-y-6">
-                    <div>
-                        <h2 class="text-2xl font-bold text-slate-900 tracking-tight">Platform Settings</h2>
-                        <p class="text-slate-500 font-medium text-xs mt-1">Configure automated rules, template clauses, and secure access policies.</p>
-                    </div>
-
-                    <div class="grid grid-cols-12 gap-8">
-                        <div class="col-span-12 lg:col-span-8 bg-white p-6 rounded-md border border-slate-200/50 shadow-sm space-y-6">
-                            <h3 class="text-base font-bold text-slate-900">Policy Rules Engine</h3>
-                            <div class="space-y-4">
-                                <div class="flex items-center justify-between p-4 bg-slate-50 rounded-md">
-                                    <div>
-                                        <p class="text-sm font-semibold text-slate-900">Enforce dual-witness digital signatures</p>
-                                        <p class="text-xs text-slate-500">Require mobile security keys on every retainer approval log.</p>
-                                    </div>
-                                    <input type="checkbox" checked class="w-10 h-5 accent-orange-600 rounded">
-                                </div>
-                                <div class="flex items-center justify-between p-4 bg-slate-50 rounded-md">
-                                    <div>
-                                        <p class="text-sm font-semibold text-slate-900">Dynamic Watermarking on CIM Files</p>
-                                        <p class="text-xs text-slate-500">Inject dynamic target company watermarks on all data room documents.</p>
-                                    </div>
-                                    <input type="checkbox" checked class="w-10 h-5 accent-orange-600 rounded">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-span-12 lg:col-span-4 bg-[#0B0C0E] text-white p-6 rounded-md space-y-4">
-                            <h3 class="text-base font-bold text-orange-500">Security Parameters</h3>
-                            <p class="text-xs text-zinc-400 leading-relaxed font-normal">Super Admin active keys are authenticated via level 4 operational security checks.</p>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-    </script>
-
-    <script>
-        // --- CENTRAL WORKSPACE ROTATION DESK ---
-        function renderWorkspace() {
-            const container = document.getElementById('workspace-target');
-            if (!container) return;
-            container.innerHTML = '';
-            
-            let template = '';
-            switch (appState.activeSection) {
-                case 'dashboard':
-                    template = getDashboardView();
-                    break;
-                case 'crm':
-                    template = getCrmView();
-                    break;
-                case 'deals':
-                    template = getDealsView();
-                    break;
-                case 'mandates':
-                    template = getMandatesView();
-                    break;
-                case 'data-room':
-                    template = getDataRoomView();
-                    break;
-                case 'team-management':
-                    template = getTeamManagementView();
-                    break;
-                case 'payments-invoices':
-                    template = getPaymentsView();
-                    break;
-                case 'reports-analytics':
-                    template = getReportsView();
-                    break;
-                case 'settings':
-                    template = getSettingsView();
-                    break;
-                default:
-                    template = getDashboardView();
-            }
-            container.innerHTML = template;
-            lucide.createIcons();
-            
-            // Re-fire sub-module custom render callbacks
-            if (appState.activeSection === 'mandates' && appState.activeSubTabs['mandates'] === 'template-builder') {
-                updateAiTemplatePreview();
-            }
-        }
-
-        // Initialize App to active dashboards dynamically
-        window.onload = () => {
-            changeSection('dashboard');
+        window.onload = function() {
+            renderDashboardViews();
+            initDashboardCharts();
         };
     </script>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const currentPath = window.location.pathname;
-            const buttons = document.querySelectorAll('.sidebar-btn');
-            buttons.forEach(btn => {
-                const parent = btn.parentElement;
-                if (parent && parent.tagName === 'A') {
-                    const href = parent.getAttribute('href');
-                    if (currentPath.includes(href.split('/').pop()) || (currentPath === '/' && href.includes('dashboard.html'))) {
-                        btn.classList.add('sidebar-item-active');
-                    }
-                }
-            });
-        });
-    </script>
-
 </body>
 </html>
