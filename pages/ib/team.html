@@ -35,6 +35,19 @@
             -webkit-font-smoothing: antialiased;
             background-color: #F8FAFC;
         }
+        .dark body,.dark { background-color:#050A30 !important; color:#F1F5F9 !important }
+        .dark .bg-white { background-color:#1E293B !important }
+        .dark .bg-slate-50 { background-color:#1E293B !important }
+        .dark .bg-brand-bgSlate { background-color:#050A30 !important }
+        .dark .text-slate-900 { color:#F1F5F9 !important }
+        .dark .text-slate-800 { color:#E2E8F0 !important }
+        .dark .text-slate-700 { color:#CBD5E1 !important }
+        .dark .text-slate-600 { color:#94A3B8 !important }
+        .dark .text-slate-500,.dark .text-slate-400 { color:#64748B !important }
+        .dark .border-slate-100,.dark .border-slate-200,.dark .border-brand-borderGray { border-color:#334155 !important }
+        .dark .border-slate-50 { border-color:#1E293B !important }
+        .dark .shadow-sm { box-shadow:0 1px 2px rgba(0,0,0,0.3) !important }
+        .dark .hover\:bg-slate-50:hover { background-color:#334155 !important }
         ::-webkit-scrollbar {
             width: 6px;
             height: 6px;
@@ -92,43 +105,43 @@
                     <button onclick="toggleSidebarCollapse()" class="text-slate-500 hover:text-white p-1 rounded transition shrink-0" title="Toggle Sidebar"><i class="fa-solid fa-outdent text-xs sidebar-collapse-icon"></i></button>
                 </div>
                 <nav class="px-3 space-y-1 text-sm">
-                    <a href="/pages/dashboard.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><i class="fa-solid fa-table-columns text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Dashboard</span></button></a>
+                    <a href="/pages/ib/dashboard.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><i class="fa-solid fa-table-columns text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Dashboard</span></button></a>
                     
                     <div class="space-y-0.5">
                         <button onclick="toggleSidebarSection('crm-section')" class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><span class="flex items-center gap-3"><i class="fa-solid fa-users text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">CRM & Users</span></span><i class="fa-solid fa-chevron-down text-[9px] transition-transform duration-200 sidebar-arrow" id="arrow-crm-section"></i></button>
                         <div id="crm-section" class="pl-5 pr-1 space-y-0.5 overflow-hidden sidebar-section-div" style="max-height:0;transition:max-height 0.3s ease">
-                            <a href="/pages/crm.html?type=Investor" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-hand-holding-dollar text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Investors</span></button></a>
-                            <a href="/pages/crm.html?type=Investee" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-rocket text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Investees</span></button></a>
-                            <a href="/pages/crm.html?type=Buyer" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-cart-shopping text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Buyers</span></button></a>
-                            <a href="/pages/crm.html?type=Seller" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-tags text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Sellers</span></button></a>
-                            <a href="/pages/crm.html?type=Advisor" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-comments text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Advisors</span></button></a>
+                            <a href="/pages/ib/crm.html?type=Investor" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-hand-holding-dollar text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Investors</span></button></a>
+                            <a href="/pages/ib/crm.html?type=Investee" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-rocket text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Investees</span></button></a>
+                            <a href="/pages/ib/crm.html?type=Buyer" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-cart-shopping text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Buyers</span></button></a>
+                            <a href="/pages/ib/crm.html?type=Seller" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-tags text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Sellers</span></button></a>
+                            <a href="/pages/ib/crm.html?type=Advisor" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-comments text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Advisors</span></button></a>
                         </div>
                     </div>
 
-                    <a href="/pages/mandates.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><i class="fa-solid fa-file-contract text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Mandates & Projects</span></button></a>
+                    <a href="/pages/ib/mandates.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><i class="fa-solid fa-file-contract text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Mandates & Projects</span></button></a>
 
-                    <a href="/pages/deals.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><i class="fa-solid fa-briefcase text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Deals & Pipeline</span></button></a>
+                    <a href="/pages/ib/deals.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><i class="fa-solid fa-briefcase text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Deals & Pipeline</span></button></a>
 
-                    <a href="/pages/dataroom.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><i class="fa-solid fa-hard-drive text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Data Room</span></button></a>
+                    <a href="/pages/ib/dataroom.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><i class="fa-solid fa-hard-drive text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Data Room</span></button></a>
 
                     <div class="space-y-0.5">
                         <button onclick="toggleSidebarSection('team-section')" class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg font-bold text-white bg-brand-orange transition duration-150 overflow-hidden"><span class="flex items-center gap-3"><i class="fa-solid fa-user-group text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Team Management</span></span><i class="fa-solid fa-chevron-down text-[9px] transition-transform duration-200 sidebar-arrow" id="arrow-team-section"></i></button>
                         <div id="team-section" class="pl-5 pr-1 space-y-0.5 overflow-hidden sidebar-section-div" style="max-height:200px;transition:max-height 0.3s ease">
-                            <a href="/pages/team.html?view=members" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-users-gear text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Team Members</span></button></a>
-                            <a href="/pages/team.html?view=roles" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-shield-halved text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Roles & Permissions</span></button></a>
+                            <a href="/pages/ib/team.html?view=members" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-users-gear text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Team Members</span></button></a>
+                            <a href="/pages/ib/team.html?view=roles" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-shield-halved text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Roles & Permissions</span></button></a>
                         </div>
                     </div>
 
                     <div class="space-y-0.5">
                         <button onclick="toggleSidebarSection('payments-section')" class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><span class="flex items-center gap-3"><i class="fa-solid fa-receipt text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Payments</span></span><i class="fa-solid fa-chevron-down text-[9px] transition-transform duration-200 sidebar-arrow" id="arrow-payments-section"></i></button>
                         <div id="payments-section" class="pl-5 pr-1 space-y-0.5 overflow-hidden sidebar-section-div" style="max-height:0;transition:max-height 0.3s ease">
-                            <a href="/pages/payments.html?view=invoices" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-file-invoice text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Invoices</span></button></a>
-                            <a href="/pages/payments.html?view=ledger" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-book text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Ledger</span></button></a>
+                            <a href="/pages/ib/payments.html?view=invoices" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-file-invoice text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Invoices</span></button></a>
+                            <a href="/pages/ib/payments.html?view=ledger" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-book text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Ledger</span></button></a>
                         </div>
                     </div>
 
-                    <a href="/pages/reports.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><i class="fa-solid fa-chart-simple text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Reports</span></button></a>
-                    <a href="/pages/settings.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><i class="fa-solid fa-gear text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Settings & Logs</span></button></a>
+                    <a href="/pages/ib/reports.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><i class="fa-solid fa-chart-simple text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Reports</span></button></a>
+                    <a href="/pages/ib/settings.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><i class="fa-solid fa-gear text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Settings & Logs</span></button></a>
                 </nav>
             </div>
             <div class="p-4 text-center text-xs text-slate-600 border-t border-slate-900"><p class="sidebar-label">© 2026 Charantra</p></div>
@@ -151,6 +164,7 @@
                         <span class="font-bold text-slate-700">INR (₹)</span>
                         <i class="fa-solid fa-chevron-down text-[9px] text-slate-400"></i>
                     </div>
+                    <button onclick="toggleTheme()" class="p-2 text-slate-500 hover:text-brand-orange hover:bg-slate-100 rounded-full transition" title="Toggle theme"><i id="theme-icon" class="fa-regular fa-moon text-lg"></i></button>
 
                     <div class="relative">
                         <button class="p-2 text-slate-500 hover:text-brand-orange hover:bg-slate-100 rounded-full transition relative">
@@ -161,7 +175,19 @@
 
                     <div class="text-right border-l border-slate-200 pl-4">
                         <p class="text-xs font-bold text-slate-900 leading-none">Karthik</p>
-                        <p class="text-[9px] text-slate-400 font-bold uppercase mt-1">PLATFORM SECURITY MANAGER</p>
+                        <p class="text-[9px] text-blue-500 font-bold uppercase tracking-wider mt-0.5" id="role-label">INVESTMENT BANKER <i class="fa-solid fa-chevron-down text-[7px] text-slate-400 ml-1"></i></p>
+                        </div>
+                        <div class="relative">
+                            <button onclick="toggleRoleDropdown()" class="w-10 h-10 rounded-full bg-blue-600 text-white font-extrabold text-sm flex items-center justify-center shadow hover:shadow-md transition cursor-pointer">K</button>
+                            <div id="role-dropdown" class="hidden absolute right-0 mt-2 w-52 bg-white border border-slate-200 rounded-xl shadow-xl z-50 text-xs overflow-hidden">
+                                <div class="px-4 py-3 border-b border-slate-100 font-bold text-slate-700">Switch Role</div>
+                                <button onclick="switchToRole('superadmin')" class="w-full text-left px-4 py-2.5 hover:bg-slate-50 text-slate-700 font-medium flex items-center gap-2.5 border-b border-slate-50"><i class="fa-solid fa-crown text-brand-orange w-4"></i> Super Admin</button>
+                                <button onclick="switchToRole('admin')" class="w-full text-left px-4 py-2.5 hover:bg-slate-50 text-slate-700 font-medium flex items-center gap-2.5 border-b border-slate-50"><i class="fa-solid fa-shield-halved text-violet-500 w-4"></i> Admin</button>
+                                <button onclick="switchToRole('ib')" class="w-full text-left px-4 py-2.5 hover:bg-slate-50 text-slate-700 font-medium flex items-center gap-2.5 border-b border-slate-50"><i class="fa-solid fa-briefcase text-blue-500 w-4"></i> Investment Banker</button>
+                                <button onclick="switchToRole('ba')" class="w-full text-left px-4 py-2.5 hover:bg-slate-50 text-slate-700 font-medium flex items-center gap-2.5"><i class="fa-solid fa-chart-line text-emerald-500 w-4"></i> Business Analyst</button>
+                            </div>
+                        </div>
+                    </div></p>
                     </div>
                 </div>
             </header>
@@ -230,10 +256,9 @@
                         <div class="flex gap-2 w-full sm:w-auto">
                             <select id="role-filter" onchange="filterTeamMembers()" class="bg-slate-50 border border-slate-200 rounded-lg text-xs py-1.5 px-3 text-slate-600 focus:outline-none focus:border-brand-orange">
                                 <option value="ALL">All Roles</option>
-                                <option value="Senior Associate">Senior Associate</option>
-                                <option value="Associate Partner">Associate Partner</option>
-                                <option value="Compliance Officer">Compliance Officer</option>
-                                <option value="Investment Banking Analyst">Investment Banking Analyst</option>
+                                <option value="Admin">Admin</option>
+                                <option value="Investment Banker">Investment Banker</option>
+                                <option value="Business Analyst">Business Analyst</option>
                             </select>
                             <button onclick="resetTeamFilters()" class="bg-slate-100 text-slate-600 hover:bg-slate-200 text-xs px-3.5 py-1.5 rounded-lg font-bold transition">Reset</button>
                         </div>
@@ -266,6 +291,71 @@
                     </div>
                 </section>
 
+                <!-- ROLES & PERMISSIONS VIEW -->
+                <section id="view-roles" class="hidden space-y-6">
+                    <div>
+                        <h2 class="text-2xl font-extrabold text-slate-900 tracking-tight">Roles & Permissions</h2>
+                        <p class="text-xs text-slate-500 mt-1">Define system-level access roles and module privileges.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                        <!-- Admin Role Card -->
+                        <div class="bg-white border border-violet-200 rounded-xl p-5 shadow-sm hover:shadow-md transition">
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="w-10 h-10 rounded-full bg-violet-100 text-violet-600 flex items-center justify-center text-lg"><i class="fa-solid fa-shield-halved"></i></div>
+                                <div>
+                                    <h3 class="font-extrabold text-slate-900">Admin</h3>
+                                    <span class="text-[10px] text-violet-500 font-bold uppercase">Full Platform Access</span>
+                                </div>
+                            </div>
+                            <div class="space-y-2 text-xs text-slate-600">
+                                <div class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500 text-[10px]"></i> Dashboard & Analytics</div>
+                                <div class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500 text-[10px]"></i> CRM & User Directory</div>
+                                <div class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500 text-[10px]"></i> Mandates & Projects</div>
+                                <div class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500 text-[10px]"></i> Deals & Pipeline</div>
+                                <div class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500 text-[10px]"></i> Data Room Access</div>
+                                <div class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500 text-[10px]"></i> Team Management</div>
+                                <div class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500 text-[10px]"></i> Payments & Billing</div>
+                                <div class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500 text-[10px]"></i> Reports & Logs</div>
+                            </div>
+                        </div>
+
+                        <!-- Investment Banker Role Card -->
+                        <div class="bg-white border border-blue-200 rounded-xl p-5 shadow-sm hover:shadow-md transition">
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-lg"><i class="fa-solid fa-briefcase"></i></div>
+                                <div>
+                                    <h3 class="font-extrabold text-slate-900">Investment Banker</h3>
+                                    <span class="text-[10px] text-blue-500 font-bold uppercase">Deal Execution</span>
+                                </div>
+                            </div>
+                            <div class="space-y-2 text-xs text-slate-600">
+                                <div class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500 text-[10px]"></i> Deals & Pipeline</div>
+                                <div class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500 text-[10px]"></i> Mandates & Projects</div>
+                                <div class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500 text-[10px]"></i> Data Room Access</div>
+                                <div class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500 text-[10px]"></i> CRM Directory</div>
+                                <div class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500 text-[10px]"></i> Reports</div>
+                            </div>
+                        </div>
+
+                        <!-- Business Analyst Role Card -->
+                        <div class="bg-white border border-emerald-200 rounded-xl p-5 shadow-sm hover:shadow-md transition">
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="w-10 h-10 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-lg"><i class="fa-solid fa-chart-line"></i></div>
+                                <div>
+                                    <h3 class="font-extrabold text-slate-900">Business Analyst</h3>
+                                    <span class="text-[10px] text-emerald-500 font-bold uppercase">Analytics & Reports</span>
+                                </div>
+                            </div>
+                            <div class="space-y-2 text-xs text-slate-600">
+                                <div class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500 text-[10px]"></i> Reports & Analytics</div>
+                                <div class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500 text-[10px]"></i> CRM Directory</div>
+                                <div class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500 text-[10px]"></i> Data Room Access</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
                 <!-- PLATFORM MODULES PLACEHOLDERS FOR FLOW CONSISTENCY -->
                 <section id="view-dashboard" class="hidden space-y-6">
                     <div class="bg-white p-8 rounded-xl border border-slate-100 text-center space-y-3">
@@ -281,7 +371,7 @@
                         <i class="fa-solid fa-users text-4xl text-brand-orange"></i>
                         <h3 class="text-lg font-extrabold text-slate-900">CRM & Networks</h3>
                         <p class="text-xs text-slate-500 max-w-md mx-auto">Manage system investors, investees, and advisors profiles.</p>
-                        <button onclick="switchView('team')" class="bg-brand-orange text-white text-xs font-semibold px-4 py-2 rounded-lg hover:bg-brand-orangeHover transition">Return to Team Panel</button>
+                        <button onclick="switchView('team')" class="bg-brand-orange hover:bg-brand-orangeHover text-white text-xs font-bold px-4 py-2.5 rounded-lg shadow-sm transition">Return to Team Panel</button>
                     </div>
                 </section>
 
@@ -290,7 +380,7 @@
                         <i class="fa-solid fa-briefcase text-4xl text-brand-orange"></i>
                         <h3 class="text-lg font-extrabold text-slate-900">Deals & M&A Pipeline</h3>
                         <p class="text-xs text-slate-500 max-w-md mx-auto">Monitor M&A and funding flows across the platform.</p>
-                        <button onclick="switchView('team')" class="bg-brand-orange text-white text-xs font-semibold px-4 py-2 rounded-lg hover:bg-brand-orangeHover transition">Return to Team Panel</button>
+                        <button onclick="switchView('team')" class="bg-brand-orange hover:bg-brand-orangeHover text-white text-xs font-bold px-4 py-2.5 rounded-lg shadow-sm transition">Return to Team Panel</button>
                     </div>
                 </section>
 
@@ -299,7 +389,7 @@
                         <i class="fa-regular fa-bell text-4xl text-brand-orange animate-pulse"></i>
                         <h3 class="text-lg font-extrabold text-slate-900">Updates Hub</h3>
                         <p class="text-xs text-slate-500 max-w-md mx-auto">Platform activity audit logs.</p>
-                        <button onclick="switchView('team')" class="bg-brand-orange text-white text-xs font-semibold px-4 py-2 rounded-lg hover:bg-brand-orangeHover transition">Return to Team Panel</button>
+                        <button onclick="switchView('team')" class="bg-brand-orange hover:bg-brand-orangeHover text-white text-xs font-bold px-4 py-2.5 rounded-lg shadow-sm transition">Return to Team Panel</button>
                     </div>
                 </section>
 
@@ -308,7 +398,7 @@
                         <i class="fa-solid fa-file-contract text-4xl text-brand-orange"></i>
                         <h3 class="text-lg font-extrabold text-slate-900">Mandates & Projects Workspace</h3>
                         <p class="text-xs text-slate-500 max-w-md mx-auto">Verify legal advisory mandates agreements.</p>
-                        <button onclick="switchView('team')" class="bg-brand-orange text-white text-xs font-semibold px-4 py-2 rounded-lg hover:bg-brand-orangeHover transition">Return to Team Panel</button>
+                        <button onclick="switchView('team')" class="bg-brand-orange hover:bg-brand-orangeHover text-white text-xs font-bold px-4 py-2.5 rounded-lg shadow-sm transition">Return to Team Panel</button>
                     </div>
                 </section>
 
@@ -317,7 +407,7 @@
                         <i class="fa-solid fa-folder-closed text-4xl text-brand-orange"></i>
                         <h3 class="text-lg font-extrabold text-slate-900">Virtual Data Room (VDR)</h3>
                         <p class="text-xs text-slate-500 max-w-md mx-auto">Secure folder explorer containing encrypted deal materials.</p>
-                        <button onclick="switchView('team')" class="bg-brand-orange text-white text-xs font-semibold px-4 py-2 rounded-lg hover:bg-brand-orangeHover transition">Return to Team Panel</button>
+                        <button onclick="switchView('team')" class="bg-brand-orange hover:bg-brand-orangeHover text-white text-xs font-bold px-4 py-2.5 rounded-lg shadow-sm transition">Return to Team Panel</button>
                     </div>
                 </section>
 
@@ -326,7 +416,7 @@
                         <i class="fa-solid fa-credit-card text-4xl text-brand-orange"></i>
                         <h3 class="text-lg font-extrabold text-slate-900">Payments Console</h3>
                         <p class="text-xs text-slate-500 max-w-md mx-auto">Audit success milestones and paid platform retainers.</p>
-                        <button onclick="switchView('team')" class="bg-brand-orange text-white text-xs font-semibold px-4 py-2 rounded-lg hover:bg-brand-orangeHover transition">Return to Team Panel</button>
+                        <button onclick="switchView('team')" class="bg-brand-orange hover:bg-brand-orangeHover text-white text-xs font-bold px-4 py-2.5 rounded-lg shadow-sm transition">Return to Team Panel</button>
                     </div>
                 </section>
 
@@ -335,7 +425,7 @@
                         <i class="fa-solid fa-chart-pie text-4xl text-brand-orange"></i>
                         <h3 class="text-lg font-extrabold text-slate-900">Reports & Analytics</h3>
                         <p class="text-xs text-slate-500 max-w-md mx-auto">Export custom transaction summaries and audit trails.</p>
-                        <button onclick="switchView('team')" class="bg-brand-orange text-white text-xs font-semibold px-4 py-2 rounded-lg hover:bg-brand-orangeHover transition">Return to Team Panel</button>
+                        <button onclick="switchView('team')" class="bg-brand-orange hover:bg-brand-orangeHover text-white text-xs font-bold px-4 py-2.5 rounded-lg shadow-sm transition">Return to Team Panel</button>
                     </div>
                 </section>
 
@@ -344,7 +434,7 @@
                         <i class="fa-solid fa-sliders text-4xl text-brand-orange"></i>
                         <h3 class="text-lg font-extrabold text-slate-900">Settings Console</h3>
                         <p class="text-xs text-slate-500 max-w-md mx-auto">Edit algorithmic sensitivities and KYC compliance settings.</p>
-                        <button onclick="switchView('team')" class="bg-brand-orange text-white text-xs font-semibold px-4 py-2 rounded-lg hover:bg-brand-orangeHover transition">Return to Team Panel</button>
+                        <button onclick="switchView('team')" class="bg-brand-orange hover:bg-brand-orangeHover text-white text-xs font-bold px-4 py-2.5 rounded-lg shadow-sm transition">Return to Team Panel</button>
                     </div>
                 </section>
 
@@ -353,19 +443,19 @@
     </div>
 
     <!-- SECURE DRAWER: REGISTER NEW TEAM LOGIN (Form checklist matching image requirements) -->
-    <div id="modal-create-team-login" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex justify-end items-center z-40 transition-opacity">
-        <div class="bg-white w-full max-w-md h-full shadow-2xl border-l border-slate-100 flex flex-col justify-between transform translate-x-0 transition-transform">
+    <div id="modal-create-team-login" class="hidden fixed inset-0 bg-slate-900/30 backdrop-blur-sm flex justify-center items-center z-40">
+        <div class="bg-white w-full max-w-md rounded-xl shadow-2xl border border-slate-200 flex flex-col m-4">
             
             <!-- Side drawer header -->
-            <div class="p-6 bg-brand-navyDark text-white flex justify-between items-center">
+            <div class="p-5 border-b border-slate-100 flex justify-between items-center">
                 <div class="flex items-center gap-2">
                     <i class="fa-solid fa-user-shield text-brand-orange text-lg"></i>
                     <div>
-                        <h3 class="font-extrabold text-sm">Create Team Login</h3>
+                        <h3 class="font-extrabold text-sm text-slate-900">Create Team Login</h3>
                         <p class="text-[10px] text-slate-400">Configure credentials & system-level access roles</p>
                     </div>
                 </div>
-                <button onclick="closeCreateTeamModal()" class="text-slate-400 hover:text-white transition"><i class="fa-solid fa-xmark text-lg"></i></button>
+                <button onclick="closeCreateTeamModal()" class="text-slate-400 hover:text-slate-600 transition"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
 
             <!-- Side drawer scroll form -->
@@ -380,12 +470,24 @@
                 <!-- Core Designation Role Select -->
                 <div>
                     <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">System Role</label>
-                    <select id="member-role" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-xs focus:outline-none focus:border-brand-orange focus:bg-white transition">
-                        <option value="Senior Associate">Senior Associate</option>
-                        <option value="Associate Partner">Associate Partner</option>
-                        <option value="Compliance Officer">Compliance Officer</option>
-                        <option value="Investment Banking Analyst">Investment Banking Analyst</option>
-                    </select>
+                    <div class="relative">
+                        <button type="button" onclick="toggleDropdown('role-multi-dropdown')" id="role-multi-btn" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-xs text-left focus:outline-none focus:border-brand-orange transition flex items-center justify-between">
+                            <span id="role-multi-label">Select Roles</span>
+                            <i class="fa-solid fa-chevron-down text-[9px] text-slate-400"></i>
+                        </button>
+                        <div id="role-multi-dropdown" class="hidden absolute z-50 w-full mt-1 bg-white border border-slate-200 rounded-lg shadow-lg py-1 text-xs">
+                            <label class="flex items-center gap-2 px-3 py-2 hover:bg-slate-50 cursor-pointer">
+                                <input type="checkbox" value="Admin" class="role-checkbox w-4 h-4 rounded text-brand-orange accent-brand-orange"> Admin
+                            </label>
+                            <label class="flex items-center gap-2 px-3 py-2 hover:bg-slate-50 cursor-pointer">
+                                <input type="checkbox" value="Investment Banker" class="role-checkbox w-4 h-4 rounded text-brand-orange accent-brand-orange"> Investment Banker
+                            </label>
+                            <label class="flex items-center gap-2 px-3 py-2 hover:bg-slate-50 cursor-pointer">
+                                <input type="checkbox" value="Business Analyst" class="role-checkbox w-4 h-4 rounded text-brand-orange accent-brand-orange"> Business Analyst
+                            </label>
+                        </div>
+                    </div>
+
                 </div>
 
                 <!-- General Login Email -->
@@ -508,6 +610,9 @@
             ]
         };
 
+        function toggleDropdown(id) { const el = document.getElementById(id); if(el) el.classList.toggle('hidden'); }
+        function toggleTheme(){document.documentElement.classList.toggle('dark');const d=document.documentElement.classList.contains('dark');document.getElementById('theme-icon').className=d?'fa-solid fa-sun text-sm text-amber-400':'fa-solid fa-moon text-sm';localStorage.setItem('charantra-theme',d?'dark':'light')}
+        (function(){if(localStorage.getItem('charantra-theme')==='dark'){document.documentElement.classList.add('dark');document.addEventListener('DOMContentLoaded',()=>{const i=document.getElementById('theme-icon');if(i)i.className='fa-solid fa-sun text-sm text-amber-400'})}})()
         // ── SIDEBAR FUNCTIONS ──
         function toggleSidebarCollapse() {
             document.getElementById('app-sidebar').classList.toggle('collapsed');
@@ -599,7 +704,7 @@
                     <tr class="hover:bg-slate-50/70 transition border-b border-slate-100">
                         <!-- Left Details block -->
                         <td class="p-4 flex items-center gap-3">
-                            <div class="w-8 h-8 rounded-full bg-slate-900 font-extrabold text-white text-[11px] flex items-center justify-center">
+                            <div class="w-8 h-8 rounded-lg bg-indigo-50 text-brand-orange font-bold text-xs flex items-center justify-center">
                                 ${member.name.split(' ').map(n => n[0]).join('')}
                             </div>
                             <div>
@@ -834,6 +939,31 @@
                 renderTeamDirectory();
             }
         }
+
+        // â”€â”€ ROLE SWITCHER â”€â”€
+        function toggleRoleDropdown() { document.getElementById('role-dropdown').classList.toggle('hidden'); }
+        function switchToRole(role) {
+            localStorage.setItem('charantra-role', role);
+            const r = { 'superadmin': '/pages/superadmin/dashboard.html', 'admin': '/pages/admin/dashboard.html', 'ib': '/pages/ib/deals.html', 'ba': '/pages/ba/reports.html' };
+            window.location.href = r[role] || '/index.html';
+        }
+        (function() {
+            const role = localStorage.getItem('charantra-role') || 'ib';
+            const labels = { 'superadmin': 'SUPER ADMIN', 'admin': 'ADMIN', 'ib': 'INVESTMENT BANKER', 'ba': 'BUSINESS ANALYST' };
+            const el = document.getElementById('role-label'); if (el) el.innerText = labels[role] || 'INVESTMENT BANKER';
+        })();
+        window.addEventListener('click', function(e) { if (!e.target.closest('.relative')) { const dd = document.getElementById('role-dropdown'); if (dd) dd.classList.add('hidden'); } });
+
+        // Handle Roles & Permissions view from URL
+        (function() {
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('view') === 'roles') {
+                document.addEventListener('DOMContentLoaded', function() {
+                    document.getElementById('view-roles').classList.remove('hidden');
+                    document.getElementById('view-team').classList.add('hidden');
+                });
+            }
+        })();
     </script>
 </body>
 </html>

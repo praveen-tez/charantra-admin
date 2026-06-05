@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Charantra - Admin Team Management & Permissions Console</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            orange: '#FF5E00',
+                            orangeHover: '#e04f00',
+                            navyDark: '#070C1E',
+                            navyMedium: '#0F172A',
+                            navyLight: '#1E293B',
+                            bgSlate: '#F8FAFC',
+                            borderGray: '#E2E8F0'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome for Premium Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Titillium Web', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            background-color: #F8FAFC;
+        }
+        .dark body,.dark { background-color:#050A30 !important; color:#F1F5F9 !important }
+        .dark .bg-white { background-color:#1E293B !important }
+        .dark .bg-slate-50 { background-color:#1E293B !important }
+        .dark .bg-brand-bgSlate { background-color:#050A30 !important }
+        .dark .text-slate-900 { color:#F1F5F9 !important }
+        .dark .text-slate-800 { color:#E2E8F0 !important }
+        .dark .text-slate-700 { color:#CBD5E1 !important }
+        .dark .text-slate-600 { color:#94A3B8 !important }
+        .dark .text-slate-500,.dark .text-slate-400 { color:#64748B !important }
+        .dark .border-slate-100,.dark .border-slate-200,.dark .border-brand-borderGray { border-color:#334155 !important }
+        .dark .border-slate-50 { border-color:#1E293B !important }
+        .dark .shadow-sm { box-shadow:0 1px 2px rgba(0,0,0,0.3) !important }
+        .dark .hover\:bg-slate-50:hover { background-color:#334155 !important }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.02);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.12);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 0, 0, 0.2);
+        }
+        /* Sidebar collapse */
+        #app-sidebar.collapsed { width: 64px !important; }
+        #app-sidebar.collapsed .sidebar-label { display: none; }
+        #app-sidebar.collapsed .sidebar-arrow { display: none; }
+        #app-sidebar.collapsed .sidebar-logo { width: 32px !important; min-width: 32px !important; }
+        #app-sidebar.collapsed .sidebar-collapse-icon { transform: rotate(180deg); }
+        #app-sidebar.collapsed button { justify-content: center; padding-left: 8px; padding-right: 8px; }
+        #app-sidebar.collapsed nav > div > button { justify-content: center; }
+        #app-sidebar.collapsed .sidebar-section-div { max-height: 0 !important; }
+    </style>
+</head>
+<body class="overflow-hidden h-screen flex text-slate-800 bg-brand-bgSlate">
+
+    <!-- SECURE INTERACTIVE SYSTEM MODAL -->
+    <div id="secure-dialog" class="hidden fixed inset-0 bg-slate-900/65 backdrop-blur-sm flex justify-center items-center z-50 transition-opacity">
+        <div class="bg-white rounded-xl shadow-2xl border border-slate-100 w-full max-w-sm overflow-hidden m-4 transform scale-95 transition-transform">
+            <div class="bg-brand-navyDark text-white p-4 flex justify-between items-center">
+                <h4 class="text-xs font-bold uppercase tracking-wider text-brand-orange" id="dialog-title">System Log</h4>
+                <button onclick="closeSecureDialog()" class="text-slate-400 hover:text-slate-600 transition"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="p-6 text-center space-y-4">
+                <div class="w-12 h-12 rounded-full bg-orange-50 text-brand-orange flex items-center justify-center mx-auto text-xl" id="dialog-icon">
+                    <i class="fa-solid fa-circle-check"></i>
+                </div>
+                <p class="text-xs font-semibold text-slate-700 leading-relaxed" id="dialog-message">Platform action processed successfully.</p>
+                <button onclick="closeSecureDialog()" class="bg-brand-orange hover:bg-brand-orangeHover text-white text-xs font-bold px-4 py-2.5 rounded-lg w-full transition shadow-sm">Acknowledge</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN APP STRUCTURE -->
+    <div class="flex w-full h-full">
+
+        <!-- STANDARD SIDEBAR -->
+        <aside id="app-sidebar" class="w-64 bg-brand-navyDark text-slate-300 flex flex-col h-full shrink-0 border-r border-slate-900 z-30 justify-between select-none transition-all duration-300">
+            <div class="flex flex-col overflow-y-auto">
+                <div class="p-4 flex items-center justify-between border-b border-slate-900/60">
+                    <div class="flex items-center gap-3 overflow-hidden">
+                        <a href="/index.html"><img src="/assets/logo.png" width="160" alt="Charantra Logo" class="sidebar-logo" style="height: auto; min-width: 120px;"></a>
+                    </div>
+                    <button onclick="toggleSidebarCollapse()" class="text-slate-500 hover:text-slate-600 p-1 rounded transition shrink-0" title="Toggle Sidebar"><i class="fa-solid fa-outdent text-xs sidebar-collapse-icon"></i></button>
+                </div>
+                <nav class="px-3 space-y-1 text-sm">
+                    <a href="/pages/ba/dashboard.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-slate-600 transition duration-150 overflow-hidden"><i class="fa-solid fa-table-columns text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Dashboard</span></button></a>
+                    
+                    <div class="space-y-0.5">
+                        <button onclick="toggleSidebarSection('crm-section')" class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-slate-600 transition duration-150 overflow-hidden"><span class="flex items-center gap-3"><i class="fa-solid fa-users text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">CRM & Users</span></span><i class="fa-solid fa-chevron-down text-[9px] transition-transform duration-200 sidebar-arrow" id="arrow-crm-section"></i></button>
+                        <div id="crm-section" class="pl-5 pr-1 space-y-0.5 overflow-hidden sidebar-section-div" style="max-height:0;transition:max-height 0.3s ease">
+                            <a href="/pages/ba/crm.html?type=Investor" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-slate-600 transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-hand-holding-dollar text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Investors</span></button></a>
+                            <a href="/pages/ba/crm.html?type=Investee" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-slate-600 transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-rocket text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Investees</span></button></a>
+                            <a href="/pages/ba/crm.html?type=Buyer" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-slate-600 transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-cart-shopping text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Buyers</span></button></a>
+                            <a href="/pages/ba/crm.html?type=Seller" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-slate-600 transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-tags text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Sellers</span></button></a>
+                            <a href="/pages/ba/crm.html?type=Advisor" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-slate-600 transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-comments text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Advisors</span></button></a>
+                        </div>
+                    </div>
+
+                    <a href="/pages/ba/mandates.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-slate-600 transition duration-150 overflow-hidden"><i class="fa-solid fa-file-contract text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Mandates & Projects</span></button></a>
+
+                    <a href="/pages/ba/deals.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-slate-600 transition duration-150 overflow-hidden"><i class="fa-solid fa-briefcase text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Deals & Pipeline</span></button></a>
+
+                    <a href="/pages/ba/dataroom.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-slate-600 transition duration-150 overflow-hidden"><i class="fa-solid fa-hard-drive text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Data Room</span></button></a>
+
+                    <div class="space-y-0.5">
+                        <button onclick="toggleSidebarSection('team-section')" class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg font-bold text-white bg-brand-orange transition duration-150 overflow-hidden"><span class="flex items-center gap-3"><i class="fa-solid fa-user-group text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Team Management</span></span><i class="fa-solid fa-chevron-down text-[9px] transition-transform duration-200 sidebar-arrow" id="arrow-team-section"></i></button>
+                        <div id="team-section" class="pl-5 pr-1 space-y-0.5 overflow-hidden sidebar-section-div" style="max-height:200px;transition:max-height 0.3s ease">
+                            <a href="/pages/ba/team.html?view=members" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-slate-600 transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-users-gear text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Team Members</span></button></a>
+                            <a href="/pages/ba/team.html?view=roles" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-slate-600 transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-shield-halved text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Roles & Permissions</span></button></a>
+                        </div>
+                    </div>
+
+                    <div class="space-y-0.5">
+                        <button onclick="toggleSidebarSection('payments-section')" class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-slate-600 transition duration-150 overflow-hidden"><span class="flex items-center gap-3"><i class="fa-solid fa-receipt text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Payments</span></span><i class="fa-solid fa-chevron-down text-[9px] transition-transform duration-200 sidebar-arrow" id="arrow-payments-section"></i></button>
+                        <div id="payments-section" class="pl-5 pr-1 space-y-0.5 overflow-hidden sidebar-section-div" style="max-height:0;transition:max-height 0.3s ease">
+                            <a href="/pages/ba/payments.html?view=invoices" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-slate-600 transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-file-invoice text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Invoices</span></button></a>
+                            <a href="/pages/ba/payments.html?view=ledger" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-slate-600 transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-book text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Ledger</span></button></a>
+                        </div>
+                    </div>
+
+                    <a href="/pages/ba/reports.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-slate-600 transition duration-150 overflow-hidden"><i class="fa-solid fa-chart-simple text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Reports</span></button></a>
+                    <a href="/pages/ba/settings.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-slate-600 transition duration-150 overflow-hidden"><i class="fa-solid fa-gear text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Settings & Logs</span></button></a>
+                </nav>
+            </div>
+            <div class="p-4 text-center text-xs text-slate-600 border-t border-slate-900"><p class="sidebar-label">© 2026 Charantra</p></div>
+        </aside>
+
+        <!-- MAIN LAYOUT WRAPPER -->
+        <main class="flex-1 flex flex-col h-full overflow-hidden">
+
+            <!-- TOP HEAD UTILITY BAR -->
+            <header class="h-16 border-b border-brand-borderGray bg-white flex items-center justify-between px-8 shrink-0 select-none">
+                <div class="w-96 relative">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+                        <i class="fa-solid fa-magnifying-glass text-xs"></i>
+                    </span>
+                    <input type="text" id="global-search" oninput="handleGlobalSearch(this.value)" class="w-full bg-slate-50 border border-slate-200 rounded-lg py-1.5 pl-9 pr-4 text-xs focus:outline-none focus:border-brand-orange transition" placeholder="Search team members, roles, or logins...">
+                </div>
+
+                <div class="flex items-center gap-5">
+                    <div class="flex items-center gap-1 bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-1 text-xs text-slate-600">
+                        <span class="font-bold text-slate-700">INR (₹)</span>
+                        <i class="fa-solid fa-chevron-down text-[9px] text-slate-400"></i>
+                    </div>
+                    <button onclick="toggleTheme()" class="p-2 text-slate-500 hover:text-brand-orange hover:bg-slate-100 rounded-full transition" title="Toggle theme"><i id="theme-icon" class="fa-regular fa-moon text-lg"></i></button>
+
+                    <div class="relative">
+                        <button class="p-2 text-slate-500 hover:text-brand-orange hover:bg-slate-100 rounded-full transition relative">
+                            <i class="fa-regular fa-bell text-lg"></i>
+                            <span class="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-red-500 rounded-full"></span>
+                        </button>
+                    </div>
+
+                    <div class="flex items-center gap-3 border-l border-slate-200 pl-4">
+                        <div class="text-right">
+                            <p class="text-xs font-bold text-slate-900 leading-none">KARTHIK</p>
+                            <p class="text-[9px] text-emerald-500 font-bold uppercase tracking-wider mt-0.5" id="role-label">BUSINESS ANALYST <i class="fa-solid fa-chevron-down text-[7px] text-slate-400 ml-1"></i></p>
+                        </div>
+                        <div class="relative">
+                            <button onclick="toggleRoleDropdown()" class="w-10 h-10 rounded-full bg-emerald-600 text-white font-extrabold text-sm flex items-center justify-center shadow hover:shadow-md transition cursor-pointer">K</button>
+                            <div id="role-dropdown" class="hidden absolute right-0 mt-2 w-52 bg-white border border-slate-200 rounded-xl shadow-xl z-50 text-xs overflow-hidden">
+                                <div class="px-4 py-3 border-b border-slate-100 font-bold text-slate-700">Switch Role</div>
+                                <button onclick="switchToRole('superadmin')" class="w-full text-left px-4 py-2.5 hover:bg-slate-50 text-slate-700 font-medium flex items-center gap-2.5 border-b border-slate-50"><i class="fa-solid fa-crown text-brand-orange w-4"></i> Super Admin</button>
+                                <button onclick="switchToRole('admin')" class="w-full text-left px-4 py-2.5 hover:bg-slate-50 text-slate-700 font-medium flex items-center gap-2.5 border-b border-slate-50"><i class="fa-solid fa-shield-halved text-violet-500 w-4"></i> Admin</button>
+                                <button onclick="switchToRole('ib')" class="w-full text-left px-4 py-2.5 hover:bg-slate-50 text-slate-700 font-medium flex items-center gap-2.5 border-b border-slate-50"><i class="fa-solid fa-briefcase text-blue-500 w-4"></i> Investment Banker</button>
+                                <button onclick="switchToRole('ba')" class="w-full text-left px-4 py-2.5 hover:bg-slate-50 text-slate-700 font-medium flex items-center gap-2.5"><i class="fa-solid fa-chart-line text-emerald-500 w-4"></i> Business Analyst</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- CORE CONTENTS SECTION -->
+            <div class="flex-1 overflow-y-auto p-8" id="main-content-scroll">
+
+                <!-- TEAM MANAGEMENT VIEW CONTAINER -->
+                <section id="view-team" class="space-y-6">
+
+                    <!-- Header Segment -->
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                        <div>
+                            <h2 class="text-2xl font-extrabold text-slate-900 tracking-tight">Team Management & Access Control</h2>
+                            <p class="text-xs text-slate-500 mt-1">Register corporate logins, monitor team status, and allocate explicit module-level permissions.</p>
+                        </div>
+                        <button onclick="openCreateTeamModal()" class="bg-brand-orange hover:bg-brand-orangeHover text-white text-xs font-bold px-4 py-2.5 rounded-lg shadow-sm transition flex items-center gap-2">
+                            <i class="fa-solid fa-user-shield text-sm"></i> text-slate-900">Create Team Login
+                        </button>
+                    </div>
+
+                    <!-- STATISTICS SCORE DECK -->
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        <!-- Stat 1 -->
+                        <div class="bg-white p-5 rounded-xl border border-slate-100 shadow-sm flex flex-col justify-between">
+                            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Total Logins</span>
+                            <div class="mt-2 flex items-baseline gap-2">
+                                <span class="text-2xl font-extrabold text-slate-900" id="total-team-count">4</span>
+                                <span class="text-[10px] text-emerald-600 font-extrabold bg-emerald-50 px-1.5 py-0.5 rounded">+1 new</span>
+                            </div>
+                        </div>
+                        <!-- Stat 2 -->
+                        <div class="bg-white p-5 rounded-xl border border-slate-100 shadow-sm flex flex-col justify-between">
+                            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Active Online Sessions</span>
+                            <div class="mt-2 flex items-baseline gap-2">
+                                <span class="text-2xl font-extrabold text-slate-900 text-emerald-600" id="online-team-count">3</span>
+                                <span class="text-[10px] text-slate-400 font-semibold">on platform</span>
+                            </div>
+                        </div>
+                        <!-- Stat 3 -->
+                        <div class="bg-white p-5 rounded-xl border border-slate-100 shadow-sm flex flex-col justify-between">
+                            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Mandate Authorized</span>
+                            <div class="mt-2 flex items-baseline gap-2">
+                                <span class="text-2xl font-extrabold text-slate-900 text-brand-orange" id="mandate-auth-count">4</span>
+                                <span class="text-[10px] text-slate-400 font-semibold">logins enabled</span>
+                            </div>
+                        </div>
+                        <!-- Stat 4 -->
+                        <div class="bg-white p-5 rounded-xl border border-slate-100 shadow-sm flex flex-col justify-between">
+                            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Template Managers</span>
+                            <div class="mt-2 flex items-baseline gap-2">
+                                <span class="text-2xl font-extrabold text-slate-900 text-purple-600" id="template-auth-count">3</span>
+                                <span class="text-[10px] text-slate-400 font-semibold">logins enabled</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- DIRECTORY FILTERING TOOLBAR -->
+                    <div class="bg-white p-4 rounded-xl border border-slate-100 shadow-sm flex flex-col sm:flex-row gap-3 items-center justify-between">
+                        <div class="relative w-full sm:w-72">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+                                <i class="fa-solid fa-magnifying-glass text-xs"></i>
+                            </span>
+                            <input type="text" id="member-search" oninput="filterTeamMembers()" class="w-full bg-slate-50 border border-slate-200 rounded-lg py-1.5 pl-9 pr-4 text-xs focus:outline-none focus:border-brand-orange transition" placeholder="Filter members by name or email...">
+                        </div>
+                        <div class="flex gap-2 w-full sm:w-auto">
+                            <select id="role-filter" onchange="filterTeamMembers()" class="bg-slate-50 border border-slate-200 rounded-lg text-xs py-1.5 px-3 text-slate-600 focus:outline-none focus:border-brand-orange">
+                                <option value="ALL">All Roles</option>
+                                <option value="Admin">Admin</option>
+                                <option value="Investment Banker">Investment Banker</option>
+                                <option value="Business Analyst">Business Analyst</option>
+                            </select>
+                            <button onclick="resetTeamFilters()" class="bg-slate-100 text-slate-600 hover:bg-slate-200 text-xs px-3.5 py-1.5 rounded-lg font-bold transition">Reset</button>
+                        </div>
+                    </div>
+
+                    <!-- TEAM DIRECTORY TABLE -->
+                    <div class="bg-white rounded-xl border border-slate-100 shadow-sm overflow-hidden">
+                        <div class="bg-slate-50/50 p-4 border-b border-slate-100">
+                            <h3 class="font-extrabold text-slate-900 text-xs">Authorized Active Logins Ledger</h3>
+                            <p class="text-[10px] text-slate-400 mt-0.5">Allocate direct modular checklists to configure platform workspace privileges.</p>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-xs border-collapse">
+                                <thead>
+                                    <tr class="bg-slate-50 text-slate-500 uppercase tracking-wider text-[9px] border-b border-slate-100">
+                                        <th class="p-4 font-bold">Team Member details</th>
+                                        <th class="p-4 font-bold">Designation Role</th>
+                                        <th class="p-4 font-bold">Contact Email</th>
+                                        <th class="p-4 font-bold">Mobile Number</th>
+                                        <th class="p-4 font-bold">Assigned Permissions</th>
+                                        <th class="p-4 font-bold">Status</th>
+                                        <th class="p-4 font-bold text-right">Access Management</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="team-list-body" class="divide-y divide-slate-100">
+                                    <!-- Populated dynamically via JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ROLES & PERMISSIONS VIEW -->
+                <section id="view-roles" class="hidden space-y-6">
+                    <div>
+                        <h2 class="text-2xl font-extrabold text-slate-900 tracking-tight">Roles & Permissions</h2>
+                        <p class="text-xs text-slate-500 mt-1">Define system-level access roles and module privileges.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                        <!-- Admin Role Card -->
+                        <div class="bg-white border border-violet-200 rounded-xl p-5 shadow-sm hover:shadow-md transition">
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="w-10 h-10 rounded-full bg-violet-100 text-violet-600 flex items-center justify-center text-lg"><i class="fa-solid fa-shield-halved"></i></div>
+                                <div>
+                                    <h3 class="font-extrabold text-slate-900">Admin</h3>
+                                    <span class="text-[10px] text-violet-500 font-bold uppercase">Full Platform Access</span>
+                                </div>
+                            </div>
+                            <div class="space-y-2 text-xs text-slate-600">
+                                <div class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500 text-[10px]"></i> Dashboard & Analytics</div>
+                                <div class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500 text-[10px]"></i> CRM & User Directory</div>
+                                <div class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500 text-[10px]"></i> Mandates & Projects</div>
+                                <div class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500 text-[10px]"></i> Deals & Pipeline</div>
+                                <div class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500 text-[10px]"></i> Data Room Access</div>
+                                <div class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500 text-[10px]"></i> Team Management</div>
+                                <div class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500 text-[10px]"></i> Payments & Billing</div>
+                                <div class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500 text-[10px]"></i> Reports & Logs</div>
+                            </div>
+                        </div>
+
+                        <!-- Investment Banker Role Card -->
+                        <div class="bg-white border border-blue-200 rounded-xl p-5 shadow-sm hover:shadow-md transition">
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-lg"><i class="fa-solid fa-briefcase"></i></div>
+                                <div>
+                                    <h3 class="font-extrabold text-slate-900">Investment Banker</h3>
+                                    <span class="text-[10px] text-blue-500 font-bold uppercase">Deal Execution</span>
+                                </div>
+                            </div>
+                            <div class="space-y-2 text-xs text-slate-600">
+                                <div class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500 text-[10px]"></i> Deals & Pipeline</div>
+                                <div class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500 text-[10px]"></i> Mandates & Projects</div>
+                                <div class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500 text-[10px]"></i> Data Room Access</div>
+                                <div class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500 text-[10px]"></i> CRM Directory</div>
+                                <div class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500 text-[10px]"></i> Reports</div>
+                            </div>
+                        </div>
+
+                        <!-- Business Analyst Role Card -->
+                        <div class="bg-white border border-emerald-200 rounded-xl p-5 shadow-sm hover:shadow-md transition">
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="w-10 h-10 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-lg"><i class="fa-solid fa-chart-line"></i></div>
+                                <div>
+                                    <h3 class="font-extrabold text-slate-900">Business Analyst</h3>
+                                    <span class="text-[10px] text-emerald-500 font-bold uppercase">Analytics & Reports</span>
+                                </div>
+                            </div>
+                            <div class="space-y-2 text-xs text-slate-600">
+                                <div class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500 text-[10px]"></i> Reports & Analytics</div>
+                                <div class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500 text-[10px]"></i> CRM Directory</div>
+                                <div class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500 text-[10px]"></i> Data Room Access</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- PLATFORM MODULES PLACEHOLDERS FOR FLOW CONSISTENCY -->
+                <section id="view-dashboard" class="hidden space-y-6">
+                    <div class="bg-white p-8 rounded-xl border border-slate-100 text-center space-y-3">
+                        <i class="fa-solid fa-chart-line text-4xl text-brand-orange"></i>
+                        <h3 class="text-lg font-extrabold text-slate-900">Dashboard Overview</h3>
+                        <p class="text-xs text-slate-500 max-w-md mx-auto">Track platform transactional progress. Navigate to Team Management in the sidebar to configure login permissions.</p>
+                        <button onclick="switchView('team')" class="bg-brand-orange text-white text-xs font-semibold px-4 py-2 rounded-lg hover:bg-brand-orangeHover transition">Go to Team Panel</button>
+                    </div>
+                </section>
+
+                <section id="view-crm" class="hidden space-y-6">
+                    <div class="bg-white p-8 rounded-xl border border-slate-100 text-center space-y-3">
+                        <i class="fa-solid fa-users text-4xl text-brand-orange"></i>
+                        <h3 class="text-lg font-extrabold text-slate-900">CRM & Networks</h3>
+                        <p class="text-xs text-slate-500 max-w-md mx-auto">Manage system investors, investees, and advisors profiles.</p>
+                        <button onclick="switchView('team')" class="bg-brand-orange hover:bg-brand-orangeHover text-white text-xs font-bold px-4 py-2.5 rounded-lg shadow-sm transition">Return to Team Panel</button>
+                    </div>
+                </section>
+
+                <section id="view-deals" class="hidden space-y-6">
+                    <div class="bg-white p-8 rounded-xl border border-slate-100 text-center space-y-3">
+                        <i class="fa-solid fa-briefcase text-4xl text-brand-orange"></i>
+                        <h3 class="text-lg font-extrabold text-slate-900">Deals & M&A Pipeline</h3>
+                        <p class="text-xs text-slate-500 max-w-md mx-auto">Monitor M&A and funding flows across the platform.</p>
+                        <button onclick="switchView('team')" class="bg-brand-orange hover:bg-brand-orangeHover text-white text-xs font-bold px-4 py-2.5 rounded-lg shadow-sm transition">Return to Team Panel</button>
+                    </div>
+                </section>
+
+                <section id="view-updates" class="hidden space-y-6">
+                    <div class="bg-white p-8 rounded-xl border border-slate-100 text-center space-y-3">
+                        <i class="fa-regular fa-bell text-4xl text-brand-orange animate-pulse"></i>
+                        <h3 class="text-lg font-extrabold text-slate-900">Updates Hub</h3>
+                        <p class="text-xs text-slate-500 max-w-md mx-auto">Platform activity audit logs.</p>
+                        <button onclick="switchView('team')" class="bg-brand-orange hover:bg-brand-orangeHover text-white text-xs font-bold px-4 py-2.5 rounded-lg shadow-sm transition">Return to Team Panel</button>
+                    </div>
+                </section>
+
+                <section id="view-mandates" class="hidden space-y-6">
+                    <div class="bg-white p-8 rounded-xl border border-slate-100 text-center space-y-3">
+                        <i class="fa-solid fa-file-contract text-4xl text-brand-orange"></i>
+                        <h3 class="text-lg font-extrabold text-slate-900">Mandates & Projects Workspace</h3>
+                        <p class="text-xs text-slate-500 max-w-md mx-auto">Verify legal advisory mandates agreements.</p>
+                        <button onclick="switchView('team')" class="bg-brand-orange hover:bg-brand-orangeHover text-white text-xs font-bold px-4 py-2.5 rounded-lg shadow-sm transition">Return to Team Panel</button>
+                    </div>
+                </section>
+
+                <section id="view-vdr" class="hidden space-y-6">
+                    <div class="bg-white p-8 rounded-xl border border-slate-100 text-center space-y-3">
+                        <i class="fa-solid fa-folder-closed text-4xl text-brand-orange"></i>
+                        <h3 class="text-lg font-extrabold text-slate-900">Virtual Data Room (VDR)</h3>
+                        <p class="text-xs text-slate-500 max-w-md mx-auto">Secure folder explorer containing encrypted deal materials.</p>
+                        <button onclick="switchView('team')" class="bg-brand-orange hover:bg-brand-orangeHover text-white text-xs font-bold px-4 py-2.5 rounded-lg shadow-sm transition">Return to Team Panel</button>
+                    </div>
+                </section>
+
+                <section id="view-payments" class="hidden space-y-6">
+                    <div class="bg-white p-8 rounded-xl border border-slate-100 text-center space-y-3">
+                        <i class="fa-solid fa-credit-card text-4xl text-brand-orange"></i>
+                        <h3 class="text-lg font-extrabold text-slate-900">Payments Console</h3>
+                        <p class="text-xs text-slate-500 max-w-md mx-auto">Audit success milestones and paid platform retainers.</p>
+                        <button onclick="switchView('team')" class="bg-brand-orange hover:bg-brand-orangeHover text-white text-xs font-bold px-4 py-2.5 rounded-lg shadow-sm transition">Return to Team Panel</button>
+                    </div>
+                </section>
+
+                <section id="view-reports" class="hidden space-y-6">
+                    <div class="bg-white p-8 rounded-xl border border-slate-100 text-center space-y-3">
+                        <i class="fa-solid fa-chart-pie text-4xl text-brand-orange"></i>
+                        <h3 class="text-lg font-extrabold text-slate-900">Reports & Analytics</h3>
+                        <p class="text-xs text-slate-500 max-w-md mx-auto">Export custom transaction summaries and audit trails.</p>
+                        <button onclick="switchView('team')" class="bg-brand-orange hover:bg-brand-orangeHover text-white text-xs font-bold px-4 py-2.5 rounded-lg shadow-sm transition">Return to Team Panel</button>
+                    </div>
+                </section>
+
+                <section id="view-settings" class="hidden space-y-6">
+                    <div class="bg-white p-8 rounded-xl border border-slate-100 text-center space-y-3">
+                        <i class="fa-solid fa-sliders text-4xl text-brand-orange"></i>
+                        <h3 class="text-lg font-extrabold text-slate-900">Settings Console</h3>
+                        <p class="text-xs text-slate-500 max-w-md mx-auto">Edit algorithmic sensitivities and KYC compliance settings.</p>
+                        <button onclick="switchView('team')" class="bg-brand-orange hover:bg-brand-orangeHover text-white text-xs font-bold px-4 py-2.5 rounded-lg shadow-sm transition">Return to Team Panel</button>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- SECURE DRAWER: REGISTER NEW TEAM LOGIN (Form checklist matching image requirements) -->
+    <div id="modal-create-team-login" class="hidden fixed inset-0 bg-slate-900/30 backdrop-blur-sm flex justify-center items-center z-40">
+        <div class="bg-white w-full max-w-md rounded-xl shadow-2xl border border-slate-200 flex flex-col m-4">
+            
+            <!-- Side drawer header -->
+            <div class="p-5 border-b border-slate-100 flex justify-between items-center">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-user-shield text-brand-orange text-lg"></i>
+                    <div>
+                        <h3 class="font-extrabold text-sm">text-slate-900">Create Team Login</h3>
+                        <p class="text-[10px] text-slate-400">Configure credentials & system-level access roles</p>
+                    </div>
+                </div>
+                <button onclick="closeCreateTeamModal()" class="text-slate-400 hover:text-slate-600 transition"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+
+            <!-- Side drawer scroll form -->
+            <form id="form-team-login" onsubmit="handleCreateTeamLogin(event)" class="flex-1 overflow-y-auto p-6 space-y-4">
+                
+                <!-- General Login Name -->
+                <div>
+                    <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Full Name</label>
+                    <input type="text" id="member-name" required class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-xs focus:outline-none focus:border-brand-orange focus:bg-white transition" placeholder="e.g. Ramesh Kumar">
+                </div>
+
+                <!-- Core Designation Role Select -->
+                <div>
+                    <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">System Role</label>
+                    <select id="member-role" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-xs focus:outline-none focus:border-brand-orange focus:bg-white transition">
+                        <option value="Admin">Admin</option>
+                        <option value="Investment Banker">Investment Banker</option>
+                        <option value="Business Analyst">Business Analyst</option>
+                    </select>
+                </div>
+
+                <!-- General Login Email -->
+                <div>
+                    <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Contact Email Address</label>
+                    <input type="email" id="member-email" required class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-xs focus:outline-none focus:border-brand-orange focus:bg-white transition" placeholder="e.g. ramesh@charantra.com">
+                </div>
+
+                <!-- Contact Mobile Phone Number -->
+                <div>
+                    <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Mobile Number</label>
+                    <input type="tel" id="member-mobile" required class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-xs focus:outline-none focus:border-brand-orange focus:bg-white transition" placeholder="e.g. +91 98765 54321">
+                </div>
+
+                <!-- Custom Security Passwords Input Row -->
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Password</label>
+                        <input type="password" id="member-password" required class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-xs focus:outline-none focus:border-brand-orange focus:bg-white transition" placeholder="Min. 8 characters">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Confirm Password</label>
+                        <input type="password" id="member-confirm" required class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-xs focus:outline-none focus:border-brand-orange focus:bg-white transition" placeholder="Re-enter password">
+                    </div>
+                </div>
+
+                <!-- PLATFORM GRACED ROLE PERMISSION CHECKLISTS -->
+                <div class="pt-2 border-t border-slate-100">
+                    <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2">Module-Level Access Privileges</label>
+                    
+                    <div class="space-y-2.5 mt-2">
+                        <!-- Mandates access -->
+                        <label class="flex items-start gap-3 p-2.5 rounded-lg border border-slate-100 hover:bg-slate-50/50 cursor-pointer transition">
+                            <input type="checkbox" id="perm-mandates" class="mt-0.5 w-4 h-4 rounded text-brand-orange border-slate-300 focus:ring-brand-orange accent-brand-orange">
+                            <div>
+                                <span class="text-xs font-bold text-slate-800 block">Mandates Scope</span>
+                                <span class="text-[10px] text-slate-400 block mt-0.5">Authorize drafting, editing & electronic signature request distribution.</span>
+                            </div>
+                        </label>
+
+                        <!-- Payments access -->
+                        <label class="flex items-start gap-3 p-2.5 rounded-lg border border-slate-100 hover:bg-slate-50/50 cursor-pointer transition">
+                            <input type="checkbox" id="perm-payments" class="mt-0.5 w-4 h-4 rounded text-brand-orange border-slate-300 focus:ring-brand-orange accent-brand-orange">
+                            <div>
+                                <span class="text-xs font-bold text-slate-800 block">Payments Processing</span>
+                                <span class="text-[10px] text-slate-400 block mt-0.5">Authorize billing logs, ledger inspections and escrow approvals.</span>
+                            </div>
+                        </label>
+
+                        <!-- Platform Monitoring access -->
+                        <label class="flex items-start gap-3 p-2.5 rounded-lg border border-slate-100 hover:bg-slate-50/50 cursor-pointer transition">
+                            <input type="checkbox" id="perm-monitoring" class="mt-0.5 w-4 h-4 rounded text-brand-orange border-slate-300 focus:ring-brand-orange accent-brand-orange">
+                            <div>
+                                <span class="text-xs font-bold text-slate-800 block">Logs & Platform Monitoring</span>
+                                <span class="text-[10px] text-slate-400 block mt-0.5">Verify real-time analyst activities, audit histories, and user logins logs.</span>
+                            </div>
+                        </label>
+
+                        <!-- Template Generation access -->
+                        <label class="flex items-start gap-3 p-2.5 rounded-lg border border-slate-100 hover:bg-slate-50/50 cursor-pointer transition">
+                            <input type="checkbox" id="perm-templates" class="mt-0.5 w-4 h-4 rounded text-brand-orange border-slate-300 focus:ring-brand-orange accent-brand-orange">
+                            <div>
+                                <span class="text-xs font-bold text-slate-800 block">Template Generation</span>
+                                <span class="text-[10px] text-slate-400 block mt-0.5">Allows platform-wide dynamic template deployment & custom flow builders.</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+            </form>
+
+            <!-- Side drawer footer actions -->
+            <div class="p-6 border-t border-slate-100 bg-slate-50/50 flex gap-2">
+                <button type="button" onclick="closeCreateTeamModal()" class="w-1/2 bg-white border border-slate-200 text-slate-700 text-xs font-bold py-2.5 rounded-lg hover:bg-slate-100 transition">Cancel</button>
+                <button type="submit" form="form-team-login" class="w-1/2 bg-brand-orange hover:bg-brand-orangeHover text-white text-xs font-bold py-2.5 rounded-lg transition shadow-sm">Save & Invite</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- DATABASE STATE CONTROLLER LOGIC -->
+    <script>
+        // High fidelity in-memory database of registered logins
+        const appState = {
+            team: [
+                {
+                    id: "TM-001",
+                    name: "Karthik",
+                    role: "Senior Associate",
+                    email: "karthik@charantra.com",
+                    mobile: "+91 98765 43210",
+                    permissions: ["Mandates", "Payments", "Monitoring", "Templates"],
+                    status: "Active"
+                },
+                {
+                    id: "TM-002",
+                    name: "Sarah Chen",
+                    role: "Associate Partner",
+                    email: "sarah.chen@charantra.com",
+                    mobile: "+91 91234 56789",
+                    permissions: ["Mandates", "Monitoring"],
+                    status: "Active"
+                },
+                {
+                    id: "TM-003",
+                    name: "Priya Sharma",
+                    role: "Compliance Officer",
+                    email: "priya.sharma@charantra.com",
+                    mobile: "+91 99887 76655",
+                    permissions: ["Payments", "Templates"],
+                    status: "Offline"
+                },
+                {
+                    id: "TM-004",
+                    name: "Raj Mehta",
+                    role: "Investment Banking Analyst",
+                    email: "raj.mehta@charantra.com",
+                    mobile: "+91 95432 10987",
+                    permissions: ["Mandates", "Payments", "Monitoring"],
+                    status: "Active"
+                }
+            ]
+        };
+
+        function toggleDropdown(id) { const el = document.getElementById(id); if(el) el.classList.toggle('hidden'); }
+        function toggleTheme(){document.documentElement.classList.toggle('dark');const d=document.documentElement.classList.contains('dark');document.getElementById('theme-icon').className=d?'fa-solid fa-sun text-sm text-amber-400':'fa-solid fa-moon text-sm';localStorage.setItem('charantra-theme',d?'dark':'light')}
+        (function(){if(localStorage.getItem('charantra-theme')==='dark'){document.documentElement.classList.add('dark');document.addEventListener('DOMContentLoaded',()=>{const i=document.getElementById('theme-icon');if(i)i.className='fa-solid fa-sun text-sm text-amber-400'})}})()
+        // ── SIDEBAR FUNCTIONS ──
+        function toggleSidebarCollapse() {
+            document.getElementById('app-sidebar').classList.toggle('collapsed');
+            document.querySelectorAll('.sidebar-section-div').forEach(el => { if (document.getElementById('app-sidebar').classList.contains('collapsed')) el.style.maxHeight = '0'; });
+        }
+        function toggleSidebarSection(id) {
+            if (document.getElementById('app-sidebar').classList.contains('collapsed')) return;
+            const el = document.getElementById(id), arrow = document.getElementById('arrow-' + id);
+            if (el) { const open = el.style.maxHeight !== '0px' && el.style.maxHeight !== ''; el.style.maxHeight = open ? '0' : '200px'; }
+            if (arrow) arrow.style.transform = arrow.style.transform === 'rotate(180deg)' ? 'rotate(0deg)' : 'rotate(180deg)';
+        }
+
+        // Window Initial Load Trigger
+        window.onload = function() {
+            switchView('team');
+            renderTeamDirectory();
+        };
+
+        // Sidebar tab workspace route toggles (team only)
+        function switchView(viewId) {
+            if (viewId !== 'team') { viewId = 'team'; }
+            const views = [
+                'view-dashboard', 'view-crm', 'view-deals', 'view-updates', 
+                'view-mandates', 'view-vdr', 'view-team', 'view-payments', 
+                'view-reports', 'view-settings'
+            ];
+
+            views.forEach(v => {
+                const el = document.getElementById(v);
+                if (el) el.classList.add('hidden');
+            });
+
+            const activeView = document.getElementById(`view-${viewId}`);
+            if (activeView) activeView.classList.remove('hidden');
+
+            // Reset navigation highlighted tab classing
+            const navButtons = document.querySelectorAll('nav button');
+            navButtons.forEach(btn => {
+                btn.className = "w-full flex items-center gap-3 px-3 py-2 rounded-lg font-medium text-slate-400 hover:bg-slate-900/50 hover:text-slate-600 transition duration-150";
+                
+                // Clear any leftover orange highlight colors from non-active icons
+                const icon = btn.querySelector('i');
+                if (icon) icon.className = icon.className.replace('text-brand-orange', '');
+            });
+
+            // Set active highlight styling class configuration
+            const activeBtn = document.getElementById(`nav-${viewId}`);
+            if (activeBtn) {
+                activeBtn.className = "w-full flex items-center gap-3 px-3 py-2 rounded-lg font-medium text-white bg-slate-900 transition duration-150";
+                const icon = activeBtn.querySelector('i');
+                if (icon) icon.classList.add('text-brand-orange');
+            }
+
+            // Scroll container up
+            document.getElementById('main-content-scroll').scrollTop = 0;
+        }
+
+        // Render authorized team members ledger grid
+        function renderTeamDirectory(filteredList = null) {
+            const listBody = document.getElementById('team-list-body');
+            listBody.innerHTML = '';
+
+            const listToRender = filteredList || appState.team;
+
+            listToRender.forEach(member => {
+                const isOnline = member.status === "Active";
+                
+                // Construct styled permission badges
+                let badgesHtml = '';
+                member.permissions.forEach(perm => {
+                    let badgeColor = "bg-slate-100 text-slate-600 border-slate-200";
+                    if (perm === "Mandates") badgeColor = "bg-orange-50 text-brand-orange border-orange-200/55";
+                    if (perm === "Payments") badgeColor = "bg-emerald-50 text-emerald-700 border-emerald-200/55";
+                    if (perm === "Monitoring") badgeColor = "bg-indigo-50 text-indigo-700 border-indigo-200/55";
+                    if (perm === "Templates") badgeColor = "bg-purple-50 text-purple-700 border-purple-200/55";
+
+                    badgesHtml += `
+                        <span class="inline-flex items-center text-[10px] font-bold px-2 py-0.5 rounded-full border ${badgeColor} select-none">
+                            ${perm}
+                        </span>
+                    `;
+                });
+
+                if (member.permissions.length === 0) {
+                    badgesHtml = `<span class="text-slate-400 text-[10px] font-medium italic">No privileges assigned</span>`;
+                }
+
+                listBody.innerHTML += `
+                    <tr class="hover:bg-slate-50/70 transition border-b border-slate-100">
+                        <!-- Left Details block -->
+                        <td class="p-4 flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-lg bg-indigo-50 text-brand-orange font-bold text-xs flex items-center justify-center">
+                                ${member.name.split(' ').map(n => n[0]).join('')}
+                            </div>
+                            <div>
+                                <h4 class="font-extrabold text-slate-900 text-xs">${member.name}</h4>
+                                <span class="text-[9px] text-slate-400 font-bold block uppercase mt-0.5">${member.id}</span>
+                            </div>
+                        </td>
+
+                        <!-- Designation -->
+                        <td class="p-4">
+                            <span class="text-xs font-semibold text-slate-700">${member.role}</span>
+                        </td>
+
+                        <!-- Email address -->
+                        <td class="p-4">
+                            <span class="text-slate-500 font-medium text-xs">${member.email}</span>
+                        </td>
+
+                        <!-- Mobile Number -->
+                        <td class="p-4">
+                            <span class="text-slate-500 font-medium text-xs">${member.mobile}</span>
+                        </td>
+
+                        <!-- Perm Badge elements -->
+                        <td class="p-4">
+                            <div class="flex flex-wrap gap-1.5 max-w-xs">
+                                ${badgesHtml}
+                            </div>
+                        </td>
+
+                        <!-- Active status -->
+                        <td class="p-4">
+                            <span class="inline-flex items-center gap-1.5 font-bold ${isOnline ? 'text-emerald-600' : 'text-slate-400'}">
+                                <span class="w-1.5 h-1.5 rounded-full ${isOnline ? 'bg-emerald-500 animate-ping' : 'bg-slate-300'}"></span>
+                                <span>${member.status}</span>
+                            </span>
+                        </td>
+
+                        <!-- Action controls -->
+                        <td class="p-4 text-right">
+                            <div class="inline-flex gap-2">
+                                <button onclick="editTeamPermissions('${member.id}')" class="p-1 text-slate-400 hover:text-brand-orange transition" title="Modify checklist parameters">
+                                    <i class="fa-solid fa-user-pen"></i>
+                                </button>
+                                <button onclick="declineTeamLogin('${member.id}')" class="p-1 text-slate-400 hover:text-red-500 transition" title="De-authorize representative login credentials">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            // Update numerical dashboard counters
+            updateCountMetrics();
+        }
+
+        // Refresh numerical KPI indicators
+        function updateCountMetrics() {
+            document.getElementById('total-team-count').innerText = appState.team.length;
+            document.getElementById('online-team-count').innerText = appState.team.filter(t => t.status === "Active").length;
+            
+            // Calculate specific permissions counts
+            const mandatesCount = appState.team.filter(t => t.permissions.includes("Mandates")).length;
+            const templatesCount = appState.team.filter(t => t.permissions.includes("Templates")).length;
+
+            document.getElementById('mandate-auth-count').innerText = mandatesCount;
+            document.getElementById('template-auth-count').innerText = templatesCount;
+        }
+
+        // Real-time team listing text filtering
+        function filterTeamMembers() {
+            const query = document.getElementById('member-search').value.toLowerCase();
+            const roleFilter = document.getElementById('role-filter').value;
+
+            const filtered = appState.team.filter(member => {
+                const matchesText = member.name.toLowerCase().includes(query) || member.email.toLowerCase().includes(query);
+                const matchesRole = (roleFilter === "ALL") || (member.role === roleFilter);
+                return matchesText && matchesRole;
+            });
+
+            renderTeamDirectory(filtered);
+        }
+
+        // Reset all directory filters
+        function resetTeamFilters() {
+            document.getElementById('member-search').value = '';
+            document.getElementById('role-filter').value = 'ALL';
+            renderTeamDirectory();
+        }
+
+        // Secure Form drawers animations
+        function openCreateTeamModal() {
+            document.getElementById('form-team-login').reset();
+            const modal = document.getElementById('modal-create-team-login');
+            modal.classList.remove('hidden');
+        }
+
+        function closeCreateTeamModal() {
+            const modal = document.getElementById('modal-create-team-login');
+            modal.classList.add('hidden');
+        }
+
+        // Submit handler to register new login credentials
+        function handleCreateTeamLogin(event) {
+            event.preventDefault();
+
+            const name = document.getElementById('member-name').value.trim();
+            const role = document.getElementById('member-role').value;
+            const email = document.getElementById('member-email').value.trim();
+            const mobile = document.getElementById('member-mobile').value.trim();
+            const password = document.getElementById('member-password').value;
+            const confirm = document.getElementById('member-confirm').value;
+
+            // Password consistency validation check
+            if (password !== confirm) {
+                openSecureDialog(
+                    "Credential Validation Error",
+                    "The passwords entered do not match. Please verify passwords and try again.",
+                    "fa-triangle-exclamation text-rose-500"
+                );
+                return;
+            }
+
+            if (password.length < 8) {
+                openSecureDialog(
+                    "Security Strength Warning",
+                    "Platform standards require team password keys to be at least 8 characters long.",
+                    "fa-shield-halved text-amber-500"
+                );
+                return;
+            }
+
+            // Map checkbox permissions
+            const permissions = [];
+            if (document.getElementById('perm-mandates').checked) permissions.push("Mandates");
+            if (document.getElementById('perm-payments').checked) permissions.push("Payments");
+            if (document.getElementById('perm-monitoring').checked) permissions.push("Monitoring");
+            if (document.getElementById('perm-templates').checked) permissions.push("Templates");
+
+            // Generate unique system identifier
+            const nextId = "TM-00" + (appState.team.length + 1);
+
+            // Construct member item
+            const newMember = {
+                id: nextId,
+                name: name,
+                role: role,
+                email: email,
+                mobile: mobile,
+                permissions: permissions,
+                status: "Active"
+            };
+
+            // Save inside memory database state
+            appState.team.push(newMember);
+
+            // Close modal form
+            closeCreateTeamModal();
+
+            // Refresh directory layout
+            renderTeamDirectory();
+
+            // Trigger success verification alert dialog
+            openSecureDialog(
+                "Representative Credentials Saved",
+                `System login for "${name}" created successfully. Credentials registered under identifier ${nextId} with explicit module authorizations.`,
+                "fa-user-check text-emerald-500"
+            );
+        }
+
+        // De-authorize login record
+        function declineTeamLogin(id) {
+            const memberObj = appState.team.find(t => t.id === id);
+            if (memberObj) {
+                appState.team = appState.team.filter(t => t.id !== id);
+                renderTeamDirectory();
+                openSecureDialog(
+                    "Representative Removed",
+                    `Security keys for "${memberObj.name}" have been revoked. Interactive dashboard access is deactivated.`,
+                    "fa-user-slash text-rose-500"
+                );
+            }
+        }
+
+        // Edit existing representative modular configurations
+        function editTeamPermissions(id) {
+            const memberObj = appState.team.find(t => t.id === id);
+            if (memberObj) {
+                openCreateTeamModal();
+                
+                // Pre-populate input values
+                document.getElementById('member-name').value = memberObj.name;
+                document.getElementById('member-role').value = memberObj.role;
+                document.getElementById('member-email').value = memberObj.email;
+                document.getElementById('member-mobile').value = memberObj.mobile;
+                
+                // Pre-populate checklist toggles
+                document.getElementById('perm-mandates').checked = memberObj.permissions.includes("Mandates");
+                document.getElementById('perm-payments').checked = memberObj.permissions.includes("Payments");
+                document.getElementById('perm-monitoring').checked = memberObj.permissions.includes("Monitoring");
+                document.getElementById('perm-templates').checked = memberObj.permissions.includes("Templates");
+
+                // Temporary remove from state to prevent dual listings on save overwrite
+                appState.team = appState.team.filter(t => t.id !== id);
+                renderTeamDirectory();
+            }
+        }
+
+        // Alert Dialog triggers
+        function closeSecureDialog() {
+            document.getElementById('secure-dialog').classList.add('hidden');
+        }
+
+        function openSecureDialog(title, message, iconClass = 'fa-circle-check text-emerald-500') {
+            document.getElementById('dialog-title').innerText = title;
+            document.getElementById('dialog-message').innerText = message;
+            
+            const iconContainer = document.getElementById('dialog-icon');
+            iconContainer.innerHTML = `<i class="fa-solid ${iconClass}"></i>`;
+            
+            document.getElementById('secure-dialog').classList.remove('hidden');
+        }
+
+        // Global search input routing redirects
+        function handleGlobalSearch(val) {
+            if (val && val.trim() !== '') {
+                // If search query, filter the team list
+                document.getElementById('member-search').value = val;
+                filterTeamMembers();
+            } else {
+                renderTeamDirectory();
+            }
+        }
+    
+
+        function toggleRoleDropdown() { document.getElementById('role-dropdown').classList.toggle('hidden'); }
+        function switchToRole(role) {
+            localStorage.setItem('charantra-role', role);
+            const r = { 'superadmin': '/pages/superadmin/dashboard.html', 'admin': '/pages/admin/dashboard.html', 'ib': '/pages/ib/deals.html', 'ba': '/pages/ba/reports.html' };
+            window.location.href = r[role] || '/index.html';
+        }
+        (function() {
+            const role = localStorage.getItem('charantra-role') || 'ba';
+            const labels = { 'superadmin': 'SUPER ADMIN', 'admin': 'ADMIN', 'ib': 'INVESTMENT BANKER', 'ba': 'BUSINESS ANALYST' };
+            const el = document.getElementById('role-label'); if (el) el.innerText = labels[role] || 'BUSINESS ANALYST';
+        })();
+        window.addEventListener('click', function(e) { if (!e.target.closest('.relative')) { const dd = document.getElementById('role-dropdown'); if (dd) dd.classList.add('hidden'); } });
+
+        // Handle Roles & Permissions view from URL
+        (function() {
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('view') === 'roles') {
+                document.addEventListener('DOMContentLoaded', function() {
+                    document.getElementById('view-roles').classList.remove('hidden');
+                    document.getElementById('view-team').classList.add('hidden');
+                });
+            }
+        })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Charantra - Settings & Logs</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            orange: '#FF5E00',
+                            orangeHover: '#e04f00',
+                            navyDark: '#070C1E',
+                            navyMedium: '#0F172A',
+                            navyLight: '#1E293B',
+                            bgSlate: '#F8FAFC',
+                            borderGray: '#E2E8F0'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Titillium Web', sans-serif; -webkit-font-smoothing: antialiased; background-color: #F8FAFC; }
+        .dark body,.dark { background-color:#050A30 !important; color:#F1F5F9 !important }
+        .dark .bg-white { background-color:#1E293B !important }
+        .dark .bg-slate-50 { background-color:#1E293B !important }
+        .dark .bg-brand-bgSlate { background-color:#050A30 !important }
+        .dark .text-slate-900 { color:#F1F5F9 !important }
+        .dark .text-slate-800 { color:#E2E8F0 !important }
+        .dark .text-slate-700 { color:#CBD5E1 !important }
+        .dark .text-slate-600 { color:#94A3B8 !important }
+        .dark .text-slate-500,.dark .text-slate-400 { color:#64748B !important }
+        .dark .border-slate-100,.dark .border-slate-200,.dark .border-brand-borderGray { border-color:#334155 !important }
+        .dark .border-slate-50 { border-color:#1E293B !important }
+        .dark .shadow-sm { box-shadow:0 1px 2px rgba(0,0,0,0.3) !important }
+        .dark .hover\:bg-slate-50:hover { background-color:#334155 !important }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(0,0,0,0.02); }
+        ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.25); }
+        #app-sidebar.collapsed { width: 64px !important; }
+        #app-sidebar.collapsed .sidebar-label { display: none; }
+        #app-sidebar.collapsed .sidebar-arrow { display: none; }
+        #app-sidebar.collapsed .sidebar-logo { width: 32px !important; min-width: 32px !important; }
+        #app-sidebar.collapsed .sidebar-collapse-icon { transform: rotate(180deg); }
+        #app-sidebar.collapsed button { justify-content: center; padding-left: 8px; padding-right: 8px; }
+        #app-sidebar.collapsed nav > div > button { justify-content: center; }
+        #app-sidebar.collapsed .sidebar-section-div { max-height: 0 !important; }
+        .tab-active { color: #FF5E00 !important; border-bottom: 2px solid #FF5E00 !important; }
+    </style>
+</head>
+<body class="overflow-hidden h-screen flex text-slate-800 bg-brand-bgSlate">
+
+    <div class="flex w-full h-full">
+        
+        <aside id="app-sidebar" class="w-64 bg-brand-navyDark text-slate-300 flex flex-col h-full shrink-0 border-r border-slate-900 z-30 justify-between select-none transition-all duration-300">
+            <div class="flex flex-col overflow-y-auto">
+                <div class="p-4 flex items-center justify-between border-b border-slate-900/60">
+                    <div class="flex items-center gap-3 overflow-hidden">
+                        <a href="/index.html">
+                            <div class="w-10 h-10 rounded-lg bg-brand-orange text-white font-extrabold text-lg flex items-center justify-center shadow sidebar-logo transition-all duration-300">C</div>
+                        </a>
+                        <span class="font-bold text-white text-sm tracking-wide sidebar-label">Charantra</span>
+                    </div>
+                    <button onclick="toggleSidebarCollapse()" class="text-slate-500 hover:text-white transition p-1 rounded">
+                        <i class="fa-solid fa-angles-left text-[10px] sidebar-collapse-icon transition-transform duration-300"></i>
+                    </button>
+                </div>
+                <nav class="p-3 space-y-0.5">
+                    <a href="/pages/ib/dashboard.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><i class="fa-solid fa-grid-2 text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Dashboard</span></button></a>
+                    
+                    <div class="space-y-0.5">
+                        <button onclick="toggleSidebarSection('deals-section')" class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><span class="flex items-center gap-3"><i class="fa-solid fa-briefcase text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Deals</span></span><i class="fa-solid fa-chevron-down text-[9px] transition-transform duration-200 sidebar-arrow" id="arrow-deals-section"></i></button>
+                        <div id="deals-section" class="pl-5 pr-1 space-y-0.5 overflow-hidden sidebar-section-div" style="max-height:0;transition:max-height 0.3s ease">
+                            <a href="/pages/ib/deals.html" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-list-check text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Pipeline</span></button></a>
+                            <a href="/pages/ib/mandates.html" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-file-signature text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Mandates</span></button></a>
+                            <a href="/pages/ib/dataroom.html" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-folder-closed text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Data Room</span></button></a>
+                        </div>
+                    </div>
+
+                    <a href="/pages/ib/crm.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><i class="fa-solid fa-address-book text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">CRM & Users</span></button></a>
+
+                    <div class="space-y-0.5">
+                        <button onclick="toggleSidebarSection('team-section')" class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><span class="flex items-center gap-3"><i class="fa-solid fa-users text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Team</span></span><i class="fa-solid fa-chevron-down text-[9px] transition-transform duration-200 sidebar-arrow" id="arrow-team-section"></i></button>
+                        <div id="team-section" class="pl-5 pr-1 space-y-0.5 overflow-hidden sidebar-section-div" style="max-height:0;transition:max-height 0.3s ease">
+                            <a href="/pages/ib/team.html?view=members" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-users-gear text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Team Members</span></button></a>
+                            <a href="/pages/ib/team.html?view=roles" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-shield-halved text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Roles & Permissions</span></button></a>
+                        </div>
+                    </div>
+
+                    <div class="space-y-0.5">
+                        <button onclick="toggleSidebarSection('payments-section')" class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><span class="flex items-center gap-3"><i class="fa-solid fa-receipt text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Payments</span></span><i class="fa-solid fa-chevron-down text-[9px] transition-transform duration-200 sidebar-arrow" id="arrow-payments-section"></i></button>
+                        <div id="payments-section" class="pl-5 pr-1 space-y-0.5 overflow-hidden sidebar-section-div" style="max-height:0;transition:max-height 0.3s ease">
+                            <a href="/pages/ib/payments.html?view=invoices" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-file-invoice text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Invoices</span></button></a>
+                            <a href="/pages/ib/payments.html?view=ledger" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-book text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Ledger</span></button></a>
+                        </div>
+                    </div>
+
+                    <a href="/pages/ib/reports.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><i class="fa-solid fa-chart-simple text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Reports</span></button></a>
+                    <a href="/pages/ib/settings.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-bold text-white bg-brand-orange transition duration-150 overflow-hidden"><i class="fa-solid fa-gear text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Settings & Logs</span></button></a>
+                </nav>
+            </div>
+            <div class="p-4 text-center text-xs text-slate-600 border-t border-slate-900"><p class="sidebar-label">© 2026 Charantra</p></div>
+        </aside>
+
+        <main class="flex-1 flex flex-col h-full overflow-hidden">
+            <header class="h-16 border-b border-brand-borderGray bg-white flex items-center justify-between px-8 shrink-0 select-none">
+                <div class="w-96 relative">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400"><i class="fa-solid fa-magnifying-glass text-xs"></i></span>
+                    <input type="text" class="w-full bg-slate-50 border border-slate-200 rounded-lg py-1.5 pl-9 pr-4 text-xs focus:outline-none focus:border-brand-orange transition" placeholder="Search settings...">
+                </div>
+                <div class="flex items-center gap-5">
+                    <div class="flex items-center gap-1 border border-slate-200 rounded-lg px-2.5 py-1 bg-slate-50 text-xs text-slate-600"><span class="font-semibold text-slate-700">INR (₹)</span><i class="fa-solid fa-chevron-down text-[9px] text-slate-400"></i></div>
+                    <button onclick="toggleTheme()" class="p-2 text-slate-500 hover:text-brand-orange hover:bg-slate-100 rounded-full transition" title="Toggle theme"><i id="theme-icon" class="fa-regular fa-moon text-lg"></i></button>
+                    <div class="flex items-center gap-3 border-l border-slate-200 pl-4">
+                        <div class="text-right">
+                            <p class="text-xs font-bold text-slate-900 leading-none">KARTHIK</p>
+                            <p class="text-[9px] text-blue-500 font-bold uppercase tracking-wider mt-0.5" id="role-label">INVESTMENT BANKER <i class="fa-solid fa-chevron-down text-[7px] text-slate-400 ml-1"></i></p>
+                        </div>
+                        <div class="relative">
+                            <button onclick="toggleRoleDropdown()" class="w-10 h-10 rounded-full bg-blue-600 text-white font-extrabold text-sm flex items-center justify-center shadow hover:shadow-md transition cursor-pointer">K</button>
+                            <div id="role-dropdown" class="hidden absolute right-0 mt-2 w-52 bg-white border border-slate-200 rounded-xl shadow-xl z-50 text-xs overflow-hidden">
+                                <div class="px-4 py-3 border-b border-slate-100 font-bold text-slate-700">Switch Role</div>
+                                <button onclick="switchToRole('superadmin')" class="w-full text-left px-4 py-2.5 hover:bg-slate-50 text-slate-700 font-medium flex items-center gap-2.5 border-b border-slate-50"><i class="fa-solid fa-crown text-brand-orange w-4"></i> Super Admin</button>
+                                <button onclick="switchToRole('admin')" class="w-full text-left px-4 py-2.5 hover:bg-slate-50 text-slate-700 font-medium flex items-center gap-2.5 border-b border-slate-50"><i class="fa-solid fa-shield-halved text-violet-500 w-4"></i> Admin</button>
+                                <button onclick="switchToRole('ib')" class="w-full text-left px-4 py-2.5 hover:bg-slate-50 text-slate-700 font-medium flex items-center gap-2.5 border-b border-slate-50"><i class="fa-solid fa-briefcase text-blue-500 w-4"></i> Investment Banker</button>
+                                <button onclick="switchToRole('ba')" class="w-full text-left px-4 py-2.5 hover:bg-slate-50 text-slate-700 font-medium flex items-center gap-2.5"><i class="fa-solid fa-chart-line text-emerald-500 w-4"></i> Business Analyst</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="flex-1 overflow-y-auto p-8">
+                <section class="space-y-6">
+                    <div>
+                        <h2 class="text-2xl font-bold tracking-tight text-slate-900">Settings & System Logs</h2>
+                        <p class="text-slate-500 text-xs mt-1">Platform configuration, compliance thresholds, and audit trail logs.</p>
+                    </div>
+
+                    <!-- Compliance Configuration -->
+                    <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 space-y-6">
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-bold text-slate-800 text-sm">Compliance Thresholds</h3>
+                            <button class="text-brand-orange text-xs font-bold hover:underline">Edit</button>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div><label class="text-[10px] font-bold text-slate-400 uppercase block mb-1">Max Deal Size (₹ Cr)</label><p class="font-extrabold text-slate-900">500.00</p></div>
+                            <div><label class="text-[10px] font-bold text-slate-400 uppercase block mb-1">Success Fee Cap (%)</label><p class="font-extrabold text-slate-900">5.00</p></div>
+                            <div><label class="text-[10px] font-bold text-slate-400 uppercase block mb-1">Retainer Min (₹ Lakh)</label><p class="font-extrabold text-slate-900">2.50</p></div>
+                        </div>
+                    </div>
+
+                    <!-- Audit Log Table -->
+                    <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 space-y-4">
+                        <h3 class="font-bold text-slate-800 text-sm">Audit Trail Logs</h3>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-xs text-left">
+                                <thead>
+                                    <tr class="border-b border-slate-200 text-slate-400 font-bold uppercase tracking-wider text-[10px]">
+                                        <th class="p-4">Timestamp</th><th class="p-4">User</th><th class="p-4">Action</th><th class="p-4">Module</th><th class="p-4">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td class="p-4 text-slate-500">05 Jun 2026, 11:30</td><td class="p-4 font-semibold">Karthik</td><td class="p-4 text-slate-600">Updated compliance thresholds</td><td class="p-4"><span class="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full font-bold">Settings</span></td><td class="p-4"><span class="text-[10px] bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-full font-bold">Success</span></td></tr>
+                                    <tr><td class="p-4 text-slate-500">04 Jun 2026, 15:22</td><td class="p-4 font-semibold">Karthik</td><td class="p-4 text-slate-600">Exported deal report PDF</td><td class="p-4"><span class="text-[10px] bg-orange-50 text-brand-orange px-2 py-0.5 rounded-full font-bold">Deals</span></td><td class="p-4"><span class="text-[10px] bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-full font-bold">Success</span></td></tr>
+                                    <tr><td class="p-4 text-slate-500">04 Jun 2026, 09:48</td><td class="p-4 font-semibold">Karthik</td><td class="p-4 text-slate-600">Approved NDA for TechVentures Fund</td><td class="p-4"><span class="text-[10px] bg-amber-50 text-amber-600 px-2 py-0.5 rounded-full font-bold">CRM</span></td><td class="p-4"><span class="text-[10px] bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-full font-bold">Success</span></td></tr>
+                                    <tr><td class="p-4 text-slate-500">03 Jun 2026, 16:20</td><td class="p-4 font-semibold">Karthik</td><td class="p-4 text-slate-600">Created new mandate: Fundraising Advisory</td><td class="p-4"><span class="text-[10px] bg-indigo-50 text-indigo-600 px-2 py-0.5 rounded-full font-bold">Mandates</span></td><td class="p-4"><span class="text-[10px] bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-full font-bold">Success</span></td></tr>
+                                    <tr><td class="p-4 text-slate-500">03 Jun 2026, 10:05</td><td class="p-4 font-semibold">Karthik</td><td class="p-4 text-slate-600">Modified deal pipeline stage for DEAL-101</td><td class="p-4"><span class="text-[10px] bg-orange-50 text-brand-orange px-2 py-0.5 rounded-full font-bold">Deals</span></td><td class="p-4"><span class="text-[10px] bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-full font-bold">Success</span></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function toggleDropdown(id) { const el = document.getElementById(id); if(el) el.classList.toggle('hidden'); }
+        function toggleTheme(){document.documentElement.classList.toggle('dark');const d=document.documentElement.classList.contains('dark');document.getElementById('theme-icon').className=d?'fa-solid fa-sun text-sm text-amber-400':'fa-solid fa-moon text-sm';localStorage.setItem('charantra-theme',d?'dark':'light')}
+        (function(){if(localStorage.getItem('charantra-theme')==='dark'){document.documentElement.classList.add('dark');document.addEventListener('DOMContentLoaded',()=>{const i=document.getElementById('theme-icon');if(i)i.className='fa-solid fa-sun text-sm text-amber-400'})}})()
+        function toggleSidebarCollapse() {
+            document.getElementById('app-sidebar').classList.toggle('collapsed');
+            document.querySelectorAll('.sidebar-section-div').forEach(el => { if (document.getElementById('app-sidebar').classList.contains('collapsed')) el.style.maxHeight = '0'; });
+        }
+        function toggleSidebarSection(id) {
+            if (document.getElementById('app-sidebar').classList.contains('collapsed')) return;
+            const el = document.getElementById(id), arrow = document.getElementById('arrow-' + id);
+            if (el) { const open = el.style.maxHeight !== '0px' && el.style.maxHeight !== ''; el.style.maxHeight = open ? '0' : '200px'; }
+            if (arrow) arrow.style.transform = arrow.style.transform === 'rotate(180deg)' ? 'rotate(0deg)' : 'rotate(180deg)';
+        }
+        // ── ROLE SWITCHER ──
+        function toggleRoleDropdown() { document.getElementById('role-dropdown').classList.toggle('hidden'); }
+        function switchToRole(role) {
+            localStorage.setItem('charantra-role', role);
+            const r = { 'superadmin': '/pages/superadmin/dashboard.html', 'admin': '/pages/admin/dashboard.html', 'ib': '/pages/ib/deals.html', 'ba': '/pages/ba/reports.html' };
+            window.location.href = r[role] || '/index.html';
+        }
+        (function() {
+            const role = localStorage.getItem('charantra-role') || 'ib';
+            const labels = { 'superadmin': 'SUPER ADMIN', 'admin': 'ADMIN', 'ib': 'INVESTMENT BANKER', 'ba': 'BUSINESS ANALYST' };
+            const el = document.getElementById('role-label'); if (el) el.innerText = labels[role] || 'INVESTMENT BANKER';
+        })();
+        window.addEventListener('click', function(e) { if (!e.target.closest('.relative')) { const dd = document.getElementById('role-dropdown'); if (dd) dd.classList.add('hidden'); } });
+    </script>
+</body>
+</html>

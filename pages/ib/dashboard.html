@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Charantra - Super Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            orange: '#FF5E00',
+                            orangeHover: '#e04f00',
+                            navyDark: '#070C1E',
+                            navyMedium: '#0F172A',
+                            navyLight: '#1E293B',
+                            bgSlate: '#F8FAFC',
+                            borderGray: '#E2E8F0'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Titillium Web', sans-serif; -webkit-font-smoothing: antialiased; background-color: #F8FAFC; }
+        .dark body,.dark { background-color:#050A30 !important; color:#F1F5F9 !important }
+        .dark .bg-white { background-color:#1E293B !important }
+        .dark .bg-slate-50 { background-color:#1E293B !important }
+        .dark .bg-brand-bgSlate { background-color:#0F172A !important }
+        .dark .text-slate-900 { color:#F1F5F9 !important }
+        .dark .text-slate-800 { color:#E2E8F0 !important }
+        .dark .text-slate-700 { color:#CBD5E1 !important }
+        .dark .text-slate-600 { color:#94A3B8 !important }
+        .dark .text-slate-500 { color:#64748B !important }
+        .dark .text-slate-400 { color:#64748B !important }
+        .dark .border-slate-100 { border-color:#334155 !important }
+        .dark .border-slate-200 { border-color:#334155 !important }
+        .dark .border-brand-borderGray { border-color:#334155 !important }
+        .dark .border-slate-50 { border-color:#1E293B !important }
+        .dark .shadow-sm { box-shadow:0 1px 2px rgba(0,0,0,0.3) !important }
+        .dark .hover\:bg-slate-50:hover { background-color:#334155 !important }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(0,0,0,0.02); }
+        ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.25); }
+        #app-sidebar.collapsed { width: 64px !important; }
+        #app-sidebar.collapsed .sidebar-label { display: none; }
+        #app-sidebar.collapsed .sidebar-arrow { display: none; }
+        #app-sidebar.collapsed .sidebar-logo { width: 32px !important; min-width: 32px !important; }
+        #app-sidebar.collapsed .sidebar-collapse-icon { transform: rotate(180deg); }
+        #app-sidebar.collapsed button { justify-content: center; padding-left: 8px; padding-right: 8px; }
+        #app-sidebar.collapsed nav > div > button { justify-content: center; }
+        #app-sidebar.collapsed .sidebar-section-div { max-height: 0 !important; }
+        .sidebar-section-open { max-height: 200px !important; }
+    </style>
+</head>
+<body class="overflow-hidden h-screen flex text-slate-800 bg-brand-bgSlate">
+
+    <div class="flex w-full h-full">
+
+        <aside id="app-sidebar" class="w-64 bg-brand-navyDark text-slate-300 flex flex-col h-full shrink-0 border-r border-slate-900 z-30 justify-between select-none transition-all duration-300">
+            <div class="flex flex-col overflow-y-auto">
+                <div class="p-4 flex items-center justify-between border-b border-slate-900/60">
+                    <div class="flex items-center gap-3 overflow-hidden">
+                        <a href="/index.html">
+                            <img src="/assets/logo.png" width="160" alt="Charantra Logo" class="sidebar-logo" style="height: auto; min-width: 120px;">
+                        </a>
+                    </div>
+                    <button onclick="toggleSidebarCollapse()" class="text-slate-500 hover:text-white p-1 rounded transition shrink-0" title="Toggle Sidebar">
+                        <i class="fa-solid fa-outdent text-xs sidebar-collapse-icon"></i>
+                    </button>
+                </div>
+
+                <nav class="px-3 space-y-1 text-sm">
+                    <a href="/pages/ib/dashboard.html" class="block">
+                        <button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-bold text-white bg-brand-orange transition duration-150 overflow-hidden">
+                            <i class="fa-solid fa-table-columns text-sm shrink-0"></i>
+                            <span class="sidebar-label whitespace-nowrap">Dashboard</span>
+                        </button>
+                    </a>
+
+                    <div class="space-y-0.5">
+                        <button onclick="toggleSidebarSection('crm-section')" class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden">
+                            <span class="flex items-center gap-3"><i class="fa-solid fa-users text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">CRM & Users</span></span>
+                            <i class="fa-solid fa-chevron-down text-[9px] transition-transform duration-200 sidebar-arrow" id="arrow-crm-section"></i>
+                        </button>
+                        <div id="crm-section" class="pl-5 pr-1 space-y-0.5 overflow-hidden sidebar-section-div" style="max-height:0;transition:max-height 0.3s ease">
+                            <a href="/pages/ib/crm.html?type=Investor" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-hand-holding-dollar text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Investors</span></button></a>
+                            <a href="/pages/ib/crm.html?type=Investee" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-rocket text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Investees</span></button></a>
+                            <a href="/pages/ib/crm.html?type=Buyer" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-cart-shopping text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Buyers</span></button></a>
+                            <a href="/pages/ib/crm.html?type=Seller" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-tags text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Sellers</span></button></a>
+                            <a href="/pages/ib/crm.html?type=Advisor" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-comments text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Advisors</span></button></a>
+                        </div>
+                    </div>
+
+                    <a href="/pages/ib/mandates.html" class="block">
+                        <button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden">
+                            <i class="fa-solid fa-file-contract text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Mandates & Projects</span>
+                        </button>
+                    </a>
+
+                    <a href="/pages/ib/deals.html" class="block">
+                        <button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden">
+                            <i class="fa-solid fa-briefcase text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Deals & Pipeline</span>
+                        </button>
+                    </a>
+
+                    <a href="/pages/ib/dataroom.html" class="block">
+                        <button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden">
+                            <i class="fa-solid fa-hard-drive text-sm shrink-0"></i>
+                            <span class="sidebar-label whitespace-nowrap">Data Room</span>
+                        </button>
+                    </a>
+
+                    <div class="space-y-0.5">
+                        <button onclick="toggleSidebarSection('team-section')" class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden">
+                            <span class="flex items-center gap-3"><i class="fa-solid fa-user-group text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Team Management</span></span>
+                            <i class="fa-solid fa-chevron-down text-[9px] transition-transform duration-200 sidebar-arrow" id="arrow-team-section"></i>
+                        </button>
+                        <div id="team-section" class="pl-5 pr-1 space-y-0.5 overflow-hidden sidebar-section-div" style="max-height:0;transition:max-height 0.3s ease">
+                            <a href="/pages/ib/team.html?view=members" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-users-gear text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Team Members</span></button></a>
+                            <a href="/pages/ib/team.html?view=roles" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-shield-halved text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Roles & Permissions</span></button></a>
+                        </div>
+                    </div>
+
+                    <div class="space-y-0.5">
+                        <button onclick="toggleSidebarSection('payments-section')" class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden">
+                            <span class="flex items-center gap-3"><i class="fa-solid fa-receipt text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Payments</span></span>
+                            <i class="fa-solid fa-chevron-down text-[9px] transition-transform duration-200 sidebar-arrow" id="arrow-payments-section"></i>
+                        </button>
+                        <div id="payments-section" class="pl-5 pr-1 space-y-0.5 overflow-hidden sidebar-section-div" style="max-height:0;transition:max-height 0.3s ease">
+                            <a href="/pages/ib/payments.html?view=invoices" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-file-invoice text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Invoices</span></button></a>
+                            <a href="/pages/ib/payments.html?view=ledger" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-book text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Ledger</span></button></a>
+                        </div>
+                    </div>
+
+                    <a href="/pages/ib/reports.html" class="block">
+                        <button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden">
+                            <i class="fa-solid fa-chart-simple text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Reports</span>
+                        </button>
+                    </a>
+
+                    <a href="/pages/ib/settings.html" class="block">
+                        <button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden">
+                            <i class="fa-solid fa-gear text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Settings & Logs</span>
+                        </button>
+                    </a>
+                </nav>
+            </div>
+            <div class="p-4 text-center text-xs text-slate-600 border-t border-slate-900">
+                <p class="sidebar-label">© 2026 Charantra</p>
+            </div>
+        </aside>
+
+        <main class="flex-1 flex flex-col h-full overflow-hidden">
+            <header class="h-16 border-b border-brand-borderGray bg-white flex items-center justify-between px-8 shrink-0 select-none">
+                <div class="w-96 relative">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400"><i class="fa-solid fa-magnifying-glass text-xs"></i></span>
+                    <input type="text" id="header-search" oninput="handleSearch(this.value)" class="w-full bg-slate-50 border border-slate-200 rounded-lg py-1.5 pl-9 pr-4 text-xs focus:outline-none focus:border-brand-orange transition" placeholder="Search mandates, companies, investors...">
+                </div>
+                <div class="flex items-center gap-5">
+                    <div class="flex items-center gap-1 border border-slate-200 rounded-lg px-2.5 py-1 bg-slate-50 text-xs text-slate-600"><span class="font-semibold text-slate-700">INR (₹)</span><i class="fa-solid fa-chevron-down text-[9px] text-slate-400"></i></div>
+                    <button onclick="toggleTheme()" class="w-9 h-9 flex items-center justify-center text-slate-500 hover:text-brand-orange hover:bg-slate-100 rounded-full transition" title="Toggle theme"><i id="theme-icon" class="fa-solid fa-moon text-sm"></i></button>
+                    <div class="relative">
+                        <button onclick="toggleDropdown('alert-dropdown-tray')" class="w-9 h-9 flex items-center justify-center text-slate-500 hover:text-brand-orange hover:bg-slate-100 rounded-full transition relative"><i class="fa-regular fa-bell text-sm"></i><span class="absolute top-1.5 right-1.5 w-4 h-4 bg-red-500 text-[10px] text-white font-extrabold flex items-center justify-center rounded-full">3</span></button>
+                        <div id="alert-dropdown-tray" class="hidden absolute right-0 mt-2 w-80 bg-white border border-slate-200 rounded-xl shadow-xl z-50 text-xs overflow-hidden"><div class="bg-slate-50 px-4 py-3 border-b border-slate-100 font-bold text-slate-700">Recent Activities Feed</div><div class="divide-y divide-slate-100 max-h-60 overflow-y-auto" id="alert-items-list"></div></div>
+                    </div>
+                    <div class="flex items-center gap-3 border-l border-slate-200 pl-4">
+                        <div class="text-right"><p class="text-xs font-bold text-slate-900 leading-none">KARTHIK</p><p class="text-[9px] text-blue-500 font-bold uppercase tracking-wider mt-0.5" id="role-label">INVESTMENT BANKER <i class="fa-solid fa-chevron-down text-[7px] text-slate-400 ml-1"></i></p></div>
+                        <div class="relative">
+                            <button onclick="toggleRoleDropdown()" class="w-10 h-10 rounded-full bg-blue-600 text-white font-extrabold text-sm flex items-center justify-center shadow hover:shadow-md transition cursor-pointer">K</button>
+                            <div id="role-dropdown" class="hidden absolute right-0 mt-2 w-52 bg-white border border-slate-200 rounded-xl shadow-xl z-50 text-xs overflow-hidden">
+                                <div class="px-4 py-3 border-b border-slate-100 font-bold text-slate-700">Switch Role</div>
+                                <button onclick="switchToRole('superadmin')" class="w-full text-left px-4 py-2.5 hover:bg-slate-50 text-slate-700 font-medium flex items-center gap-2.5 border-b border-slate-50"><i class="fa-solid fa-crown text-brand-orange w-4"></i> Super Admin</button>
+                                <button onclick="switchToRole('admin')" class="w-full text-left px-4 py-2.5 hover:bg-slate-50 text-slate-700 font-medium flex items-center gap-2.5 border-b border-slate-50"><i class="fa-solid fa-shield-halved text-violet-500 w-4"></i> Admin</button>
+                                <button onclick="switchToRole('ib')" class="w-full text-left px-4 py-2.5 hover:bg-slate-50 text-slate-700 font-medium flex items-center gap-2.5 border-b border-slate-50"><i class="fa-solid fa-briefcase text-blue-500 w-4"></i> Investment Banker</button>
+                                <button onclick="switchToRole('ba')" class="w-full text-left px-4 py-2.5 hover:bg-slate-50 text-slate-700 font-medium flex items-center gap-2.5"><i class="fa-solid fa-chart-line text-emerald-500 w-4"></i> Business Analyst</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="flex-1 overflow-y-auto p-8">
+                <section class="space-y-6">
+                    <div class="flex justify-between items-center select-none">
+                        <div><h2 class="text-2xl font-bold tracking-tight text-slate-900">Dashboard Overview</h2><p class="text-slate-500 text-xs mt-1">Real-time business overview and key performance metrics.</p></div>
+                        <div class="relative">
+                            <button onclick="toggleDropdown('time-range-picker')" class="bg-white border border-slate-200 px-4 py-2 rounded-lg text-xs font-bold text-slate-700 flex items-center gap-2 shadow-sm hover:bg-slate-50"><i class="fa-regular fa-calendar-check text-slate-400"></i><span id="selected-range-label">This Month</span><i class="fa-solid fa-chevron-down text-[9px] text-slate-400"></i></button>
+                            <div id="time-range-picker" class="hidden absolute right-0 mt-2 bg-white border border-slate-200 rounded-lg shadow-xl py-1 z-40 text-xs w-40">
+                                <button onclick="selectTimeRange('This Month')" class="w-full text-left px-4 py-2 hover:bg-slate-50 text-slate-700 font-medium">This Month</button>
+                                <button onclick="selectTimeRange('Last Quarter')" class="w-full text-left px-4 py-2 hover:bg-slate-50 text-slate-700 font-medium">Last Quarter</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-5 gap-5">
+                        <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-start gap-4 hover:shadow-md transition"><div class="p-3 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0"><i class="fa-solid fa-briefcase text-lg"></i></div><div class="space-y-1"><span class="text-[11px] text-slate-400 font-bold uppercase tracking-wider block">Active Deals</span><h3 class="text-2xl font-extrabold text-slate-900" id="dash-kpi-deals">3</h3><p class="text-[11px] font-bold text-emerald-600 flex items-center gap-1 mt-1"><i class="fa-solid fa-caret-up"></i><span>—</span><span class="text-slate-400 font-medium">pipeline active</span></p></div></div>
+                        <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-start gap-4 hover:shadow-md transition"><div class="p-3 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0"><i class="fa-solid fa-file-signature text-lg"></i></div><div class="space-y-1"><span class="text-[11px] text-slate-400 font-bold uppercase tracking-wider block">Active Mandates</span><h3 class="text-2xl font-extrabold text-slate-900" id="dash-kpi-mandates">4</h3><p class="text-[11px] font-bold text-emerald-600 flex items-center gap-1 mt-1"><i class="fa-solid fa-caret-up"></i><span>—</span><span class="text-slate-400 font-medium">in progress</span></p></div></div>
+                        <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-start gap-4 hover:shadow-md transition"><div class="p-3 rounded-xl bg-violet-50 text-violet-600 flex items-center justify-center shrink-0"><i class="fa-solid fa-indian-rupee-sign text-lg"></i></div><div class="space-y-1"><span class="text-[11px] text-slate-400 font-bold uppercase tracking-wider block">Revenue (₹ Cr)</span><h3 class="text-2xl font-extrabold text-slate-900" id="dash-kpi-revenue">4.70</h3><p class="text-[11px] font-bold text-emerald-600 flex items-center gap-1 mt-1"><i class="fa-solid fa-caret-up"></i><span>—</span><span class="text-slate-400 font-medium">team aggregate</span></p></div></div>
+                        <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-start gap-4 hover:shadow-md transition"><div class="p-3 rounded-xl bg-amber-50 text-amber-500 flex items-center justify-center shrink-0"><i class="fa-solid fa-clock-rotate-left text-lg"></i></div><div class="space-y-1"><span class="text-[11px] text-slate-400 font-bold uppercase tracking-wider block">Pending Actions</span><h3 class="text-2xl font-extrabold text-slate-900" id="dash-kpi-pending">3</h3><p class="text-[11px] font-bold text-rose-600 flex items-center gap-1 mt-1"><i class="fa-solid fa-caret-down"></i><span>—</span><span class="text-slate-400 font-medium">requires attention</span></p></div></div>
+                        <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-start gap-4 hover:shadow-md transition"><div class="p-3 rounded-xl bg-blue-50 text-blue-500 flex items-center justify-center shrink-0"><i class="fa-solid fa-user-plus text-lg"></i></div><div class="space-y-1"><span class="text-[11px] text-slate-400 font-bold uppercase tracking-wider block">Team Members</span><h3 class="text-2xl font-extrabold text-slate-900" id="dash-kpi-team">5</h3><p class="text-[11px] font-bold text-emerald-600 flex items-center gap-1 mt-1"><i class="fa-solid fa-caret-up"></i><span>—</span><span class="text-slate-400 font-medium">advisory desk</span></p></div></div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <div class="lg:col-span-2 bg-white rounded-2xl border border-slate-100 p-5 shadow-sm"><div class="flex justify-between items-center border-b border-slate-50 pb-3"><div><h4 class="text-sm font-bold text-slate-800">Revenue Analytics</h4><p class="text-[11px] text-slate-400 mt-0.5">Monthly fee revenue trend growth insights.</p></div></div><div class="h-[220px] mt-3"><canvas id="chart-revenue-analytics"></canvas></div></div>
+                        <div class="bg-white rounded-2xl border border-slate-100 p-5 shadow-sm flex flex-col justify-between"><div class="border-b border-slate-50 pb-3"><h4 class="text-sm font-bold text-slate-800">Mandate Status</h4><p class="text-[11px] text-slate-400 mt-0.5">Current distribution of mandate workflow states.</p></div><div class="flex items-center gap-4 my-2"><div class="w-[140px] h-[140px] shrink-0"><canvas id="chart-mandate-donut"></canvas></div><div class="space-y-1.5 flex-1 text-[10px]" id="donut-legend-rows"></div></div></div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div class="bg-white rounded-2xl border border-slate-100 p-5 shadow-sm flex flex-col justify-between"><div class="border-b border-slate-50 pb-3 flex justify-between items-center"><div><h4 class="text-sm font-bold text-slate-800">Pending Actions</h4><p class="text-[11px] text-slate-400 mt-0.5">Awaiting super admin compliance clearance.</p></div><a href="/pages/ib/dataroom.html" class="text-brand-orange hover:text-brand-orangeHover text-xs font-bold">View All</a></div><div class="divide-y divide-slate-50 flex-1 overflow-y-auto max-h-[220px]" id="pending-actions-stack-body"></div></div>
+                        <div class="bg-white rounded-2xl border border-slate-100 p-5 shadow-sm space-y-4"><div class="flex justify-between items-center border-b border-slate-50 pb-3"><div><h4 class="text-sm font-bold text-slate-800">Recent Activities</h4><p class="text-[11px] text-slate-400 mt-0.5">Real-time action audit trail logs.</p></div></div><div class="space-y-4 max-h-[300px] overflow-y-auto" id="recent-activities-list"></div></div>
+                    </div>
+
+                    <div class="bg-white rounded-2xl border border-slate-100 p-5 shadow-sm space-y-4"><div class="flex justify-between items-center border-b border-slate-50 pb-3"><div><h4 class="text-sm font-bold text-slate-800">Team Performance</h4><p class="text-[11px] text-slate-400 mt-0.5">Individual performance metrics of deal leaders.</p></div></div><div class="overflow-x-auto"><table class="w-full text-left text-xs text-slate-600 border-collapse"><thead><tr class="text-slate-400 uppercase tracking-wider text-[10px] border-b border-slate-100"><th class="pb-2 font-bold">Team Member</th><th class="pb-2 font-bold text-center">Deals Added</th><th class="pb-2 font-bold text-center">Mandates Signed</th><th class="pb-2 font-bold text-right">Revenue (₹)</th><th class="pb-2 font-bold text-right">Performance</th></tr></thead><tbody id="team-performance-table-body" class="divide-y divide-slate-50"></tbody></table></div></div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const db = {
+            pendingActions: [
+                { id: "ACT-001", name: "GreenField Capital", subtitle: "Unreviewed NDA agreement with fund terms", status: "Critical", dueText: "Due in 3h", bg: "bg-rose-50 text-rose-700" },
+                { id: "ACT-002", name: "TechVentures Fund", subtitle: "Investor KYC verification form pending submission", status: "High", dueText: "Due in 1d", bg: "bg-amber-50 text-amber-700" },
+                { id: "ACT-003", name: "Elevation Capital", subtitle: "Mandate agreement awaiting counter signature block", status: "Medium", dueText: "Due in 2d", bg: "bg-blue-50 text-blue-700" },
+            ],
+            recentActivities: [
+                { id: "ACTV-001", title: "Sequoia Capital NDA approved by Super Admin Karthik", timeText: "5 min ago", icon: "fa-circle-check text-emerald-600", bg: "bg-emerald-50" },
+                { id: "ACTV-002", title: "New mandate created: Elevation Capital - Series B $12M", timeText: "1 hour ago", icon: "fa-file-signature text-brand-orange", bg: "bg-orange-50" },
+                { id: "ACTV-003", title: "VDR access key authorized for TechVentures Fund diligence", timeText: "3 hours ago", icon: "fa-hard-drive text-indigo-600", bg: "bg-indigo-50" },
+                { id: "ACTV-004", title: "Blume Ventures profile moved to Inactive by system scheduler", timeText: "6 hours ago", icon: "fa-user-slash text-slate-500", bg: "bg-slate-100" },
+                { id: "ACTV-005", title: "Invoice #INV-042 posted for IndiaFund Advisors retainer fee", timeText: "Yesterday", icon: "fa-receipt text-emerald-600", bg: "bg-emerald-50" },
+            ],
+            team: [
+                { name: "Sarah Chen", initial: "SC", role: "Investment Banker", deals: 28, revenue: "₹1.40 Cr", perf: "98%", color: "bg-indigo-600 text-white", mandates: 15 },
+                { name: "Akash Kumar", initial: "AK", role: "Admin", deals: 24, revenue: "₹1.20 Cr", perf: "94%", color: "bg-emerald-600 text-white", mandates: 18 },
+                { name: "Raj Mehta", initial: "RM", role: "Business Analyst", deals: 20, revenue: "₹0.90 Cr", perf: "89%", color: "bg-violet-600 text-white", mandates: 12 },
+                { name: "Priya Sharma", initial: "PS", role: "Investment Banker", deals: 18, revenue: "₹0.65 Cr", perf: "85%", color: "bg-amber-600 text-white", mandates: 10 },
+                { name: "Vikram Gupta", initial: "VG", role: "Business Analyst", deals: 15, revenue: "₹0.55 Cr", perf: "78%", color: "bg-sky-600 text-white", mandates: 8 },
+            ],
+            deals: [
+                { id: "DEAL-101", stage: "Active" }, { id: "DEAL-102", stage: "Active" }, { id: "DEAL-103", stage: "Closing" }
+            ]
+        };
+
+        function toggleSidebarCollapse() {
+            document.getElementById('app-sidebar').classList.toggle('collapsed');
+            document.querySelectorAll('.sidebar-section-div').forEach(el => {
+                if (document.getElementById('app-sidebar').classList.contains('collapsed')) {
+                    el.style.maxHeight = '0';
+                }
+            });
+        }
+
+        function toggleSidebarSection(sectionId) {
+            if (document.getElementById('app-sidebar').classList.contains('collapsed')) return;
+            const el = document.getElementById(sectionId);
+            const arrow = document.getElementById('arrow-' + sectionId);
+            if (el) {
+                const isOpen = el.style.maxHeight !== '0px' && el.style.maxHeight !== '';
+                el.style.maxHeight = isOpen ? '0' : '200px';
+            }
+            if (arrow) {
+                arrow.style.transform = arrow.style.transform === 'rotate(180deg)' ? 'rotate(0deg)' : 'rotate(180deg)';
+            }
+        }
+
+        function toggleDropdown(id) { const el = document.getElementById(id); if(el) el.classList.toggle('hidden'); }
+        function selectTimeRange(r) { document.getElementById('selected-range-label').innerText = r; document.getElementById('time-range-picker').classList.add('hidden'); }
+        function handleSearch(t) { console.log('Search:', t); }
+
+        function clearActionRequirement(actionId) {
+            const idx = db.pendingActions.findIndex(a => a.id === actionId);
+            if (idx > -1) {
+                db.pendingActions.splice(idx, 1);
+                db.recentActivities.unshift({ id: "ACTV-"+Math.floor(Math.random()*100000), title: `Super Admin cleared: ${db.pendingActions[idx]?.name || 'action'}`, timeText: "Just now", icon: "fa-circle-check text-emerald-600", bg: "bg-emerald-50" });
+                renderDashboardViews();
+            }
+        }
+
+        function renderDashboardViews() {
+            const pEl = document.getElementById('pending-actions-stack-body');
+            pEl.innerHTML = '';
+            db.pendingActions.forEach(act => {
+                pEl.innerHTML += `<div class="py-3 flex justify-between items-center hover:bg-slate-50/50 px-1 rounded-lg transition"><div class="space-y-0.5"><h5 class="text-xs font-bold text-slate-800">${act.name}</h5><p class="text-[10px] text-slate-400 font-medium">${act.subtitle}</p></div><div class="flex items-center gap-2"><span class="text-[10px] font-bold px-2 py-0.5 rounded-md ${act.bg}">${act.status}</span><span class="text-[10px] text-rose-500 font-bold bg-rose-50 px-2 py-0.5 rounded-md">${act.dueText}</span><button onclick="clearActionRequirement('${act.id}')" class="bg-brand-orange hover:bg-brand-orangeHover text-white text-[10px] px-2.5 py-1 rounded transition font-bold">Clear</button></div></div>`;
+            });
+            const aEl = document.getElementById('recent-activities-list');
+            aEl.innerHTML = '';
+            db.recentActivities.forEach(item => {
+                aEl.innerHTML += `<div class="flex items-center gap-3 py-1 hover:bg-slate-50/50 px-2 rounded-lg transition"><div class="w-8 h-8 rounded-lg ${item.bg} flex items-center justify-center shrink-0"><i class="fa-solid ${item.icon}"></i></div><div class="flex-1 min-w-0"><p class="text-xs font-bold text-slate-800 truncate">${item.title}</p></div><span class="text-[10px] text-slate-400 font-semibold whitespace-nowrap">${item.timeText}</span></div>`;
+            });
+            const tEl = document.getElementById('team-performance-table-body');
+            tEl.innerHTML = '';
+            db.team.forEach(tm => {
+                const pc = parseInt(tm.perf) >= 90 ? 'text-emerald-600' : 'text-amber-600';
+                tEl.innerHTML += `<tr class="hover:bg-slate-50/60 transition duration-100"><td class="py-2.5 flex items-center gap-2.5"><div class="w-7 h-7 rounded-lg ${tm.color} flex items-center justify-center font-bold text-[10px]">${tm.initial}</div><div><span class="font-bold text-slate-800 text-xs">${tm.name}</span><span class="text-[9px] text-slate-400 block">${tm.role}</span></div></td><td class="py-2.5 text-center font-bold text-slate-700">${tm.deals}</td><td class="py-2.5 text-center font-bold text-slate-700">${tm.mandates}</td><td class="py-2.5 text-right font-extrabold text-brand-orange">${tm.revenue}</td><td class="py-2.5 text-right font-bold ${pc}">${tm.perf}</td></tr>`;
+            });
+
+            updateDashboardKpis();
+        }
+
+        function updateDashboardKpis() {
+            const activeDeals = (db.deals || []).filter(d => d.stage === 'Active').length;
+            const activeMandates = db.team.reduce((sum, t) => sum + (t.mandates || 0), 0);
+            const totalRevenue = db.team.reduce((sum, t) => {
+                const v = parseFloat((t.revenue || '0').replace(/[₹Cr\s]/g, ''));
+                return sum + (isNaN(v) ? 0 : v);
+            }, 0);
+            document.getElementById('dash-kpi-deals').innerText = activeDeals;
+            document.getElementById('dash-kpi-mandates').innerText = activeMandates;
+            document.getElementById('dash-kpi-revenue').innerText = totalRevenue.toFixed(2);
+            document.getElementById('dash-kpi-pending').innerText = db.pendingActions.length;
+            document.getElementById('dash-kpi-team').innerText = db.team.length;
+        }
+
+        function initDashboardCharts() {
+            const ctxLine = document.getElementById('chart-revenue-analytics').getContext('2d');
+            const grad = ctxLine.createLinearGradient(0, 0, 0, 200);
+            grad.addColorStop(0, 'rgba(255, 94, 0, 0.45)'); grad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+            new Chart(ctxLine, { type: 'line', data: { labels: ['1 May','8 May','15 May','22 May','29 May'], datasets: [{ data: [1.0,2.6,2.3,3.8,4.2], borderColor: '#FF5E00', borderWidth: 3.5, backgroundColor: grad, fill: true, tension: 0.35, pointBackgroundColor: '#FF5E00', pointBorderColor: '#ffffff', pointBorderWidth: 2, pointRadius: 5, pointHoverRadius: 7 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { min:0, max:5, ticks:{ callback: v => '₹'+v+' Cr', stepSize:1, font:{size:9,weight:'bold'} }, grid:{color:'#f3f4f6'} }, x: { grid:{display:false}, ticks:{font:{size:10,weight:'bold'}} } } } });
+
+            const lv = [{label:'Draft',val:18,pct:'20%',color:'#3b82f6'},{label:'Qualification Review',val:12,pct:'13%',color:'#38bdf8'},{label:'Sent',val:15,pct:'17%',color:'#FF5E00'},{label:'Awaiting Signature',val:20,pct:'22%',color:'#fbbf24'},{label:'Signed',val:16,pct:'18%',color:'#10b981'},{label:'Expired',val:5,pct:'6%',color:'#ec4899'},{label:'Closed',val:3,pct:'4%',color:'#1e293b'}];
+            const ctxDonut = document.getElementById('chart-mandate-donut').getContext('2d');
+            new Chart(ctxDonut, { type: 'doughnut', data: { labels: lv.map(l=>l.label), datasets: [{ data: lv.map(l=>l.val), backgroundColor: lv.map(l=>l.color), borderWidth: 2, borderColor: '#ffffff' }] }, options: { responsive: true, maintainAspectRatio: false, cutout: '72%', plugins: { legend: { display: false } } } });
+            const dl = document.getElementById('donut-legend-rows'); dl.innerHTML = '';
+            lv.forEach(item => { dl.innerHTML += `<div class="flex items-center justify-between font-medium"><div class="flex items-center gap-1.5 min-w-0"><span class="w-2.5 h-2.5 rounded-full shrink-0" style="background-color:${item.color}"></span><span class="text-slate-600 truncate text-[10px]">${item.label}</span></div><span class="text-slate-800 font-bold ml-2 shrink-0">${item.val} <span class="text-[9px] text-slate-400 font-medium">(${item.pct})</span></span></div>`; });
+        }
+
+        // ── THEME TOGGLE ──
+        function toggleTheme() {
+            document.documentElement.classList.toggle('dark');
+            const isDark = document.documentElement.classList.contains('dark');
+            document.getElementById('theme-icon').className = isDark ? 'fa-solid fa-sun text-sm text-amber-400' : 'fa-solid fa-moon text-sm';
+            localStorage.setItem('charantra-theme', isDark ? 'dark' : 'light');
+        }
+        (function() {
+            if (localStorage.getItem('charantra-theme') === 'dark') { document.documentElement.classList.add('dark'); document.addEventListener('DOMContentLoaded', () => { const icon = document.getElementById('theme-icon'); if (icon) icon.className = 'fa-solid fa-sun text-sm text-amber-400'; }); }
+        })();
+        // ── ROLE SWITCHER ──
+        function toggleRoleDropdown() { document.getElementById('role-dropdown').classList.toggle('hidden'); }
+        function switchToRole(role) {
+            localStorage.setItem('charantra-role', role);
+            const r = { 'superadmin': '/pages/superadmin/dashboard.html', 'admin': '/pages/admin/dashboard.html', 'ib': '/pages/ib/deals.html', 'ba': '/pages/ba/reports.html' };
+            window.location.href = r[role] || '/index.html';
+        }
+        (function() {
+            const role = localStorage.getItem('charantra-role') || 'ib';
+            const labels = { 'superadmin': 'SUPER ADMIN', 'admin': 'ADMIN', 'ib': 'INVESTMENT BANKER', 'ba': 'BUSINESS ANALYST' };
+            const el = document.getElementById('role-label'); if (el) el.innerText = labels[role] || 'INVESTMENT BANKER';
+            // 
+            const ibPages = ['deals','mandates','dataroom','crm','reports'];
+            const baPages = ['reports','crm','dataroom'];
+            if (role === 'ib') {
+                document.querySelectorAll('nav a[href]').forEach(a => {
+                    const href = a.getAttribute('href') || '';
+                    const page = href.split('/').pop().split('.')[0].split('?')[0];
+                    if (!ibPages.includes(page) && page !== 'dashboard') a.parentElement.style.display = 'none';
+                });
+            }
+            if (role === 'ba') {
+                document.querySelectorAll('nav a[href]').forEach(a => {
+                    const href = a.getAttribute('href') || '';
+                    const page = href.split('/').pop().split('.')[0].split('?')[0];
+                    if (!baPages.includes(page) && page !== 'reports') a.parentElement.style.display = 'none';
+                });
+            }
+        })();
+
+        window.addEventListener('click', function(e) {
+            if (!e.target.closest('.relative')) {
+                const dd = document.getElementById('role-dropdown'); if (dd) dd.classList.add('hidden'); document.querySelectorAll('[id$="-picker"], [id$="-tray"]').forEach(el => el.classList.add('hidden'));
+            }
+        });
+
+        window.onload = function() {
+            renderDashboardViews();
+            initDashboardCharts();
+        };
+    </script>
+</body>
+</html>

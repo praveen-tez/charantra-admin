@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Charantra - Company Profile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            orange: '#FF5E00',
+                            orangeHover: '#e04f00',
+                            navyDark: '#070C1E',
+                            navyMedium: '#0F172A',
+                            navyLight: '#1E293B',
+                            bgSlate: '#F8FAFC',
+                            borderGray: '#E2E8F0'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Titillium Web', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            background-color: #F8FAFC;
+        }
+        .dark body,.dark { background-color:#050A30 !important; color:#F1F5F9 !important }
+        .dark .bg-white { background-color:#1E293B !important }
+        .dark .bg-slate-50 { background-color:#1E293B !important }
+        .dark .bg-brand-bgSlate { background-color:#050A30 !important }
+        .dark .text-slate-900 { color:#F1F5F9 !important }
+        .dark .text-slate-800 { color:#E2E8F0 !important }
+        .dark .text-slate-700 { color:#CBD5E1 !important }
+        .dark .text-slate-600 { color:#94A3B8 !important }
+        .dark .text-slate-500,.dark .text-slate-400 { color:#64748B !important }
+        .dark .border-slate-100,.dark .border-slate-200,.dark .border-brand-borderGray { border-color:#334155 !important }
+        .dark .border-slate-50 { border-color:#1E293B !important }
+        .dark .shadow-sm { box-shadow:0 1px 2px rgba(0,0,0,0.3) !important }
+        .dark .hover\:bg-slate-50:hover { background-color:#334155 !important }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.02); }
+        ::-webkit-scrollbar-thumb { background: rgba(0, 0, 0, 0.15); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(0, 0, 0, 0.25); }
+        .tab-transition { transition: all 0.2s ease-in-out; }
+        #app-sidebar.collapsed { width: 64px !important; }
+        #app-sidebar.collapsed .sidebar-label { display: none; }
+        #app-sidebar.collapsed .sidebar-arrow { display: none; }
+        #app-sidebar.collapsed .sidebar-logo { width: 32px !important; min-width: 32px !important; }
+        #app-sidebar.collapsed .sidebar-collapse-icon { transform: rotate(180deg); }
+        #app-sidebar.collapsed button { justify-content: center; padding-left: 8px; padding-right: 8px; }
+        #app-sidebar.collapsed nav > div > button { justify-content: center; }
+        #app-sidebar.collapsed .sidebar-section-div { max-height: 0 !important; }
+        .waveform-bar { width: 4px; background-color: #FF5E00; border-radius: 2px; margin: 0 1px; transition: height 0.3s ease; }
+    </style>
+</head>
+<body class="overflow-hidden h-screen flex text-slate-800 bg-brand-bgSlate">
+
+    <div class="flex w-full h-full">
+        
+        <!-- STANDARD SIDEBAR -->
+        <aside id="app-sidebar" class="w-64 bg-brand-navyDark text-slate-300 flex flex-col h-full shrink-0 border-r border-slate-900 z-30 justify-between select-none transition-all duration-300">
+            <div class="flex flex-col overflow-y-auto">
+                <div class="p-4 flex items-center justify-between border-b border-slate-900/60">
+                    <div class="flex items-center gap-3 overflow-hidden">
+                        <a href="/index.html"><img src="/assets/logo.png" width="160" alt="Charantra Logo" class="sidebar-logo" style="height: auto; min-width: 120px;"></a>
+                    </div>
+                    <button onclick="toggleSidebarCollapse()" class="text-slate-500 hover:text-white p-1 rounded transition shrink-0" title="Toggle Sidebar"><i class="fa-solid fa-outdent text-xs sidebar-collapse-icon"></i></button>
+                </div>
+                <nav class="px-3 space-y-1 text-sm">
+                    <a href="/pages/superadmin/dashboard.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><i class="fa-solid fa-table-columns text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Dashboard</span></button></a>
+                    
+                    <div class="space-y-0.5">
+                        <button onclick="toggleSidebarSection('crm-section')" class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg font-bold text-white transition duration-150 overflow-hidden"><span class="flex items-center gap-3"><i class="fa-solid fa-users text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">CRM & Users</span></span><i class="fa-solid fa-chevron-down text-[9px] transition-transform duration-200 sidebar-arrow" id="arrow-crm-section" style="transform:rotate(180deg)"></i></button>
+                        <div id="crm-section" class="pl-5 pr-1 space-y-0.5 overflow-hidden sidebar-section-div" style="max-height:200px;transition:max-height 0.3s ease">
+                            <a href="/pages/superadmin/crm.html?type=Investor" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-hand-holding-dollar text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Investors</span></button></a>
+                            <a href="/pages/superadmin/crm.html?type=Investee" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-rocket text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Investees</span></button></a>
+                            <a href="/pages/superadmin/crm.html?type=Buyer" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-cart-shopping text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Buyers</span></button></a>
+                            <a href="/pages/superadmin/crm.html?type=Seller" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-tags text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Sellers</span></button></a>
+                            <a href="/pages/superadmin/crm.html?type=Advisor" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-comments text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Advisors</span></button></a>
+                        </div>
+                    </div>
+
+                    <a href="/pages/superadmin/mandates.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><i class="fa-solid fa-file-contract text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Mandates & Projects</span></button></a>
+
+                    <a href="/pages/superadmin/deals.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><i class="fa-solid fa-briefcase text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Deals & Pipeline</span></button></a>
+
+                    <a href="/pages/superadmin/dataroom.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><i class="fa-solid fa-hard-drive text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Data Room</span></button></a>
+
+                    <div class="space-y-0.5">
+                        <button onclick="toggleSidebarSection('team-section')" class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><span class="flex items-center gap-3"><i class="fa-solid fa-user-group text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Team Management</span></span><i class="fa-solid fa-chevron-down text-[9px] transition-transform duration-200 sidebar-arrow" id="arrow-team-section"></i></button>
+                        <div id="team-section" class="pl-5 pr-1 space-y-0.5 overflow-hidden sidebar-section-div" style="max-height:0;transition:max-height 0.3s ease">
+                            <a href="/pages/superadmin/team.html?view=members" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-users-gear text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Team Members</span></button></a>
+                            <a href="/pages/superadmin/team.html?view=roles" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-shield-halved text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Roles & Permissions</span></button></a>
+                        </div>
+                    </div>
+
+                    <div class="space-y-0.5">
+                        <button onclick="toggleSidebarSection('payments-section')" class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><span class="flex items-center gap-3"><i class="fa-solid fa-receipt text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Payments</span></span><i class="fa-solid fa-chevron-down text-[9px] transition-transform duration-200 sidebar-arrow" id="arrow-payments-section"></i></button>
+                        <div id="payments-section" class="pl-5 pr-1 space-y-0.5 overflow-hidden sidebar-section-div" style="max-height:0;transition:max-height 0.3s ease">
+                            <a href="/pages/superadmin/payments.html?view=invoices" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-file-invoice text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Invoices</span></button></a>
+                            <a href="/pages/superadmin/payments.html?view=ledger" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-book text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Ledger</span></button></a>
+                        </div>
+                    </div>
+
+                    <a href="/pages/superadmin/reports.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><i class="fa-solid fa-chart-simple text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Reports</span></button></a>
+                    <a href="/pages/superadmin/settings.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><i class="fa-solid fa-gear text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Settings & Logs</span></button></a>
+                </nav>
+            </div>
+            <div class="p-4 text-center text-xs text-slate-600 border-t border-slate-900"><p class="sidebar-label">© 2026 Charantra</p></div>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="flex-1 flex flex-col h-full overflow-hidden">
+            <header class="h-16 border-b border-brand-borderGray bg-white flex items-center justify-between px-8 shrink-0 select-none">
+                <div class="w-96 relative">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400"><i class="fa-solid fa-magnifying-glass text-xs"></i></span>
+                    <input type="text" id="header-search" class="w-full bg-slate-50 border border-slate-200 rounded-lg py-1.5 pl-9 pr-4 text-xs focus:outline-none focus:border-brand-orange transition" placeholder="Search company profiles, mandates...">
+                </div>
+                <div class="flex items-center gap-5">
+                    <div class="flex items-center gap-1 border border-slate-200 rounded-lg px-2.5 py-1 bg-slate-50 text-xs text-slate-600">
+                        <span class="font-semibold text-slate-700">INR (₹)</span>
+                        <i class="fa-solid fa-chevron-down text-[9px] text-slate-400"></i>
+                    </div>
+                    <button onclick="toggleTheme()" class="p-2 text-slate-500 hover:text-brand-orange hover:bg-slate-100 rounded-full transition" title="Toggle theme"><i id="theme-icon" class="fa-regular fa-moon text-lg"></i></button>
+                    <div class="flex items-center gap-3 border-l border-slate-200 pl-4">
+    <div class="text-right">
+        <p class="text-xs font-bold text-slate-900 leading-none">KARTHIK</p>
+        <p class="text-[9px] text-brand-orange font-bold uppercase tracking-wider mt-0.5" id="role-label">SUPER ADMIN <i class="fa-solid fa-chevron-down text-[7px] text-slate-400 ml-1"></i></p>
+    </div>
+    <div class="relative">
+        <button onclick="toggleRoleDropdown()" class="w-10 h-10 rounded-full bg-[#FF5E00] text-white font-extrabold text-sm flex items-center justify-center shadow hover:shadow-md transition cursor-pointer">K</button>
+        <div id="role-dropdown" class="hidden absolute right-0 mt-2 w-52 bg-white border border-slate-200 rounded-xl shadow-xl z-50 text-xs overflow-hidden">
+            <div class="px-4 py-3 border-b border-slate-100 font-bold text-slate-700">Switch Role</div>
+            <button onclick="switchToRole('superadmin')" class="w-full text-left px-4 py-2.5 hover:bg-slate-50 text-slate-700 font-medium flex items-center gap-2.5 border-b border-slate-50"><i class="fa-solid fa-crown text-brand-orange w-4"></i> Super Admin</button>
+            <button onclick="switchToRole('admin')" class="w-full text-left px-4 py-2.5 hover:bg-slate-50 text-slate-700 font-medium flex items-center gap-2.5 border-b border-slate-50"><i class="fa-solid fa-shield-halved text-violet-500 w-4"></i> Admin</button>
+            <button onclick="switchToRole('ib')" class="w-full text-left px-4 py-2.5 hover:bg-slate-50 text-slate-700 font-medium flex items-center gap-2.5 border-b border-slate-50"><i class="fa-solid fa-briefcase text-blue-500 w-4"></i> Investment Banker</button>
+            <button onclick="switchToRole('ba')" class="w-full text-left px-4 py-2.5 hover:bg-slate-50 text-slate-700 font-medium flex items-center gap-2.5"><i class="fa-solid fa-chart-line text-emerald-500 w-4"></i> Business Analyst</button>
+        </div>
+    </div>
+</div>
+                </div>
+            </header>
+
+            <!-- COMPANY DETAIL CONTENT -->
+            <div class="flex-1 overflow-y-auto p-8">
+                <section class="space-y-6">
+                    
+                    <!-- Back navigation & action buttons -->
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-200 pb-4 select-none">
+                        <div class="flex items-center gap-3">
+                            <a href="/pages/superadmin/crm.html" class="text-slate-500 hover:text-brand-orange text-xs font-bold flex items-center gap-1.5 transition">
+                                <i class="fa-solid fa-arrow-left"></i> Back to Directory
+                            </a>
+                            <div>
+                                <h2 class="text-2xl font-bold tracking-tight text-slate-900" id="detail-company-title">TechVenture Solutions</h2>
+                                <p class="text-slate-500 text-xs mt-1" id="detail-company-subtitle">Manage your fundraising persona and materials.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <button onclick="simulateSendMessage()" class="bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 text-xs font-bold px-4 py-2.5 rounded-lg shadow-sm transition flex items-center gap-2">
+                                <i class="fa-regular fa-comment-dots text-brand-orange"></i> Send Message
+                            </button>
+                            <a id="deal-workspace-link" href="/pages/superadmin/deals.html" class="bg-brand-orange hover:bg-brand-orangeHover text-white text-xs font-bold px-4 py-2.5 rounded-lg shadow-sm transition flex items-center gap-2">
+                                <i class="fa-solid fa-briefcase"></i> View Deal Workspace
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Sub-Navigation Tabs -->
+                    <div class="flex border-b border-slate-200 overflow-x-auto select-none">
+                        <button onclick="switchDetailsTab('Overview')" id="tab-Overview" class="tab-transition border-b-2 border-brand-orange text-brand-orange px-4 py-2.5 text-xs font-bold whitespace-nowrap">Overview</button>
+                        <button onclick="switchDetailsTab('Financials')" id="tab-Financials" class="tab-transition border-b-2 border-transparent text-slate-500 hover:text-slate-900 px-4 py-2.5 text-xs font-medium whitespace-nowrap">Financials</button>
+                        <button onclick="switchDetailsTab('Funding Ask')" id="tab-Funding-Ask" class="tab-transition border-b-2 border-transparent text-slate-500 hover:text-slate-900 px-4 py-2.5 text-xs font-medium whitespace-nowrap">Funding Ask</button>
+                        <button onclick="switchDetailsTab('Team')" id="tab-Team" class="tab-transition border-b-2 border-transparent text-slate-500 hover:text-slate-900 px-4 py-2.5 text-xs font-medium whitespace-nowrap">Team</button>
+                        <button onclick="switchDetailsTab('Documents')" id="tab-Documents" class="tab-transition border-b-2 border-transparent text-slate-500 hover:text-slate-900 px-4 py-2.5 text-xs font-medium whitespace-nowrap">Documents</button>
+                        <button onclick="switchDetailsTab('Market Opportunity')" id="tab-Market" class="tab-transition border-b-2 border-transparent text-slate-500 hover:text-slate-900 px-4 py-2.5 text-xs font-medium whitespace-nowrap">Market Opportunity</button>
+                        <button onclick="switchDetailsTab('Communications')" id="tab-Communications" class="tab-transition border-b-2 border-transparent text-slate-500 hover:text-slate-900 px-4 py-2.5 text-xs font-medium whitespace-nowrap">Communications</button>
+                        <button onclick="switchDetailsTab('Notes')" id="tab-Notes" class="tab-transition border-b-2 border-transparent text-slate-500 hover:text-slate-900 px-4 py-2.5 text-xs font-medium whitespace-nowrap">Notes</button>
+                    </div>
+
+                    <!-- Subtab Content Frames -->
+                    <div id="company-subtab-container" class="space-y-6">
+                        
+                        <!-- OVERVIEW TAB -->
+                        <div id="details-panel-Overview" class="space-y-6">
+                            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                                <!-- Founder Video -->
+                                <div class="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-sm space-y-3">
+                                    <div class="flex justify-between items-center text-slate-400 text-[10px] uppercase font-extrabold tracking-wider">
+                                        <span>Founder Introduction Video</span>
+                                    </div>
+                                    <div class="relative rounded-xl overflow-hidden aspect-[16/9] bg-slate-950 flex items-center justify-center">
+                                        <div class="absolute inset-0 bg-cover bg-center opacity-60" style="background-image: url('https://placehold.co/600x400/0f172a/ff5e00?text=Founder+Introduction');"></div>
+                                        <button onclick="simulateMediaAction('video')" class="relative z-10 w-14 h-14 bg-white/90 hover:bg-white text-brand-orange hover:scale-105 active:scale-95 transition rounded-full flex items-center justify-center shadow-lg cursor-pointer">
+                                            <i class="fa-solid fa-play text-xl ml-1"></i>
+                                        </button>
+                                        <span class="absolute bottom-3 left-3 bg-slate-900/80 text-white text-[10px] font-bold px-2 py-0.5 rounded">03:42</span>
+                                    </div>
+                                </div>
+
+                                <!-- Audio Pitch -->
+                                <div class="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-sm flex flex-col justify-between">
+                                    <div class="flex justify-between items-center text-slate-400 text-[10px] uppercase font-extrabold tracking-wider">
+                                        <span>Founder Audio Pitch</span>
+                                    </div>
+                                    <div class="bg-slate-50 p-4 rounded-xl flex items-center gap-3 border border-slate-100 my-2">
+                                        <button onclick="simulateMediaAction('audio')" class="w-10 h-10 bg-brand-orange hover:bg-brand-orangeHover hover:scale-105 transition rounded-full text-white flex items-center justify-center shrink-0 shadow-sm">
+                                            <i id="audio-control-icon" class="fa-solid fa-play text-xs ml-0.5"></i>
+                                        </button>
+                                        <div class="flex-1 min-w-0">
+                                            <h5 class="text-xs font-bold text-slate-800 truncate">Audio_Pitch_SARAH.mp3</h5>
+                                            <span class="text-[9px] text-slate-400 font-semibold" id="audio-timer">01:28</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-end justify-between h-8 px-2" id="waveform-container"></div>
+                                </div>
+
+                                <!-- Review Summary -->
+                                <div class="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-sm space-y-4">
+                                    <div class="text-slate-400 text-[10px] uppercase font-extrabold tracking-wider"><span>Review Summary</span></div>
+                                    <div class="space-y-2">
+                                        <div class="flex items-center justify-between text-xs"><span class="flex items-center gap-2 font-semibold text-slate-600"><i class="fa-solid fa-circle-check text-emerald-500"></i> Profile Created</span><i class="fa-solid fa-check text-emerald-500"></i></div>
+                                        <div class="flex items-center justify-between text-xs"><span class="flex items-center gap-2 font-semibold text-slate-600"><i class="fa-solid fa-circle-check text-emerald-500"></i> KYC Verified</span><i class="fa-solid fa-check text-emerald-500"></i></div>
+                                        <div class="flex items-center justify-between text-xs"><span class="flex items-center gap-2 font-semibold text-slate-600"><i class="fa-solid fa-circle-check text-emerald-500"></i> Documents Uploaded</span><i class="fa-solid fa-check text-emerald-500"></i></div>
+                                        <div class="flex items-center justify-between text-xs"><span class="flex items-center gap-2 font-semibold text-slate-600"><i class="fa-solid fa-circle-check text-emerald-500"></i> Video / Audio Submitted</span><i class="fa-solid fa-check text-emerald-500"></i></div>
+                                    </div>
+                                    <div class="border-t border-slate-100 pt-3">
+                                        <div class="flex items-start gap-2 text-xs bg-amber-50/60 p-2 rounded-lg text-amber-800 border border-amber-100">
+                                            <i class="fa-solid fa-triangle-exclamation text-brand-orange mt-0.5"></i>
+                                            <div><p class="font-bold text-[11px]">Additional Information Requested</p><p class="text-[9px] text-slate-500 mt-0.5">Last Updated: 2 days ago</p></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Company Overview + Side Widgets -->
+                            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                                <div class="lg:col-span-2 space-y-6">
+                                    <!-- Company Overview Card -->
+                                    <div class="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-sm space-y-4">
+                                        <h4 class="font-bold text-sm text-slate-900 border-b border-slate-50 pb-2">Company Overview</h4>
+                                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                            <div class="md:col-span-1 space-y-3 text-xs">
+                                                <div class="border-b border-slate-50 pb-2"><span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">Company Name</span><span class="font-bold text-slate-800" id="overview-card-name">TechVenture Solutions</span></div>
+                                                <div class="border-b border-slate-50 pb-2"><span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">Industry</span><span class="font-semibold text-slate-700">SaaS / AI</span></div>
+                                                <div class="border-b border-slate-50 pb-2"><span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">Founded</span><span class="font-semibold text-slate-700">Jan 2024</span></div>
+                                                <div class="border-b border-slate-50 pb-2"><span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">Website</span><a href="#" class="text-brand-orange font-bold hover:underline flex items-center gap-1">www.techventure.com <i class="fa-solid fa-up-right-from-square text-[9px]"></i></a></div>
+                                            </div>
+                                            <div class="md:col-span-2 space-y-4">
+                                                <div><span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider block mb-1">About the Company</span><p class="text-xs text-slate-600 leading-relaxed" id="overview-card-about">TechVenture Solutions is revolutionizing the customer service industry with state-of-the-art AI. Our proprietary engine allows brands to automate up to 70% of support tickets.</p></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Key Highlights -->
+                                    <div class="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-sm space-y-4">
+                                        <h4 class="font-bold text-sm text-slate-900">Key Highlights</h4>
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            <div class="bg-slate-50 p-4 rounded-xl"><h5 class="text-xs font-bold text-slate-800">Annual Recurring Revenue</h5><p class="text-lg font-extrabold text-slate-900 mt-1">₹2.40 Cr</p><p class="text-[10px] text-emerald-600 font-bold mt-1"><i class="fa-solid fa-caret-up"></i> 28% YoY</p></div>
+                                            <div class="bg-slate-50 p-4 rounded-xl"><h5 class="text-xs font-bold text-slate-800">Enterprise Clients</h5><p class="text-lg font-extrabold text-slate-900 mt-1">42</p><p class="text-[10px] text-emerald-600 font-bold mt-1"><i class="fa-solid fa-caret-up"></i> 15% vs last quarter</p></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Right Side Widgets -->
+                                <div class="space-y-6">
+                                    <!-- Onboarding Status -->
+                                    <div class="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-sm space-y-4">
+                                        <div class="flex justify-between items-center border-b border-slate-50 pb-2"><span class="text-slate-400 text-[10px] uppercase font-extrabold tracking-wider">Onboarding Status</span></div>
+                                        <div class="space-y-2 text-xs">
+                                            <div class="flex justify-between font-semibold text-slate-700"><span>Profile Created</span><span class="text-slate-400">21 Apr 2025</span></div>
+                                            <div class="flex justify-between font-semibold text-slate-700"><span>Auto Approved</span><span class="text-slate-400">21 Apr 2025</span></div>
+                                            <div class="flex justify-between font-semibold text-slate-700"><span>Documents Submitted</span><span class="text-slate-400">21 Apr 2025</span></div>
+                                            <div class="flex justify-between font-bold text-slate-800 border-t border-slate-50 pt-2"><span>Last Activity</span><span class="text-brand-orange">2 hours ago</span></div>
+                                        </div>
+                                    </div>
+                                    <!-- Engagement Overview -->
+                                    <div class="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-sm space-y-4">
+                                        <span class="text-slate-400 text-[10px] uppercase font-extrabold tracking-wider block border-b border-slate-50 pb-2">Engagement Overview</span>
+                                        <div class="space-y-3 text-xs">
+                                            <div class="flex justify-between items-center text-slate-600"><span class="flex items-center gap-2"><i class="fa-regular fa-comment text-slate-400"></i> Messages Sent</span><span class="font-bold text-slate-800">3</span></div>
+                                            <div class="flex justify-between items-center text-slate-600"><span class="flex items-center gap-2"><i class="fa-regular fa-circle-question text-slate-400"></i> Info Requested</span><span class="font-bold text-slate-800">2</span></div>
+                                            <div class="flex justify-between items-center text-slate-600"><span class="flex items-center gap-2"><i class="fa-regular fa-circle-check text-slate-400"></i> Responses Received</span><span class="font-bold text-slate-800">1</span></div>
+                                            <div class="flex justify-between items-center border-t border-slate-50 pt-2 font-bold text-amber-800"><span class="flex items-center gap-2"><i class="fa-solid fa-triangle-exclamation text-brand-orange"></i> Pending Actions</span><span class="text-brand-orange">2</span></div>
+                                        </div>
+                                    </div>
+                                    <!-- Pitch Deck -->
+                                    <div class="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-sm space-y-3">
+                                        <div class="flex justify-between items-center text-slate-400 text-[10px] uppercase font-extrabold tracking-wider"><span>Pitch Deck Materials</span></div>
+                                        <div class="space-y-2">
+                                            <div class="flex items-center justify-between p-2.5 bg-slate-50 rounded-xl border border-slate-100"><div class="flex items-center gap-2.5 min-w-0"><i class="fa-solid fa-file-pdf text-red-500"></i><span class="text-xs font-bold text-slate-700 truncate">Series_B_Pitch_Deck.pdf</span></div><button class="text-brand-orange hover:text-brand-orangeHover text-[10px] font-bold"><i class="fa-solid fa-download"></i></button></div>
+                                            <div class="flex items-center justify-between p-2.5 bg-slate-50 rounded-xl border border-slate-100"><div class="flex items-center gap-2.5 min-w-0"><i class="fa-solid fa-file-excel text-emerald-600"></i><span class="text-xs font-bold text-slate-700 truncate">Financial_Model_v3.xlsx</span></div><button class="text-brand-orange hover:text-brand-orangeHover text-[10px] font-bold"><i class="fa-solid fa-download"></i></button></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- FINANCIALS TAB -->
+                        <div id="details-panel-Financials" class="hidden bg-white rounded-2xl border border-slate-200 p-6 space-y-4">
+                            <h4 class="font-bold text-sm text-slate-900">Financial Performance Dashboard</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div class="bg-slate-50 p-4 rounded-xl space-y-1"><span class="text-[10px] text-slate-400 uppercase font-bold">Revenue (FY25)</span><p class="text-xl font-extrabold text-slate-900">₹2.40 Cr</p></div>
+                                <div class="bg-slate-50 p-4 rounded-xl space-y-1"><span class="text-[10px] text-slate-400 uppercase font-bold">EBITDA Margin</span><p class="text-xl font-extrabold text-slate-900">22%</p></div>
+                                <div class="bg-slate-50 p-4 rounded-xl space-y-1"><span class="text-[10px] text-slate-400 uppercase font-bold">Burn Rate</span><p class="text-xl font-extrabold text-slate-900">₹18L/mo</p></div>
+                            </div>
+                        </div>
+
+                        <!-- FUNDING ASK TAB -->
+                        <div id="details-panel-Funding-Ask" class="hidden bg-white rounded-2xl border border-slate-200 p-6 space-y-4">
+                            <h4 class="font-bold text-sm text-slate-900">Capital Sourcing Allocation Matrix</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="bg-slate-50 p-4 rounded-xl space-y-2">
+                                    <h5 class="text-xs font-bold text-slate-800 uppercase">Use of Sourced Funds</h5>
+                                    <ul class="space-y-1 text-xs text-slate-600">
+                                        <li>• 45% AI Core Algorithm Sourcing R&D</li>
+                                        <li>• 30% Enterprise Customer Acquisition Sales</li>
+                                        <li>• 15% Platform Infrastructure & Security Operations</li>
+                                        <li>• 10% Talent desk Expansion & Working Capital</li>
+                                    </ul>
+                                </div>
+                                <div class="bg-slate-50 p-4 rounded-xl space-y-2">
+                                    <h5 class="text-xs font-bold text-slate-800 uppercase">Current Committed Allocations</h5>
+                                    <p class="text-xs text-slate-600">Lead commitments secured from institutional VC funds totals <span class="font-bold text-slate-800">₹2.00 Cr</span> of the planned ₹5.00 Cr round.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- TEAM TAB -->
+                        <div id="details-panel-Team" class="hidden bg-white rounded-2xl border border-slate-200 p-6 space-y-4">
+                            <h4 class="font-bold text-sm text-slate-900">Advisory Executive Board</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div class="p-4 bg-slate-50 rounded-xl space-y-2"><div class="w-10 h-10 rounded-lg bg-indigo-50 text-brand-orange font-bold flex items-center justify-center text-xs">SM</div><div><h5 class="font-bold text-xs text-slate-800">Dr. Srinivas Murthy</h5><p class="text-[10px] text-slate-400">Chief Science Officer (Founder)</p></div></div>
+                                <div class="p-4 bg-slate-50 rounded-xl space-y-2"><div class="w-10 h-10 rounded-lg bg-purple-50 text-purple-600 font-bold flex items-center justify-center text-xs">AK</div><div><h5 class="font-bold text-xs text-slate-800">Akshara Kumar</h5><p class="text-[10px] text-slate-400">Head of Sourced Operations</p></div></div>
+                                <div class="p-4 bg-slate-50 rounded-xl space-y-2"><div class="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-600 font-bold flex items-center justify-center text-xs">PT</div><div><h5 class="font-bold text-xs text-slate-800">Pranav Trivedi</h5><p class="text-[10px] text-slate-400">Executive Advisor Partner</p></div></div>
+                            </div>
+                        </div>
+
+                        <!-- DOCUMENTS TAB -->
+                        <div id="details-panel-Documents" class="hidden bg-white rounded-2xl border border-slate-200 p-6 space-y-4">
+                            <h4 class="font-bold text-sm text-slate-900">Virtual Data Room Shared Diligence Checklist</h4>
+                            <div class="space-y-2">
+                                <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl"><span class="text-xs font-semibold text-slate-700"><i class="fa-solid fa-circle-check text-emerald-500 mr-2"></i>Certificate of Incorporation</span><span class="text-[10px] text-emerald-600 font-bold">Verified</span></div>
+                                <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl"><span class="text-xs font-semibold text-slate-700"><i class="fa-solid fa-circle-check text-emerald-500 mr-2"></i>Audited Financials (FY24-25)</span><span class="text-[10px] text-emerald-600 font-bold">Verified</span></div>
+                                <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl"><span class="text-xs font-semibold text-slate-700"><i class="fa-solid fa-circle-check text-emerald-500 mr-2"></i>IP Assignment Deeds</span><span class="text-[10px] text-emerald-600 font-bold">Verified</span></div>
+                                <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl"><span class="text-xs font-semibold text-slate-700"><i class="fa-solid fa-circle-exclamation text-amber-500 mr-2"></i>Shareholder Agreements</span><span class="text-[10px] text-amber-600 font-bold">Pending</span></div>
+                            </div>
+                        </div>
+
+                        <!-- MARKET OPPORTUNITY TAB -->
+                        <div id="details-panel-Market-Opportunity" class="hidden bg-white rounded-2xl border border-slate-200 p-6 space-y-4">
+                            <h4 class="font-bold text-sm text-slate-900">Market & Competitive Landscape</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="bg-slate-50 p-4 rounded-xl"><h5 class="text-xs font-bold text-slate-800">TAM (Total Addressable Market)</h5><p class="text-lg font-extrabold text-slate-900 mt-1">$48B</p></div>
+                                <div class="bg-slate-50 p-4 rounded-xl"><h5 class="text-xs font-bold text-slate-800">SOM (Serviceable Obtainable)</h5><p class="text-lg font-extrabold text-slate-900 mt-1">$2.4B</p></div>
+                            </div>
+                        </div>
+
+                        <!-- COMMUNICATIONS TAB -->
+                        <div id="details-panel-Communications" class="hidden bg-white rounded-2xl border border-slate-200 p-6 space-y-4">
+                            <h4 class="font-bold text-sm text-slate-900">Admin Sourcing Communication Log</h4>
+                            <div class="space-y-3">
+                                <div class="p-3 bg-slate-50 rounded-xl text-xs space-y-1 border border-slate-100">
+                                    <div class="flex justify-between font-bold text-slate-800"><span>Series A Intro Sourcing Mail</span><span class="text-slate-400 text-[10px]">Yesterday</span></div>
+                                    <p class="text-slate-500">Auto-matched with Sequoia Capital representative Sarah Chen. Verification check successful.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- NOTES TAB -->
+                        <div id="details-panel-Notes" class="hidden bg-white rounded-2xl border border-slate-200 p-6 space-y-4">
+                            <h4 class="font-bold text-sm text-slate-900">Super Admin Advisory Notes</h4>
+                            <p class="text-xs text-slate-400">Keep private records or notes about this portfolio profile. Notes are securely stored locally.</p>
+                            <textarea id="company-note-textarea" rows="4" class="w-full text-xs p-3 border border-slate-200 rounded-xl focus:outline-none focus:border-brand-orange" placeholder="Type deal notes or milestones..."></textarea>
+                            <div class="flex justify-end">
+                                <button onclick="saveCompanyNote()" class="bg-brand-orange hover:bg-brand-orangeHover text-white text-xs font-bold px-4 py-2.5 rounded-lg shadow-sm transition">Save Note</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function toggleDropdown(id) { const el = document.getElementById(id); if(el) el.classList.toggle('hidden'); }
+        function toggleTheme(){document.documentElement.classList.toggle('dark');const d=document.documentElement.classList.contains('dark');document.getElementById('theme-icon').className=d?'fa-solid fa-sun text-sm text-amber-400':'fa-solid fa-moon text-sm';localStorage.setItem('charantra-theme',d?'dark':'light')}
+        (function(){if(localStorage.getItem('charantra-theme')==='dark'){document.documentElement.classList.add('dark');document.addEventListener('DOMContentLoaded',()=>{const i=document.getElementById('theme-icon');if(i)i.className='fa-solid fa-sun text-sm text-amber-400'})}})()
+        // ── SIDEBAR FUNCTIONS ──
+        function toggleSidebarCollapse() {
+            document.getElementById('app-sidebar').classList.toggle('collapsed');
+            document.querySelectorAll('.sidebar-section-div').forEach(el => { if (document.getElementById('app-sidebar').classList.contains('collapsed')) el.style.maxHeight = '0'; });
+        }
+        function toggleSidebarSection(id) {
+            if (document.getElementById('app-sidebar').classList.contains('collapsed')) return;
+            const el = document.getElementById(id), arrow = document.getElementById('arrow-' + id);
+            if (el) { const open = el.style.maxHeight !== '0px' && el.style.maxHeight !== ''; el.style.maxHeight = open ? '0' : '200px'; }
+            if (arrow) arrow.style.transform = arrow.style.transform === 'rotate(180deg)' ? 'rotate(0deg)' : 'rotate(180deg)';
+        }
+
+        // User database for detail lookup
+        const userDb = [
+            { name: "Sequoia Capital India", email: "info@sequoiacap.com", company: "Sequoia Capital India", type: "Investor", industry: "Venture Capital", about: "Sequoia Capital India is a leading venture capital firm investing in early-stage and growth-stage companies across India and Southeast Asia. With over $6B in assets under management, they partner with founders from idea to IPO.", founded: "2000" },
+            { name: "TechVentures Fund", email: "contact@techventures.com", company: "TechVentures Fund", type: "Investor", industry: "Venture Capital / Tech", about: "TechVentures Fund is an early-stage technology investment firm focused on AI, SaaS, and fintech startups across emerging markets." },
+            { name: "TechVenture Solutions", email: "sarah@techventure.com", company: "TechVenture Solutions", type: "Investee", industry: "SaaS / AI", about: "TechVenture Solutions is revolutionizing the customer service industry with state-of-the-art AI. Our proprietary engine allows brands to automate up to 70% of support tickets.", founded: "Jan 2024" },
+            { name: "Hindustan Enterprises", email: "manda@hindustan.co.in", company: "Hindustan Corp", type: "Investee", industry: "Manufacturing / Industrial", about: "Hindustan Enterprises is a diversified industrial conglomerate with interests in manufacturing, logistics, and infrastructure development across India." },
+            { name: "Vertex Tech Partners", email: "info@vertexpartners.com", company: "Vertex Partners Ltd", type: "Buyer", industry: "Technology M&A", about: "Vertex Tech Partners specializes in technology-focused mergers and acquisitions, helping mid-market software companies find strategic buyers." },
+            { name: "Teton Group Ventures", email: "cooper@tetongroup.com", company: "Teton Ventures", type: "Buyer", industry: "Private Equity", about: "Teton Group Ventures is a private equity firm focused on acquiring and scaling enterprise software companies with $50M-$200M in revenue." },
+            { name: "Mittal Asset Holdings", email: "corp@mittalassets.in", company: "Mittal Assets", type: "Seller", industry: "Asset Management", about: "Mittal Asset Holdings manages a diverse portfolio of industrial assets and real estate holdings across India and the Middle East." },
+            { name: "Pinnacle Corp", email: "deals@pinnaclecorp.com", company: "Pinnacle Corp", type: "Seller", industry: "Enterprise Software", about: "Pinnacle Corp is an enterprise software company specializing in ERP and supply chain management solutions for Fortune 500 clients." },
+        ];
+
+        function getUserByName(name) {
+            return userDb.find(u => u.name.toLowerCase() === name.toLowerCase()) || null;
+        }
+
+        // Tab switching
+        function switchDetailsTab(tabId) {
+            const tabs = ['Overview', 'Financials', 'Funding Ask', 'Team', 'Documents', 'Market Opportunity', 'Communications', 'Notes'];
+            tabs.forEach(t => {
+                const tabBtn = document.getElementById(`tab-${t.replace(/ /g, '-')}`);
+                const panel = document.getElementById(`details-panel-${t.replace(/ /g, '-')}`);
+                if (tabBtn) tabBtn.className = "tab-transition border-b-2 border-transparent text-slate-500 hover:text-slate-900 px-4 py-2.5 text-xs font-medium whitespace-nowrap";
+                if (panel) panel.classList.add('hidden');
+            });
+            const activeBtn = document.getElementById(`tab-${tabId.replace(/ /g, '-')}`);
+            if (activeBtn) activeBtn.className = "tab-transition border-b-2 border-brand-orange text-brand-orange px-4 py-2.5 text-xs font-bold whitespace-nowrap";
+            const activePanel = document.getElementById(`details-panel-${tabId.replace(/ /g, '-')}`);
+            if (activePanel) activePanel.classList.remove('hidden');
+        }
+
+        function saveCompanyNote() {
+            const companyName = document.getElementById('detail-company-title').innerText;
+            const noteText = document.getElementById('company-note-textarea').value;
+            localStorage.setItem(`note_${companyName}`, noteText);
+        }
+
+        function simulateSendMessage(userName) {
+            const name = userName || document.getElementById('detail-company-title').innerText;
+            console.log(`Advisory: Initializing direct encrypted messaging connection with ${name}`);
+        }
+
+        function simulateMediaAction(mediaType) {
+            if (mediaType === 'audio') {
+                const icon = document.getElementById('audio-control-icon');
+                if (icon.classList.contains('fa-play')) {
+                    icon.classList.remove('fa-play'); icon.classList.add('fa-pause');
+                    document.querySelectorAll('.waveform-bar').forEach(bar => bar.style.height = `${Math.floor(Math.random() * 20) + 6}px`);
+                } else {
+                    icon.classList.remove('fa-pause'); icon.classList.add('fa-play');
+                }
+            } else {
+                console.log("Playing founder introduction secure presentation video file");
+            }
+        }
+
+        // Load user from URL param
+        function loadUserFromUrl() {
+            const params = new URLSearchParams(window.location.search);
+            const userName = params.get('user');
+            const targetTab = params.get('tab');
+            
+            if (userName) {
+                const user = getUserByName(userName);
+                if (user) {
+                    document.getElementById('detail-company-title').innerText = user.name;
+                    document.getElementById('detail-company-subtitle').innerText = user.type + ' — ' + user.industry;
+                    document.getElementById('overview-card-name').innerText = user.name;
+                    if (user.about) {
+                        const aboutEl = document.getElementById('overview-card-about');
+                        if (aboutEl) aboutEl.innerText = user.about;
+                    }
+                    // Update Deal Workspace link to this user's company
+                    const dealLink = document.getElementById('deal-workspace-link');
+                    if (dealLink && user.company) {
+                        dealLink.href = '/pages/superadmin/deals.html?company=' + encodeURIComponent(user.company);
+                    }
+                    // Update page title
+                    document.title = 'Charantra — ' + user.name;
+                }
+            }
+
+            // Auto-switch to Documents tab if requested
+            if (targetTab === 'Documents') {
+                switchDetailsTab('Documents');
+            }
+        }
+
+        // Generate waveform bars
+        window.onload = function() {
+            // Load user data from URL
+            loadUserFromUrl();
+
+            const container = document.getElementById('waveform-container');
+            if (container) {
+                for (let i = 0; i < 28; i++) {
+                    const bar = document.createElement('div');
+                    bar.className = 'waveform-bar';
+                    bar.style.height = `${Math.floor(Math.random() * 20) + 4}px`;
+                    container.appendChild(bar);
+                }
+            }
+
+            // Load saved notes
+            const companyName = document.getElementById('detail-company-title').innerText;
+            const savedNote = localStorage.getItem(`note_${companyName}`);
+            if (savedNote) document.getElementById('company-note-textarea').value = savedNote;
+        };
+    </script>
+
+    <script>
+        // â”€â”€ ROLE SWITCHER â”€â”€
+        function toggleRoleDropdown() { document.getElementById('role-dropdown').classList.toggle('hidden'); }
+        function switchToRole(role) {
+            localStorage.setItem('charantra-role', role);
+            const r = { 'superadmin': '/pages/superadmin/dashboard.html', 'admin': '/pages/admin/dashboard.html', 'ib': '/pages/ib/deals.html', 'ba': '/pages/ba/reports.html' };
+            window.location.href = r[role] || '/index.html';
+        }
+        (function() {
+            const role = localStorage.getItem('charantra-role') || 'superadmin';
+            const labels = { 'superadmin': 'SUPER ADMIN', 'admin': 'ADMIN', 'ib': 'INVESTMENT BANKER', 'ba': 'BUSINESS ANALYST' };
+            const el = document.getElementById('role-label'); if (el) el.innerText = labels[role] || 'SUPER ADMIN';
+        })();
+        window.addEventListener('click', function(e) { if (!e.target.closest('.relative')) { const dd = document.getElementById('role-dropdown'); if (dd) dd.classList.add('hidden'); } });
+    </script>
+</body>

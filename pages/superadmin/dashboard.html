@@ -29,6 +29,22 @@
     <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Titillium Web', sans-serif; -webkit-font-smoothing: antialiased; background-color: #F8FAFC; }
+        .dark body,.dark { background-color:#050A30 !important; color:#F1F5F9 !important }
+        .dark .bg-white { background-color:#1E293B !important }
+        .dark .bg-slate-50 { background-color:#1E293B !important }
+        .dark .bg-brand-bgSlate { background-color:#0F172A !important }
+        .dark .text-slate-900 { color:#F1F5F9 !important }
+        .dark .text-slate-800 { color:#E2E8F0 !important }
+        .dark .text-slate-700 { color:#CBD5E1 !important }
+        .dark .text-slate-600 { color:#94A3B8 !important }
+        .dark .text-slate-500 { color:#64748B !important }
+        .dark .text-slate-400 { color:#64748B !important }
+        .dark .border-slate-100 { border-color:#334155 !important }
+        .dark .border-slate-200 { border-color:#334155 !important }
+        .dark .border-brand-borderGray { border-color:#334155 !important }
+        .dark .border-slate-50 { border-color:#1E293B !important }
+        .dark .shadow-sm { box-shadow:0 1px 2px rgba(0,0,0,0.3) !important }
+        .dark .hover\:bg-slate-50:hover { background-color:#334155 !important }
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: rgba(0,0,0,0.02); }
         ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); border-radius: 4px; }
@@ -62,7 +78,7 @@
                 </div>
 
                 <nav class="px-3 space-y-1 text-sm">
-                    <a href="/pages/dashboard.html" class="block">
+                    <a href="/pages/superadmin/dashboard.html" class="block">
                         <button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-bold text-white bg-brand-orange transition duration-150 overflow-hidden">
                             <i class="fa-solid fa-table-columns text-sm shrink-0"></i>
                             <span class="sidebar-label whitespace-nowrap">Dashboard</span>
@@ -75,27 +91,27 @@
                             <i class="fa-solid fa-chevron-down text-[9px] transition-transform duration-200 sidebar-arrow" id="arrow-crm-section"></i>
                         </button>
                         <div id="crm-section" class="pl-5 pr-1 space-y-0.5 overflow-hidden sidebar-section-div" style="max-height:0;transition:max-height 0.3s ease">
-                            <a href="/pages/crm.html?type=Investor" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-hand-holding-dollar text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Investors</span></button></a>
-                            <a href="/pages/crm.html?type=Investee" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-rocket text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Investees</span></button></a>
-                            <a href="/pages/crm.html?type=Buyer" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-cart-shopping text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Buyers</span></button></a>
-                            <a href="/pages/crm.html?type=Seller" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-tags text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Sellers</span></button></a>
-                            <a href="/pages/crm.html?type=Advisor" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-comments text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Advisors</span></button></a>
+                            <a href="/pages/superadmin/crm.html?type=Investor" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-hand-holding-dollar text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Investors</span></button></a>
+                            <a href="/pages/superadmin/crm.html?type=Investee" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-rocket text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Investees</span></button></a>
+                            <a href="/pages/superadmin/crm.html?type=Buyer" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-cart-shopping text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Buyers</span></button></a>
+                            <a href="/pages/superadmin/crm.html?type=Seller" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-tags text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Sellers</span></button></a>
+                            <a href="/pages/superadmin/crm.html?type=Advisor" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-comments text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Advisors</span></button></a>
                         </div>
                     </div>
 
-                    <a href="/pages/mandates.html" class="block">
+                    <a href="/pages/superadmin/mandates.html" class="block">
                         <button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden">
                             <i class="fa-solid fa-file-contract text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Mandates & Projects</span>
                         </button>
                     </a>
 
-                    <a href="/pages/deals.html" class="block">
+                    <a href="/pages/superadmin/deals.html" class="block">
                         <button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden">
                             <i class="fa-solid fa-briefcase text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Deals & Pipeline</span>
                         </button>
                     </a>
 
-                    <a href="/pages/dataroom.html" class="block">
+                    <a href="/pages/superadmin/dataroom.html" class="block">
                         <button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden">
                             <i class="fa-solid fa-hard-drive text-sm shrink-0"></i>
                             <span class="sidebar-label whitespace-nowrap">Data Room</span>
@@ -108,8 +124,8 @@
                             <i class="fa-solid fa-chevron-down text-[9px] transition-transform duration-200 sidebar-arrow" id="arrow-team-section"></i>
                         </button>
                         <div id="team-section" class="pl-5 pr-1 space-y-0.5 overflow-hidden sidebar-section-div" style="max-height:0;transition:max-height 0.3s ease">
-                            <a href="/pages/team.html?view=members" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-users-gear text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Team Members</span></button></a>
-                            <a href="/pages/team.html?view=roles" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-shield-halved text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Roles & Permissions</span></button></a>
+                            <a href="/pages/superadmin/team.html?view=members" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-users-gear text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Team Members</span></button></a>
+                            <a href="/pages/superadmin/team.html?view=roles" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-shield-halved text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Roles & Permissions</span></button></a>
                         </div>
                     </div>
 
@@ -119,18 +135,18 @@
                             <i class="fa-solid fa-chevron-down text-[9px] transition-transform duration-200 sidebar-arrow" id="arrow-payments-section"></i>
                         </button>
                         <div id="payments-section" class="pl-5 pr-1 space-y-0.5 overflow-hidden sidebar-section-div" style="max-height:0;transition:max-height 0.3s ease">
-                            <a href="/pages/payments.html?view=invoices" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-file-invoice text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Invoices</span></button></a>
-                            <a href="/pages/payments.html?view=ledger" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-book text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Ledger</span></button></a>
+                            <a href="/pages/superadmin/payments.html?view=invoices" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-file-invoice text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Invoices</span></button></a>
+                            <a href="/pages/superadmin/payments.html?view=ledger" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-book text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Ledger</span></button></a>
                         </div>
                     </div>
 
-                    <a href="/pages/reports.html" class="block">
+                    <a href="/pages/superadmin/reports.html" class="block">
                         <button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden">
                             <i class="fa-solid fa-chart-simple text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Reports</span>
                         </button>
                     </a>
 
-                    <a href="/pages/settings.html" class="block">
+                    <a href="/pages/superadmin/settings.html" class="block">
                         <button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden">
                             <i class="fa-solid fa-gear text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Settings & Logs</span>
                         </button>
@@ -150,13 +166,23 @@
                 </div>
                 <div class="flex items-center gap-5">
                     <div class="flex items-center gap-1 border border-slate-200 rounded-lg px-2.5 py-1 bg-slate-50 text-xs text-slate-600"><span class="font-semibold text-slate-700">INR (₹)</span><i class="fa-solid fa-chevron-down text-[9px] text-slate-400"></i></div>
+                    <button onclick="toggleTheme()" class="w-9 h-9 flex items-center justify-center text-slate-500 hover:text-brand-orange hover:bg-slate-100 rounded-full transition" title="Toggle theme"><i id="theme-icon" class="fa-solid fa-moon text-sm"></i></button>
                     <div class="relative">
-                        <button onclick="toggleDropdown('alert-dropdown-tray')" class="p-2 text-slate-500 hover:text-brand-orange hover:bg-slate-100 rounded-full transition relative"><i class="fa-regular fa-bell text-lg"></i><span class="absolute top-1.5 right-1.5 w-4 h-4 bg-red-500 text-[10px] text-white font-extrabold flex items-center justify-center rounded-full">3</span></button>
+                        <button onclick="toggleDropdown('alert-dropdown-tray')" class="w-9 h-9 flex items-center justify-center text-slate-500 hover:text-brand-orange hover:bg-slate-100 rounded-full transition relative"><i class="fa-regular fa-bell text-sm"></i><span class="absolute top-1.5 right-1.5 w-4 h-4 bg-red-500 text-[10px] text-white font-extrabold flex items-center justify-center rounded-full">3</span></button>
                         <div id="alert-dropdown-tray" class="hidden absolute right-0 mt-2 w-80 bg-white border border-slate-200 rounded-xl shadow-xl z-50 text-xs overflow-hidden"><div class="bg-slate-50 px-4 py-3 border-b border-slate-100 font-bold text-slate-700">Recent Activities Feed</div><div class="divide-y divide-slate-100 max-h-60 overflow-y-auto" id="alert-items-list"></div></div>
                     </div>
                     <div class="flex items-center gap-3 border-l border-slate-200 pl-4">
-                        <div class="text-right"><p class="text-xs font-bold text-slate-900 leading-none">KARTHIK</p><p class="text-[9px] text-brand-orange font-bold uppercase tracking-wider mt-0.5">SUPER ADMIN</p></div>
-                        <div class="w-10 h-10 rounded-full bg-[#FF5E00] text-white font-extrabold text-sm flex items-center justify-center shadow">K</div>
+                        <div class="text-right"><p class="text-xs font-bold text-slate-900 leading-none">KARTHIK</p><p class="text-[9px] text-brand-orange font-bold uppercase tracking-wider mt-0.5" id="role-label">SUPER ADMIN <i class="fa-solid fa-chevron-down text-[7px] text-slate-400 ml-1"></i></p></div>
+                        <div class="relative">
+                            <button onclick="toggleRoleDropdown()" class="w-10 h-10 rounded-full bg-[#FF5E00] text-white font-extrabold text-sm flex items-center justify-center shadow hover:shadow-md transition cursor-pointer">K</button>
+                            <div id="role-dropdown" class="hidden absolute right-0 mt-2 w-52 bg-white border border-slate-200 rounded-xl shadow-xl z-50 text-xs overflow-hidden">
+                                <div class="px-4 py-3 border-b border-slate-100 font-bold text-slate-700">Switch Role</div>
+                                <button onclick="switchToRole('superadmin')" class="w-full text-left px-4 py-2.5 hover:bg-slate-50 text-slate-700 font-medium flex items-center gap-2.5 border-b border-slate-50"><i class="fa-solid fa-crown text-brand-orange w-4"></i> Super Admin</button>
+                                <button onclick="switchToRole('admin')" class="w-full text-left px-4 py-2.5 hover:bg-slate-50 text-slate-700 font-medium flex items-center gap-2.5 border-b border-slate-50"><i class="fa-solid fa-shield-halved text-violet-500 w-4"></i> Admin</button>
+                                <button onclick="switchToRole('ib')" class="w-full text-left px-4 py-2.5 hover:bg-slate-50 text-slate-700 font-medium flex items-center gap-2.5 border-b border-slate-50"><i class="fa-solid fa-briefcase text-blue-500 w-4"></i> Investment Banker</button>
+                                <button onclick="switchToRole('ba')" class="w-full text-left px-4 py-2.5 hover:bg-slate-50 text-slate-700 font-medium flex items-center gap-2.5"><i class="fa-solid fa-chart-line text-emerald-500 w-4"></i> Business Analyst</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </header>
@@ -188,7 +214,7 @@
                     </div>
 
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                        <div class="bg-white rounded-2xl border border-slate-100 p-5 shadow-sm flex flex-col justify-between"><div class="border-b border-slate-50 pb-3 flex justify-between items-center"><div><h4 class="text-sm font-bold text-slate-800">Pending Actions</h4><p class="text-[11px] text-slate-400 mt-0.5">Awaiting super admin compliance clearance.</p></div><a href="/pages/dataroom.html" class="text-brand-orange hover:text-brand-orangeHover text-xs font-bold">View All</a></div><div class="divide-y divide-slate-50 flex-1 overflow-y-auto max-h-[220px]" id="pending-actions-stack-body"></div></div>
+                        <div class="bg-white rounded-2xl border border-slate-100 p-5 shadow-sm flex flex-col justify-between"><div class="border-b border-slate-50 pb-3 flex justify-between items-center"><div><h4 class="text-sm font-bold text-slate-800">Pending Actions</h4><p class="text-[11px] text-slate-400 mt-0.5">Awaiting super admin compliance clearance.</p></div><a href="/pages/superadmin/dataroom.html" class="text-brand-orange hover:text-brand-orangeHover text-xs font-bold">View All</a></div><div class="divide-y divide-slate-50 flex-1 overflow-y-auto max-h-[220px]" id="pending-actions-stack-body"></div></div>
                         <div class="bg-white rounded-2xl border border-slate-100 p-5 shadow-sm space-y-4"><div class="flex justify-between items-center border-b border-slate-50 pb-3"><div><h4 class="text-sm font-bold text-slate-800">Recent Activities</h4><p class="text-[11px] text-slate-400 mt-0.5">Real-time action audit trail logs.</p></div></div><div class="space-y-4 max-h-[300px] overflow-y-auto" id="recent-activities-list"></div></div>
                     </div>
 
@@ -307,9 +333,33 @@
             lv.forEach(item => { dl.innerHTML += `<div class="flex items-center justify-between font-medium"><div class="flex items-center gap-1.5 min-w-0"><span class="w-2.5 h-2.5 rounded-full shrink-0" style="background-color:${item.color}"></span><span class="text-slate-600 truncate text-[10px]">${item.label}</span></div><span class="text-slate-800 font-bold ml-2 shrink-0">${item.val} <span class="text-[9px] text-slate-400 font-medium">(${item.pct})</span></span></div>`; });
         }
 
+        // ── THEME TOGGLE ──
+        function toggleTheme() {
+            document.documentElement.classList.toggle('dark');
+            const isDark = document.documentElement.classList.contains('dark');
+            document.getElementById('theme-icon').className = isDark ? 'fa-solid fa-sun text-sm text-amber-400' : 'fa-solid fa-moon text-sm';
+            localStorage.setItem('charantra-theme', isDark ? 'dark' : 'light');
+        }
+        (function() {
+            if (localStorage.getItem('charantra-theme') === 'dark') { document.documentElement.classList.add('dark'); document.addEventListener('DOMContentLoaded', () => { const icon = document.getElementById('theme-icon'); if (icon) icon.className = 'fa-solid fa-sun text-sm text-amber-400'; }); }
+        })();
+        // ── ROLE SWITCHER ──
+        function toggleRoleDropdown() { document.getElementById('role-dropdown').classList.toggle('hidden'); }
+        function switchToRole(role) {
+            localStorage.setItem('charantra-role', role);
+            const r = { 'superadmin': '/pages/superadmin/dashboard.html', 'admin': '/pages/admin/dashboard.html', 'ib': '/pages/ib/deals.html', 'ba': '/pages/ba/reports.html' };
+            window.location.href = r[role] || '/index.html';
+        }
+        (function() {
+            const role = localStorage.getItem('charantra-role') || 'superadmin';
+            const labels = { 'superadmin': 'SUPER ADMIN', 'admin': 'ADMIN', 'ib': 'INVESTMENT BANKER', 'ba': 'BUSINESS ANALYST' };
+            const el = document.getElementById('role-label'); if (el) el.innerText = labels[role] || 'SUPER ADMIN';
+        })();
+
         window.addEventListener('click', function(e) {
             if (!e.target.closest('.relative')) {
                 document.querySelectorAll('[id$="-picker"], [id$="-tray"]').forEach(el => el.classList.add('hidden'));
+                const dd = document.getElementById('role-dropdown'); if (dd) dd.classList.add('hidden');
             }
         });
 

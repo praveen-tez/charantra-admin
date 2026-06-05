@@ -1,0 +1,1402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Charantra - Deals & M&A Pipeline</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            orange: '#FF5E00',
+                            orangeHover: '#e04f00',
+                            navyDark: '#070C1E',
+                            navyMedium: '#0F172A',
+                            navyLight: '#1E293B',
+                            bgSlate: '#F8FAFC',
+                            borderGray: '#E2E8F0'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome Premium Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Titillium Web', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            background-color: #F8FAFC;
+        }
+        .dark body,.dark { background-color:#050A30 !important; color:#F1F5F9 !important }
+        .dark .bg-white { background-color:#1E293B !important }
+        .dark .bg-slate-50 { background-color:#1E293B !important }
+        .dark .bg-brand-bgSlate { background-color:#050A30 !important }
+        .dark .text-slate-900 { color:#F1F5F9 !important }
+        .dark .text-slate-800 { color:#E2E8F0 !important }
+        .dark .text-slate-700 { color:#CBD5E1 !important }
+        .dark .text-slate-600 { color:#94A3B8 !important }
+        .dark .text-slate-500,.dark .text-slate-400 { color:#64748B !important }
+        .dark .border-slate-100,.dark .border-slate-200,.dark .border-brand-borderGray { border-color:#334155 !important }
+        .dark .border-slate-50 { border-color:#1E293B !important }
+        .dark .shadow-sm { box-shadow:0 1px 2px rgba(0,0,0,0.3) !important }
+        .dark .hover\:bg-slate-50:hover { background-color:#334155 !important }
+        /* Custom fine scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.02);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.15);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 0, 0, 0.25);
+        }
+        /* Smooth transitions */
+        .tab-transition {
+            transition: all 0.2s ease-in-out;
+        }
+        /* Sidebar collapse */
+        #app-sidebar.collapsed { width: 64px !important; }
+        #app-sidebar.collapsed .sidebar-label { display: none; }
+        #app-sidebar.collapsed .sidebar-arrow { display: none; }
+        #app-sidebar.collapsed .sidebar-logo { width: 32px !important; min-width: 32px !important; }
+        #app-sidebar.collapsed .sidebar-collapse-icon { transform: rotate(180deg); }
+        #app-sidebar.collapsed button { justify-content: center; padding-left: 8px; padding-right: 8px; }
+        #app-sidebar.collapsed nav > div > button { justify-content: center; }
+        #app-sidebar.collapsed .sidebar-section-div { max-height: 0 !important; }
+    </style>
+</head>
+<body class="overflow-hidden h-screen flex text-slate-800 bg-brand-bgSlate">
+
+    <div class="flex w-full h-full">
+        
+        <!-- STANDARD SIDEBAR -->
+        <aside id="app-sidebar" class="w-64 bg-brand-navyDark text-slate-300 flex flex-col h-full shrink-0 border-r border-slate-900 z-30 justify-between select-none transition-all duration-300">
+            <div class="flex flex-col overflow-y-auto">
+                <div class="p-4 flex items-center justify-between border-b border-slate-900/60">
+                    <div class="flex items-center gap-3 overflow-hidden">
+                        <a href="/index.html"><img src="/assets/logo.png" width="160" alt="Charantra Logo" class="sidebar-logo" style="height: auto; min-width: 120px;"></a>
+                    </div>
+                    <button onclick="toggleSidebarCollapse()" class="text-slate-500 hover:text-white p-1 rounded transition shrink-0" title="Toggle Sidebar"><i class="fa-solid fa-outdent text-xs sidebar-collapse-icon"></i></button>
+                </div>
+                <nav class="px-3 space-y-1 text-sm">
+                    <a href="/pages/ba/dashboard.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><i class="fa-solid fa-table-columns text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Dashboard</span></button></a>
+                    
+                    <div class="space-y-0.5">
+                        <button onclick="toggleSidebarSection('crm-section')" class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><span class="flex items-center gap-3"><i class="fa-solid fa-users text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">CRM & Users</span></span><i class="fa-solid fa-chevron-down text-[9px] transition-transform duration-200 sidebar-arrow" id="arrow-crm-section"></i></button>
+                        <div id="crm-section" class="pl-5 pr-1 space-y-0.5 overflow-hidden sidebar-section-div" style="max-height:0;transition:max-height 0.3s ease">
+                            <a href="/pages/ba/crm.html?type=Investor" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-hand-holding-dollar text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Investors</span></button></a>
+                            <a href="/pages/ba/crm.html?type=Investee" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-rocket text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Investees</span></button></a>
+                            <a href="/pages/ba/crm.html?type=Buyer" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-cart-shopping text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Buyers</span></button></a>
+                            <a href="/pages/ba/crm.html?type=Seller" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-tags text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Sellers</span></button></a>
+                            <a href="/pages/ba/crm.html?type=Advisor" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-comments text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Advisors</span></button></a>
+                        </div>
+                    </div>
+
+                    <a href="/pages/ba/mandates.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><i class="fa-solid fa-file-contract text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Mandates & Projects</span></button></a>
+
+                    <a href="/pages/ba/deals.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-bold text-white bg-brand-orange transition duration-150 overflow-hidden"><i class="fa-solid fa-briefcase text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Deals & Pipeline</span></button></a>
+
+                    <a href="/pages/ba/dataroom.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><i class="fa-solid fa-hard-drive text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Data Room</span></button></a>
+
+                    <div class="space-y-0.5">
+                        <button onclick="toggleSidebarSection('team-section')" class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><span class="flex items-center gap-3"><i class="fa-solid fa-user-group text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Team Management</span></span><i class="fa-solid fa-chevron-down text-[9px] transition-transform duration-200 sidebar-arrow" id="arrow-team-section"></i></button>
+                        <div id="team-section" class="pl-5 pr-1 space-y-0.5 overflow-hidden sidebar-section-div" style="max-height:0;transition:max-height 0.3s ease">
+                            <a href="/pages/ba/team.html?view=members" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-users-gear text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Team Members</span></button></a>
+                            <a href="/pages/ba/team.html?view=roles" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-shield-halved text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Roles & Permissions</span></button></a>
+                        </div>
+                    </div>
+
+                    <div class="space-y-0.5">
+                        <button onclick="toggleSidebarSection('payments-section')" class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><span class="flex items-center gap-3"><i class="fa-solid fa-receipt text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Payments</span></span><i class="fa-solid fa-chevron-down text-[9px] transition-transform duration-200 sidebar-arrow" id="arrow-payments-section"></i></button>
+                        <div id="payments-section" class="pl-5 pr-1 space-y-0.5 overflow-hidden sidebar-section-div" style="max-height:0;transition:max-height 0.3s ease">
+                            <a href="/pages/ba/payments.html?view=invoices" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-file-invoice text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Invoices</span></button></a>
+                            <a href="/pages/ba/payments.html?view=ledger" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-book text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Ledger</span></button></a>
+                        </div>
+                    </div>
+
+                    <a href="/pages/ba/reports.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><i class="fa-solid fa-chart-simple text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Reports</span></button></a>
+                    <a href="/pages/ba/settings.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><i class="fa-solid fa-gear text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Settings & Logs</span></button></a>
+                </nav>
+            </div>
+            <div class="p-4 text-center text-xs text-slate-600 border-t border-slate-900"><p class="sidebar-label">© 2026 Charantra</p></div>
+        </aside>
+
+        <!-- MAIN VIEW WRAPPER -->
+        <main class="flex-1 flex flex-col h-full overflow-hidden">
+            
+            <!-- TOP NAV BAR -->
+            <header class="h-16 border-b border-brand-borderGray bg-white flex items-center justify-between px-8 shrink-0 select-none">
+                <!-- Search bar -->
+                <div class="w-96 relative">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+                        <i class="fa-solid fa-magnifying-glass text-xs"></i>
+                    </span>
+                    <input type="text" id="header-search" oninput="handleSearch(this.value)" class="w-full bg-slate-50 border border-slate-200 rounded-lg py-1.5 pl-9 pr-4 text-xs focus:outline-none focus:border-brand-orange transition" placeholder="Global search for profiles, mandates...">
+                </div>
+
+                <!-- Profile and Language -->
+                <div class="flex items-center gap-5">
+                    <div class="flex items-center gap-1 border border-slate-200 rounded-lg px-2.5 py-1 bg-slate-50 text-xs text-slate-600">
+                        <span class="font-semibold text-slate-700">INR (₹)</span>
+                        <i class="fa-solid fa-chevron-down text-[9px] text-slate-400"></i>
+                    </div>
+                    <button onclick="toggleTheme()" class="p-2 text-slate-500 hover:text-brand-orange hover:bg-slate-100 rounded-full transition" title="Toggle theme"><i id="theme-icon" class="fa-regular fa-moon text-lg"></i></button>
+
+                    <div class="relative">
+                        <button class="p-2 text-slate-500 hover:text-brand-orange hover:bg-slate-100 rounded-full transition relative">
+                            <i class="fa-regular fa-bell text-lg"></i>
+                            <span class="absolute top-1.5 right-1.5 w-4 h-4 bg-red-500 text-[10px] text-white font-extrabold flex items-center justify-center rounded-full">3</span>
+                        </button>
+                    </div>
+
+                    <!-- User panel -->
+                    <div class="flex items-center gap-3 border-l border-slate-200 pl-4">
+                        <div class="text-right">
+                            <p class="text-xs font-bold text-slate-900 leading-none">KARTHIK</p>
+                            <p class="text-[9px] text-emerald-500 font-bold uppercase tracking-wider mt-0.5" id="role-label">BUSINESS ANALYST <i class="fa-solid fa-chevron-down text-[7px] text-slate-400 ml-1"></i></p>
+                        </div>
+                        <div class="relative">
+                            <button onclick="toggleRoleDropdown()" class="w-10 h-10 rounded-full bg-emerald-600 text-white font-extrabold text-sm flex items-center justify-center shadow hover:shadow-md transition cursor-pointer">K</button>
+                            <div id="role-dropdown" class="hidden absolute right-0 mt-2 w-52 bg-white border border-slate-200 rounded-xl shadow-xl z-50 text-xs overflow-hidden">
+                                <div class="px-4 py-3 border-b border-slate-100 font-bold text-slate-700">Switch Role</div>
+                                <button onclick="switchToRole('superadmin')" class="w-full text-left px-4 py-2.5 hover:bg-slate-50 text-slate-700 font-medium flex items-center gap-2.5 border-b border-slate-50"><i class="fa-solid fa-crown text-brand-orange w-4"></i> Super Admin</button>
+                                <button onclick="switchToRole('admin')" class="w-full text-left px-4 py-2.5 hover:bg-slate-50 text-slate-700 font-medium flex items-center gap-2.5 border-b border-slate-50"><i class="fa-solid fa-shield-halved text-violet-500 w-4"></i> Admin</button>
+                                <button onclick="switchToRole('ib')" class="w-full text-left px-4 py-2.5 hover:bg-slate-50 text-slate-700 font-medium flex items-center gap-2.5 border-b border-slate-50"><i class="fa-solid fa-briefcase text-blue-500 w-4"></i> Investment Banker</button>
+                                <button onclick="switchToRole('ba')" class="w-full text-left px-4 py-2.5 hover:bg-slate-50 text-slate-700 font-medium flex items-center gap-2.5"><i class="fa-solid fa-chart-line text-emerald-500 w-4"></i> Business Analyst</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- SUB-PAGES WRAPPER -->
+            <div class="flex-1 overflow-y-auto p-8" id="main-content-scrollable">
+
+                <!-- PIPELINE FLOW VIEW CONTAINER -->
+                <div id="pipeline-main-view" class="space-y-6">
+                    
+                    <!-- Header Section with exact buttons & titles -->
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h2 class="text-2xl font-extrabold tracking-tight text-slate-950">Deals & M&A Pipeline</h2>
+                            <p class="text-slate-500 text-xs mt-1">Monitor all equity and M&A deals across the platform.</p>
+                        </div>
+                        <button onclick="openNewDealModal()" class="bg-brand-orange hover:bg-brand-orangeHover text-white text-xs font-bold px-4 py-2.5 rounded-lg shadow-md flex items-center gap-2 transition">
+                            <i class="fa-solid fa-plus"></i> New Deal
+                        </button>
+                    </div>
+
+                    <!-- Dual Selector Flows (Investee <-> Investor / Seller <-> Buyer) and List/Kanban Toggles -->
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-slate-200/60 pb-5">
+                        
+                        <!-- Flow Option Switchers -->
+                        <div class="flex gap-4">
+                            <!-- Equity Flow Selector Button -->
+                            <button id="flow-btn-equity" onclick="switchFlow('equity')" class="text-left border-2 border-brand-orange bg-white p-3.5 pr-10 rounded-xl shadow-sm transition duration-200 flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-lg bg-orange-100 text-brand-orange flex items-center justify-center text-lg shadow-sm shrink-0">
+                                    <i class="fa-solid fa-sitemap"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-slate-900 text-xs uppercase tracking-wider">Equity Flow</h4>
+                                    <p class="text-[10px] text-slate-500 mt-0.5">Investee &leftrightarrow; Investor</p>
+                                </div>
+                            </button>
+
+                            <!-- M&A Flow Selector Button -->
+                            <button id="flow-btn-ma" onclick="switchFlow('ma')" class="text-left border-2 border-slate-200 bg-white hover:border-slate-300 p-3.5 pr-10 rounded-xl shadow-sm transition duration-200 flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-lg bg-slate-100 text-slate-500 flex items-center justify-center text-lg shadow-sm shrink-0" id="flow-icon-ma">
+                                    <i class="fa-solid fa-bezier-curve"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-slate-800 text-xs uppercase tracking-wider" id="flow-title-ma">M&A Flow</h4>
+                                    <p class="text-[10px] text-slate-500 mt-0.5">Seller &leftrightarrow; Buyer</p>
+                                </div>
+                            </button>
+                        </div>
+
+                        <!-- View Toggle controls (List View / Kanban View) -->
+                        <div class="bg-slate-100 p-1 rounded-lg flex items-center">
+                            <button id="view-toggle-list" onclick="switchViewMode('list')" class="px-4 py-1.5 rounded-md text-xs font-bold transition flex items-center gap-1.5 bg-white text-slate-900 shadow-sm">
+                                <i class="fa-solid fa-list-ul"></i> List View
+                            </button>
+                            <button id="view-toggle-kanban" onclick="switchViewMode('kanban')" class="px-4 py-1.5 rounded-md text-xs font-bold transition flex items-center gap-1.5 text-slate-500 hover:text-slate-800">
+                                <i class="fa-solid fa-grip-vertical"></i> Kanban View
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Replicated 6 KPI cards from image_2fd43a.png -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4">
+                        <!-- KPI Card 1 -->
+                        <div class="bg-white p-4 rounded-xl border border-slate-100 shadow-sm flex flex-col justify-between">
+                            <div class="flex items-center gap-2.5">
+                                <div class="w-8 h-8 rounded-lg bg-orange-50 text-brand-orange flex items-center justify-center text-sm">
+                                    <i class="fa-solid fa-chart-simple"></i>
+                                </div>
+                                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Total Deals</span>
+                            </div>
+                            <div class="mt-4">
+                                <h4 class="text-2xl font-extrabold text-slate-900 leading-none">48</h4>
+                                <span class="text-[9px] text-slate-400 font-bold block mt-1">Across all flows</span>
+                            </div>
+                        </div>
+
+                        <!-- KPI Card 2 -->
+                        <div class="bg-white p-4 rounded-xl border border-slate-100 shadow-sm flex flex-col justify-between">
+                            <div class="flex items-center gap-2.5">
+                                <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center text-sm">
+                                    <i class="fa-solid fa-sitemap"></i>
+                                </div>
+                                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Equity Deals</span>
+                            </div>
+                            <div class="mt-4">
+                                <h4 class="text-2xl font-extrabold text-slate-900 leading-none">28</h4>
+                                <span class="text-[9px] text-slate-400 font-bold block mt-1">Investee &leftrightarrow; Investor</span>
+                            </div>
+                        </div>
+
+                        <!-- KPI Card 3 -->
+                        <div class="bg-white p-4 rounded-xl border border-slate-100 shadow-sm flex flex-col justify-between">
+                            <div class="flex items-center gap-2.5">
+                                <div class="w-8 h-8 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center text-sm">
+                                    <i class="fa-solid fa-bezier-curve"></i>
+                                </div>
+                                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">M&A Deals</span>
+                            </div>
+                            <div class="mt-4">
+                                <h4 class="text-2xl font-extrabold text-slate-900 leading-none">20</h4>
+                                <span class="text-[9px] text-slate-400 font-bold block mt-1">Seller &leftrightarrow; Buyer</span>
+                            </div>
+                        </div>
+
+                        <!-- KPI Card 4 -->
+                        <div class="bg-white p-4 rounded-xl border border-slate-100 shadow-sm flex flex-col justify-between">
+                            <div class="flex items-center gap-2.5">
+                                <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center text-sm">
+                                    <i class="fa-solid fa-wave-square"></i>
+                                </div>
+                                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Active Deals</span>
+                            </div>
+                            <div class="mt-4">
+                                <h4 class="text-2xl font-extrabold text-slate-900 leading-none">36</h4>
+                                <span class="text-[9px] text-slate-400 font-bold block mt-1">In progress stage</span>
+                            </div>
+                        </div>
+
+                        <!-- KPI Card 5 -->
+                        <div class="bg-white p-4 rounded-xl border border-slate-100 shadow-sm flex flex-col justify-between">
+                            <div class="flex items-center gap-2.5">
+                                <div class="w-8 h-8 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center text-sm">
+                                    <i class="fa-solid fa-triangle-exclamation"></i>
+                                </div>
+                                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Deals at Risk</span>
+                            </div>
+                            <div class="mt-4">
+                                <h4 class="text-2xl font-extrabold text-slate-900 leading-none">7</h4>
+                                <span class="text-[9px] text-rose-600 font-bold block mt-1"><i class="fa-solid fa-arrow-trend-up"></i> 2 <span class="text-slate-400 font-normal">from last week</span></span>
+                            </div>
+                        </div>
+
+                        <!-- KPI Card 6 -->
+                        <div class="bg-white p-4 rounded-xl border border-slate-100 shadow-sm flex flex-col justify-between">
+                            <div class="flex items-center gap-2.5">
+                                <div class="w-8 h-8 rounded-lg bg-teal-50 text-teal-600 flex items-center justify-center text-sm">
+                                    <i class="fa-solid fa-circle-check"></i>
+                                </div>
+                                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Deals Closed</span>
+                            </div>
+                            <div class="mt-4">
+                                <h4 class="text-2xl font-extrabold text-slate-900 leading-none">5</h4>
+                                <span class="text-[9px] text-emerald-600 font-bold block mt-1"><i class="fa-solid fa-arrow-trend-up"></i> 1 <span class="text-slate-400 font-normal">from last week</span></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- VIEWPORT CONTAINER A: LIST VIEW (Exact columns and design) -->
+                    <div id="viewport-list-mode" class="space-y-4">
+                        
+                        <!-- Table header metadata & Filter Buttons -->
+                        <div class="bg-white border border-slate-100 rounded-2xl p-5 shadow-sm space-y-4">
+                            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                                <div>
+                                    <h3 class="text-sm font-bold text-slate-900" id="table-subtitle-flow">Equity Flow Deals</h3>
+                                    <p class="text-xs text-slate-400" id="table-subtitle-desc">Fundraising transactions between Investees and Investors.</p>
+                                </div>
+                                <div class="flex items-center gap-2 self-stretch sm:self-auto">
+                                    <button class="bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-600 text-xs px-4 py-2.5 rounded-lg font-bold flex items-center gap-1.5 transition">
+                                        <i class="fa-solid fa-sliders text-[10px]"></i> Filter
+                                    </button>
+                                    <button onclick="triggerMockExport()" class="bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-600 text-xs px-4 py-2.5 rounded-lg font-bold flex items-center gap-1.5 transition">
+                                        <i class="fa-solid fa-download text-[10px]"></i> Export
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sourced pipeline table grid -->
+                        <div class="bg-white rounded-2xl border border-slate-100 overflow-hidden shadow-sm">
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left text-xs border-collapse">
+                                    <thead>
+                                        <tr class="bg-slate-50/60 border-b border-slate-100 text-slate-400 text-[10px] uppercase font-bold tracking-wider">
+                                            <th class="p-4" id="col-header-id">Deal ID</th>
+                                            <th class="p-4" id="col-header-sidea">Investee</th>
+                                            <th class="p-4" id="col-header-sideb">Target Investor</th>
+                                            <th class="p-4">Raise Amount</th>
+                                            <th class="p-4">Current Stage</th>
+                                            <th class="p-4">Deal Health</th>
+                                            <th class="p-4">Last Activity</th>
+                                            <th class="p-4 text-center">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="deals-table-body" class="divide-y divide-slate-100">
+                                        <!-- Rendered dynamically by javascript -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- VIEWPORT CONTAINER B: KANBAN BOARD VIEW -->
+                    <div id="viewport-kanban-mode" class="hidden overflow-x-auto pb-4">
+                        <div class="flex gap-4 min-w-[1200px]" id="kanban-columns-container">
+                            <!-- Columns populated by dynamic lists -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PIPELINE DEAL DETAIL WORKSPACE (Perfect replication of image_2fd3dd.png) -->
+                <div id="deal-details-view" class="hidden space-y-6">
+                    
+                    <!-- Back Link Navigation -->
+                    <button onclick="returnToMainView()" class="text-brand-orange hover:text-brand-orangeHover text-xs font-bold flex items-center gap-2 transition select-none">
+                        <i class="fa-solid fa-arrow-left"></i> Back to Deals
+                    </button>
+
+                    <!-- Profile Header -->
+                    <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+                        <div>
+                            <div class="flex items-center gap-3">
+                                <span class="bg-slate-100 text-slate-600 font-bold px-2 py-0.5 rounded text-[10px]" id="detail-card-id">EQ-101</span>
+                                <h3 class="text-xl font-extrabold text-slate-900" id="detail-card-title">TechVenture Solutions &leftrightarrow; Sequoia Capital India</h3>
+                                <span class="bg-emerald-50 text-emerald-700 text-[9px] font-bold px-2.5 py-0.5 rounded-full" id="detail-card-flow">EQUITY FLOW</span>
+                            </div>
+                            <p class="text-xs text-slate-500 mt-1" id="detail-card-sub">Series A Round • ₹25.0 Cr Raise Target</p>
+                            <!-- Metadata line -->
+                            <div class="flex flex-wrap items-center gap-x-6 gap-y-2 mt-3 text-xs text-slate-500 font-medium">
+                                <div>Created On: <span class="text-slate-800 font-bold" id="detail-meta-created">12 Apr 2026</span></div>
+                                <div>Deal Owner: <span class="text-slate-800 font-bold" id="detail-meta-owner">Akash Kumar</span></div>
+                                <div>Deal Age: <span class="text-slate-800 font-bold" id="detail-meta-age">48 Days</span></div>
+                                <div>Deal Health: <span class="text-emerald-600 font-extrabold" id="detail-meta-health">HEALTHY</span></div>
+                            </div>
+                        </div>
+
+                        <!-- Right Control Actions -->
+                        <div class="flex items-center gap-2 self-stretch lg:self-auto">
+                            <button onclick="triggerMockAction('Message Parties')" class="bg-white border border-slate-200 text-slate-700 text-xs px-4 py-2.5 rounded-lg font-bold hover:bg-slate-50 transition">
+                                <i class="fa-regular fa-comments mr-1.5"></i> Message Parties
+                            </button>
+                            <button onclick="triggerMockAction('Schedule Meeting')" class="bg-white border border-slate-200 text-slate-700 text-xs px-4 py-2.5 rounded-lg font-bold hover:bg-slate-50 transition">
+                                <i class="fa-regular fa-calendar-check mr-1.5"></i> Schedule Meeting
+                            </button>
+                            <button class="bg-white border border-slate-200 text-slate-700 text-xs px-3 py-2.5 rounded-lg font-bold hover:bg-slate-50 transition">
+                                More <i class="fa-solid fa-chevron-down text-[9px] ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- PROGRESS FLOW TRACKER (Perfect match with progress markers style) -->
+                    <div class="bg-white border border-slate-100 rounded-2xl p-6 shadow-sm">
+                        <span class="text-[10px] text-slate-400 font-bold uppercase block tracking-wider mb-5">Deal Progress Tracker</span>
+                        
+                        <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-y-4" id="tracker-steps-wrapper">
+                            <!-- Rendered sequentially via JS state tracker values -->
+                        </div>
+                    </div>
+
+                    <!-- METRICS AND PARAMETERS CARDS ROW -->
+                    <div class="grid grid-cols-2 md:grid-cols-6 gap-4">
+                        <div class="bg-white p-4 rounded-xl border border-slate-100 shadow-sm">
+                            <span class="text-[10px] text-slate-400 font-bold block uppercase tracking-wider">Current Stage</span>
+                            <h4 class="text-sm font-extrabold text-slate-900 mt-2" id="detail-grid-stage">Due Diligence</h4>
+                            <span class="text-[9px] text-slate-400 block mt-1" id="detail-grid-stage-since">Since 12 Apr 2026</span>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl border border-slate-100 shadow-sm">
+                            <span class="text-[10px] text-slate-400 font-bold block uppercase tracking-wider">Deal Value (Ask)</span>
+                            <h4 class="text-sm font-extrabold text-slate-900 mt-2" id="detail-grid-value">₹25.0 Cr</h4>
+                            <span class="text-[9px] text-slate-400 block mt-1">100% Target Ask</span>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl border border-slate-100 shadow-sm">
+                            <span class="text-[10px] text-slate-400 font-bold block uppercase tracking-wider">Indicative Valuation</span>
+                            <h4 class="text-sm font-extrabold text-slate-900 mt-2" id="detail-grid-val">₹125.0 Cr</h4>
+                            <span class="text-[9px] text-slate-400 block mt-1">Pre-Money standard</span>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl border border-slate-100 shadow-sm">
+                            <span class="text-[10px] text-slate-400 font-bold block uppercase tracking-wider">Equity Offered</span>
+                            <h4 class="text-sm font-extrabold text-slate-900 mt-2" id="detail-grid-equity">20%</h4>
+                            <span class="text-[9px] text-slate-400 block mt-1">Strategic Shares %</span>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl border border-slate-100 shadow-sm">
+                            <span class="text-[10px] text-slate-400 font-bold block uppercase tracking-wider">Expected Close Date</span>
+                            <h4 class="text-sm font-extrabold text-slate-900 mt-2" id="detail-grid-close">15 Jun 2026</h4>
+                            <span class="text-[9px] text-brand-orange font-bold block mt-1" id="detail-grid-close-days">In 23 Days</span>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl border border-slate-100 shadow-sm">
+                            <span class="text-[10px] text-slate-400 font-bold block uppercase tracking-wider">Probability of Close</span>
+                            <h4 class="text-sm font-extrabold text-slate-900 mt-2" id="detail-grid-prob">78%</h4>
+                            <span class="text-[9px] text-emerald-600 font-bold block mt-1">High Probability</span>
+                        </div>
+                    </div>
+
+                    <!-- BOTTOM BLOCKS (Parties involved, timeline logs, deal key metrics) -->
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                        
+                        <!-- Parties Involved Desk -->
+                        <div class="lg:col-span-4 bg-white border border-slate-100 rounded-2xl p-5 shadow-sm space-y-4">
+                            <span class="text-[10px] text-slate-400 font-bold uppercase block tracking-wider border-b border-slate-50 pb-2">Parties Involved</span>
+                            
+                            <div class="space-y-4 text-xs">
+                                <!-- Party A details -->
+                                <div class="space-y-2">
+                                    <span class="text-[10px] font-bold text-slate-400 uppercase block" id="label-party-a">Investee (Company)</span>
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-xs" id="party-avatar-a">TE</div>
+                                        <div>
+                                            <h5 class="font-extrabold text-slate-900" id="party-name-a">TechVenture Solutions</h5>
+                                            <span class="text-[10px] text-slate-400" id="party-sub-a">Founder • Sarah Chen</span>
+                                        </div>
+                                    </div>
+                                    <div class="grid grid-cols-2 gap-2 pt-2 text-[11px] text-slate-500">
+                                        <div>Industry</div>
+                                        <div class="text-slate-800 font-bold text-right" id="party-ind-a">SaaS / Enterprise Tech</div>
+                                        <div>Email</div>
+                                        <div class="text-slate-800 font-bold text-right truncate" id="party-email-a">sarah@techventure.com</div>
+                                        <div>Location</div>
+                                        <div class="text-slate-800 font-bold text-right" id="party-loc-a">Bengaluru, India</div>
+                                    </div>
+                                </div>
+
+                                <hr class="border-slate-100">
+
+                                <!-- Party B details -->
+                                <div class="space-y-2">
+                                    <span class="text-[10px] font-bold text-slate-400 uppercase block" id="label-party-b">Investor</span>
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-8 h-8 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center font-bold text-xs" id="party-avatar-b">SE</div>
+                                        <div>
+                                            <h5 class="font-extrabold text-slate-900" id="party-name-b">Sequoia Capital India</h5>
+                                            <span class="text-[10px] text-slate-400" id="party-sub-b">Managing Director</span>
+                                        </div>
+                                    </div>
+                                    <div class="grid grid-cols-2 gap-2 pt-2 text-[11px] text-slate-500">
+                                        <div>Industry</div>
+                                        <div class="text-slate-800 font-bold text-right" id="party-ind-b">Venture Capital</div>
+                                        <div>Email</div>
+                                        <div class="text-slate-800 font-bold text-right truncate" id="party-email-b">contact@sequoiacap.com</div>
+                                        <div>Location</div>
+                                        <div class="text-slate-800 font-bold text-right" id="party-loc-b">Mumbai, India</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Parties Sourcing Timeline Log -->
+                        <div class="lg:col-span-4 bg-white border border-slate-100 rounded-2xl p-5 shadow-sm space-y-4">
+                            <span class="text-[10px] text-slate-400 font-bold uppercase block tracking-wider border-b border-slate-50 pb-2">Parties Timeline</span>
+                            
+                            <div class="relative pl-6 border-l-2 border-slate-100 space-y-5 text-xs" id="detail-timeline-wrapper">
+                                <!-- Populated dynamically by javascript -->
+                            </div>
+                        </div>
+
+                        <!-- Sourced Deal Key Metrics -->
+                        <div class="lg:col-span-4 bg-white border border-slate-100 rounded-2xl p-5 shadow-sm space-y-4">
+                            <span class="text-[10px] text-slate-400 font-bold uppercase block tracking-wider border-b border-slate-50 pb-2">Deal Key Metrics</span>
+                            
+                            <div class="space-y-3.5 text-xs text-slate-500">
+                                <div class="flex justify-between items-center">
+                                    <span>Target Raise Amount</span>
+                                    <strong class="text-slate-900 font-bold" id="metric-row-raise">₹25.0 Cr</strong>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span>Indicative Valuation</span>
+                                    <strong class="text-slate-900 font-bold" id="metric-row-val">₹125.0 Cr</strong>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span>Equity Offered</span>
+                                    <strong class="text-slate-900 font-bold" id="metric-row-equity">20%</strong>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span>Amount Committed</span>
+                                    <strong class="text-slate-900 font-bold" id="metric-row-commit">₹0.0 Cr</strong>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span>Committed Investors</span>
+                                    <strong class="text-slate-900 font-bold">0</strong>
+                                </div>
+                                <div class="flex justify-between items-center pt-2.5 border-t border-slate-100 text-[10px]">
+                                    <span>Last Updated</span>
+                                    <span class="text-slate-400 font-semibold">12 May 2026</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- NEW DEAL MODAL FOR DIRECT INTEGRATION -->
+    <div id="modal-deploy-deal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex justify-center items-center z-50 select-none">
+        <div class="bg-white rounded-xl shadow-2xl border border-slate-200 w-full max-w-md overflow-hidden m-4">
+            <div class="bg-brand-navyDark text-white p-5 flex justify-between items-center">
+                <h3 class="font-bold text-sm">Add Strategic Deal Sourcing</h3>
+                <button onclick="closeNewDealModal()" class="text-slate-400 hover:text-white transition"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <form id="form-add-deal" onsubmit="handleNewDealSubmit(event)" class="p-6 space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Flow Category</label>
+                    <select id="deal-new-flow" class="w-full border border-slate-200 rounded-lg p-2.5 text-xs bg-white focus:outline-none focus:border-brand-orange" onchange="adjustModalLabels(this.value)">
+                        <option value="equity">EQUITY FLOW (Investee &leftrightarrow; Investor)</option>
+                        <option value="ma">M&A FLOW (Seller &leftrightarrow; Buyer)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 uppercase mb-1" id="lbl-modal-sidea">Investee</label>
+                    <input type="text" id="deal-new-sidea" required class="w-full border border-slate-200 rounded-lg p-2.5 text-xs focus:outline-none focus:border-brand-orange" placeholder="e.g. Acme Corporation">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 uppercase mb-1" id="lbl-modal-sideb">Target Investor</label>
+                    <input type="text" id="deal-new-sideb" required class="w-full border border-slate-200 rounded-lg p-2.5 text-xs focus:outline-none focus:border-brand-orange" placeholder="e.g. Tiger Global Management">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Target Amount</label>
+                        <input type="text" id="deal-new-amount" required class="w-full border border-slate-200 rounded-lg p-2.5 text-xs focus:outline-none focus:border-brand-orange" placeholder="e.g. ₹15.0 Cr">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Deal Round / Note</label>
+                        <input type="text" id="deal-new-round" required class="w-full border border-slate-200 rounded-lg p-2.5 text-xs focus:outline-none focus:border-brand-orange" placeholder="e.g. Series B Round">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Current Stage</label>
+                        <select id="deal-new-stage" class="w-full border border-slate-200 rounded-lg p-2.5 text-xs bg-white focus:outline-none focus:border-brand-orange">
+                            <option value="Investor Interest">Investor Interest</option>
+                            <option value="NDA Signed">NDA Signed</option>
+                            <option value="Data Room Access">Data Room Access</option>
+                            <option value="Discussions">Discussions</option>
+                            <option value="Due Diligence">Due Diligence</option>
+                            <option value="Term Sheet / Closing">Term Sheet / Closing</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Deal Health</label>
+                        <select id="deal-new-health" class="w-full border border-slate-200 rounded-lg p-2.5 text-xs bg-white focus:outline-none focus:border-brand-orange">
+                            <option value="HEALTHY">HEALTHY</option>
+                            <option value="AT RISK">AT RISK</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="flex justify-end gap-2 border-t border-slate-100 pt-4">
+                    <button type="button" onclick="closeNewDealModal()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs px-4 py-2 rounded-lg font-bold">Cancel</button>
+                    <button type="submit" class="bg-brand-orange hover:bg-brand-orangeHover text-white text-xs px-4 py-2 rounded-lg font-bold">Deploy Sourcing Flow</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MASTER PIPELINE STATE SOURCING LOGIC -->
+    <script>
+        function toggleDropdown(id) { const el = document.getElementById(id); if(el) el.classList.toggle('hidden'); }
+        function toggleTheme(){document.documentElement.classList.toggle('dark');const d=document.documentElement.classList.contains('dark');document.getElementById('theme-icon').className=d?'fa-solid fa-sun text-sm text-amber-400':'fa-solid fa-moon text-sm';localStorage.setItem('charantra-theme',d?'dark':'light')}
+        (function(){if(localStorage.getItem('charantra-theme')==='dark'){document.documentElement.classList.add('dark');document.addEventListener('DOMContentLoaded',()=>{const i=document.getElementById('theme-icon');if(i)i.className='fa-solid fa-sun text-sm text-amber-400'})}})()
+        // ── SIDEBAR FUNCTIONS ──
+        function toggleSidebarCollapse() {
+            document.getElementById('app-sidebar').classList.toggle('collapsed');
+            document.querySelectorAll('.sidebar-section-div').forEach(el => { if (document.getElementById('app-sidebar').classList.contains('collapsed')) el.style.maxHeight = '0'; });
+        }
+        function toggleSidebarSection(id) {
+            if (document.getElementById('app-sidebar').classList.contains('collapsed')) return;
+            const el = document.getElementById(id), arrow = document.getElementById('arrow-' + id);
+            if (el) { const open = el.style.maxHeight !== '0px' && el.style.maxHeight !== ''; el.style.maxHeight = open ? '0' : '200px'; }
+            if (arrow) arrow.style.transform = arrow.style.transform === 'rotate(180deg)' ? 'rotate(0deg)' : 'rotate(180deg)';
+        }
+
+        // Database structured around image_2fd43a.png and image_2fd3a2.png
+        const db = {
+            deals: [
+                {
+                    id: "EQ-101",
+                    flow: "equity",
+                    sideA: "TechVenture Solutions",
+                    sideB: "Sequoia Capital India",
+                    amount: "₹25.0 Cr",
+                    stage: "Due Diligence",
+                    health: "HEALTHY",
+                    lastActive: "2 hours ago",
+                    round: "Series A Round",
+                    owner: "Akash Kumar",
+                    ownerRole: "IB",
+                    age: 48,
+                    createdOn: "12 Apr 2026",
+                    indicativeValuation: "₹125.0 Cr",
+                    equityOffered: "20%",
+                    closeDate: "15 Jun 2026",
+                    closeDays: 23,
+                    probability: "78%",
+                    parties: {
+                        investee: {
+                            name: "TechVenture Solutions",
+                            founder: "Sarah Chen",
+                            industry: "SaaS / Enterprise Tech",
+                            email: "sarah@techventure.com",
+                            location: "Bengaluru, India"
+                        },
+                        investor: {
+                            name: "Sequoia Capital India",
+                            founder: "Sandeep Singhal",
+                            industry: "Venture Capital",
+                            email: "contact@sequoiacap.com",
+                            location: "Mumbai, India"
+                        }
+                    },
+                    timeline: [
+                        { date: "15 Apr 2026", event: "Investor Interest", desc: "Sequoia Capital India showed interest" },
+                        { date: "18 Apr 2026", event: "NDA Signed", desc: "NDA signed by both parties" },
+                        { date: "21 Apr 2026", event: "Data Room Access", desc: "Investor granted access to data room" },
+                        { date: "25 Apr 2026", event: "Discussions", desc: "Preliminary strategy match discussions" }
+                    ]
+                },
+                {
+                    id: "EQ-102",
+                    flow: "equity",
+                    sideA: "GreenField Innovations",
+                    sideB: "Matrix Partners India",
+                    amount: "₹12.0 Cr",
+                    stage: "Due Diligence",
+                    health: "AT RISK",
+                    lastActive: "1 day ago",
+                    round: "Seed Round",
+                    owner: "Akash Kumar",
+                    ownerRole: "IB",
+                    age: 32,
+                    createdOn: "28 Apr 2026",
+                    indicativeValuation: "₹60.0 Cr",
+                    equityOffered: "20%",
+                    closeDate: "30 Jun 2026",
+                    closeDays: 38,
+                    probability: "55%",
+                    parties: {
+                        investee: {
+                            name: "GreenField Innovations",
+                            founder: "Amit Verma",
+                            industry: "Agritech / IoT",
+                            email: "amit@greenfield.io",
+                            location: "Pune, India"
+                        },
+                        investor: {
+                            name: "Matrix Partners India",
+                            founder: "Tarun Davda",
+                            industry: "Venture Capital",
+                            email: "info@matrixpartners.in",
+                            location: "Bengaluru, India"
+                        }
+                    },
+                    timeline: [
+                        { date: "02 May 2026", event: "Investor Interest", desc: "Matrix Partners India showed interest" },
+                        { date: "05 May 2026", event: "NDA Signed", desc: "NDA signed by both parties" }
+                    ]
+                },
+                {
+                    id: "EQ-103",
+                    flow: "equity",
+                    sideA: "Finova Labs",
+                    sideB: "Accel India",
+                    amount: "₹18.0 Cr",
+                    stage: "Data Room Access",
+                    health: "HEALTHY",
+                    lastActive: "3 days ago",
+                    round: "Pre-Series A",
+                    owner: "Siddharth Deshmukh",
+                    ownerRole: "Senior Associate",
+                    age: 24,
+                    createdOn: "10 May 2026",
+                    indicativeValuation: "₹90.0 Cr",
+                    equityOffered: "20%",
+                    closeDate: "10 Jul 2026",
+                    closeDays: 48,
+                    probability: "65%",
+                    parties: {
+                        investee: {
+                            name: "Finova Labs",
+                            founder: "Rajesh Patil",
+                            industry: "Fintech / Payments",
+                            email: "rajesh@finovalabs.com",
+                            location: "Mumbai, India"
+                        },
+                        investor: {
+                            name: "Accel India",
+                            founder: "Shekhar Kirani",
+                            industry: "Venture Capital",
+                            email: "india@accel.com",
+                            location: "Bengaluru, India"
+                        }
+                    },
+                    timeline: [
+                        { date: "12 May 2026", event: "Investor Interest", desc: "Accel India showed interest" }
+                    ]
+                },
+                {
+                    id: "EQ-104",
+                    flow: "equity",
+                    sideA: "AgriNext Technologies",
+                    sideB: "Blume Ventures",
+                    amount: "₹8.5 Cr",
+                    stage: "Investor Interest",
+                    health: "HEALTHY",
+                    lastActive: "4 days ago",
+                    round: "Seed Round",
+                    owner: "Akash Kumar",
+                    ownerRole: "IB",
+                    age: 12,
+                    createdOn: "20 May 2026",
+                    indicativeValuation: "₹42.5 Cr",
+                    equityOffered: "20%",
+                    closeDate: "25 Jul 2026",
+                    closeDays: 63,
+                    probability: "85%",
+                    parties: {
+                        investee: {
+                            name: "AgriNext Technologies",
+                            founder: "Sanjay Shah",
+                            industry: "Agritech / SaaS",
+                            email: "sanjay@agrinext.tech",
+                            location: "Hyderabad, India"
+                        },
+                        investor: {
+                            name: "Blume Ventures",
+                            founder: "Karthik Reddy",
+                            industry: "Venture Capital",
+                            email: "partners@blume.vc",
+                            location: "Mumbai, India"
+                        }
+                    },
+                    timeline: [
+                        { date: "22 May 2026", event: "Investor Interest", desc: "Blume Ventures showed interest" }
+                    ]
+                },
+                // M&A Flow Seed Data for dynamic selectors
+                {
+                    id: "MA-101",
+                    flow: "ma",
+                    sideA: "Apex Retail Logistics",
+                    sideB: "Reliance Retail",
+                    amount: "₹120.0 Cr",
+                    stage: "Due Diligence",
+                    health: "HEALTHY",
+                    lastActive: "5 days ago",
+                    round: "Acquisition buyout",
+                    owner: "Akash Kumar",
+                    ownerRole: "IB",
+                    age: 60,
+                    createdOn: "05 Apr 2026",
+                    indicativeValuation: "₹150.0 Cr",
+                    equityOffered: "100%",
+                    closeDate: "30 Jun 2026",
+                    closeDays: 26,
+                    probability: "90%",
+                    parties: {
+                        investee: {
+                            name: "Apex Retail Logistics",
+                            founder: "Alok Sen",
+                            industry: "Retail Infrastructure",
+                            email: "alok@apexlogistics.com",
+                            location: "Gurugram, India"
+                        },
+                        investor: {
+                            name: "Reliance Retail",
+                            founder: "Mukesh Ambani",
+                            industry: "Corporate Buyout Division",
+                            email: "ma@ril.com",
+                            location: "Mumbai, India"
+                        }
+                    },
+                    timeline: [
+                        { date: "10 Apr 2026", event: "Sourced match proposal", desc: "Reliance showed strategic buyout interest" }
+                    ]
+                },
+                {
+                    id: "MA-102",
+                    flow: "ma",
+                    sideA: "Innova Energy Pvt Ltd",
+                    sideB: "BlueAshva Capital",
+                    amount: "₹30.0 Cr",
+                    stage: "Discussions",
+                    health: "AT RISK",
+                    lastActive: "1 week ago",
+                    round: "Majority Buyout",
+                    owner: "Siddharth Deshmukh",
+                    ownerRole: "Senior Associate",
+                    age: 18,
+                    createdOn: "15 May 2026",
+                    indicativeValuation: "₹35.0 Cr",
+                    equityOffered: "51%",
+                    closeDate: "15 Aug 2026",
+                    closeDays: 72,
+                    probability: "40%",
+                    parties: {
+                        investee: {
+                            name: "Innova Energy Pvt Ltd",
+                            founder: "Rahul Kapoor",
+                            industry: "Renewable Energy",
+                            email: "rahul@innovaenergy.in",
+                            location: "Ahmedabad, India"
+                        },
+                        investor: {
+                            name: "BlueAshva Capital",
+                            founder: "Satish Kataria",
+                            industry: "Private Equity",
+                            email: "contact@blueashva.com",
+                            location: "Singapore"
+                        }
+                    },
+                    timeline: [
+                        { date: "18 May 2026", event: "Investor Interest", desc: "BlueAshva initiated evaluation dossier" }
+                    ]
+                }
+            ]
+        };
+
+        // Active State variables
+        let activeFlow = 'equity'; // 'equity' or 'ma'
+        let activeViewMode = 'list'; // 'list' or 'kanban'
+        let currentSearchQuery = '';
+
+        // Initialize Workspace
+        window.onload = function () {
+            renderDashboardFlow();
+        };
+
+        // Switch Active Flow State (Equity vs M&A Flow)
+        function switchFlow(flowType) {
+            activeFlow = flowType;
+            
+            const btnEq = document.getElementById('flow-btn-equity');
+            const btnMa = document.getElementById('flow-btn-ma');
+            const iconMa = document.getElementById('flow-icon-ma');
+            const titleMa = document.getElementById('flow-title-ma');
+
+            if (flowType === 'equity') {
+                btnEq.className = "text-left border-2 border-brand-orange bg-white p-3.5 pr-10 rounded-xl shadow-sm transition duration-200 flex items-center gap-3";
+                btnMa.className = "text-left border-2 border-slate-200 bg-white hover:border-slate-300 p-3.5 pr-10 rounded-xl shadow-sm transition duration-200 flex items-center gap-3";
+                iconMa.className = "w-10 h-10 rounded-lg bg-slate-100 text-slate-500 flex items-center justify-center text-lg shadow-sm shrink-0";
+                titleMa.className = "font-bold text-slate-800 text-xs uppercase tracking-wider";
+
+                document.getElementById('table-subtitle-flow').innerText = "Equity Flow Deals";
+                document.getElementById('table-subtitle-desc').innerText = "Fundraising transactions between Investees and Investors.";
+                document.getElementById('col-header-sidea').innerText = "Investee";
+                document.getElementById('col-header-sideb').innerText = "Target Investor";
+            } else {
+                btnMa.className = "text-left border-2 border-brand-orange bg-white p-3.5 pr-10 rounded-xl shadow-sm transition duration-200 flex items-center gap-3";
+                btnEq.className = "text-left border-2 border-slate-200 bg-white hover:border-slate-300 p-3.5 pr-10 rounded-xl shadow-sm transition duration-200 flex items-center gap-3";
+                iconMa.className = "w-10 h-10 rounded-lg bg-orange-100 text-brand-orange flex items-center justify-center text-lg shadow-sm shrink-0";
+                titleMa.className = "font-bold text-slate-900 text-xs uppercase tracking-wider";
+
+                document.getElementById('table-subtitle-flow').innerText = "M&A Flow Deals";
+                document.getElementById('table-subtitle-desc').innerText = "Mergers, Acquisitions, and Corporate Buyouts.";
+                document.getElementById('col-header-sidea').innerText = "Seller";
+                document.getElementById('col-header-sideb').innerText = "Target Buyer";
+            }
+
+            renderDashboardFlow();
+        }
+
+        // Switch View Modes (List vs Kanban View)
+        function switchViewMode(mode) {
+            activeViewMode = mode;
+            const btnList = document.getElementById('view-toggle-list');
+            const btnKanban = document.getElementById('view-toggle-kanban');
+
+            const viewList = document.getElementById('viewport-list-mode');
+            const viewKanban = document.getElementById('viewport-kanban-mode');
+
+            if (mode === 'list') {
+                btnList.className = "px-4 py-1.5 rounded-md text-xs font-bold transition flex items-center gap-1.5 bg-white text-slate-900 shadow-sm";
+                btnKanban.className = "px-4 py-1.5 rounded-md text-xs font-bold transition flex items-center gap-1.5 text-slate-500 hover:text-slate-800";
+                viewList.classList.remove('hidden');
+                viewKanban.classList.add('hidden');
+            } else {
+                btnKanban.className = "px-4 py-1.5 rounded-md text-xs font-bold transition flex items-center gap-1.5 bg-white text-slate-900 shadow-sm";
+                btnList.className = "px-4 py-1.5 rounded-md text-xs font-bold transition flex items-center gap-1.5 text-slate-500 hover:text-slate-800";
+                viewKanban.classList.remove('hidden');
+                viewList.classList.add('hidden');
+            }
+
+            renderDashboardFlow();
+        }
+
+        // Render Active Views
+        function renderDashboardFlow() {
+            // Get filtered list based on state flow selector
+            const filtered = db.deals.filter(d => {
+                const matchesFlow = d.flow === activeFlow;
+                const matchesSearch = d.sideA.toLowerCase().includes(currentSearchQuery.toLowerCase()) || 
+                                      d.sideB.toLowerCase().includes(currentSearchQuery.toLowerCase()) ||
+                                      d.id.toLowerCase().includes(currentSearchQuery.toLowerCase());
+                return matchesFlow && matchesSearch;
+            });
+
+            if (activeViewMode === 'list') {
+                renderListMode(filtered);
+            } else {
+                renderKanbanMode(filtered);
+            }
+        }
+
+        // Render Table list mode
+        function renderListMode(dataset) {
+            const body = document.getElementById('deals-table-body');
+            body.innerHTML = '';
+
+            if (dataset.length === 0) {
+                body.innerHTML = `
+                    <tr>
+                        <td colspan="8" class="p-10 text-center text-slate-400 font-semibold italic bg-white">
+                            No transactions found matching the current search parameters.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            dataset.forEach(row => {
+                // Formatting color badges
+                let stageColor = "bg-blue-50 text-blue-700 border border-blue-100";
+                if (row.stage === "Investor Interest") stageColor = "bg-slate-50 text-slate-600 border border-slate-100";
+                if (row.stage === "NDA Signed") stageColor = "bg-teal-50 text-teal-700 border border-teal-100";
+                if (row.stage === "Term Sheet / Closing") stageColor = "bg-emerald-50 text-emerald-700 border border-emerald-100";
+
+                let healthColor = "bg-emerald-50 text-emerald-700 border border-emerald-100";
+                if (row.health === "AT RISK") healthColor = "bg-amber-50 text-amber-700 border border-amber-100 animate-pulse";
+
+                body.innerHTML += `
+                    <tr class="hover:bg-slate-50 transition border-b border-slate-100 font-medium">
+                        <td class="p-4 font-bold text-slate-900">${row.id}</td>
+                        <td class="p-4 text-slate-950 font-extrabold">${row.sideA}</td>
+                        <td class="p-4 font-semibold text-slate-600">${row.sideB}</td>
+                        <td class="p-4 text-slate-900 font-extrabold">${row.amount}</td>
+                        <td class="p-4">
+                            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold ${stageColor}">${row.stage.toUpperCase()}</span>
+                        </td>
+                        <td class="p-4">
+                            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold ${healthColor}">${row.health}</span>
+                        </td>
+                        <td class="p-4 text-slate-500 text-xs">${row.lastActive}</td>
+                        <td class="p-4 text-center">
+                            <div class="flex items-center justify-center gap-1">
+                                <button onclick="openDealDetails('${row.id}')" class="text-slate-400 hover:text-brand-orange p-1.5 rounded transition" title="View Details"><i class="fa-solid fa-eye text-xs"></i></button>
+                                <button class="p-1.5 text-slate-400 hover:text-slate-600 transition"><i class="fa-solid fa-ellipsis-vertical text-xs"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        // Render Kanban Column mode
+        function renderKanbanMode(dataset) {
+            const container = document.getElementById('kanban-columns-container');
+            container.innerHTML = '';
+
+            const columns = [
+                "Investor Interest",
+                "NDA Signed",
+                "Data Room Access",
+                "Discussions",
+                "Due Diligence",
+                "Term Sheet / Closing"
+            ];
+
+            columns.forEach(col => {
+                const dealsInCol = dataset.filter(d => d.stage === col);
+                
+                let colHtml = `
+                    <div class="w-80 shrink-0 bg-slate-50/50 p-4 rounded-2xl border border-slate-200/50 flex flex-col space-y-3.5">
+                        <!-- Column Header -->
+                        <div class="flex justify-between items-center border-b border-slate-200/60 pb-3 mb-1">
+                            <h4 class="font-bold text-[11px] text-slate-600 uppercase tracking-wider">${col}</h4>
+                            <span class="bg-slate-200 text-slate-700 font-bold text-[10px] px-2 py-0.5 rounded-full">${dealsInCol.length}</span>
+                        </div>
+                        <div class="space-y-3 flex-1 overflow-y-auto max-h-[500px]">
+                `;
+
+                dealsInCol.forEach(deal => {
+                    let healthClass = "bg-emerald-500";
+                    if (deal.health === "AT RISK") healthClass = "bg-amber-500 animate-pulse";
+
+                    colHtml += `
+                        <div class="bg-white p-4 rounded-xl border border-slate-200/60 shadow-sm space-y-3 hover:shadow-md transition">
+                            <div class="flex justify-between items-center">
+                                <span class="text-[10px] text-slate-400 font-bold">${deal.id}</span>
+                                <span class="w-2.5 h-2.5 rounded-full ${healthClass}" title="${deal.health} Health"></span>
+                            </div>
+                            <h5 class="font-bold text-xs text-slate-800 leading-snug">${deal.sideA} &leftrightarrow; ${deal.sideB}</h5>
+                            <p class="text-[10px] text-slate-400 font-semibold">${deal.round}</p>
+                            <div class="flex justify-between items-center border-t border-slate-50 pt-2.5 mt-2">
+                                <strong class="text-brand-orange text-xs font-extrabold">${deal.amount}</strong>
+                                <div class="w-6 h-6 rounded-lg bg-indigo-50 text-brand-orange font-bold text-[10px] flex items-center justify-center">AK</div>
+                            </div>
+                            <!-- Transition Actions -->
+                            <div class="flex gap-1.5 border-t border-slate-50 pt-2.5 mt-1.5">
+                                <button onclick="moveKanbanState('${deal.id}', -1)" class="flex-1 bg-slate-50 hover:bg-slate-100 text-slate-500 font-semibold text-[9px] py-1 border border-slate-200 rounded transition uppercase">
+                                    &larr; Move Back
+                                </button>
+                                <button onclick="moveKanbanState('${deal.id}', 1)" class="flex-1 bg-brand-orange/5 hover:bg-brand-orange/10 text-brand-orange font-bold text-[9px] py-1 border border-brand-orange/10 rounded transition uppercase flex items-center justify-center gap-1">
+                                    Advance &rarr;
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                if (dealsInCol.length === 0) {
+                    colHtml += `
+                        <div class="border-2 border-dashed border-slate-200 rounded-xl py-8 px-4 text-center text-slate-400 text-[11px] italic">
+                            No Deals in stage
+                        </div>
+                    `;
+                }
+
+                colHtml += `
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += colHtml;
+            });
+        }
+
+        // Drag simulation: Move State
+        function moveKanbanState(id, direction) {
+            const stages = [
+                "Investor Interest",
+                "NDA Signed",
+                "Data Room Access",
+                "Discussions",
+                "Due Diligence",
+                "Term Sheet / Closing"
+            ];
+
+            const deal = db.deals.find(d => d.id === id);
+            if (deal) {
+                const currentIdx = stages.indexOf(deal.stage);
+                const nextIdx = currentIdx + direction;
+                if (nextIdx >= 0 && nextIdx < stages.length) {
+                    deal.stage = stages[nextIdx];
+                    renderDashboardFlow();
+                }
+            }
+        }
+
+        // Global Search Filter Bar
+        function handleSearch(term) {
+            currentSearchQuery = term;
+            renderDashboardFlow();
+        }
+
+        // Back Link Workflow Router
+        function returnToMainView() {
+            document.getElementById('pipeline-main-view').classList.remove('hidden');
+            document.getElementById('deal-details-view').classList.add('hidden');
+            renderDashboardFlow();
+        }
+
+        // Open Detail Workspace Overview Profile card
+        function openDealDetails(id) {
+            const deal = db.deals.find(d => d.id === id);
+            if (!deal) return;
+
+            // Header Elements
+            document.getElementById('detail-card-id').innerText = deal.id;
+            document.getElementById('detail-card-title').innerText = `${deal.sideA} ↔ ${deal.sideB}`;
+            document.getElementById('detail-card-flow').innerText = deal.flow.toUpperCase() + ' FLOW';
+            document.getElementById('detail-card-sub').innerText = `${deal.round} • ${deal.amount} Raise Target`;
+
+            // Metadata Row
+            document.getElementById('detail-meta-created').innerText = deal.createdOn;
+            document.getElementById('detail-meta-owner').innerText = deal.owner;
+            document.getElementById('detail-meta-age').innerText = `${deal.age} Days`;
+            document.getElementById('detail-meta-health').innerText = deal.health;
+            document.getElementById('detail-meta-health').className = deal.health === 'HEALTHY' ? 'text-emerald-600 font-extrabold' : 'text-amber-500 font-extrabold animate-pulse';
+
+            // Parameters Block
+            document.getElementById('detail-grid-stage').innerText = deal.stage;
+            document.getElementById('detail-grid-stage-since').innerText = `Since ${deal.createdOn}`;
+            document.getElementById('detail-grid-value').innerText = deal.amount;
+            document.getElementById('detail-grid-val').innerText = deal.indicativeValuation;
+            document.getElementById('detail-grid-equity').innerText = deal.equityOffered;
+            document.getElementById('detail-grid-close').innerText = deal.closeDate;
+            document.getElementById('detail-grid-close-days').innerText = `In ${deal.closeDays} Days`;
+            document.getElementById('detail-grid-prob').innerText = deal.probability;
+
+            // Re-render Dynamic parties card labels
+            if (deal.flow === 'equity') {
+                document.getElementById('label-party-a').innerText = "Investee (Company)";
+                document.getElementById('label-party-b').innerText = "Investor";
+            } else {
+                document.getElementById('label-party-a').innerText = "Seller";
+                document.getElementById('label-party-b').innerText = "Buyer";
+            }
+
+            // Party A details
+            document.getElementById('party-avatar-a').innerText = deal.parties.investee.name.substring(0,2).toUpperCase();
+            document.getElementById('party-name-a').innerText = deal.parties.investee.name;
+            document.getElementById('party-sub-a').innerText = `Founder • ${deal.parties.investee.founder}`;
+            document.getElementById('party-ind-a').innerText = deal.parties.investee.industry;
+            document.getElementById('party-email-a').innerText = deal.parties.investee.email;
+            document.getElementById('party-loc-a').innerText = deal.parties.investee.location;
+
+            // Party B details
+            document.getElementById('party-avatar-b').innerText = deal.parties.investor.name.substring(0,2).toUpperCase();
+            document.getElementById('party-name-b').innerText = deal.parties.investor.name;
+            document.getElementById('party-sub-b').innerText = `Representative Contact`;
+            document.getElementById('party-ind-b').innerText = deal.parties.investor.industry;
+            document.getElementById('party-email-b').innerText = deal.parties.investor.email;
+            document.getElementById('party-loc-b').innerText = deal.parties.investor.location;
+
+            // Dynamic KPI bottom list
+            document.getElementById('metric-row-raise').innerText = deal.amount;
+            document.getElementById('metric-row-val').innerText = deal.indicativeValuation;
+            document.getElementById('metric-row-equity').innerText = deal.equityOffered;
+
+            // Progress Tracker sequence renderer
+            renderProgressTracker(deal);
+
+            // Timeline entries renderer
+            renderTimelineEntries(deal);
+
+            // Hide Main Table list and show Detail workspace view block
+            document.getElementById('pipeline-main-view').classList.add('hidden');
+            document.getElementById('deal-details-view').classList.remove('hidden');
+
+            // Scroll container wrapper view up
+            document.getElementById('main-content-scrollable').scrollTop = 0;
+        }
+
+        // Render timeline array logs
+        function renderTimelineEntries(deal) {
+            const wrapper = document.getElementById('detail-timeline-wrapper');
+            wrapper.innerHTML = '';
+
+            deal.timeline.forEach(log => {
+                wrapper.innerHTML += `
+                    <div class="relative">
+                        <!-- Circle bullet dot -->
+                        <div class="absolute -left-[30px] top-0.5 w-2 h-2 rounded-full bg-emerald-500 border-2 border-white shadow-sm"></div>
+                        <div class="text-[10px] text-slate-400 font-bold">${log.date}</div>
+                        <h6 class="font-bold text-slate-900 mt-0.5">${log.event}</h6>
+                        <p class="text-[11px] text-slate-500 mt-0.5">${log.desc}</p>
+                    </div>
+                `;
+            });
+        }
+
+        // Dynamic Progress Timeline generator based on images
+        function renderProgressTracker(deal) {
+            const wrapper = document.getElementById('tracker-steps-wrapper');
+            wrapper.innerHTML = '';
+
+            const stages = [
+                "Investor Interest",
+                "NDA Signed",
+                "Data Room Access",
+                "Discussions",
+                "Due Diligence",
+                "Term Sheet",
+                "Closing"
+            ];
+
+            const currentIdx = stages.indexOf(deal.stage);
+
+            stages.forEach((st, idx) => {
+                let statusHtml = '';
+                
+                // Completed past stage
+                if (idx < currentIdx) {
+                    statusHtml = `
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center font-bold text-xs shadow-sm shrink-0">
+                                <i class="fa-solid fa-check"></i>
+                            </div>
+                            <div>
+                                <h5 class="font-extrabold text-slate-900 text-xs leading-none">${st}</h5>
+                                <span class="text-[9px] text-emerald-600 font-bold block mt-0.5">Completed</span>
+                            </div>
+                        </div>
+                    `;
+                } 
+                // Currently Active Stage
+                else if (idx === currentIdx) {
+                    statusHtml = `
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-full bg-orange-100 text-brand-orange border border-brand-orange/30 flex items-center justify-center text-xs shadow-sm shrink-0 animate-pulse">
+                                <i class="fa-solid fa-play"></i>
+                            </div>
+                            <div>
+                                <h5 class="font-extrabold text-brand-orange text-xs leading-none">${st}</h5>
+                                <span class="text-[9px] text-slate-500 font-bold block mt-0.5">In Progress</span>
+                            </div>
+                        </div>
+                    `;
+                } 
+                // Future Stage
+                else {
+                    statusHtml = `
+                        <div class="flex items-center gap-3 opacity-60">
+                            <div class="w-8 h-8 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center font-bold text-xs shrink-0">
+                                ${idx + 1}
+                            </div>
+                            <div>
+                                <h5 class="font-bold text-slate-500 text-xs leading-none">${st}</h5>
+                                <span class="text-[9px] text-slate-400 font-semibold block mt-0.5">Upcoming</span>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                wrapper.innerHTML += statusHtml;
+
+                // Add connecting timeline indicator line
+                if (idx < stages.length - 1) {
+                    let lineColor = idx < currentIdx ? 'bg-emerald-500' : 'bg-slate-200';
+                    wrapper.innerHTML += `
+                        <div class="hidden lg:block flex-1 h-0.5 ${lineColor} mx-2"></div>
+                    `;
+                }
+            });
+        }
+
+        // Modal Action management
+        function openNewDealModal() {
+            document.getElementById('modal-deploy-deal').classList.remove('hidden');
+        }
+
+        function closeNewDealModal() {
+            document.getElementById('modal-deploy-deal').classList.add('hidden');
+        }
+
+        // Adjust modal labels based on flow type
+        function adjustModalLabels(flowVal) {
+            const lblSideA = document.getElementById('lbl-modal-sidea');
+            const lblSideB = document.getElementById('lbl-modal-sideb');
+            
+            if (flowVal === 'equity') {
+                lblSideA.innerText = "Investee";
+                lblSideB.innerText = "Target Investor";
+            } else {
+                lblSideA.innerText = "Seller";
+                lblSideB.innerText = "Target Buyer";
+            }
+        }
+
+        // Handle submission of new deal deploying state
+        function handleNewDealSubmit(e) {
+            e.preventDefault();
+            const flow = document.getElementById('deal-new-flow').value;
+            const sideA = document.getElementById('deal-new-sidea').value;
+            const sideB = document.getElementById('deal-new-sideb').value;
+            const amount = document.getElementById('deal-new-amount').value;
+            const round = document.getElementById('deal-new-round').value;
+            const stage = document.getElementById('deal-new-stage').value;
+            const health = document.getElementById('deal-new-health').value;
+
+            const prefix = flow === 'equity' ? 'EQ' : 'MA';
+            const size = db.deals.filter(d => d.flow === flow).length;
+            const newId = `${prefix}-10${size + 1}`;
+
+            const newDealObj = {
+                id: newId,
+                flow: flow,
+                sideA: sideA,
+                sideB: sideB,
+                amount: amount,
+                stage: stage,
+                health: health,
+                lastActive: "Just now",
+                round: round,
+                owner: "Akash Kumar",
+                ownerRole: "IB",
+                age: 0,
+                createdOn: new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' }),
+                indicativeValuation: "₹100.0 Cr",
+                equityOffered: "15%",
+                closeDate: "30 Jul 2026",
+                closeDays: 56,
+                probability: "80%",
+                parties: {
+                    investee: {
+                        name: sideA,
+                        founder: "Client Founder",
+                        industry: "Corporate Client Tech",
+                        email: "contact@clientfirm.com",
+                        location: "Hyderabad, India"
+                    },
+                    investor: {
+                        name: sideB,
+                        founder: "Strategic Director",
+                        industry: "Private Investment Capital",
+                        email: "contact@capitalfirm.com",
+                        location: "Mumbai, India"
+                    }
+                },
+                timeline: [
+                    { date: "Just now", event: "Flow Created", desc: "Super Admin Karthik deployed deal to platform" }
+                ]
+            };
+
+            db.deals.push(newDealObj);
+            closeNewDealModal();
+            document.getElementById('form-add-deal').reset();
+            renderDashboardFlow();
+        }
+
+        // Mock utilities trigger
+        function triggerMockAction(name) {
+            alert(`Executive Action Activated: Triggering system workflow for "${name}". Notification alerts dispatched to parties.`);
+        }
+
+        function triggerMockExport() {
+            alert(`Sourcing Data Package Complete. Generating secure PDF/CSV report of the pipeline index...`);
+        }
+    
+
+        function toggleRoleDropdown() { document.getElementById('role-dropdown').classList.toggle('hidden'); }
+        function switchToRole(role) {
+            localStorage.setItem('charantra-role', role);
+            const r = { 'superadmin': '/pages/superadmin/dashboard.html', 'admin': '/pages/admin/dashboard.html', 'ib': '/pages/ib/deals.html', 'ba': '/pages/ba/reports.html' };
+            window.location.href = r[role] || '/index.html';
+        }
+        (function() {
+            const role = localStorage.getItem('charantra-role') || 'ba';
+            const labels = { 'superadmin': 'SUPER ADMIN', 'admin': 'ADMIN', 'ib': 'INVESTMENT BANKER', 'ba': 'BUSINESS ANALYST' };
+            const el = document.getElementById('role-label'); if (el) el.innerText = labels[role] || 'BUSINESS ANALYST';
+        })();
+        window.addEventListener('click', function(e) { if (!e.target.closest('.relative')) { const dd = document.getElementById('role-dropdown'); if (dd) dd.classList.add('hidden'); } });
+    </script>
+</body>
+</html>

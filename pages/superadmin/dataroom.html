@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Charantra - Deals, M&A & Data Room Console</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            orange: '#FF5E00',
+                            orangeHover: '#e04f00',
+                            navyDark: '#070C1E',
+                            navyMedium: '#0F172A',
+                            navyLight: '#1E293B',
+                            bgSlate: '#F8FAFC',
+                            borderGray: '#E2E8F0'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- FontAwesome Premium Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Titillium Web', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            background-color: #F8FAFC;
+        }
+        .dark body,.dark { background-color:#050A30 !important; color:#F1F5F9 !important }
+        .dark .bg-white { background-color:#1E293B !important }
+        .dark .bg-slate-50 { background-color:#1E293B !important }
+        .dark .bg-brand-bgSlate { background-color:#050A30 !important }
+        .dark .text-slate-900 { color:#F1F5F9 !important }
+        .dark .text-slate-800 { color:#E2E8F0 !important }
+        .dark .text-slate-700 { color:#CBD5E1 !important }
+        .dark .text-slate-600 { color:#94A3B8 !important }
+        .dark .text-slate-500,.dark .text-slate-400 { color:#64748B !important }
+        .dark .border-slate-100,.dark .border-slate-200,.dark .border-brand-borderGray { border-color:#334155 !important }
+        .dark .border-slate-50 { border-color:#1E293B !important }
+        .dark .shadow-sm { box-shadow:0 1px 2px rgba(0,0,0,0.3) !important }
+        .dark .hover\:bg-slate-50:hover { background-color:#334155 !important }
+        /* Custom fine scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.03);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.15);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 0, 0, 0.25);
+        }
+        .pulse-soft {
+            animation: softPulse 2s infinite ease-in-out;
+        }
+        @keyframes softPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+        /* Sidebar collapse */
+        #app-sidebar.collapsed { width: 64px !important; }
+        #app-sidebar.collapsed .sidebar-label { display: none; }
+        #app-sidebar.collapsed .sidebar-arrow { display: none; }
+        #app-sidebar.collapsed .sidebar-logo { width: 32px !important; min-width: 32px !important; }
+        #app-sidebar.collapsed .sidebar-collapse-icon { transform: rotate(180deg); }
+        #app-sidebar.collapsed button { justify-content: center; padding-left: 8px; padding-right: 8px; }
+        #app-sidebar.collapsed nav > div > button { justify-content: center; }
+        #app-sidebar.collapsed .sidebar-section-div { max-height: 0 !important; }
+    </style>
+</head>
+<body class="overflow-hidden h-screen flex text-slate-800 bg-brand-bgSlate">
+
+    <div id="secure-dialog" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex justify-center items-center z-50">
+        <div class="bg-white rounded-xl shadow-2xl border border-gray-200 w-full max-w-sm overflow-hidden m-4">
+            <div class="bg-brand-navyDark text-white p-4 flex justify-between items-center">
+                <h4 class="text-xs font-bold uppercase tracking-wider text-brand-orange" id="dialog-title">Platform Log</h4>
+                <button onclick="closeSecureDialog()" class="text-slate-400 hover:text-white transition"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="p-5 text-center space-y-3">
+                <div class="w-12 h-12 rounded-full bg-orange-50 text-brand-orange flex items-center justify-center mx-auto text-xl" id="dialog-icon">
+                    <i class="fa-solid fa-circle-check"></i>
+                </div>
+                <p class="text-xs font-semibold text-slate-700" id="dialog-message">Activity processed successfully.</p>
+                <button onclick="closeSecureDialog()" class="bg-brand-orange hover:bg-brand-orangeHover text-white text-xs font-bold px-4 py-2 rounded-lg w-full transition">Acknowledge</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN APP WRAPPER -->
+    <div class="flex w-full h-full">
+        
+        <!-- STANDARD SIDEBAR -->
+        <aside id="app-sidebar" class="w-64 bg-brand-navyDark text-slate-300 flex flex-col h-full shrink-0 border-r border-slate-900 z-30 justify-between select-none transition-all duration-300">
+            <div class="flex flex-col overflow-y-auto">
+                <div class="p-4 flex items-center justify-between border-b border-slate-900/60">
+                    <div class="flex items-center gap-3 overflow-hidden">
+                        <a href="/index.html"><img src="/assets/logo.png" width="160" alt="Charantra Logo" class="sidebar-logo" style="height: auto; min-width: 120px;"></a>
+                    </div>
+                    <button onclick="toggleSidebarCollapse()" class="text-slate-500 hover:text-white p-1 rounded transition shrink-0" title="Toggle Sidebar"><i class="fa-solid fa-outdent text-xs sidebar-collapse-icon"></i></button>
+                </div>
+                <nav class="px-3 space-y-1 text-sm">
+                    <a href="/pages/superadmin/dashboard.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><i class="fa-solid fa-table-columns text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Dashboard</span></button></a>
+                    
+                    <div class="space-y-0.5">
+                        <button onclick="toggleSidebarSection('crm-section')" class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><span class="flex items-center gap-3"><i class="fa-solid fa-users text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">CRM & Users</span></span><i class="fa-solid fa-chevron-down text-[9px] transition-transform duration-200 sidebar-arrow" id="arrow-crm-section"></i></button>
+                        <div id="crm-section" class="pl-5 pr-1 space-y-0.5 overflow-hidden sidebar-section-div" style="max-height:0;transition:max-height 0.3s ease">
+                            <a href="/pages/superadmin/crm.html?type=Investor" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-hand-holding-dollar text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Investors</span></button></a>
+                            <a href="/pages/superadmin/crm.html?type=Investee" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-rocket text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Investees</span></button></a>
+                            <a href="/pages/superadmin/crm.html?type=Buyer" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-cart-shopping text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Buyers</span></button></a>
+                            <a href="/pages/superadmin/crm.html?type=Seller" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-tags text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Sellers</span></button></a>
+                            <a href="/pages/superadmin/crm.html?type=Advisor" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-comments text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Advisors</span></button></a>
+                        </div>
+                    </div>
+
+                    <a href="/pages/superadmin/mandates.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><i class="fa-solid fa-file-contract text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Mandates & Projects</span></button></a>
+
+                    <a href="/pages/superadmin/deals.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><i class="fa-solid fa-briefcase text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Deals & Pipeline</span></button></a>
+
+                    <a href="/pages/superadmin/dataroom.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-bold text-white bg-brand-orange transition duration-150 overflow-hidden"><i class="fa-solid fa-hard-drive text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Data Room</span></button></a>
+
+                    <div class="space-y-0.5">
+                        <button onclick="toggleSidebarSection('team-section')" class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><span class="flex items-center gap-3"><i class="fa-solid fa-user-group text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Team Management</span></span><i class="fa-solid fa-chevron-down text-[9px] transition-transform duration-200 sidebar-arrow" id="arrow-team-section"></i></button>
+                        <div id="team-section" class="pl-5 pr-1 space-y-0.5 overflow-hidden sidebar-section-div" style="max-height:0;transition:max-height 0.3s ease">
+                            <a href="/pages/superadmin/team.html?view=members" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-users-gear text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Team Members</span></button></a>
+                            <a href="/pages/superadmin/team.html?view=roles" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-shield-halved text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Roles & Permissions</span></button></a>
+                        </div>
+                    </div>
+
+                    <div class="space-y-0.5">
+                        <button onclick="toggleSidebarSection('payments-section')" class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><span class="flex items-center gap-3"><i class="fa-solid fa-receipt text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Payments</span></span><i class="fa-solid fa-chevron-down text-[9px] transition-transform duration-200 sidebar-arrow" id="arrow-payments-section"></i></button>
+                        <div id="payments-section" class="pl-5 pr-1 space-y-0.5 overflow-hidden sidebar-section-div" style="max-height:0;transition:max-height 0.3s ease">
+                            <a href="/pages/superadmin/payments.html?view=invoices" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-file-invoice text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Invoices</span></button></a>
+                            <a href="/pages/superadmin/payments.html?view=ledger" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-book text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Ledger</span></button></a>
+                        </div>
+                    </div>
+
+                    <a href="/pages/superadmin/reports.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><i class="fa-solid fa-chart-simple text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Reports</span></button></a>
+                    <a href="/pages/superadmin/settings.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><i class="fa-solid fa-gear text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Settings & Logs</span></button></a>
+                </nav>
+            </div>
+            <div class="p-4 text-center text-xs text-slate-600 border-t border-slate-900"><p class="sidebar-label">© 2026 Charantra</p></div>
+        </aside>
+
+        <!-- MAIN CONTENT AREA -->
+        <main class="flex-1 flex flex-col h-full overflow-hidden">
+            
+            <!-- TOP UTILITY ACTION HEADER -->
+            <header class="h-16 border-b border-brand-borderGray bg-white flex items-center justify-between px-8 shrink-0 select-none">
+                <!-- Search bar -->
+                <div class="w-96 relative">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+                        <i class="fa-solid fa-magnifying-glass text-xs"></i>
+                    </span>
+                    <input type="text" id="header-search" oninput="handleGlobalSearch(this.value)" class="w-full bg-slate-50 border border-slate-200 rounded-lg py-1.5 pl-9 pr-4 text-xs focus:outline-none focus:border-brand-orange transition" placeholder="Search referred deals, partners, documents...">
+                </div>
+
+                <!-- Right profile controls -->
+                <div class="flex items-center gap-5">
+                    <div class="flex items-center gap-1.5 border border-slate-200 rounded-lg px-2.5 py-1 bg-slate-50 text-xs text-slate-600">
+                        <span class="font-semibold text-slate-700">INR (₹)</span>
+                        <i class="fa-solid fa-chevron-down text-[9px] text-slate-400"></i>
+                    </div>
+                    <button onclick="toggleTheme()" class="p-2 text-slate-500 hover:text-brand-orange hover:bg-slate-100 rounded-full transition" title="Toggle theme"><i id="theme-icon" class="fa-regular fa-moon text-lg"></i></button>
+
+                    <div class="relative">
+                        <button class="p-2 text-slate-500 hover:text-brand-orange hover:bg-slate-100 rounded-full transition relative">
+                            <i class="fa-regular fa-bell text-lg"></i>
+                            <span class="absolute top-1.5 right-1.5 w-4 h-4 bg-red-500 text-[10px] text-white font-extrabold flex items-center justify-center rounded-full leading-none">3</span>
+                        </button>
+                    </div>
+
+                    <!-- User panel -->
+                    <div class="flex items-center gap-3 border-l border-slate-200 pl-4">
+    <div class="text-right">
+        <p class="text-xs font-bold text-slate-900 leading-none">KARTHIK</p>
+        <p class="text-[9px] text-brand-orange font-bold uppercase tracking-wider mt-0.5" id="role-label">SUPER ADMIN <i class="fa-solid fa-chevron-down text-[7px] text-slate-400 ml-1"></i></p>
+    </div>
+    <div class="relative">
+        <button onclick="toggleRoleDropdown()" class="w-10 h-10 rounded-full bg-[#FF5E00] text-white font-extrabold text-sm flex items-center justify-center shadow hover:shadow-md transition cursor-pointer">K</button>
+        <div id="role-dropdown" class="hidden absolute right-0 mt-2 w-52 bg-white border border-slate-200 rounded-xl shadow-xl z-50 text-xs overflow-hidden">
+            <div class="px-4 py-3 border-b border-slate-100 font-bold text-slate-700">Switch Role</div>
+            <button onclick="switchToRole('superadmin')" class="w-full text-left px-4 py-2.5 hover:bg-slate-50 text-slate-700 font-medium flex items-center gap-2.5 border-b border-slate-50"><i class="fa-solid fa-crown text-brand-orange w-4"></i> Super Admin</button>
+            <button onclick="switchToRole('admin')" class="w-full text-left px-4 py-2.5 hover:bg-slate-50 text-slate-700 font-medium flex items-center gap-2.5 border-b border-slate-50"><i class="fa-solid fa-shield-halved text-violet-500 w-4"></i> Admin</button>
+            <button onclick="switchToRole('ib')" class="w-full text-left px-4 py-2.5 hover:bg-slate-50 text-slate-700 font-medium flex items-center gap-2.5 border-b border-slate-50"><i class="fa-solid fa-briefcase text-blue-500 w-4"></i> Investment Banker</button>
+            <button onclick="switchToRole('ba')" class="w-full text-left px-4 py-2.5 hover:bg-slate-50 text-slate-700 font-medium flex items-center gap-2.5"><i class="fa-solid fa-chart-line text-emerald-500 w-4"></i> Business Analyst</button>
+        </div>
+    </div>
+</div>
+                </div>
+            </header>
+
+            <!-- CORE PAGES CONTENT WRAPPER -->
+            <div class="flex-1 overflow-y-auto p-8" id="main-content-scrollable">
+
+                <!-- DATA ROOM (VDR) WORKSPACE (Renders image_241883 and image_24193c) -->
+                <section id="view-vdr" class="space-y-6">
+                    
+                    <!-- VDR Header Tab Selector panel -->
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                        <div>
+                            <h2 class="text-2xl font-extrabold text-slate-900 tracking-tight" id="vdr-title-label">Data Room & Vault Access</h2>
+                            <p class="text-xs text-slate-500 mt-1" id="vdr-subtitle-label">Audit active NDA/CIM requests and structure dynamic watermark parameters.</p>
+                        </div>
+                        <!-- View Toggles (Grid vs Explorer) -->
+                        <div class="bg-slate-100 p-1 rounded-lg flex items-center">
+                            <button id="vdr-view-toggle-grid" onclick="switchVdrViewMode('grid')" class="px-3.5 py-1.5 rounded-md text-xs font-bold transition flex items-center gap-1.5 bg-white text-slate-900 shadow-sm">
+                                <i class="fa-solid fa-grip-vertical"></i> Grid View
+                            </button>
+                            <button id="vdr-view-toggle-explorer" onclick="switchVdrViewMode('explorer')" class="px-3.5 py-1.5 rounded-md text-xs font-bold transition flex items-center gap-1.5 text-slate-500 hover:text-slate-800">
+                                <i class="fa-solid fa-folder-tree"></i> Document Explorer
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- SUB-VIEWPORT A: LOCKED VAULTS OVERVIEW (Perfect replication of image_241883.png) -->
+                    <div id="vdr-viewport-grid" class="space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            
+                            <!-- Card 1: TechVenture Solutions -->
+                            <div onclick="selectCompanyExplorer('TechVenture Solutions')" class="cursor-pointer bg-white p-6 rounded-xl border border-slate-100 shadow-sm hover:shadow-md hover:border-brand-orange/30 transition duration-200 flex flex-col justify-between h-40">
+                                <div class="flex justify-between items-start">
+                                    <div class="w-12 h-12 bg-indigo-50 text-indigo-700 rounded-lg flex items-center justify-center text-xl">
+                                        <i class="fa-solid fa-folder-open"></i>
+                                    </div>
+                                    <span class="bg-indigo-50 border border-indigo-100 text-indigo-700 text-[10px] font-extrabold px-2 py-0.5 rounded">SECURE</span>
+                                </div>
+                                <div class="mt-4">
+                                    <h4 class="font-extrabold text-slate-900 text-sm leading-tight">TechVenture Solutions</h4>
+                                    <p class="text-xs text-slate-400 mt-1">3 folders • 6 encrypted documents</p>
+                                </div>
+                            </div>
+
+                            <!-- Card 2: TechCore Industries -->
+                            <div onclick="selectCompanyExplorer('TechCore Industries')" class="cursor-pointer bg-white p-6 rounded-xl border border-slate-100 shadow-sm hover:shadow-md hover:border-brand-orange/30 transition duration-200 flex flex-col justify-between h-40">
+                                <div class="flex justify-between items-start">
+                                    <div class="w-12 h-12 bg-indigo-50 text-indigo-700 rounded-lg flex items-center justify-center text-xl">
+                                        <i class="fa-solid fa-folder-open"></i>
+                                    </div>
+                                    <span class="bg-indigo-50 border border-indigo-100 text-indigo-700 text-[10px] font-extrabold px-2 py-0.5 rounded">SECURE</span>
+                                </div>
+                                <div class="mt-4">
+                                    <h4 class="font-extrabold text-slate-900 text-sm leading-tight">TechCore Industries</h4>
+                                    <p class="text-xs text-slate-400 mt-1">3 folders • 6 encrypted documents</p>
+                                </div>
+                            </div>
+
+                            <!-- Card 3: GreenField Investments -->
+                            <div onclick="selectCompanyExplorer('GreenField Investments')" class="cursor-pointer bg-white p-6 rounded-xl border border-slate-100 shadow-sm hover:shadow-md hover:border-brand-orange/30 transition duration-200 flex flex-col justify-between h-40">
+                                <div class="flex justify-between items-start">
+                                    <div class="w-12 h-12 bg-indigo-50 text-indigo-700 rounded-lg flex items-center justify-center text-xl">
+                                        <i class="fa-solid fa-folder-open"></i>
+                                    </div>
+                                    <span class="bg-indigo-50 border border-indigo-100 text-indigo-700 text-[10px] font-extrabold px-2 py-0.5 rounded">SECURE</span>
+                                </div>
+                                <div class="mt-4">
+                                    <h4 class="font-extrabold text-slate-900 text-sm leading-tight">GreenField Investments</h4>
+                                    <p class="text-xs text-slate-400 mt-1">3 folders • 6 encrypted documents</p>
+                                </div>
+                            </div>
+
+                            <!-- Card 4: Apex Retail Logics -->
+                            <div onclick="selectCompanyExplorer('Apex Retail Logics')" class="cursor-pointer bg-white p-6 rounded-xl border border-slate-100 shadow-sm hover:shadow-md hover:border-brand-orange/30 transition duration-200 flex flex-col justify-between h-40">
+                                <div class="flex justify-between items-start">
+                                    <div class="w-12 h-12 bg-indigo-50 text-indigo-700 rounded-lg flex items-center justify-center text-xl">
+                                        <i class="fa-solid fa-folder-open"></i>
+                                    </div>
+                                    <span class="bg-indigo-50 border border-indigo-100 text-indigo-700 text-[10px] font-extrabold px-2 py-0.5 rounded">SECURE</span>
+                                </div>
+                                <div class="mt-4">
+                                    <h4 class="font-extrabold text-slate-900 text-sm leading-tight">Apex Retail Logics</h4>
+                                    <p class="text-xs text-slate-400 mt-1">3 folders • 6 encrypted documents</p>
+                                </div>
+                            </div>
+
+                            <!-- Card 5: SolarFlow Assemblies -->
+                            <div onclick="selectCompanyExplorer('SolarFlow Assemblies')" class="cursor-pointer bg-white p-6 rounded-xl border border-slate-100 shadow-sm hover:shadow-md hover:border-brand-orange/30 transition duration-200 flex flex-col justify-between h-40">
+                                <div class="flex justify-between items-start">
+                                    <div class="w-12 h-12 bg-indigo-50 text-indigo-700 rounded-lg flex items-center justify-center text-xl">
+                                        <i class="fa-solid fa-folder-open"></i>
+                                    </div>
+                                    <span class="bg-indigo-50 border border-indigo-100 text-indigo-700 text-[10px] font-extrabold px-2 py-0.5 rounded">SECURE</span>
+                                </div>
+                                <div class="mt-4">
+                                    <h4 class="font-extrabold text-slate-900 text-sm leading-tight">SolarFlow Assemblies</h4>
+                                    <p class="text-xs text-slate-400 mt-1">3 folders • 6 encrypted documents</p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- SUB-VIEWPORT B: TWO-COLUMN DATA EXPLORER (Perfect replication of image_24193c.png) -->
+                    <div id="vdr-viewport-explorer" class="hidden grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                        
+                        <!-- Left column pane: Companies listing -->
+                        <div class="lg:col-span-4 bg-white rounded-xl border border-slate-100 p-5 shadow-sm space-y-4">
+                            <h3 class="text-base font-bold text-slate-950">Companies</h3>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+                                    <i class="fa-solid fa-search text-xs"></i>
+                                </span>
+                                <input type="text" id="vdr-company-search" oninput="filterVdrCompanies(this.value)" class="w-full bg-slate-50 border border-slate-200 rounded-lg py-1.5 pl-9 pr-4 text-xs focus:outline-none focus:border-brand-orange transition" placeholder="Search companies...">
+                            </div>
+
+                            <!-- List items container -->
+                            <div class="space-y-2 mt-4" id="vdr-companies-list-wrapper">
+                                <!-- Populated dynamically by javascript -->
+                            </div>
+                        </div>
+
+                        <!-- Right column pane: Interactive Document Vault Explorer -->
+                        <div class="lg:col-span-8 bg-white rounded-xl border border-slate-100 p-6 shadow-sm space-y-6">
+                            
+                            <!-- Vault Details Header -->
+                            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-4 border-b border-slate-100">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded bg-indigo-50 text-indigo-700 flex items-center justify-center text-lg">
+                                        <i class="fa-regular fa-file-lines"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-base font-extrabold text-slate-950" id="explorer-vault-title">XYZ Corp Buyout Data Room</h3>
+                                        <p class="text-[11px] text-slate-400 font-medium">Secure Virtual Document Workspace Directory</p>
+                                    </div>
+                                </div>
+                                <div class="flex gap-2 self-stretch sm:self-auto">
+                                    <button onclick="promptNewFolder()" class="bg-slate-50 border border-slate-200 text-slate-700 text-xs px-3.5 py-1.5 rounded-lg font-bold hover:bg-slate-100 transition flex items-center gap-1.5">
+                                        <i class="fa-solid fa-folder-plus text-slate-400"></i> New Folder
+                                    </button>
+                                    <button onclick="promptUploadFile()" class="bg-brand-orange hover:bg-brand-orangeHover text-white text-xs px-3.5 py-1.5 rounded-lg font-bold shadow-sm transition flex items-center gap-1.5">
+                                        <i class="fa-solid fa-arrow-up-from-bracket"></i> Upload File
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Filter/Search Bar -->
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+                                    <i class="fa-solid fa-magnifying-glass text-xs"></i>
+                                </span>
+                                <input type="text" id="vdr-file-filter" oninput="filterVdrFiles(this.value)" class="w-full border border-slate-200 rounded-lg py-1.5 pl-9 pr-4 text-xs focus:outline-none focus:border-brand-orange transition" placeholder="Filter directories & files...">
+                            </div>
+
+                            <!-- Vault Listing Panel -->
+                            <div class="border border-slate-100 rounded-xl overflow-hidden shadow-sm">
+                                <div class="bg-slate-50/50 p-4 border-b border-slate-100 flex justify-between items-center">
+                                    <div>
+                                        <h4 class="font-extrabold text-slate-900 text-xs" id="explorer-panel-title">XYZ Corp Buyout Vault Directory</h4>
+                                        <p class="text-[10px] text-slate-400">Notion-style interactive document nesting tree. Click on folders to explore.</p>
+                                    </div>
+                                    <span class="bg-orange-50 border border-orange-100 text-brand-orange font-extrabold text-[9px] px-2 py-0.5 rounded" id="explorer-total-badge">3 FILES</span>
+                                </div>
+
+                                <!-- Nesting directory listings tree -->
+                                <div class="p-6 space-y-4" id="explorer-nesting-tree">
+                                    <!-- Dynamic directories populated by script -->
+                                </div>
+                            </div>
+
+                            <!-- FLOW ADVISORY LEGEND TIPS (Flows wise Documents) -->
+                            <div class="bg-slate-50/60 p-4 rounded-xl border border-slate-200/50 space-y-2 text-xs">
+                                <span class="text-[10px] text-slate-400 font-extrabold uppercase tracking-wider block">Super Admin Flow-Wise Auditing Scope</span>
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
+                                    <div class="flex gap-2 items-start">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-blue-500 mt-1.5 shrink-0"></span>
+                                        <div>
+                                            <strong class="text-slate-800">Equity Flow</strong>
+                                            <p class="text-[10px] text-slate-400">Includes Investee metrics &amp; Investor due-diligence request responses.</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex gap-2 items-start">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-orange-500 mt-1.5 shrink-0"></span>
+                                        <div>
+                                            <strong class="text-slate-800">M&A Flow</strong>
+                                            <p class="text-[10px] text-slate-400">Includes Seller assets &amp; strategic Buyer transaction documentation.</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex gap-2 items-start">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-1.5 shrink-0"></span>
+                                        <div>
+                                            <strong class="text-slate-800">Advisor Uploads</strong>
+                                            <p class="text-[10px] text-slate-400">Includes secure evaluations &amp; audit registries dispatched directly by RMs.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </section>
+
+                <!-- MOCKUP REDIRECT SECTIONS FOR REMAINING NAVIGATION -->
+                <section id="view-dashboard" class="hidden space-y-6">
+                    <div class="bg-white p-8 rounded-xl border border-slate-100 text-center space-y-3">
+                        <i class="fa-solid fa-chart-line text-4xl text-brand-orange"></i>
+                        <h3 class="text-lg font-extrabold text-slate-900">Dashboard Overview Workspace</h3>
+                        <p class="text-xs text-slate-500 max-w-md mx-auto">Access the real-time business performance indexes, YTD metrics, and team pipelines.</p>
+                        <button onclick="switchView('vdr')" class="bg-brand-orange hover:bg-brand-orangeHover text-white text-xs font-bold px-4 py-2.5 rounded-lg shadow-sm transition">Return to Data Room</button>
+                    </div>
+                </section>
+
+                <section id="view-crm" class="hidden space-y-6">
+                    <div class="bg-white p-8 rounded-xl border border-slate-100 text-center space-y-3">
+                        <i class="fa-solid fa-address-book text-4xl text-brand-orange"></i>
+                        <h3 class="text-lg font-extrabold text-slate-900">CRM & Networks Workspace</h3>
+                        <p class="text-xs text-slate-500 max-w-md mx-auto">Monitor platform-wide directory matching and partner investor networks.</p>
+                        <button onclick="switchView('vdr')" class="bg-brand-orange hover:bg-brand-orangeHover text-white text-xs font-bold px-4 py-2.5 rounded-lg shadow-sm transition">Return to Data Room</button>
+                    </div>
+                </section>
+
+                <section id="view-deals" class="hidden space-y-6">
+                    <div class="bg-white p-8 rounded-xl border border-slate-100 text-center space-y-3">
+                        <i class="fa-solid fa-briefcase text-4xl text-brand-orange"></i>
+                        <h3 class="text-lg font-extrabold text-slate-900">Deals & M&A Pipeline Sourcing</h3>
+                        <p class="text-xs text-slate-500 max-w-md mx-auto">View and process current active pipeline progressions, due diligence stages, and term sheets.</p>
+                        <button onclick="switchView('vdr')" class="bg-brand-orange hover:bg-brand-orangeHover text-white text-xs font-bold px-4 py-2.5 rounded-lg shadow-sm transition">Return to Data Room</button>
+                    </div>
+                </section>
+
+                <section id="view-updates" class="hidden space-y-6">
+                    <div class="bg-white p-8 rounded-xl border border-slate-100 text-center space-y-3">
+                        <i class="fa-regular fa-bell text-4xl text-brand-orange animate-bounce"></i>
+                        <h3 class="text-lg font-extrabold text-slate-900">Updates & Notifications Log</h3>
+                        <p class="text-xs text-slate-500 max-w-md mx-auto">Review current administrative alerts and transaction flags.</p>
+                        <button onclick="switchView('vdr')" class="bg-brand-orange hover:bg-brand-orangeHover text-white text-xs font-bold px-4 py-2.5 rounded-lg shadow-sm transition">Return to Data Room</button>
+                    </div>
+                </section>
+
+                <section id="view-mandates" class="hidden space-y-6">
+                    <div class="bg-white p-8 rounded-xl border border-slate-100 text-center space-y-3">
+                        <i class="fa-solid fa-file-contract text-4xl text-brand-orange"></i>
+                        <h3 class="text-lg font-extrabold text-slate-900">Mandates & Projects Workspace</h3>
+                        <p class="text-xs text-slate-500 max-w-md mx-auto">Track client onboarding mandates, compliance checks, and Zoho signature details.</p>
+                        <button onclick="switchView('vdr')" class="bg-brand-orange hover:bg-brand-orangeHover text-white text-xs font-bold px-4 py-2.5 rounded-lg shadow-sm transition">Return to Data Room</button>
+                    </div>
+                </section>
+
+                <section id="view-team" class="hidden space-y-6">
+                    <div class="bg-white p-8 rounded-xl border border-slate-100 text-center space-y-3">
+                        <i class="fa-solid fa-users-gear text-4xl text-brand-orange"></i>
+                        <h3 class="text-lg font-extrabold text-slate-900">Team Management Workspace</h3>
+                        <p class="text-xs text-slate-500 max-w-md mx-auto">Configure platform permissions and monitor internal analyst activity.</p>
+                        <button onclick="switchView('vdr')" class="bg-brand-orange hover:bg-brand-orangeHover text-white text-xs font-bold px-4 py-2.5 rounded-lg shadow-sm transition">Return to Data Room</button>
+                    </div>
+                </section>
+
+                <section id="view-payments" class="hidden space-y-6">
+                    <div class="bg-white p-8 rounded-xl border border-slate-100 text-center space-y-3">
+                        <i class="fa-solid fa-credit-card text-4xl text-brand-orange"></i>
+                        <h3 class="text-lg font-extrabold text-slate-900">Payments & Invoicing Console</h3>
+                        <p class="text-xs text-slate-500 max-w-md mx-auto">Inspect escrow accounts, retainer fees, and monthly subscription billings.</p>
+                        <button onclick="switchView('vdr')" class="bg-brand-orange hover:bg-brand-orangeHover text-white text-xs font-bold px-4 py-2.5 rounded-lg shadow-sm transition">Return to Data Room</button>
+                    </div>
+                </section>
+
+                <section id="view-reports" class="hidden space-y-6">
+                    <div class="bg-white p-8 rounded-xl border border-slate-100 text-center space-y-3">
+                        <i class="fa-solid fa-chart-pie text-4xl text-brand-orange"></i>
+                        <h3 class="text-lg font-extrabold text-slate-900">Reports & Analytics Console</h3>
+                        <p class="text-xs text-slate-500 max-w-md mx-auto">Examine custom pipeline metrics and export audit trails.</p>
+                        <button onclick="switchView('vdr')" class="bg-brand-orange hover:bg-brand-orangeHover text-white text-xs font-bold px-4 py-2.5 rounded-lg shadow-sm transition">Return to Data Room</button>
+                    </div>
+                </section>
+
+                <section id="view-settings" class="hidden space-y-6">
+                    <div class="bg-white p-8 rounded-xl border border-slate-100 text-center space-y-3">
+                        <i class="fa-solid fa-sliders text-4xl text-brand-orange"></i>
+                        <h3 class="text-lg font-extrabold text-slate-900">Platform Settings Console</h3>
+                        <p class="text-xs text-slate-500 max-w-md mx-auto">Manage algorithm parameters, KYC filters, and security configurations.</p>
+                        <button onclick="switchView('vdr')" class="bg-brand-orange hover:bg-brand-orangeHover text-white text-xs font-bold px-4 py-2.5 rounded-lg shadow-sm transition">Return to Data Room</button>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- MASTER DATABASE STATE SOURCING LOGIC -->
+    <script>
+        // Database structured around image_24193c.png, image_241883.png and image_2fd43a.png
+        const vdrDatabase = {
+            companies: [
+                {
+                    id: "VDR-CO-01",
+                    name: "XYZ Corp Buyout",
+                    industry: "Tech / SaaS",
+                    docCount: 3,
+                    flow: "ma",
+                    vaultTitle: "XYZ Corp Buyout Data Room",
+                    vaultDesc: "Secure Virtual Document Workspace Directory",
+                    directories: [
+                        {
+                            folderId: "f-01-01",
+                            name: "Financial Dossiers",
+                            isOpen: true,
+                            fileCount: 2,
+                            flowType: "Investee / Seller Documents",
+                            files: [
+                                { fileId: "file-01", name: "Q1_P&L_Statement.pdf", size: "1.2 MB", uploadDate: "25 May 2026", hash: "SHA-256: 4f8b9e..." },
+                                { fileId: "file-02", name: "Projected_Cap_Table.xlsx", size: "450 KB", uploadDate: "28 May 2026", hash: "SHA-256: b3c7a1..." }
+                            ]
+                        },
+                        {
+                            folderId: "f-01-02",
+                            name: "Compliance Registries",
+                            isOpen: true,
+                            fileCount: 1,
+                            flowType: "Advisor Uploaded Dossiers",
+                            files: [
+                                { fileId: "file-03", name: "Corporate_Incorporation_Cert.pdf", size: "2.1 MB", uploadDate: "20 May 2026", hash: "SHA-256: 9e8c2d..." }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    id: "VDR-CO-02",
+                    name: "NovaGrid Diligence",
+                    industry: "Energy",
+                    docCount: 1,
+                    flow: "ma",
+                    vaultTitle: "NovaGrid Diligence Vault",
+                    vaultDesc: "M&A Energy Asset Sourcing Room",
+                    directories: [
+                        {
+                            folderId: "f-02-01",
+                            name: "Asset Due Diligence",
+                            isOpen: true,
+                            fileCount: 1,
+                            flowType: "Investee / Seller Documents",
+                            files: [
+                                { fileId: "file-04", name: "NovaGrid_Asset_Evaluation.pdf", size: "3.4 MB", uploadDate: "12 May 2026", hash: "SHA-256: d5a7e3..." }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    id: "VDR-CO-03",
+                    name: "LMN Strategic",
+                    industry: "Wellness",
+                    docCount: 1,
+                    flow: "equity",
+                    vaultTitle: "LMN Strategic Funding Vault",
+                    vaultDesc: "Equity Investor Sourcing Vault",
+                    directories: [
+                        {
+                            folderId: "f-03-01",
+                            name: "Investor Pitch Decks",
+                            isOpen: true,
+                            fileCount: 1,
+                            flowType: "Investor / Buyer Documents",
+                            files: [
+                                { fileId: "file-05", name: "LMN_Investor_Teaser.pdf", size: "1.8 MB", uploadDate: "18 May 2026", hash: "SHA-256: a1c9b2..." }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    id: "VDR-CO-04",
+                    name: "TechVenture Solutions",
+                    industry: "SaaS / AI",
+                    docCount: 6,
+                    flow: "equity",
+                    vaultTitle: "TechVenture Solutions Vault",
+                    vaultDesc: "Secure Virtual Document Workspace Directory",
+                    directories: [
+                        {
+                            folderId: "f-04-01",
+                            name: "Investee Pitch & Cap",
+                            isOpen: true,
+                            fileCount: 2,
+                            flowType: "Investee / Seller Documents",
+                            files: [
+                                { fileId: "file-06", name: "TV_Series_A_Deck.pdf", size: "12.4 MB", uploadDate: "15 Apr 2026", hash: "SHA-256: b8e3c1..." },
+                                { fileId: "file-07", name: "Cap_Table_Detailed.xlsx", size: "1.1 MB", uploadDate: "18 Apr 2026", hash: "SHA-256: f1a2e3..." }
+                            ]
+                        },
+                        {
+                            folderId: "f-04-02",
+                            name: "Advisor Diligence",
+                            isOpen: true,
+                            fileCount: 2,
+                            flowType: "Advisor Uploaded Dossiers",
+                            files: [
+                                { fileId: "file-08", name: "TV_Advisory_Evaluation_Log.pdf", size: "2.4 MB", uploadDate: "20 Apr 2026", hash: "SHA-256: c5d6e7..." },
+                                { fileId: "file-09", name: "Financial_Due_Diligence.pdf", size: "4.5 MB", uploadDate: "22 Apr 2026", hash: "SHA-256: d8e9f0..." }
+                            ]
+                        },
+                        {
+                            folderId: "f-04-03",
+                            name: "Investor Verification Dossiers",
+                            isOpen: false,
+                            fileCount: 2,
+                            flowType: "Investor / Buyer Documents",
+                            files: [
+                                { fileId: "file-10", name: "NDA_Executed_Sequoia.pdf", size: "1.4 MB", uploadDate: "12 Apr 2026", hash: "SHA-256: 4f5a6b..." },
+                                { fileId: "file-11", name: "Term_Sheet_Sourced_Dossier.pdf", size: "2.1 MB", uploadDate: "15 Apr 2026", hash: "SHA-256: a7b8c9..." }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    id: "VDR-CO-05",
+                    name: "TechCore Industries",
+                    industry: "IoT / Manufacturing",
+                    docCount: 4,
+                    flow: "equity",
+                    vaultTitle: "TechCore Industries Data Room",
+                    vaultDesc: "Equity Deal Sourcing Vault",
+                    directories: [
+                        {
+                            folderId: "f-05-01",
+                            name: "Core Financial Models",
+                            isOpen: true,
+                            fileCount: 2,
+                            flowType: "Investee / Seller Documents",
+                            files: [
+                                { fileId: "file-12", name: "Financial_Model_2026.xlsx", size: "8.2 MB", uploadDate: "05 May 2026", hash: "SHA-256: f3e2d1..." },
+                                { fileId: "file-13", name: "Audited_Statements_YTD.pdf", size: "4.1 MB", uploadDate: "08 May 2026", hash: "SHA-256: b5a4c3..." }
+                            ]
+                        },
+                        {
+                            folderId: "f-05-02",
+                            name: "Compliance Logs",
+                            isOpen: false,
+                            fileCount: 2,
+                            flowType: "Advisor Uploaded Dossiers",
+                            files: [
+                                { fileId: "file-14", name: "KYC_Clearance_Certificate.pdf", size: "1.1 MB", uploadDate: "12 May 2026", hash: "SHA-256: d4c3b2..." },
+                                { fileId: "file-15", name: "Technical_Audit_Report.pdf", size: "5.3 MB", uploadDate: "15 May 2026", hash: "SHA-256: a1b2c3..." }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    id: "VDR-CO-06",
+                    name: "GreenField Investments",
+                    industry: "Agritech / IoT",
+                    docCount: 3,
+                    flow: "equity",
+                    vaultTitle: "GreenField Investments Vault",
+                    vaultDesc: "Secure Virtual Document Workspace Directory",
+                    directories: [
+                        {
+                            folderId: "f-06-01",
+                            name: "Investee Sourcing Pack",
+                            isOpen: true,
+                            fileCount: 2,
+                            flowType: "Investee / Seller Documents",
+                            files: [
+                                { fileId: "file-16", name: "Agritech_Dossier_2026.pdf", size: "6.4 MB", uploadDate: "10 May 2026", hash: "SHA-256: b7c8d9..." },
+                                { fileId: "file-17", name: "Cap_Table_Greenfield.xlsx", size: "1.2 MB", uploadDate: "12 May 2026", hash: "SHA-256: d2e3f4..." }
+                            ]
+                        },
+                        {
+                            folderId: "f-06-02",
+                            name: "Signed NDA Registry",
+                            isOpen: true,
+                            fileCount: 1,
+                            flowType: "Investor / Buyer Documents",
+                            files: [
+                                { fileId: "file-18", name: "Matrix_NDA_Executed.pdf", size: "1.8 MB", uploadDate: "15 May 2026", hash: "SHA-256: f5e6d7..." }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    id: "VDR-CO-07",
+                    name: "Apex Retail Logics",
+                    industry: "Logistics",
+                    docCount: 3,
+                    flow: "ma",
+                    vaultTitle: "Apex Retail Logics Data Room",
+                    vaultDesc: "M&A Buyout Asset Folder Directory",
+                    directories: [
+                        {
+                            folderId: "f-07-01",
+                            name: "Seller Valuations",
+                            isOpen: true,
+                            fileCount: 2,
+                            flowType: "Investee / Seller Documents",
+                            files: [
+                                { fileId: "file-19", name: "M&A_Valuation_Model.xlsx", size: "14.5 MB", uploadDate: "20 May 2026", hash: "SHA-256: a4b5c6..." },
+                                { fileId: "file-20", name: "Operational_Brief.pdf", size: "3.2 MB", uploadDate: "22 May 2026", hash: "SHA-256: d7e8f9..." }
+                            ]
+                        },
+                        {
+                            folderId: "f-07-02",
+                            name: "Advisory CIM Sourcing",
+                            isOpen: true,
+                            fileCount: 1,
+                            flowType: "Advisor Uploaded Dossiers",
+                            files: [
+                                { fileId: "file-21", name: "CIM_Apex_Retail_Logics.pdf", size: "8.4 MB", uploadDate: "24 May 2026", hash: "SHA-256: f1g2h3..." }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    id: "VDR-CO-08",
+                    name: "SolarFlow Assemblies",
+                    industry: "Renewables",
+                    docCount: 3,
+                    flow: "ma",
+                    vaultTitle: "SolarFlow Assemblies Vault",
+                    vaultDesc: "M&A Strategic Buyout Repository",
+                    directories: [
+                        {
+                            folderId: "f-08-01",
+                            name: "Corporate Audits",
+                            isOpen: true,
+                            fileCount: 2,
+                            flowType: "Investee / Seller Documents",
+                            files: [
+                                { fileId: "file-22", name: "Tax_Audit_FY25.pdf", size: "4.8 MB", uploadDate: "18 May 2026", hash: "SHA-256: d4e5f6..." },
+                                { fileId: "file-23", name: "Environmental_Clearances.pdf", size: "3.1 MB", uploadDate: "20 May 2026", hash: "SHA-256: f8g9h0..." }
+                            ]
+                        },
+                        {
+                            folderId: "f-08-02",
+                            name: "Buyer Term Sheets",
+                            isOpen: true,
+                            fileCount: 1,
+                            flowType: "Investor / Buyer Documents",
+                            files: [
+                                { fileId: "file-24", name: "SolarFlow_Binding_Offer.pdf", size: "2.5 MB", uploadDate: "24 May 2026", hash: "SHA-256: a8b9c0..." }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        };
+
+        let selectedCompanyId = "VDR-CO-01"; // Default to XYZ Corp Buyout
+        let activeVdrViewMode = "grid"; // Grid View is the default matching image_241883.png
+        let activeMainPage = "vdr"; // Data Room page loads on screen initial load
+
+        function toggleDropdown(id) { const el = document.getElementById(id); if(el) el.classList.toggle('hidden'); }
+        function toggleTheme(){document.documentElement.classList.toggle('dark');const d=document.documentElement.classList.contains('dark');document.getElementById('theme-icon').className=d?'fa-solid fa-sun text-sm text-amber-400':'fa-solid fa-moon text-sm';localStorage.setItem('charantra-theme',d?'dark':'light')}
+        (function(){if(localStorage.getItem('charantra-theme')==='dark'){document.documentElement.classList.add('dark');document.addEventListener('DOMContentLoaded',()=>{const i=document.getElementById('theme-icon');if(i)i.className='fa-solid fa-sun text-sm text-amber-400'})}})()
+        // ── SIDEBAR FUNCTIONS ──
+        function toggleSidebarCollapse() {
+            document.getElementById('app-sidebar').classList.toggle('collapsed');
+            document.querySelectorAll('.sidebar-section-div').forEach(el => { if (document.getElementById('app-sidebar').classList.contains('collapsed')) el.style.maxHeight = '0'; });
+        }
+        function toggleSidebarSection(id) {
+            if (document.getElementById('app-sidebar').classList.contains('collapsed')) return;
+            const el = document.getElementById(id), arrow = document.getElementById('arrow-' + id);
+            if (el) { const open = el.style.maxHeight !== '0px' && el.style.maxHeight !== ''; el.style.maxHeight = open ? '0' : '200px'; }
+            if (arrow) arrow.style.transform = arrow.style.transform === 'rotate(180deg)' ? 'rotate(0deg)' : 'rotate(180deg)';
+        }
+
+        // Load initialization scripts on window loads
+        window.onload = function () {
+            switchView('vdr');
+            renderExplorerLayout();
+        };
+
+        function switchView(viewId) {
+            // Only allow VDR view
+            if (viewId !== 'vdr') { viewId = 'vdr'; }
+            // Hide all views
+            const views = [
+                'view-dashboard', 'view-crm', 'view-deals', 'view-updates', 
+                'view-mandates', 'view-vdr', 'view-team', 'view-payments', 
+                'view-reports', 'view-settings'
+            ];
+            
+            views.forEach(v => {
+                const el = document.getElementById(v);
+                if (el) el.classList.add('hidden');
+            });
+
+            // Show active view
+            const activeEl = document.getElementById(`view-${viewId}`);
+            if (activeEl) activeEl.classList.remove('hidden');
+
+            // Reset navigation highlighted tab background
+            const navButtons = document.querySelectorAll('nav button');
+            navButtons.forEach(btn => {
+                btn.className = "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150";
+            });
+
+            // Highlight newly selected item
+            const currentBtn = document.getElementById(`nav-${viewId}`);
+            if (currentBtn) {
+                currentBtn.className = "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-white bg-slate-900 transition duration-150";
+                
+                // Highlight text icon
+                const icon = currentBtn.querySelector('i');
+                if (icon) icon.classList.add('text-brand-orange');
+            }
+
+            activeMainPage = viewId;
+            document.getElementById('main-content-scrollable').scrollTop = 0;
+        }
+
+        function switchVdrViewMode(mode) {
+            activeVdrViewMode = mode;
+            const btnGrid = document.getElementById('vdr-view-toggle-grid');
+            const btnExplorer = document.getElementById('vdr-view-toggle-explorer');
+
+            const viewportGrid = document.getElementById('vdr-viewport-grid');
+            const viewportExplorer = document.getElementById('vdr-viewport-explorer');
+
+            if (mode === 'grid') {
+                btnGrid.className = "px-3.5 py-1.5 rounded-md text-xs font-bold transition flex items-center gap-1.5 bg-white text-slate-900 shadow-sm";
+                btnExplorer.className = "px-3.5 py-1.5 rounded-md text-xs font-bold transition flex items-center gap-1.5 text-slate-500 hover:text-slate-800";
+                
+                viewportGrid.classList.remove('hidden');
+                viewportExplorer.classList.add('hidden');
+
+                document.getElementById('vdr-title-label').innerText = "Data Room & Vault Access";
+                document.getElementById('vdr-subtitle-label').innerText = "Audit active NDA/CIM requests and structure dynamic watermark parameters.";
+            } else {
+                btnExplorer.className = "px-3.5 py-1.5 rounded-md text-xs font-bold transition flex items-center gap-1.5 bg-white text-slate-900 shadow-sm";
+                btnGrid.className = "px-3.5 py-1.5 rounded-md text-xs font-bold transition flex items-center gap-1.5 text-slate-500 hover:text-slate-800";
+                
+                viewportExplorer.classList.remove('hidden');
+                viewportGrid.classList.add('hidden');
+
+                document.getElementById('vdr-title-label').innerText = "Data Room";
+                document.getElementById('vdr-subtitle-label').innerText = "Manage referred company data rooms, explore secure dossiers, and audit advisor access credentials.";
+            }
+
+            renderExplorerLayout();
+        }
+
+        // Click wrapper on grid cards to open Document Explorer at specific company vault index
+        function selectCompanyExplorer(companyName) {
+            const companyObj = vdrDatabase.companies.find(c => c.name === companyName);
+            if (companyObj) {
+                selectedCompanyId = companyObj.id;
+                switchVdrViewMode('explorer');
+            }
+        }
+
+        function filterVdrCompanies(query) {
+            renderExplorerLayout(query, null);
+        }
+
+        function filterVdrFiles(query) {
+            renderExplorerLayout(null, query);
+        }
+
+        function renderExplorerLayout(companySearch = null, fileSearch = null) {
+            // Render Left Column Companies
+            const wrapperCompanies = document.getElementById('vdr-companies-list-wrapper');
+            wrapperCompanies.innerHTML = '';
+
+            let companyList = vdrDatabase.companies;
+            if (companySearch) {
+                companyList = companyList.filter(c => c.name.toLowerCase().includes(companySearch.toLowerCase()));
+            }
+
+            companyList.forEach(comp => {
+                const isSelected = comp.id === selectedCompanyId;
+                const activeClasses = isSelected 
+                    ? "border-2 border-brand-orange bg-orange-50/50" 
+                    : "border border-slate-100 hover:border-slate-300 bg-white";
+
+                wrapperCompanies.innerHTML += `
+                    <div onclick="changeSelectedCompany('${comp.id}')" class="p-4 rounded-xl cursor-pointer transition ${activeClasses} flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-lg bg-orange-500 font-extrabold text-white text-xs flex items-center justify-center shrink-0">
+                            ${comp.name.substring(0, 2).toUpperCase()}
+                        </div>
+                        <div class="flex-1 overflow-hidden">
+                            <h4 class="font-extrabold text-slate-900 text-xs truncate">${comp.name}</h4>
+                            <p class="text-[10px] text-slate-400 font-semibold uppercase mt-0.5">${comp.industry} • ${comp.docCount} Docs</p>
+                        </div>
+                    </div>
+                `;
+            });
+
+            // Find current active company details
+            const activeCompanyObj = vdrDatabase.companies.find(c => c.id === selectedCompanyId) || vdrDatabase.companies[0];
+            if (activeCompanyObj) {
+                document.getElementById('explorer-vault-title').innerText = activeCompanyObj.vaultTitle;
+                document.getElementById('explorer-panel-title').innerText = activeCompanyObj.name + " Vault Directory";
+
+                // Render Nesting Folder Tree on the right
+                const treeContainer = document.getElementById('explorer-nesting-tree');
+                treeContainer.innerHTML = '';
+
+                let totalFilesCalculated = 0;
+
+                activeCompanyObj.directories.forEach(dir => {
+                    let filesToRender = dir.files;
+                    if (fileSearch) {
+                        filesToRender = filesToRender.filter(f => f.name.toLowerCase().includes(fileSearch.toLowerCase()));
+                    }
+
+                    // Only render directory folder if matches exist
+                    if (filesToRender.length > 0 || !fileSearch) {
+                        totalFilesCalculated += filesToRender.length;
+
+                        // Collapse icon selector
+                        const angleIcon = dir.isOpen ? 'fa-chevron-down' : 'fa-chevron-right';
+
+                        let folderHtml = `
+                            <div class="space-y-2">
+                                <!-- Folder Title row click collapses/expands -->
+                                <div onclick="toggleFolder('${activeCompanyObj.id}', '${dir.folderId}')" class="flex justify-between items-center cursor-pointer hover:bg-slate-50 p-2 rounded-lg transition">
+                                    <div class="flex items-center gap-2.5">
+                                        <div class="w-8 h-8 rounded-lg bg-amber-50 text-amber-500 flex items-center justify-center">
+                                            <i class="fa-solid fa-folder-open"></i>
+                                        </div>
+                                        <div>
+                                            <h5 class="font-bold text-slate-800 text-xs">${dir.name}</h5>
+                                            <span class="text-[9px] text-indigo-600 font-bold uppercase tracking-wider block">${dir.flowType}</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-2 text-[10px] text-slate-400 font-semibold">
+                                        <span>${filesToRender.length} files</span>
+                                        <i class="fa-solid ${angleIcon} text-[9px]"></i>
+                                    </div>
+                                </div>
+
+                                <!-- Collapsible Files Container -->
+                                <div class="pl-8 space-y-1.5 ${dir.isOpen ? '' : 'hidden'}">
+                        `;
+
+                        filesToRender.forEach(file => {
+                            let fileIcon = 'fa-file-pdf text-red-500';
+                            if (file.name.endsWith('.xlsx')) fileIcon = 'fa-file-excel text-emerald-500';
+
+                            folderHtml += `
+                                <div class="bg-white hover:bg-slate-50/80 p-3 rounded-lg border border-slate-100/80 flex justify-between items-center text-xs transition">
+                                    <div class="flex items-center gap-2.5">
+                                        <i class="fa-regular ${fileIcon} text-lg"></i>
+                                        <div>
+                                            <span class="font-bold text-slate-800 hover:text-brand-orange cursor-pointer" onclick="simulatePreviewFile('${file.name}', '${file.hash}')">${file.name}</span>
+                                            <span class="text-[9px] text-slate-400 block">${file.size} • Verified secure</span>
+                                        </div>
+                                    </div>
+                                    <!-- Action options (Eye, download) -->
+                                    <div class="flex items-center gap-2 text-slate-400">
+                                        <button onclick="simulatePreviewFile('${file.name}', '${file.hash}')" class="p-1.5 hover:text-brand-orange hover:bg-slate-100 rounded transition" title="Preview secure document">
+                                            <i class="fa-regular fa-eye"></i>
+                                        </button>
+                                        <button onclick="simulateDownloadFile('${file.name}')" class="p-1.5 hover:text-brand-orange hover:bg-slate-100 rounded transition" title="Download secured copy">
+                                            <i class="fa-solid fa-download"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            `;
+                        });
+
+                        folderHtml += `
+                                </div>
+                            </div>
+                        `;
+
+                        treeContainer.insertAdjacentHTML('beforeend', folderHtml);
+                    }
+                });
+
+                // Update total files badge
+                document.getElementById('explorer-total-badge').innerText = `${totalFilesCalculated} FILES`;
+            }
+        }
+
+        function changeSelectedCompany(id) {
+            selectedCompanyId = id;
+            renderExplorerLayout();
+        }
+
+        function toggleFolder(companyId, folderId) {
+            const comp = vdrDatabase.companies.find(c => c.id === companyId);
+            if (comp) {
+                const directory = comp.directories.find(d => d.folderId === folderId);
+                if (directory) {
+                    directory.isOpen = !directory.isOpen;
+                    renderExplorerLayout();
+                }
+            }
+        }
+
+        // Secure simulation triggers (Zero alert standard compliance)
+        function closeSecureDialog() {
+            document.getElementById('secure-dialog').classList.add('hidden');
+        }
+
+        function openSecureDialog(title, message, iconClass = 'fa-circle-check text-emerald-500') {
+            document.getElementById('dialog-title').innerText = title;
+            document.getElementById('dialog-message').innerText = message;
+            
+            const iconContainer = document.getElementById('dialog-icon');
+            iconContainer.innerHTML = `<i class="fa-solid ${iconClass}"></i>`;
+            
+            document.getElementById('secure-dialog').classList.remove('hidden');
+        }
+
+        function promptNewFolder() {
+            const folderName = prompt("Enter new folder directory name:", "Investment Term Sheets");
+            if (folderName && folderName.trim() !== "") {
+                const comp = vdrDatabase.companies.find(c => c.id === selectedCompanyId);
+                if (comp) {
+                    const newId = 'f-' + Math.floor(Math.random() * 100000);
+                    comp.directories.push({
+                        folderId: newId,
+                        name: folderName,
+                        isOpen: true,
+                        fileCount: 0,
+                        flowType: "Advisor Uploaded Dossiers",
+                        files: []
+                    });
+                    renderExplorerLayout();
+                    openSecureDialog("Directory Created", `Folder "${folderName}" was provisioned successfully inside active secure vault.`);
+                }
+            }
+        }
+
+        function promptUploadFile() {
+            const fileName = prompt("Enter file name to upload inside active folder (e.g. Audited_Reports_Q4.pdf):", "Pitch_Deck_Diligence.pdf");
+            if (fileName && fileName.trim() !== "") {
+                const comp = vdrDatabase.companies.find(c => c.id === selectedCompanyId);
+                if (comp && comp.directories.length > 0) {
+                    // Inject to first directory folder
+                    comp.directories[0].files.push({
+                        fileId: 'file-' + Math.floor(Math.random() * 100000),
+                        name: fileName,
+                        size: "2.5 MB",
+                        uploadDate: "Just now",
+                        hash: "SHA-256: " + Math.random().toString(16).substring(2, 8) + "..."
+                    });
+                    comp.docCount += 1;
+                    renderExplorerLayout();
+                    openSecureDialog("File Encrypted", `"${fileName}" uploaded and automatically encrypted using AES-256 standards.`);
+                }
+            }
+        }
+
+        function simulateDownloadFile(fileName) {
+            openSecureDialog("SECURE DOWNLOAD COMPLETED", `"${fileName}" downloaded successfully with authorized digital audit watermarks.`, "fa-file-shield text-indigo-600");
+        }
+
+        function simulatePreviewFile(fileName, hash) {
+            openSecureDialog("DOCUMENT INTEGRITY SECURED", `Previewing: "${fileName}"\n${hash}`, "fa-shield text-emerald-500");
+        }
+
+        // Global Utility Redirect trigger
+        function handleGlobalSearch(query) {
+            if (query && query.trim() !== "") {
+                // Perform filtering search on Vault Explorer
+                switchVdrViewMode('explorer');
+                renderExplorerLayout(query, query);
+            } else {
+                renderExplorerLayout();
+            }
+        }
+    </script>
+
+    <script>
+        // â”€â”€ ROLE SWITCHER â”€â”€
+        function toggleRoleDropdown() { document.getElementById('role-dropdown').classList.toggle('hidden'); }
+        function switchToRole(role) {
+            localStorage.setItem('charantra-role', role);
+            const r = { 'superadmin': '/pages/superadmin/dashboard.html', 'admin': '/pages/admin/dashboard.html', 'ib': '/pages/ib/deals.html', 'ba': '/pages/ba/reports.html' };
+            window.location.href = r[role] || '/index.html';
+        }
+        (function() {
+            const role = localStorage.getItem('charantra-role') || 'superadmin';
+            const labels = { 'superadmin': 'SUPER ADMIN', 'admin': 'ADMIN', 'ib': 'INVESTMENT BANKER', 'ba': 'BUSINESS ANALYST' };
+            const el = document.getElementById('role-label'); if (el) el.innerText = labels[role] || 'SUPER ADMIN';
+        })();
+        window.addEventListener('click', function(e) { if (!e.target.closest('.relative')) { const dd = document.getElementById('role-dropdown'); if (dd) dd.classList.add('hidden'); } });
+    </script>
+</body>

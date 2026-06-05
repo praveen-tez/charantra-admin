@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Charantra - CRM & Users Directory</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { theme: { extend: { colors: { brand: { orange: '#FF5E00', orangeHover: '#e04f00', navyDark: '#070C1E', navyMedium: '#0F172A', navyLight: '#1E293B', bgSlate: '#F8FAFC', borderGray: '#E2E8F0' } } } } }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Titillium Web', sans-serif; -webkit-font-smoothing: antialiased; background-color: #F8FAFC; }
+        .dark body,.dark { background-color:#050A30 !important; color:#F1F5F9 !important }
+        .dark .bg-white { background-color:#1E293B !important }
+        .dark .bg-slate-50 { background-color:#1E293B !important }
+        .dark .bg-brand-bgSlate { background-color:#0F172A !important }
+        .dark .text-slate-900 { color:#F1F5F9 !important }
+        .dark .text-slate-800 { color:#E2E8F0 !important }
+        .dark .text-slate-700 { color:#CBD5E1 !important }
+        .dark .text-slate-600 { color:#94A3B8 !important }
+        .dark .text-slate-500,.dark .text-slate-400 { color:#64748B !important }
+        .dark .border-slate-100,.dark .border-slate-200,.dark .border-brand-borderGray { border-color:#334155 !important }
+        .dark .border-slate-50 { border-color:#1E293B !important }
+        .dark .shadow-sm { box-shadow:0 1px 2px rgba(0,0,0,0.3) !important }
+        .dark .hover\:bg-slate-50:hover { background-color:#334155 !important }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(0,0,0,0.02); }
+        ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.25); }
+        #app-sidebar.collapsed { width: 64px !important; }
+        #app-sidebar.collapsed .sidebar-label { display: none; }
+        #app-sidebar.collapsed .sidebar-arrow { display: none; }
+        #app-sidebar.collapsed .sidebar-logo { width: 32px !important; min-width: 32px !important; }
+        #app-sidebar.collapsed .sidebar-collapse-icon { transform: rotate(180deg); }
+        #app-sidebar.collapsed button { justify-content: center; padding-left: 8px; padding-right: 8px; }
+        #app-sidebar.collapsed nav > div > button { justify-content: center; }
+        #app-sidebar.collapsed .sidebar-section-div { max-height: 0 !important; }
+        .sub-active { background: #FF5E00 !important; color: #fff !important; font-weight: 600 !important; }
+    </style>
+</head>
+<body class="overflow-hidden h-screen flex text-slate-800 bg-brand-bgSlate">
+
+    <div class="flex w-full h-full">
+        
+        <aside id="app-sidebar" class="w-64 bg-brand-navyDark text-slate-300 flex flex-col h-full shrink-0 border-r border-slate-900 z-30 justify-between select-none transition-all duration-300">
+            <div class="flex flex-col overflow-y-auto">
+                <div class="p-4 flex items-center justify-between border-b border-slate-900/60">
+                    <div class="flex items-center gap-3 overflow-hidden">
+                        <a href="/index.html"><img src="/assets/logo.png" width="160" alt="Charantra Logo" class="sidebar-logo" style="height: auto; min-width: 120px;"></a>
+                    </div>
+                    <button onclick="toggleSidebarCollapse()" class="text-slate-500 hover:text-white p-1 rounded transition shrink-0"><i class="fa-solid fa-outdent text-xs sidebar-collapse-icon"></i></button>
+                </div>
+                <nav class="px-3 space-y-1 text-sm">
+                    <a href="/pages/ba/dashboard.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><i class="fa-solid fa-table-columns text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Dashboard</span></button></a>
+
+                    <div class="space-y-0.5">
+                        <button onclick="toggleSidebarSection('crm-section')" class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg font-bold text-white hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden">
+                            <span class="flex items-center gap-3"><i class="fa-solid fa-users text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">CRM & Users</span></span>
+                            <i class="fa-solid fa-chevron-down text-[9px] transition-transform duration-200 sidebar-arrow" id="arrow-crm-section" style="transform:rotate(180deg)"></i>
+                        </button>
+                        <div id="crm-section" class="pl-5 pr-1 space-y-0.5 overflow-hidden sidebar-section-div" style="max-height:200px;transition:max-height 0.3s ease">
+                            <a href="/pages/ba/crm.html?type=Investor" class="block"><button id="sub-investor" class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-hand-holding-dollar text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Investors</span></button></a>
+                            <a href="/pages/ba/crm.html?type=Investee" class="block"><button id="sub-investee" class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-rocket text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Investees</span></button></a>
+                            <a href="/pages/ba/crm.html?type=Buyer" class="block"><button id="sub-buyer" class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-cart-shopping text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Buyers</span></button></a>
+                            <a href="/pages/ba/crm.html?type=Seller" class="block"><button id="sub-seller" class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-tags text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Sellers</span></button></a>
+                            <a href="/pages/ba/crm.html?type=Advisor" class="block"><button id="sub-advisor" class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-comments text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Advisors</span></button></a>
+                        </div>
+                    </div>
+
+                    <a href="/pages/ba/mandates.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><i class="fa-solid fa-file-contract text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Mandates & Projects</span></button></a>
+
+                    <a href="/pages/ba/deals.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><i class="fa-solid fa-briefcase text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Deals & Pipeline</span></button></a>
+
+                    <a href="/pages/ba/dataroom.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><i class="fa-solid fa-hard-drive text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Data Room</span></button></a>
+
+                    <div class="space-y-0.5">
+                        <button onclick="toggleSidebarSection('team-section')" class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><span class="flex items-center gap-3"><i class="fa-solid fa-users-gear text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Team Management</span></span><i class="fa-solid fa-chevron-down text-[9px] sidebar-arrow" id="arrow-team-section"></i></button>
+                        <div id="team-section" class="pl-5 pr-1 space-y-0.5 overflow-hidden sidebar-section-div" style="max-height:0;transition:max-height 0.3s ease">
+                            <a href="/pages/ba/team.html?view=members" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-user-group text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Team Members</span></button></a>
+                            <a href="/pages/ba/team.html?view=roles" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-shield-halved text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Roles & Permissions</span></button></a>
+                        </div>
+                    </div>
+
+                    <div class="space-y-0.5">
+                        <button onclick="toggleSidebarSection('payments-section')" class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><span class="flex items-center gap-3"><i class="fa-solid fa-receipt text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Payments</span></span><i class="fa-solid fa-chevron-down text-[9px] sidebar-arrow" id="arrow-payments-section"></i></button>
+                        <div id="payments-section" class="pl-5 pr-1 space-y-0.5 overflow-hidden sidebar-section-div" style="max-height:0;transition:max-height 0.3s ease">
+                            <a href="/pages/ba/payments.html?view=invoices" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-file-invoice text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Invoices</span></button></a>
+                            <a href="/pages/ba/payments.html?view=ledger" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-book text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Ledger</span></button></a>
+                        </div>
+                    </div>
+
+                    <a href="/pages/ba/reports.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><i class="fa-solid fa-chart-simple text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Reports</span></button></a>
+                    <a href="/pages/ba/settings.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><i class="fa-solid fa-gear text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Settings & Logs</span></button></a>
+                </nav>
+            </div>
+            <div class="p-4 text-center text-xs text-slate-600 border-t border-slate-900"><p class="sidebar-label">© 2026 Charantra</p></div>
+        </aside>
+
+        <!-- MAIN CONTENT PANEL -->
+        <main class="flex-1 flex flex-col h-full overflow-hidden">
+            <header class="h-16 border-b border-brand-borderGray bg-white flex items-center justify-between px-8 shrink-0 select-none">
+                <div class="w-96 relative"><span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400"><i class="fa-solid fa-magnifying-glass text-xs"></i></span><input type="text" id="header-search" oninput="handleSearch(this.value)" class="w-full bg-slate-50 border border-slate-200 rounded-lg py-1.5 pl-9 pr-4 text-xs focus:outline-none focus:border-brand-orange transition" placeholder="Search mandates, companies, investors..."></div>
+                <div class="flex items-center gap-5">
+                    <div class="flex items-center gap-1 border border-slate-200 rounded-lg px-2.5 py-1 bg-slate-50 text-xs text-slate-600"><span class="font-semibold text-slate-700">INR (₹)</span><i class="fa-solid fa-chevron-down text-[9px] text-slate-400"></i></div>
+                    <button onclick="toggleTheme()" class="w-9 h-9 flex items-center justify-center text-slate-500 hover:text-brand-orange hover:bg-slate-100 rounded-full transition" title="Toggle theme"><i id="theme-icon" class="fa-solid fa-moon text-sm"></i></button>
+                    <div class="flex items-center gap-3 border-l border-slate-200 pl-4">
+    <div class="text-right">
+        <p class="text-xs font-bold text-slate-900 leading-none">KARTHIK</p>
+        <p class="text-[9px] text-emerald-500 font-bold uppercase tracking-wider mt-0.5" id="role-label">BUSINESS ANALYST <i class="fa-solid fa-chevron-down text-[7px] text-slate-400 ml-1"></i></p>
+    </div>
+    <div class="relative">
+        <button onclick="toggleRoleDropdown()" class="w-10 h-10 rounded-full bg-emerald-600 text-white font-extrabold text-sm flex items-center justify-center shadow hover:shadow-md transition cursor-pointer">K</button>
+        <div id="role-dropdown" class="hidden absolute right-0 mt-2 w-52 bg-white border border-slate-200 rounded-xl shadow-xl z-50 text-xs overflow-hidden">
+            <div class="px-4 py-3 border-b border-slate-100 font-bold text-slate-700">Switch Role</div>
+            <button onclick="switchToRole('superadmin')" class="w-full text-left px-4 py-2.5 hover:bg-slate-50 text-slate-700 font-medium flex items-center gap-2.5 border-b border-slate-50"><i class="fa-solid fa-crown text-brand-orange w-4"></i> Super Admin</button>
+            <button onclick="switchToRole('admin')" class="w-full text-left px-4 py-2.5 hover:bg-slate-50 text-slate-700 font-medium flex items-center gap-2.5 border-b border-slate-50"><i class="fa-solid fa-shield-halved text-violet-500 w-4"></i> Admin</button>
+            <button onclick="switchToRole('ib')" class="w-full text-left px-4 py-2.5 hover:bg-slate-50 text-slate-700 font-medium flex items-center gap-2.5 border-b border-slate-50"><i class="fa-solid fa-briefcase text-blue-500 w-4"></i> Investment Banker</button>
+            <button onclick="switchToRole('ba')" class="w-full text-left px-4 py-2.5 hover:bg-slate-50 text-slate-700 font-medium flex items-center gap-2.5"><i class="fa-solid fa-chart-line text-emerald-500 w-4"></i> Business Analyst</button>
+        </div>
+    </div>
+</div>
+                </div>
+            </header>
+
+            <div class="flex-1 overflow-y-auto p-8">
+                <section class="space-y-6">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                        <div><h2 class="text-2xl font-bold tracking-tight text-slate-900" id="crm-title-header">CRM Directory</h2><p class="text-slate-500 text-xs mt-1" id="crm-desc-header">Manage all onboarded platform participants.</p></div>
+                        <div class="flex items-center gap-2 select-none">
+                            <div class="relative inline-block">
+                                <button onclick="toggleDropdown('export-actions-menu')" class="bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 text-xs font-bold px-4 py-2.5 rounded-lg flex items-center gap-2 shadow-sm transition"><i class="fa-solid fa-download"></i> Export <i class="fa-solid fa-chevron-down text-[10px]"></i></button>
+                                <div id="export-actions-menu" class="hidden absolute right-0 mt-2 bg-white border border-slate-200 rounded-lg shadow-xl py-1 z-40 text-xs w-44">
+                                    <button onclick="simulateExport('PDF')" class="w-full text-left px-4 py-2 hover:bg-slate-50 text-slate-700 font-medium">Export as PDF</button>
+                                    <button onclick="simulateExport('CSV')" class="w-full text-left px-4 py-2 hover:bg-slate-50 text-slate-700 font-medium">Export as CSV</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-5 gap-4 select-none">
+                        <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-start gap-4 hover:shadow-md transition"><div class="p-3 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0"><i class="fa-solid fa-users text-lg"></i></div><div class="space-y-1"><span class="text-[11px] text-slate-400 font-bold uppercase tracking-wider block" id="crm-card-label-total">Total</span><h3 class="text-2xl font-extrabold text-slate-900" id="crm-card-total">14</h3><p class="text-[11px] font-bold text-emerald-600 flex items-center gap-0.5 mt-1"><i class="fa-solid fa-caret-up"></i><span id="crm-card-total-pct">—</span><span class="text-slate-400 font-medium">vs last month</span></p></div></div>
+                        <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-start gap-4 hover:shadow-md transition"><div class="p-3 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0"><i class="fa-solid fa-circle-user text-lg"></i></div><div class="space-y-1"><span class="text-[11px] text-slate-400 font-bold uppercase tracking-wider block">Active</span><h3 class="text-2xl font-extrabold text-slate-900" id="crm-card-active">10</h3><p class="text-[11px] font-bold text-emerald-600 flex items-center gap-0.5 mt-1"><i class="fa-solid fa-caret-up"></i><span id="crm-card-active-pct">—</span><span class="text-slate-400 font-medium">vs last month</span></p></div></div>
+                        <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-start gap-4 hover:shadow-md transition"><div class="p-3 rounded-xl bg-amber-50 text-amber-500 flex items-center justify-center shrink-0"><i class="fa-solid fa-clock-rotate-left text-lg"></i></div><div class="space-y-1"><span class="text-[11px] text-slate-400 font-bold uppercase tracking-wider block">On Hold</span><h3 class="text-2xl font-extrabold text-slate-900" id="crm-card-onhold">3</h3><p class="text-[11px] font-bold text-emerald-600 flex items-center gap-0.5 mt-1"><i class="fa-solid fa-caret-up"></i><span id="crm-card-onhold-pct">—</span><span class="text-slate-400 font-medium">vs last month</span></p></div></div>
+                        <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-start gap-4 hover:shadow-md transition"><div class="p-3 rounded-xl bg-red-50 text-red-500 flex items-center justify-center shrink-0"><i class="fa-solid fa-user-slash text-lg"></i></div><div class="space-y-1"><span class="text-[11px] text-slate-400 font-bold uppercase tracking-wider block">Inactive</span><h3 class="text-2xl font-extrabold text-slate-900" id="crm-card-inactive">1</h3><p class="text-[11px] font-bold text-emerald-600 flex items-center gap-0.5 mt-1"><i class="fa-solid fa-caret-down"></i><span id="crm-card-inactive-pct">—</span><span class="text-slate-400 font-medium">vs last month</span></p></div></div>
+                        <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-start gap-4 hover:shadow-md transition"><div class="p-3 rounded-xl bg-blue-50 text-blue-500 flex items-center justify-center shrink-0"><i class="fa-solid fa-user-plus text-lg"></i></div><div class="space-y-1"><span class="text-[11px] text-slate-400 font-bold uppercase tracking-wider block">New This Month</span><h3 class="text-2xl font-extrabold text-slate-900" id="crm-card-new">0</h3><p class="text-[11px] font-bold text-emerald-600 flex items-center gap-0.5 mt-1"><i class="fa-solid fa-caret-up"></i><span id="crm-card-new-pct">—</span><span class="text-slate-400 font-medium">vs last month</span></p></div></div>
+                    </div>
+
+                    <div class="bg-white border border-slate-100 rounded-2xl p-4 shadow-sm flex flex-col lg:flex-row gap-3 items-center">
+                        <div class="relative flex-1 w-full"><span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400"><i class="fa-solid fa-search text-xs"></i></span><input type="text" id="crm-search-input" oninput="applyCrmFilters()" class="w-full bg-slate-50 border border-slate-200 rounded-lg text-xs py-2 pl-9 focus:outline-none focus:border-brand-orange" placeholder="Search users by name, company, email..."></div>
+                        <select id="crm-filter-usertype" onchange="applyCrmFilters()" class="bg-slate-50 border border-slate-200 rounded-lg text-xs px-3 py-2 text-slate-600 focus:outline-none focus:border-brand-orange w-full lg:w-40"><option value="all">User Type</option><option value="Investor">Investor</option><option value="Investee">Investee</option><option value="Buyer">Buyer</option><option value="Seller">Seller</option><option value="Advisor">Advisor</option></select>
+                        <select id="crm-filter-status" onchange="applyCrmFilters()" class="bg-slate-50 border border-slate-200 rounded-lg text-xs px-3 py-2 text-slate-600 focus:outline-none focus:border-brand-orange w-full lg:w-40"><option value="all">Status</option><option value="Active">Active</option><option value="On Hold">On Hold</option><option value="Inactive">Inactive</option></select>
+                        <select id="crm-filter-assigned" onchange="applyCrmFilters()" class="bg-slate-50 border border-slate-200 rounded-lg text-xs px-3 py-2 text-slate-600 focus:outline-none focus:border-brand-orange w-full lg:w-40"><option value="all">Assigned To</option><option value="Sarah Chen">Sarah Chen</option><option value="Akash Kumar">Akash Kumar</option><option value="Raj Mehta">Raj Mehta</option><option value="Priya Sharma">Priya Sharma</option><option value="Vikram Gupta">Vikram Gupta</option></select>
+                        <div class="relative w-full lg:w-44"><span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400"><i class="fa-solid fa-calendar-alt text-xs"></i></span><input type="text" id="crm-filter-date" placeholder="Registration Date" class="w-full bg-slate-50 border border-slate-200 rounded-lg text-xs py-2 pl-9 pr-3 focus:outline-none focus:border-brand-orange cursor-pointer" onclick="(this.type='date')" onblur="(this.type='text')" onchange="applyCrmFilters()"></div>
+                        <div class="flex items-center gap-2 w-full lg:w-auto shrink-0">
+                            <button onclick="resetCrmFilters()" class="bg-white hover:bg-slate-50 border border-slate-200 text-slate-600 text-xs font-bold px-4 py-2.5 rounded-lg w-full lg:w-auto transition shadow-sm">Reset</button>
+                            <button onclick="applyCrmFilters()" class="bg-brand-orange hover:bg-brand-orangeHover text-white text-xs font-bold px-4 py-2.5 rounded-lg flex items-center justify-center gap-2 w-full lg:w-auto transition shadow-sm"><i class="fa-solid fa-filter text-[10px]"></i> Apply Filters</button>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-2xl border border-slate-100 overflow-hidden shadow-sm">
+                        <div class="overflow-x-auto"><table class="w-full text-left text-xs border-collapse"><thead><tr class="bg-slate-50 border-b border-slate-100 text-slate-500 text-[10px] uppercase font-bold tracking-wider"><th class="p-4 w-12 text-center"><input type="checkbox" onchange="toggleSelectAllCrm(this)" class="accent-brand-orange cursor-pointer rounded"></th><th class="p-4">Name</th><th class="p-4">Company</th><th class="p-4">User Type</th><th class="p-4">Status</th><th class="p-4">Registration Date</th><th class="p-4">Last Active</th><th class="p-4">Assigned To</th><th class="p-4 text-center">Actions</th></tr></thead><tbody id="crm-replicated-table-body" class="divide-y divide-slate-100"></tbody></table></div>
+                        <div class="p-4 bg-slate-50 border-t border-slate-100 flex flex-col sm:flex-row justify-between items-center text-slate-500 text-xs gap-3"><div>Showing <span id="crm-table-info-showing">1 to 8</span> of <span id="crm-table-info-total">356</span> results</div><div class="flex items-center gap-3"><div class="flex items-center gap-1"><button class="w-7 h-7 flex items-center justify-center border border-slate-200 rounded hover:bg-white text-slate-400 transition"><i class="fa-solid fa-chevron-left text-[10px]"></i></button><button class="w-7 h-7 flex items-center justify-center border border-brand-orange/20 bg-brand-orange/5 text-brand-orange font-bold rounded">1</button><button class="w-7 h-7 flex items-center justify-center border border-slate-200 rounded hover:bg-white text-slate-600 transition">2</button></div><select class="border border-slate-200 rounded px-2.5 py-1 text-slate-600 bg-white" onchange="handleCrmTableLimitChange(this.value)"><option value="10">10 / page</option><option value="25">25 / page</option><option value="50">50 / page</option></select></div></div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const db = { users: [
+            { id:"USR-001",name:"Sequoia Capital India",email:"info@sequoiacap.com",company:"Sequoia Capital India",type:"Investor",status:"Active",date:"2026-04-12",lastActive:"2 hours ago",assigned:"Sarah Chen",initial:"SC",bgClass:"bg-emerald-50 text-emerald-600" },
+            { id:"USR-002",name:"TechVentures Fund",email:"contact@techventures.com",company:"TechVentures Fund",type:"Investor",status:"Active",date:"2026-04-10",lastActive:"1 day ago",assigned:"Akash Kumar",initial:"TV",bgClass:"bg-purple-50 text-purple-600" },
+            { id:"USR-003",name:"GreenField Capital",email:"hello@greenfieldcap.com",company:"GreenField Capital",type:"Investor",status:"On Hold",date:"2026-04-05",lastActive:"4 days ago",assigned:"Sarah Chen",initial:"GC",bgClass:"bg-amber-50 text-amber-500" },
+            { id:"USR-004",name:"Elevation Capital",email:"investor@elevation.in",company:"Elevation Capital",type:"Investor",status:"Active",date:"2026-04-01",lastActive:"3 hours ago",assigned:"Akash Kumar",initial:"EL",bgClass:"bg-blue-50 text-blue-600" },
+            { id:"USR-005",name:"Blume Ventures",email:"partners@blume.vc",company:"Blume Ventures",type:"Investor",status:"Inactive",date:"2026-03-28",lastActive:"15 days ago",assigned:"Raj Mehta",initial:"BC",bgClass:"bg-rose-50 text-rose-600" },
+            { id:"USR-006",name:"IndiaFund Advisors",email:"contact@indiafund.com",company:"IndiaFund Advisors",type:"Investor",status:"Active",date:"2026-03-22",lastActive:"1 day ago",assigned:"Priya Sharma",initial:"IF",bgClass:"bg-teal-50 text-teal-600" },
+            { id:"USR-007",name:"SV Capital",email:"info@svcapital.com",company:"SV Capital",type:"Investor",status:"On Hold",date:"2026-03-20",lastActive:"7 days ago",assigned:"Vikram Gupta",initial:"SV",bgClass:"bg-sky-50 text-sky-600" },
+            { id:"USR-008",name:"Apex Investments",email:"apex@invest.com",company:"Apex Investments",type:"Investor",status:"Active",date:"2026-03-18",lastActive:"2 hours ago",assigned:"Priya Sharma",initial:"AP",bgClass:"bg-indigo-50 text-indigo-600" },
+            { id:"USR-009",name:"TechVenture Solutions",email:"sarah@techventure.com",company:"TechVenture Solutions",type:"Investee",status:"Active",date:"2026-01-20",lastActive:"2 hours ago",assigned:"Akash Kumar",initial:"TV",bgClass:"bg-emerald-50 text-emerald-600" },
+            { id:"USR-010",name:"Hindustan Enterprises",email:"manda@hindustan.co.in",company:"Hindustan Corp",type:"Investee",status:"Active",date:"2026-02-28",lastActive:"12 hours ago",assigned:"Raj Mehta",initial:"HE",bgClass:"bg-red-50 text-red-500" },
+            { id:"USR-011",name:"Vertex Tech Partners",email:"info@vertexpartners.com",company:"Vertex Partners Ltd",type:"Buyer",status:"Active",date:"2026-03-22",lastActive:"1 day ago",assigned:"Priya Sharma",initial:"VP",bgClass:"bg-teal-50 text-teal-600" },
+            { id:"USR-012",name:"Teton Group Ventures",email:"cooper@tetongroup.com",company:"Teton Ventures",type:"Buyer",status:"Active",date:"2026-03-18",lastActive:"5 hours ago",assigned:"Vikram Gupta",initial:"TG",bgClass:"bg-slate-50 text-slate-700" },
+            { id:"USR-013",name:"Mittal Asset Holdings",email:"corp@mittalassets.in",company:"Mittal Assets",type:"Seller",status:"On Hold",date:"2026-03-01",lastActive:"3 days ago",assigned:"Sarah Chen",initial:"MA",bgClass:"bg-amber-50 text-amber-500" },
+            { id:"USR-014",name:"Pinnacle Corp",email:"deals@pinnaclecorp.com",company:"Pinnacle Corp",type:"Seller",status:"Active",date:"2026-02-15",lastActive:"8 hours ago",assigned:"Akash Kumar",initial:"PC",bgClass:"bg-indigo-50 text-indigo-600" },
+            { id:"USR-015",name:"Grant Thornton Advisory",email:"advisory@grantthornton.in",company:"Grant Thornton India",type:"Advisor",status:"Active",date:"2026-04-08",lastActive:"1 hour ago",assigned:"Sarah Chen",initial:"GT",bgClass:"bg-cyan-50 text-cyan-600" },
+            { id:"USR-016",name:"KPMG India",email:"dealadvisory@kpmg.co.in",company:"KPMG India LLP",type:"Advisor",status:"Active",date:"2026-03-15",lastActive:"3 hours ago",assigned:"Priya Sharma",initial:"KP",bgClass:"bg-lime-50 text-lime-600" },
+        ]};
+        let currentPage=1,pageSize=10;
+
+        function toggleSidebarCollapse(){document.getElementById('app-sidebar').classList.toggle('collapsed');document.querySelectorAll('.sidebar-section-div').forEach(el=>{if(document.getElementById('app-sidebar').classList.contains('collapsed'))el.style.maxHeight='0'});}
+        function toggleSidebarSection(id){if(document.getElementById('app-sidebar').classList.contains('collapsed'))return;const el=document.getElementById(id),arrow=document.getElementById('arrow-'+id);if(el){const open=el.style.maxHeight!=='0px'&&el.style.maxHeight!=='';el.style.maxHeight=open?'0':'200px'}if(arrow)arrow.style.transform=arrow.style.transform==='rotate(180deg)'?'rotate(0deg)':'rotate(180deg)'}
+        function toggleDropdown(id){const el=document.getElementById(id);if(el)el.classList.toggle('hidden')}
+        function toggleTheme(){document.documentElement.classList.toggle('dark');const d=document.documentElement.classList.contains('dark');document.getElementById('theme-icon').className=d?'fa-solid fa-sun text-sm text-amber-400':'fa-solid fa-moon text-sm';localStorage.setItem('charantra-theme',d?'dark':'light')}
+        (function(){if(localStorage.getItem('charantra-theme')==='dark'){document.documentElement.classList.add('dark');document.addEventListener('DOMContentLoaded',()=>{const i=document.getElementById('theme-icon');if(i)i.className='fa-solid fa-sun text-sm text-amber-400'})}})()
+        function handleSearch(term){document.getElementById('crm-search-input').value=term;applyCrmFilters()}
+
+        function highlightSidebarType(){
+            const params=new URLSearchParams(window.location.search);const type=params.get('type');
+            document.querySelectorAll('#crm-section button[id^="sub-"]').forEach(b=>{b.classList.remove('sub-active');b.classList.add('text-slate-400')});
+            if(type){const btn=document.getElementById('sub-'+type.toLowerCase());if(btn){btn.classList.add('sub-active');btn.classList.remove('text-slate-400');document.getElementById('crm-filter-usertype').value=type;
+            const titles={'Investor':'Investors','Investee':'Investees','Buyer':'Buyers','Seller':'Sellers','Advisor':'Advisors'};
+            document.getElementById('crm-title-header').innerText=titles[type]||'CRM';
+            document.getElementById('crm-desc-header').innerText='Manage all '+type.toLowerCase()+' profiles onboarded on the platform.';
+            }}
+        }
+
+        function renderCrmDirectory(users){
+            const tb=document.getElementById('crm-replicated-table-body');tb.innerHTML='';
+            if(!users.length){tb.innerHTML='<tr><td colspan="9" class="p-8 text-center text-slate-400 font-medium">No profiles matching selected filters.</td></tr>';document.getElementById('crm-table-info-showing').innerText='0';document.getElementById('crm-table-info-total').innerText='0';return}
+            const start=(currentPage-1)*pageSize,end=Math.min(start+pageSize,users.length),pu=users.slice(start,end);
+            pu.forEach(u=>{let sc="bg-emerald-50 text-emerald-700 border-emerald-100";if(u.status==='On Hold')sc="bg-amber-50 text-amber-700 border-amber-100";else if(u.status==='Inactive')sc="bg-slate-100 text-slate-500 border-slate-200";
+            tb.innerHTML+=`<tr class="hover:bg-slate-50/60 transition duration-150 border-b border-slate-100"><td class="p-4 text-center"><input type="checkbox" class="accent-brand-orange cursor-pointer rounded crm-select-checkbox" data-id="${u.id}"></td><td class="p-4 flex items-center gap-3"><div class="w-8 h-8 rounded-lg ${u.bgClass} flex items-center justify-center font-bold text-xs">${u.initial}</div><div><a href="/pages/crm-detail.html?user=${encodeURIComponent(u.name)}" class="font-bold text-slate-900 hover:text-brand-orange hover:underline transition">${u.name}</a><span class="text-[10px] text-slate-400 font-semibold lowercase block mt-0.5">${u.email}</span></div></td><td class="p-4 font-semibold text-slate-700">${u.company}</td><td class="p-4"><span class="bg-purple-50 text-purple-600 text-[10px] font-bold px-2 py-0.5 rounded-full">${u.type}</span></td><td class="p-4"><span class="text-[10px] font-bold px-2 py-0.5 rounded-full border ${sc}">${u.status}</span></td><td class="p-4 text-slate-500 font-medium">${u.date}</td><td class="p-4 text-slate-500 font-medium">${u.lastActive}</td><td class="p-4 font-bold text-slate-700">${u.assigned}</td><td class="p-4 text-center"><div class="flex items-center justify-center gap-1"><a href="/pages/crm-detail.html?user=${encodeURIComponent(u.name)}" class="text-slate-400 hover:text-brand-orange p-1.5 rounded transition" title="View"><i class="fa-solid fa-eye text-xs"></i></a><button onclick="simSend('${u.name}')" class="text-slate-400 hover:text-blue-500 p-1.5 rounded transition"><i class="fa-regular fa-comment-dots text-xs"></i></button><div class="relative"><button onclick="toggleActMenu(event,'${u.id}')" class="text-slate-400 hover:text-slate-700 p-1.5 rounded transition"><i class="fa-solid fa-ellipsis-vertical text-xs"></i></button><div id="act-menu-${u.id}" class="hidden absolute right-0 mt-1 bg-white border border-slate-200 rounded-lg shadow-xl py-1 z-50 text-xs w-40" style="top:100%"><button onclick="viewDocs('${u.name}')" class="w-full text-left px-4 py-2 hover:bg-slate-50 text-slate-700 font-medium flex items-center gap-2"><i class="fa-solid fa-file-lines text-[10px] text-slate-400"></i> View Documents</button><button onclick="delUser('${u.id}')" class="w-full text-left px-4 py-2 hover:bg-rose-50 text-rose-600 font-medium flex items-center gap-2"><i class="fa-solid fa-trash text-[10px]"></i> Delete</button></div></div></div></td></tr>`});
+            document.getElementById('crm-table-info-showing').innerText=`${start+1} to ${end}`;document.getElementById('crm-table-info-total').innerText=users.length;
+        }
+
+        function updateCrmKpiCards(users){
+            const total=users.length;
+            const active=users.filter(u=>u.status==='Active').length;
+            const onhold=users.filter(u=>u.status==='On Hold').length;
+            const inactive=users.filter(u=>u.status==='Inactive').length;
+            const now=new Date();const m=String(now.getMonth()+1).padStart(2,'0');const y=now.getFullYear();const prefix=y+'-'+m;
+            const newThisMonth=users.filter(u=>u.date&&u.date.startsWith(prefix)).length;
+            document.getElementById('crm-card-total').innerText=total;
+            document.getElementById('crm-card-active').innerText=active;
+            document.getElementById('crm-card-onhold').innerText=onhold;
+            document.getElementById('crm-card-inactive').innerText=inactive;
+            document.getElementById('crm-card-new').innerText=newThisMonth;
+            const pct=(v,t)=>t===0?'—':Math.round(v/t*100)+'%';
+            document.getElementById('crm-card-active-pct').innerText=pct(active,total);
+            document.getElementById('crm-card-onhold-pct').innerText=pct(onhold,total);
+            document.getElementById('crm-card-inactive-pct').innerText=pct(inactive,total);
+            document.getElementById('crm-card-new-pct').innerText=pct(newThisMonth,total);
+        }
+        function applyCrmFilters(){const s=document.getElementById('crm-search-input').value.toLowerCase(),t=document.getElementById('crm-filter-usertype').value,st=document.getElementById('crm-filter-status').value,a=document.getElementById('crm-filter-assigned').value,d=document.getElementById('crm-filter-date').value;const f=db.users.filter(u=>(!s||u.name.toLowerCase().includes(s)||u.company.toLowerCase().includes(s)||u.email.toLowerCase().includes(s))&&(t==='all'||u.type===t)&&(st==='all'||u.status===st)&&(a==='all'||u.assigned===a)&&(!d||u.date===d));updateCrmKpiCards(f);renderCrmDirectory(f)}
+        function resetCrmFilters(){['crm-search-input','crm-filter-usertype','crm-filter-status','crm-filter-assigned','crm-filter-date'].forEach(id=>{const el=document.getElementById(id);if(el.tagName==='SELECT')el.value='all';else el.value=''});currentPage=1;applyCrmFilters()}
+        function delUser(id){db.users=db.users.filter(u=>u.id!==id);applyCrmFilters()}
+        function toggleSelectAllCrm(cb){document.querySelectorAll('.crm-select-checkbox').forEach(c=>c.checked=cb.checked)}
+        function handleCrmTableLimitChange(v){console.log('Page size:',v)}
+        function simulateExport(f){console.log('Export as',f)}
+        function simSend(n){console.log('Message:',n)}
+        function toggleActMenu(e,id){e.stopPropagation();document.querySelectorAll('[id^="act-menu-"]').forEach(el=>{if(el.id!=='act-menu-'+id)el.classList.add('hidden')});const m=document.getElementById('act-menu-'+id);if(m)m.classList.toggle('hidden')}
+        function viewDocs(n){window.location.href='/pages/crm-detail.html?user='+encodeURIComponent(n)+'&tab=Documents'}
+
+        window.addEventListener('click',function(e){if(!e.target.closest('.relative'))document.querySelectorAll('[id$="-menu"],[id^="act-menu-"]').forEach(el=>el.classList.add('hidden'))});
+        window.onload=function(){highlightSidebarType();applyCrmFilters()};
+    
+
+        function toggleRoleDropdown() { document.getElementById('role-dropdown').classList.toggle('hidden'); }
+        function switchToRole(role) {
+            localStorage.setItem('charantra-role', role);
+            const r = { 'superadmin': '/pages/superadmin/dashboard.html', 'admin': '/pages/admin/dashboard.html', 'ib': '/pages/ib/deals.html', 'ba': '/pages/ba/reports.html' };
+            window.location.href = r[role] || '/index.html';
+        }
+        (function() {
+            const role = localStorage.getItem('charantra-role') || 'ba';
+            const labels = { 'superadmin': 'SUPER ADMIN', 'admin': 'ADMIN', 'ib': 'INVESTMENT BANKER', 'ba': 'BUSINESS ANALYST' };
+            const el = document.getElementById('role-label'); if (el) el.innerText = labels[role] || 'BUSINESS ANALYST';
+        })();
+        window.addEventListener('click', function(e) { if (!e.target.closest('.relative')) { const dd = document.getElementById('role-dropdown'); if (dd) dd.classList.add('hidden'); } });
+    </script>
+</body>
+</html>
