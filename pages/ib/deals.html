@@ -107,7 +107,13 @@
 
                     <a href="/pages/ib/mandates.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><i class="fa-solid fa-file-contract text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Mandates & Projects</span></button></a>
 
-                    <a href="/pages/ib/deals.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-bold text-white bg-brand-orange transition duration-150 overflow-hidden"><i class="fa-solid fa-briefcase text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Deals & Pipeline</span></button></a>
+                    <div class="space-y-0.5">
+                        <button onclick="toggleSidebarSection('deals-section')" class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg font-bold text-white bg-brand-orange transition duration-150 overflow-hidden"><span class="flex items-center gap-3"><i class="fa-solid fa-briefcase text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Deals & Pipeline</span></span><i class="fa-solid fa-chevron-down text-[9px] ml-2 transition-transform duration-200 sidebar-arrow" id="arrow-deals-section" style="transform:rotate(180deg)"></i></button>
+                        <div id="deals-section" class="pl-5 pr-1 space-y-0.5 overflow-hidden sidebar-section-div" style="max-height:200px;transition:max-height 0.3s ease">
+                            <a href="/pages/ib/deals.html?flow=equity" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-sitemap text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Equity Flow</span></button></a>
+                            <a href="/pages/ib/deals.html?flow=ma" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-bezier-curve text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">M&A Flow</span></button></a>
+                        </div>
+                    </div>
 
                     <a href="/pages/ib/dataroom.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><i class="fa-solid fa-hard-drive text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Data Room</span></button></a>
 
@@ -202,30 +208,6 @@
                     <!-- Dual Selector Flows (Investee <-> Investor / Seller <-> Buyer) and List/Kanban Toggles -->
                     <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-slate-200/60 pb-5">
                         
-                        <!-- Flow Option Switchers -->
-                        <div class="flex gap-4">
-                            <!-- Equity Flow Selector Button -->
-                            <button id="flow-btn-equity" onclick="switchFlow('equity')" class="text-left border-2 border-brand-orange bg-white p-3.5 pr-10 rounded-xl shadow-sm transition duration-200 flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-lg bg-orange-100 text-brand-orange flex items-center justify-center text-lg shadow-sm shrink-0">
-                                    <i class="fa-solid fa-sitemap"></i>
-                                </div>
-                                <div>
-                                    <h4 class="font-bold text-slate-900 text-xs uppercase tracking-wider">Equity Flow</h4>
-                                    <p class="text-[10px] text-slate-500 mt-0.5">Investee &leftrightarrow; Investor</p>
-                                </div>
-                            </button>
-
-                            <!-- M&A Flow Selector Button -->
-                            <button id="flow-btn-ma" onclick="switchFlow('ma')" class="text-left border-2 border-slate-200 bg-white hover:border-slate-300 p-3.5 pr-10 rounded-xl shadow-sm transition duration-200 flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-lg bg-slate-100 text-slate-500 flex items-center justify-center text-lg shadow-sm shrink-0" id="flow-icon-ma">
-                                    <i class="fa-solid fa-bezier-curve"></i>
-                                </div>
-                                <div>
-                                    <h4 class="font-bold text-slate-800 text-xs uppercase tracking-wider" id="flow-title-ma">M&A Flow</h4>
-                                    <p class="text-[10px] text-slate-500 mt-0.5">Seller &leftrightarrow; Buyer</p>
-                                </div>
-                            </button>
-                        </div>
 
                         <!-- View Toggle controls (List View / Kanban View) -->
                         <div class="bg-slate-100 p-1 rounded-lg flex items-center">
@@ -238,14 +220,46 @@
                         </div>
                     </div>
 
-                    <!-- Replicated 6 KPI cards from image_2fd43a.png -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4">
-                        <!-- KPI Card 1 -->
-                        <div class="bg-white p-4 rounded-xl border border-slate-100 shadow-sm flex flex-col justify-between">
-                            <div class="flex items-center gap-2.5">
-                                <div class="w-8 h-8 rounded-lg bg-orange-50 text-brand-orange flex items-center justify-center text-sm">
-                                    <i class="fa-solid fa-chart-simple"></i>
-                                </div>
+                    <!-- Flow-dependent KPI Cards -->
+                    <!-- Equity KPIs -->
+                    <div id="kpi-equity" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                        <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
+                            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Total Equity Deals</p>
+                            <p class="text-3xl font-extrabold text-brand-orange" id="kpi-equity-total">0</p>
+                        </div>
+                        <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
+                            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Active Investees</p>
+                            <p class="text-3xl font-extrabold text-blue-600" id="kpi-equity-investees">0</p>
+                        </div>
+                        <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
+                            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Matched Investors</p>
+                            <p class="text-3xl font-extrabold text-emerald-600" id="kpi-equity-investors">0</p>
+                        </div>
+                        <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
+                            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Avg. Deal Size</p>
+                            <p class="text-3xl font-extrabold text-violet-600" id="kpi-equity-avg">0</p>
+                        </div>
+                    </div>
+                    <!-- M&A KPIs -->
+                    <div id="kpi-ma" class="hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                        <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
+                            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Total M&A Deals</p>
+                            <p class="text-3xl font-extrabold text-brand-orange" id="kpi-ma-total">0</p>
+                        </div>
+                        <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
+                            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Active Sellers</p>
+                            <p class="text-3xl font-extrabold text-blue-600" id="kpi-ma-sellers">0</p>
+                        </div>
+                        <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
+                            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Matched Buyers</p>
+                            <p class="text-3xl font-extrabold text-emerald-600" id="kpi-ma-buyers">0</p>
+                        </div>
+                        <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
+                            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Avg. Deal Value</p>
+                            <p class="text-3xl font-extrabold text-violet-600" id="kpi-ma-avg">0</p>
+                        </div>
+                    </div>
+
                                 <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Total Deals</span>
                             </div>
                             <div class="mt-4">
@@ -354,7 +368,6 @@
                                         <tr class="bg-slate-50/60 border-b border-slate-100 text-slate-400 text-[10px] uppercase font-bold tracking-wider">
                                             <th class="p-4" id="col-header-id">Deal ID</th>
                                             <th class="p-4" id="col-header-sidea">Investee</th>
-                                            <th class="p-4" id="col-header-sideb">Target Investor</th>
                                             <th class="p-4">Raise Amount</th>
                                             <th class="p-4">Current Stage</th>
                                             <th class="p-4">Deal Health</th>
@@ -649,6 +662,7 @@
                     amount: "₹25.0 Cr",
                     stage: "Due Diligence",
                     health: "HEALTHY",
+                    matchedCount: 12,
                     lastActive: "2 hours ago",
                     round: "Series A Round",
                     owner: "Akash Kumar",
@@ -691,6 +705,7 @@
                     amount: "₹12.0 Cr",
                     stage: "Due Diligence",
                     health: "AT RISK",
+                    matchedCount: 8,
                     lastActive: "1 day ago",
                     round: "Seed Round",
                     owner: "Akash Kumar",
@@ -731,6 +746,7 @@
                     amount: "₹18.0 Cr",
                     stage: "Data Room Access",
                     health: "HEALTHY",
+                    matchedCount: 5,
                     lastActive: "3 days ago",
                     round: "Pre-Series A",
                     owner: "Siddharth Deshmukh",
@@ -770,6 +786,7 @@
                     amount: "₹8.5 Cr",
                     stage: "Investor Interest",
                     health: "HEALTHY",
+                    matchedCount: 15,
                     lastActive: "4 days ago",
                     round: "Seed Round",
                     owner: "Akash Kumar",
@@ -810,6 +827,7 @@
                     amount: "₹120.0 Cr",
                     stage: "Due Diligence",
                     health: "HEALTHY",
+                    matchedCount: 3,
                     lastActive: "5 days ago",
                     round: "Acquisition buyout",
                     owner: "Akash Kumar",
@@ -849,6 +867,7 @@
                     amount: "₹30.0 Cr",
                     stage: "Discussions",
                     health: "AT RISK",
+                    matchedCount: 20,
                     lastActive: "1 week ago",
                     round: "Majority Buyout",
                     owner: "Siddharth Deshmukh",
@@ -896,32 +915,21 @@
         // Switch Active Flow State (Equity vs M&A Flow)
         function switchFlow(flowType) {
             activeFlow = flowType;
-            
-            const btnEq = document.getElementById('flow-btn-equity');
-            const btnMa = document.getElementById('flow-btn-ma');
-            const iconMa = document.getElementById('flow-icon-ma');
-            const titleMa = document.getElementById('flow-title-ma');
+
+            // Toggle KPI visibility based on flow
+            document.getElementById('kpi-equity').classList.toggle('hidden', flowType !== 'equity');
+            document.getElementById('kpi-ma').classList.toggle('hidden', flowType !== 'ma');
 
             if (flowType === 'equity') {
-                btnEq.className = "text-left border-2 border-brand-orange bg-white p-3.5 pr-10 rounded-xl shadow-sm transition duration-200 flex items-center gap-3";
-                btnMa.className = "text-left border-2 border-slate-200 bg-white hover:border-slate-300 p-3.5 pr-10 rounded-xl shadow-sm transition duration-200 flex items-center gap-3";
-                iconMa.className = "w-10 h-10 rounded-lg bg-slate-100 text-slate-500 flex items-center justify-center text-lg shadow-sm shrink-0";
-                titleMa.className = "font-bold text-slate-800 text-xs uppercase tracking-wider";
-
                 document.getElementById('table-subtitle-flow').innerText = "Equity Flow Deals";
                 document.getElementById('table-subtitle-desc').innerText = "Fundraising transactions between Investees and Investors.";
                 document.getElementById('col-header-sidea').innerText = "Investee";
-                document.getElementById('col-header-sideb').innerText = "Target Investor";
+                document.getElementById('col-header-sideb').innerText = "Matched Investors";
             } else {
-                btnMa.className = "text-left border-2 border-brand-orange bg-white p-3.5 pr-10 rounded-xl shadow-sm transition duration-200 flex items-center gap-3";
-                btnEq.className = "text-left border-2 border-slate-200 bg-white hover:border-slate-300 p-3.5 pr-10 rounded-xl shadow-sm transition duration-200 flex items-center gap-3";
-                iconMa.className = "w-10 h-10 rounded-lg bg-orange-100 text-brand-orange flex items-center justify-center text-lg shadow-sm shrink-0";
-                titleMa.className = "font-bold text-slate-900 text-xs uppercase tracking-wider";
-
                 document.getElementById('table-subtitle-flow').innerText = "M&A Flow Deals";
                 document.getElementById('table-subtitle-desc').innerText = "Mergers, Acquisitions, and Corporate Buyouts.";
                 document.getElementById('col-header-sidea').innerText = "Seller";
-                document.getElementById('col-header-sideb').innerText = "Target Buyer";
+                document.getElementById('col-header-sideb').innerText = "Matched Buyers";
             }
 
             renderDashboardFlow();
@@ -953,6 +961,24 @@
 
         // Render Active Views
         function renderDashboardFlow() {
+            // Populate KPI cards from db.deals
+            const equityDeals = db.deals.filter(d => d.flow === 'equity');
+            const maDeals = db.deals.filter(d => d.flow === 'ma');
+
+            // Equity KPIs
+            document.getElementById('kpi-equity-total').innerText = equityDeals.length;
+            document.getElementById('kpi-equity-investees').innerText = new Set(equityDeals.map(d => d.sideA)).size;
+            document.getElementById('kpi-equity-investors').innerText = equityDeals.reduce((sum, d) => sum + (d.matchedCount || 0), 0);
+            const equityVals = equityDeals.map(d => parseFloat(d.amountNumeric || 0)).filter(v => v > 0);
+            document.getElementById('kpi-equity-avg').innerText = equityVals.length ? (equityVals.reduce((a,b)=>a+b,0) / equityVals.length).toFixed(1) + 'M' : '0';
+
+            // M&A KPIs
+            document.getElementById('kpi-ma-total').innerText = maDeals.length;
+            document.getElementById('kpi-ma-sellers').innerText = new Set(maDeals.map(d => d.sideA)).size;
+            document.getElementById('kpi-ma-buyers').innerText = maDeals.reduce((sum, d) => sum + (d.matchedCount || 0), 0);
+            const maVals = maDeals.map(d => parseFloat(d.amountNumeric || 0)).filter(v => v > 0);
+            document.getElementById('kpi-ma-avg').innerText = maVals.length ? (maVals.reduce((a,b)=>a+b,0) / maVals.length).toFixed(1) + 'M' : '0';
+
             // Get filtered list based on state flow selector
             const filtered = db.deals.filter(d => {
                 const matchesFlow = d.flow === activeFlow;
@@ -977,7 +1003,7 @@
             if (dataset.length === 0) {
                 body.innerHTML = `
                     <tr>
-                        <td colspan="8" class="p-10 text-center text-slate-400 font-semibold italic bg-white">
+                        <td colspan="7" class="p-10 text-center text-slate-400 font-semibold italic bg-white">
                             No transactions found matching the current search parameters.
                         </td>
                     </tr>
@@ -998,8 +1024,10 @@
                 body.innerHTML += `
                     <tr class="hover:bg-slate-50 transition border-b border-slate-100 font-medium">
                         <td class="p-4 font-bold text-slate-900">${row.id}</td>
-                        <td class="p-4 text-slate-950 font-extrabold">${row.sideA}</td>
-                        <td class="p-4 font-semibold text-slate-600">${row.sideB}</td>
+                        <td class="p-4">
+                            <span class="text-slate-950 font-extrabold">${row.sideA}</span>
+                            <span class="text-[10px] text-slate-400 font-normal ml-1.5">(${row.matchedCount || 0} matches)</span>
+                        </td>
                         <td class="p-4 text-slate-900 font-extrabold">${row.amount}</td>
                         <td class="p-4">
                             <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold ${stageColor}">${row.stage.toUpperCase()}</span>
@@ -1009,9 +1037,28 @@
                         </td>
                         <td class="p-4 text-slate-500 text-xs">${row.lastActive}</td>
                         <td class="p-4 text-center">
-                            <div class="flex items-center justify-center gap-1">
-                                <button onclick="openDealDetails('${row.id}')" class="text-slate-400 hover:text-brand-orange p-1.5 rounded transition" title="View Details"><i class="fa-solid fa-eye text-xs"></i></button>
-                                <button class="p-1.5 text-slate-400 hover:text-slate-600 transition"><i class="fa-solid fa-ellipsis-vertical text-xs"></i></button>
+                            <div class="flex items-center justify-center gap-1.5">
+                                ${row.stage === 'NDA Signed' || row.stage.includes('NDA') ? `
+                                <button onclick="reviewNda('${row.id}')" class="text-blue-600 hover:text-blue-700 text-[10px] font-bold transition">Review NDA</button>` : `
+                                <button onclick="signNda('${row.id}')" class="bg-brand-orange hover:bg-brand-orangeHover text-white text-[10px] font-bold px-2 py-1 rounded transition">Sign NDA</button>`}
+                                <button onclick="openDealDetails('${row.id}')" class="bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 text-[10px] font-bold px-2 py-1 rounded transition">View Deal</button>
+                                <div class="relative inline-block text-left">
+                                    <button onclick="toggleDropdown('deal-action-${row.id}')" class="p-1 text-slate-400 hover:text-slate-800 transition" title="More">
+                                        <i class="fa-solid fa-ellipsis-vertical text-sm"></i>
+                                    </button>
+                                    <div id="deal-action-${row.id}" class="hidden absolute right-0 mt-1 w-44 bg-white border border-slate-200 rounded-lg shadow-lg py-1 z-50 text-xs text-left">
+                                        <button onclick="viewDealDocuments('${row.id}')" class="w-full text-left px-3 py-2 hover:bg-slate-50 text-slate-700 flex items-center gap-2">
+                                            <i class="fa-solid fa-file-lines text-slate-400 w-4"></i> View Documents
+                                        </button>
+                                        <button onclick="viewTermsheet('${row.id}')" class="w-full text-left px-3 py-2 hover:bg-slate-50 text-slate-700 flex items-center gap-2">
+                                            <i class="fa-solid fa-file-contract text-slate-400 w-4"></i> View Termsheet
+                                        </button>
+                                        <button onclick="deleteDeal('${row.id}')" class="w-full text-left px-3 py-2 hover:bg-rose-50 text-rose-600 flex items-center gap-2 border-t border-slate-100">
+                                            <i class="fa-solid fa-trash-can w-4"></i> Delete
+                                        </button>
+                                    </div>
+                                </div>
+                                
                             </div>
                         </td>
                     </tr>
@@ -1198,6 +1245,32 @@
             document.getElementById('main-content-scrollable').scrollTop = 0;
         }
 
+        function signNda(id) {
+            const deal = db.deals.find(d => d.id === id);
+            if (deal) {
+                deal.stage = 'NDA Signed';
+                deal.timeline.push({ date: 'Just now', event: 'NDA Signed', desc: 'NDA signed' });
+                renderDashboardFlow();
+            }
+        }
+
+        function reviewNda(id) {
+            openDealDetails(id);
+        }
+
+        function viewDealDocuments(id) {
+            openDealDetails(id);
+        }
+
+        function viewTermsheet(id) {
+            alert('Termsheet for deal: ' + id);
+        }
+
+        function deleteDeal(id) {
+            db.deals = db.deals.filter(d => d.id !== id);
+            renderDashboardFlow();
+        }
+
         // Render timeline array logs
         function renderTimelineEntries(deal) {
             const wrapper = document.getElementById('detail-timeline-wrapper');
@@ -1337,6 +1410,7 @@
                 amount: amount,
                 stage: stage,
                 health: health,
+                matchedCount: Math.floor(Math.random() * 20) + 1,
                 lastActive: "Just now",
                 round: round,
                 owner: "Akash Kumar",

@@ -58,6 +58,9 @@
         #app-sidebar.collapsed nav > div > button { justify-content: center; }
         #app-sidebar.collapsed .sidebar-section-div { max-height: 0 !important; }
         .sidebar-section-open { max-height: 200px !important; }
+        .team-row.expanded .expanded-content { display: block !important; }
+        .team-row.expanded > .fa-chevron-down { transform: rotate(180deg); }
+        .team-row .fa-chevron-down { transition: transform 0.2s ease; }
     </style>
 </head>
 <body class="overflow-hidden h-screen flex text-slate-800 bg-brand-bgSlate">
@@ -85,9 +88,10 @@
                         </button>
                     </a>
 
+
                     <div class="space-y-0.5">
                         <button onclick="toggleSidebarSection('crm-section')" class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden">
-                            <span class="flex items-center gap-3"><i class="fa-solid fa-users text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">CRM & Users</span></span>
+                            <span class="flex items-center gap-3"><i class="fa-solid fa-users text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">CRM</span></span>
                             <i class="fa-solid fa-chevron-down text-[9px] transition-transform duration-200 sidebar-arrow" id="arrow-crm-section"></i>
                         </button>
                         <div id="crm-section" class="pl-5 pr-1 space-y-0.5 overflow-hidden sidebar-section-div" style="max-height:0;transition:max-height 0.3s ease">
@@ -101,15 +105,17 @@
 
                     <a href="/pages/superadmin/mandates.html" class="block">
                         <button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden">
-                            <i class="fa-solid fa-file-contract text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Mandates & Projects</span>
+                            <i class="fa-solid fa-file-contract text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Deals</span>
                         </button>
                     </a>
 
-                    <a href="/pages/superadmin/deals.html" class="block">
-                        <button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden">
-                            <i class="fa-solid fa-briefcase text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Deals & Pipeline</span>
-                        </button>
-                    </a>
+                    <div class="space-y-0.5">
+                        <button onclick="toggleSidebarSection('deals-section')" class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><span class="flex items-center gap-3"><i class="fa-solid fa-briefcase text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Active Mandates</span></span><i class="fa-solid fa-chevron-down text-[9px] ml-2 transition-transform duration-200 sidebar-arrow" id="arrow-deals-section"></i></button>
+                        <div id="deals-section" class="pl-5 pr-1 space-y-0.5 overflow-hidden sidebar-section-div" style="max-height:0;transition:max-height 0.3s ease">
+                            <a href="/pages/superadmin/deals.html?flow=equity" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-sitemap text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Equity Flow</span></button></a>
+                            <a href="/pages/superadmin/deals.html?flow=ma" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-bezier-curve text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">M&A Flow</span></button></a>
+                        </div>
+                    </div>
 
                     <a href="/pages/superadmin/dataroom.html" class="block">
                         <button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden">
@@ -166,6 +172,7 @@
                 </div>
                 <div class="flex items-center gap-5">
                     <div class="flex items-center gap-1 border border-slate-200 rounded-lg px-2.5 py-1 bg-slate-50 text-xs text-slate-600"><span class="font-semibold text-slate-700">INR (₹)</span><i class="fa-solid fa-chevron-down text-[9px] text-slate-400"></i></div>
+                    <a href="/pages/superadmin/operations-center.html" class="flex items-center gap-2 border border-brand-orange/50 rounded-lg px-3 py-1 bg-brand-orange/5 text-xs text-brand-orange font-bold hover:bg-brand-orange hover:text-white transition"><i class="fa-solid fa-radar text-[11px]"></i><span>Operations Center</span></a>
                     <button onclick="toggleTheme()" class="w-9 h-9 flex items-center justify-center text-slate-500 hover:text-brand-orange hover:bg-slate-100 rounded-full transition" title="Toggle theme"><i id="theme-icon" class="fa-solid fa-moon text-sm"></i></button>
                     <div class="relative">
                         <button onclick="toggleDropdown('alert-dropdown-tray')" class="w-9 h-9 flex items-center justify-center text-slate-500 hover:text-brand-orange hover:bg-slate-100 rounded-full transition relative"><i class="fa-regular fa-bell text-sm"></i><span class="absolute top-1.5 right-1.5 w-4 h-4 bg-red-500 text-[10px] text-white font-extrabold flex items-center justify-center rounded-full">3</span></button>
@@ -201,15 +208,15 @@
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-5 gap-5">
-                        <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-start gap-4 hover:shadow-md transition"><div class="p-3 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0"><i class="fa-solid fa-briefcase text-lg"></i></div><div class="space-y-1"><span class="text-[11px] text-slate-400 font-bold uppercase tracking-wider block">Active Deals</span><h3 class="text-2xl font-extrabold text-slate-900" id="dash-kpi-deals">3</h3><p class="text-[11px] font-bold text-emerald-600 flex items-center gap-1 mt-1"><i class="fa-solid fa-caret-up"></i><span>—</span><span class="text-slate-400 font-medium">pipeline active</span></p></div></div>
-                        <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-start gap-4 hover:shadow-md transition"><div class="p-3 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0"><i class="fa-solid fa-file-signature text-lg"></i></div><div class="space-y-1"><span class="text-[11px] text-slate-400 font-bold uppercase tracking-wider block">Active Mandates</span><h3 class="text-2xl font-extrabold text-slate-900" id="dash-kpi-mandates">4</h3><p class="text-[11px] font-bold text-emerald-600 flex items-center gap-1 mt-1"><i class="fa-solid fa-caret-up"></i><span>—</span><span class="text-slate-400 font-medium">in progress</span></p></div></div>
-                        <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-start gap-4 hover:shadow-md transition"><div class="p-3 rounded-xl bg-violet-50 text-violet-600 flex items-center justify-center shrink-0"><i class="fa-solid fa-indian-rupee-sign text-lg"></i></div><div class="space-y-1"><span class="text-[11px] text-slate-400 font-bold uppercase tracking-wider block">Revenue (₹ Cr)</span><h3 class="text-2xl font-extrabold text-slate-900" id="dash-kpi-revenue">4.70</h3><p class="text-[11px] font-bold text-emerald-600 flex items-center gap-1 mt-1"><i class="fa-solid fa-caret-up"></i><span>—</span><span class="text-slate-400 font-medium">team aggregate</span></p></div></div>
-                        <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-start gap-4 hover:shadow-md transition"><div class="p-3 rounded-xl bg-amber-50 text-amber-500 flex items-center justify-center shrink-0"><i class="fa-solid fa-clock-rotate-left text-lg"></i></div><div class="space-y-1"><span class="text-[11px] text-slate-400 font-bold uppercase tracking-wider block">Pending Actions</span><h3 class="text-2xl font-extrabold text-slate-900" id="dash-kpi-pending">3</h3><p class="text-[11px] font-bold text-rose-600 flex items-center gap-1 mt-1"><i class="fa-solid fa-caret-down"></i><span>—</span><span class="text-slate-400 font-medium">requires attention</span></p></div></div>
-                        <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-start gap-4 hover:shadow-md transition"><div class="p-3 rounded-xl bg-blue-50 text-blue-500 flex items-center justify-center shrink-0"><i class="fa-solid fa-user-plus text-lg"></i></div><div class="space-y-1"><span class="text-[11px] text-slate-400 font-bold uppercase tracking-wider block">Team Members</span><h3 class="text-2xl font-extrabold text-slate-900" id="dash-kpi-team">5</h3><p class="text-[11px] font-bold text-emerald-600 flex items-center gap-1 mt-1"><i class="fa-solid fa-caret-up"></i><span>—</span><span class="text-slate-400 font-medium">advisory desk</span></p></div></div>
+                        <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-start gap-4 hover:shadow-md transition"><div class="p-3 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0"><i class="fa-solid fa-briefcase text-lg"></i></div><div class="space-y-1"><span class="text-[11px] text-slate-400 font-bold uppercase tracking-wider block">Active Deals</span><h3 class="text-2xl font-extrabold text-slate-900 cursor-pointer hover:text-brand-orange transition" id="dash-kpi-deals" onclick="navigateTo('/pages/superadmin/deals.html')">3</h3><p class="text-[11px] font-bold text-emerald-600 flex items-center gap-1 mt-1"><i class="fa-solid fa-caret-up"></i><span>—</span><span class="text-slate-400 font-medium">pipeline active</span></p></div></div>
+                        <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-start gap-4 hover:shadow-md transition"><div class="p-3 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0"><i class="fa-solid fa-file-signature text-lg"></i></div><div class="space-y-1"><span class="text-[11px] text-slate-400 font-bold uppercase tracking-wider block">Active Mandates</span><h3 class="text-2xl font-extrabold text-slate-900 cursor-pointer hover:text-brand-orange transition" id="dash-kpi-mandates" onclick="navigateTo('/pages/superadmin/mandates.html')">4</h3><p class="text-[11px] font-bold text-emerald-600 flex items-center gap-1 mt-1"><i class="fa-solid fa-caret-up"></i><span>—</span><span class="text-slate-400 font-medium">in progress</span></p></div></div>
+                        <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-start gap-4 hover:shadow-md transition"><div class="p-3 rounded-xl bg-violet-50 text-violet-600 flex items-center justify-center shrink-0"><i class="fa-solid fa-file-signature text-lg"></i></div><div class="space-y-1"><span class="text-[11px] text-slate-400 font-bold uppercase tracking-wider block">Mandates This Month</span><h3 class="text-2xl font-extrabold text-slate-900 cursor-pointer hover:text-brand-orange transition" id="dash-kpi-mandates-month" onclick="navigateTo('/pages/superadmin/mandates.html')">7</h3><p class="text-[11px] font-bold text-emerald-600 flex items-center gap-1 mt-1"><i class="fa-solid fa-caret-up"></i><span>—</span><span class="text-slate-400 font-medium">newly signed</span></p></div></div>
+                        <div onclick="openPendingDetail()" class="bg-white p-5 rounded-2xl border border-amber-200 shadow-sm flex items-start gap-4 hover:shadow-lg hover:border-amber-300 transition-all cursor-pointer group relative overflow-hidden"><div class="absolute top-0 right-0 w-20 h-20 bg-amber-50 rounded-bl-[80px] opacity-50 group-hover:opacity-80 transition"></div><div class="p-3 rounded-xl bg-amber-50 text-amber-500 flex items-center justify-center shrink-0 relative z-10"><i class="fa-solid fa-clock-rotate-left text-lg"></i></div><div class="space-y-1 flex-1 relative z-10"><span class="text-[11px] text-slate-400 font-bold uppercase tracking-wider block">Pending Actions</span><h3 class="text-2xl font-extrabold text-slate-900" id="dash-kpi-pending">3</h3><div class="flex items-center gap-2 mt-1"><span class="text-[10px] font-bold text-rose-600 bg-rose-50 px-1.5 py-0.5 rounded"><span id="dash-kpi-critical-count">1</span> critical</span><span class="text-[9px] text-slate-400 group-hover:text-amber-600 transition font-medium">Click to view details <i class="fa-solid fa-arrow-right text-[8px] ml-0.5"></i></span></div></div></div>
+                        <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-start gap-4 hover:shadow-md transition"><div class="p-3 rounded-xl bg-rose-50 text-rose-500 flex items-center justify-center shrink-0"><i class="fa-solid fa-clock text-lg"></i></div><div class="space-y-1"><span class="text-[11px] text-slate-400 font-bold uppercase tracking-wider block">Overdue</span><h3 class="text-2xl font-extrabold text-slate-900 cursor-pointer hover:text-rose-600 transition" id="dash-kpi-overdue" onclick="navigateTo('/pages/superadmin/team.html')">12</h3><p class="text-[11px] font-bold text-rose-600 flex items-center gap-1 mt-1"><i class="fa-solid fa-caret-up"></i><span>—</span><span class="text-slate-400 font-medium">past deadline</span></p></div></div>
                     </div>
 
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                        <div class="lg:col-span-2 bg-white rounded-2xl border border-slate-100 p-5 shadow-sm"><div class="flex justify-between items-center border-b border-slate-50 pb-3"><div><h4 class="text-sm font-bold text-slate-800">Revenue Analytics</h4><p class="text-[11px] text-slate-400 mt-0.5">Monthly fee revenue trend growth insights.</p></div></div><div class="h-[220px] mt-3"><canvas id="chart-revenue-analytics"></canvas></div></div>
+                        <div class="lg:col-span-2 bg-white rounded-2xl border border-slate-100 p-5 shadow-sm"><div class="flex justify-between items-center border-b border-slate-50 pb-3"><div><h4 class="text-sm font-bold text-slate-800">Days Since Mandate Signed</h4><p class="text-[11px] text-slate-400 mt-0.5">Days elapsed per active mandate since contract sign date.</p></div></div><div class="h-[220px] mt-3"><canvas id="chart-revenue-analytics"></canvas></div></div>
                         <div class="bg-white rounded-2xl border border-slate-100 p-5 shadow-sm flex flex-col justify-between"><div class="border-b border-slate-50 pb-3"><h4 class="text-sm font-bold text-slate-800">Mandate Status</h4><p class="text-[11px] text-slate-400 mt-0.5">Current distribution of mandate workflow states.</p></div><div class="flex items-center gap-4 my-2"><div class="w-[140px] h-[140px] shrink-0"><canvas id="chart-mandate-donut"></canvas></div><div class="space-y-1.5 flex-1 text-[10px]" id="donut-legend-rows"></div></div></div>
                     </div>
 
@@ -218,8 +225,62 @@
                         <div class="bg-white rounded-2xl border border-slate-100 p-5 shadow-sm space-y-4"><div class="flex justify-between items-center border-b border-slate-50 pb-3"><div><h4 class="text-sm font-bold text-slate-800">Recent Activities</h4><p class="text-[11px] text-slate-400 mt-0.5">Real-time action audit trail logs.</p></div></div><div class="space-y-4 max-h-[300px] overflow-y-auto" id="recent-activities-list"></div></div>
                     </div>
 
-                    <div class="bg-white rounded-2xl border border-slate-100 p-5 shadow-sm space-y-4"><div class="flex justify-between items-center border-b border-slate-50 pb-3"><div><h4 class="text-sm font-bold text-slate-800">Team Performance</h4><p class="text-[11px] text-slate-400 mt-0.5">Individual performance metrics of deal leaders.</p></div></div><div class="overflow-x-auto"><table class="w-full text-left text-xs text-slate-600 border-collapse"><thead><tr class="text-slate-400 uppercase tracking-wider text-[10px] border-b border-slate-100"><th class="pb-2 font-bold">Team Member</th><th class="pb-2 font-bold text-center">Deals Added</th><th class="pb-2 font-bold text-center">Mandates Signed</th><th class="pb-2 font-bold text-right">Revenue (₹)</th><th class="pb-2 font-bold text-right">Performance</th></tr></thead><tbody id="team-performance-table-body" class="divide-y divide-slate-50"></tbody></table></div></div>
+                    <div class="bg-white rounded-[20px] border border-slate-100/60 p-8 shadow-[0_1px_3px_rgba(0,0,0,0.04)] space-y-8">
+                        <div><h4 class="text-base font-bold text-slate-900 tracking-tight">Team Performance Overview</h4><p class="text-[12px] text-slate-500 mt-1">Monitor team workload and productivity trends.</p></div>
+                        <div class="grid grid-cols-4 gap-5">
+                            <div class="bg-slate-50/50 rounded-2xl p-5"><span class="text-[11px] text-slate-500 font-medium uppercase tracking-wider">Active Members</span><h3 class="text-3xl font-bold text-slate-900 mt-2" id="perf-kpi-members">9</h3><p class="text-[11px] text-slate-400 mt-1">full team active</p></div>
+                            <div class="bg-slate-50/50 rounded-2xl p-5"><span class="text-[11px] text-slate-500 font-medium uppercase tracking-wider">Tasks Assigned</span><h3 class="text-3xl font-bold text-slate-900 mt-2" id="perf-kpi-assigned">76</h3><p class="text-[11px] text-slate-400 mt-1">across all members</p></div>
+                            <div class="bg-slate-50/50 rounded-2xl p-5"><span class="text-[11px] text-slate-500 font-medium uppercase tracking-wider">Completed</span><h3 class="text-3xl font-bold text-slate-900 mt-2" id="perf-kpi-completed">37</h3><p class="text-[11px] text-slate-400 mt-1">this period</p></div>
+                            <div class="bg-slate-50/50 rounded-2xl p-5"><span class="text-[11px] text-slate-500 font-medium uppercase tracking-wider">Completion Rate</span><h3 class="text-3xl font-bold text-slate-900 mt-2" id="perf-kpi-rate">49%</h3><p class="text-[11px] text-slate-400 mt-1">team average</p></div>
+                        </div>
+                        <div class="grid grid-cols-5 gap-6">
+                            <div class="col-span-2 space-y-4"><h5 class="text-[13px] font-bold text-slate-800">Team Workload</h5><div class="space-y-3" id="perf-workload-list"></div></div>
+                            <div class="col-span-3"><div class="flex items-center justify-between mb-3"><h5 class="text-[13px] font-bold text-slate-800">Performance Trend</h5><span class="text-[10px] text-slate-400">Last 8 weeks</span></div><div class="h-[280px]"><canvas id="chart-perf-trend"></canvas></div></div>
+                        </div>
+                        <div><h5 class="text-[13px] font-bold text-slate-800 mb-4">Team Performance Summary</h5><div class="overflow-hidden rounded-xl border border-slate-100"><table class="w-full text-left"><thead><tr class="bg-slate-50/50 text-[10px] text-slate-500 uppercase tracking-wider"><th class="py-3 px-5 font-semibold">Member</th><th class="py-3 px-5 font-semibold text-center">Assigned</th><th class="py-3 px-5 font-semibold text-center">Completed</th><th class="py-3 px-5 font-semibold text-center">Pending</th><th class="py-3 px-5 font-semibold text-center">Completion %</th><th class="py-3 px-5 font-semibold text-center">Trend</th></tr></thead><tbody id="perf-summary-table" class="divide-y divide-slate-50 text-xs"></tbody></table></div></div>
+                    </div>
                 </section>
+
+                <!-- ═══════════════════════════════════════════ -->
+                <!-- PENDING TASKS DETAIL SLIDE-OVER PANEL       -->
+                <!-- ═══════════════════════════════════════════ -->
+                <div id="pending-detail-overlay" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden transition-opacity duration-300 flex items-center justify-center p-4" onclick="closePendingDetail(event)">
+                    <div id="pending-detail-panel" class="w-full max-w-2xl max-h-[85vh] bg-white rounded-2xl shadow-2xl transform scale-95 opacity-0 transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] flex flex-col overflow-hidden" onclick="event.stopPropagation()">
+                        <!-- Header -->
+                        <div class="shrink-0 px-6 py-5 border-b border-slate-100 flex items-center justify-between bg-gradient-to-r from-amber-50 to-white">
+                            <div>
+                                <h3 class="text-lg font-extrabold text-slate-900">Pending Actions Detail</h3>
+                                <p class="text-[11px] text-slate-500 mt-0.5">Compliance and approval actions requiring attention</p>
+                            </div>
+                            <button onclick="closePendingDetail()" class="w-9 h-9 flex items-center justify-center rounded-full hover:bg-slate-100 text-slate-400 hover:text-slate-700 transition"><i class="fa-solid fa-xmark text-sm"></i></button>
+                        </div>
+
+                        <!-- Summary Stats -->
+                        <div class="shrink-0 px-6 py-4 grid grid-cols-4 gap-3 border-b border-slate-50">
+                            <div class="bg-rose-50 rounded-xl p-3 text-center"><span class="text-2xl font-extrabold text-rose-600 block" id="modal-stat-critical">0</span><span class="text-[10px] font-bold text-rose-500 uppercase tracking-wider">Critical</span></div>
+                            <div class="bg-amber-50 rounded-xl p-3 text-center"><span class="text-2xl font-extrabold text-amber-600 block" id="modal-stat-high">0</span><span class="text-[10px] font-bold text-amber-500 uppercase tracking-wider">High</span></div>
+                            <div class="bg-blue-50 rounded-xl p-3 text-center"><span class="text-2xl font-extrabold text-blue-600 block" id="modal-stat-medium">0</span><span class="text-[10px] font-bold text-blue-500 uppercase tracking-wider">Medium</span></div>
+                            <div class="bg-slate-100 rounded-xl p-3 text-center"><span class="text-2xl font-extrabold text-slate-700 block" id="modal-stat-total">0</span><span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Total</span></div>
+                        </div>
+
+                        <!-- Mini Chart Row -->
+                        <div class="shrink-0 px-6 py-4 border-b border-slate-50 flex items-center gap-5">
+                            <div class="w-[140px] h-[140px] shrink-0"><canvas id="chart-pending-donut"></canvas></div>
+                            <div class="flex-1 space-y-1.5 text-[10px]" id="modal-donut-legend"></div>
+                        </div>
+
+                        <!-- Per-person Task List -->
+                        <div class="flex-1 overflow-y-auto px-6 py-4 space-y-3" id="modal-team-pending-list">
+                            <!-- dynamically populated -->
+                        </div>
+
+                        <!-- Footer -->
+                        <div class="shrink-0 px-6 py-4 border-t border-slate-100 flex justify-between items-center bg-slate-50/50">
+                            <span class="text-[10px] text-slate-400" id="modal-footer-summary"></span>
+                            <button onclick="closePendingDetail()" class="px-5 py-2 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold rounded-lg transition">Close Panel</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </main>
     </div>
@@ -239,16 +300,33 @@
                 { id: "ACTV-005", title: "Invoice #INV-042 posted for IndiaFund Advisors retainer fee", timeText: "Yesterday", icon: "fa-receipt text-emerald-600", bg: "bg-emerald-50" },
             ],
             team: [
-                { name: "Sarah Chen", initial: "SC", role: "Investment Banker", deals: 28, revenue: "₹1.40 Cr", perf: "98%", color: "bg-indigo-600 text-white", mandates: 15 },
-                { name: "Akash Kumar", initial: "AK", role: "Admin", deals: 24, revenue: "₹1.20 Cr", perf: "94%", color: "bg-emerald-600 text-white", mandates: 18 },
-                { name: "Raj Mehta", initial: "RM", role: "Business Analyst", deals: 20, revenue: "₹0.90 Cr", perf: "89%", color: "bg-violet-600 text-white", mandates: 12 },
-                { name: "Priya Sharma", initial: "PS", role: "Investment Banker", deals: 18, revenue: "₹0.65 Cr", perf: "85%", color: "bg-amber-600 text-white", mandates: 10 },
-                { name: "Vikram Gupta", initial: "VG", role: "Business Analyst", deals: 15, revenue: "₹0.55 Cr", perf: "78%", color: "bg-sky-600 text-white", mandates: 8 },
+                { name: "Sarah Chen", initial: "SC", role: "Investment Banker", color: "bg-indigo-600 text-white", pending: 4, tasks: ["DEAL-104 LOI follow-up","KYC recheck – BioFuel","Term sheet revision","Investor intro call"] },
+                { name: "Akash Kumar", initial: "AK", role: "Admin", color: "bg-emerald-600 text-white", pending: 7, tasks: ["Invoice #047 approval","Role permission update","Compliance audit prep","NDA review x2","Data room access grant","Mandate extension sign-off"] },
+                { name: "Raj Mehta", initial: "RM", role: "Business Analyst", color: "bg-violet-600 text-white", pending: 3, tasks: ["Weekly pipeline report","Deal valuation update","Market comps refresh"] },
+                { name: "Priya Sharma", initial: "PS", role: "Investment Banker", color: "bg-amber-600 text-white", pending: 5, tasks: ["ESC-007 commission dispute","MND-018 valuation gap","Buyer intro – Nexus Tech","Term sheet draft","Client meeting prep"] },
+                { name: "Vikram Gupta", initial: "VG", role: "Business Analyst", color: "bg-sky-600 text-white", pending: 6, tasks: ["Due diligence tracker","Financial model update","Investor Q&A doc","Compliance checklist","Board deck prep","Risk assessment"] },
+                { name: "Ananya Kapoor", initial: "AK", role: "Investment Banker", color: "bg-rose-600 text-white", pending: 2, tasks: ["DEAL-072 closing docs","Commission calculation"] },
+                { name: "Arjun Mehta", initial: "AM", role: "Admin", color: "bg-teal-600 text-white", pending: 4, tasks: ["Data room – DEAL-085","Document upload batch","Access audit log","VDR expiry renewal"] },
+                { name: "Divya Nair", initial: "DN", role: "Business Analyst", color: "bg-orange-600 text-white", pending: 3, tasks: ["Monthly KPI dashboard","Revenue reconciliation","Team utilization report"] },
+                { name: "Siddharth N.", initial: "SN", role: "Investment Banker", color: "bg-cyan-600 text-white", pending: 5, tasks: ["New mandate onboarding","Investor pitch deck","Deal sourcing tracker","CRM profile update","Competitor analysis"] },
             ],
             deals: [
                 { id: "DEAL-101", stage: "Active" }, { id: "DEAL-102", stage: "Active" }, { id: "DEAL-103", stage: "Closing" }
+            ],
+            mandateDays: [
+                { name: "FinCore Pay", days: 3 },
+                { name: "GreenTech B", days: 12 },
+                { name: "BioFuel Ind", days: 18 },
+                { name: "Phoenix Cap", days: 28 },
+                { name: "Nexus Tech", days: 42 },
+                { name: "AeroParts", days: 56 },
+                { name: "CloudFirst", days: 68 }
             ]
         };
+
+        function navigateTo(url) {
+            window.location.href = url;
+        }
 
         function toggleSidebarCollapse() {
             document.getElementById('app-sidebar').classList.toggle('collapsed');
@@ -279,9 +357,100 @@
         function clearActionRequirement(actionId) {
             const idx = db.pendingActions.findIndex(a => a.id === actionId);
             if (idx > -1) {
+                const name = db.pendingActions[idx].name;
                 db.pendingActions.splice(idx, 1);
-                db.recentActivities.unshift({ id: "ACTV-"+Math.floor(Math.random()*100000), title: `Super Admin cleared: ${db.pendingActions[idx]?.name || 'action'}`, timeText: "Just now", icon: "fa-circle-check text-emerald-600", bg: "bg-emerald-50" });
+                db.recentActivities.unshift({ id: "ACTV-"+Math.floor(Math.random()*100000), title: `Super Admin cleared: ${name || 'action'}`, timeText: "Just now", icon: "fa-circle-check text-emerald-600", bg: "bg-emerald-50" });
                 renderDashboardViews();
+            }
+        }
+
+        // ── PENDING DETAIL SLIDE-OVER ──
+        let pendingDetailChart = null;
+        function openPendingDetail() {
+            const overlay = document.getElementById('pending-detail-overlay');
+            const panel = document.getElementById('pending-detail-panel');
+            overlay.classList.remove('hidden');
+            requestAnimationFrame(() => {
+                overlay.style.opacity = '1';
+                panel.style.opacity = '1';
+                panel.style.transform = 'scale(1)';
+            });
+            renderPendingDetailModal();
+        }
+        function closePendingDetail(e) {
+            if (e && e.target !== document.getElementById('pending-detail-overlay')) return;
+            const overlay = document.getElementById('pending-detail-overlay');
+            const panel = document.getElementById('pending-detail-panel');
+            overlay.style.opacity = '0';
+            panel.style.opacity = '0';
+            panel.style.transform = 'scale(0.95)';
+            setTimeout(() => overlay.classList.add('hidden'), 300);
+        }
+        function clearPendingTask(teamIdx, taskIdx) {
+            if (db.team[teamIdx] && db.team[teamIdx].tasks) {
+                const name = db.team[teamIdx].name;
+                const task = db.team[teamIdx].tasks[taskIdx];
+                db.team[teamIdx].tasks.splice(taskIdx, 1);
+                db.team[teamIdx].pending = db.team[teamIdx].tasks.length;
+                db.recentActivities.unshift({
+                    id: "ACTV-"+Math.floor(Math.random()*100000),
+                    title: `Cleared task for ${name}: ${task}`,
+                    timeText: "Just now",
+                    icon: "fa-circle-check text-emerald-600",
+                    bg: "bg-emerald-50"
+                });
+                renderDashboardViews();
+                renderPendingDetailModal();
+            }
+        }
+        function renderPendingDetailModal() {
+            // Stats from pendingActions only
+            let critical = 0, high = 0, medium = 0;
+            db.pendingActions.forEach(a => {
+                if (a.status === 'Critical') critical++;
+                else if (a.status === 'High') high++;
+                else medium++;
+            });
+            const total = db.pendingActions.length;
+            document.getElementById('modal-stat-critical').innerText = critical;
+            document.getElementById('modal-stat-high').innerText = high;
+            document.getElementById('modal-stat-medium').innerText = medium;
+            document.getElementById('modal-stat-total').innerText = total;
+            document.getElementById('modal-footer-summary').innerText = `${total} pending actions requiring attention`;
+
+            // Donut chart by status
+            if (pendingDetailChart) pendingDetailChart.destroy();
+            const ctx = document.getElementById('chart-pending-donut').getContext('2d');
+            const statusColors = { 'Critical': '#E11D48', 'High': '#D97706', 'Medium': '#3B82F6' };
+            const statusData = [
+                { label: 'Critical', val: critical, color: '#E11D48' },
+                { label: 'High', val: high, color: '#D97706' },
+                { label: 'Medium', val: medium, color: '#3B82F6' }
+            ];
+            pendingDetailChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: statusData.map(s => s.label),
+                    datasets: [{ data: statusData.map(s => s.val), backgroundColor: statusData.map(s => s.color), borderWidth: 2, borderColor: '#ffffff' }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, cutout: '65%', plugins: { legend: { display: false } } }
+            });
+            const legend = document.getElementById('modal-donut-legend');
+            legend.innerHTML = '';
+            statusData.forEach(s => {
+                legend.innerHTML += `<div class="flex items-center justify-between"><div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full shrink-0" style="background:${s.color}"></span><span class="text-slate-700 font-medium">${s.label}</span></div><span class="font-bold text-slate-800">${s.val}</span></div>`;
+            });
+
+            // Pending actions list
+            const list = document.getElementById('modal-team-pending-list');
+            list.innerHTML = '';
+            if (db.pendingActions.length === 0) {
+                list.innerHTML = '<div class="text-center py-8 text-slate-400"><i class="fa-solid fa-circle-check text-3xl mb-2 text-emerald-400"></i><p class="text-xs font-medium">All actions cleared</p></div>';
+            } else {
+                db.pendingActions.forEach(act => {
+                    const statusIcon = act.status === 'Critical' ? 'fa-circle-exclamation text-rose-500' : act.status === 'High' ? 'fa-triangle-exclamation text-amber-500' : 'fa-circle-info text-blue-500';
+                    list.innerHTML += `<div class="flex items-center justify-between p-4 border border-slate-100 rounded-xl hover:border-slate-200 hover:shadow-sm transition group"><div class="flex items-center gap-3 min-w-0"><div class="w-10 h-10 rounded-xl ${act.bg.split(' ')[0]} flex items-center justify-center shrink-0"><i class="fa-solid ${statusIcon}"></i></div><div class="min-w-0"><h5 class="text-xs font-bold text-slate-800">${act.name}</h5><p class="text-[10px] text-slate-400 mt-0.5">${act.subtitle}</p></div></div><div class="flex items-center gap-3 shrink-0"><span class="text-[10px] font-bold px-2.5 py-1 rounded-md ${act.bg}">${act.status}</span><span class="text-[10px] text-rose-500 font-bold bg-rose-50 px-2.5 py-1 rounded-md">${act.dueText}</span><button onclick="clearActionRequirement('${act.id}');renderPendingDetailModal();" class="bg-brand-orange hover:bg-brand-orangeHover text-white text-[10px] px-3 py-1.5 rounded-lg transition font-bold">Clear</button></div></div>`;
+                });
             }
         }
 
@@ -296,11 +465,38 @@
             db.recentActivities.forEach(item => {
                 aEl.innerHTML += `<div class="flex items-center gap-3 py-1 hover:bg-slate-50/50 px-2 rounded-lg transition"><div class="w-8 h-8 rounded-lg ${item.bg} flex items-center justify-center shrink-0"><i class="fa-solid ${item.icon}"></i></div><div class="flex-1 min-w-0"><p class="text-xs font-bold text-slate-800 truncate">${item.title}</p></div><span class="text-[10px] text-slate-400 font-semibold whitespace-nowrap">${item.timeText}</span></div>`;
             });
-            const tEl = document.getElementById('team-performance-table-body');
-            tEl.innerHTML = '';
-            db.team.forEach(tm => {
-                const pc = parseInt(tm.perf) >= 90 ? 'text-emerald-600' : 'text-amber-600';
-                tEl.innerHTML += `<tr class="hover:bg-slate-50/60 transition duration-100"><td class="py-2.5 flex items-center gap-2.5"><div class="w-7 h-7 rounded-lg ${tm.color} flex items-center justify-center font-bold text-[10px]">${tm.initial}</div><div><span class="font-bold text-slate-800 text-xs">${tm.name}</span><span class="text-[9px] text-slate-400 block">${tm.role}</span></div></td><td class="py-2.5 text-center font-bold text-slate-700">${tm.deals}</td><td class="py-2.5 text-center font-bold text-slate-700">${tm.mandates}</td><td class="py-2.5 text-right font-extrabold text-brand-orange">${tm.revenue}</td><td class="py-2.5 text-right font-bold ${pc}">${tm.perf}</td></tr>`;
+            // ── Team Performance Overview ──
+            const perfData = db.team.map(t => {
+                const assigned = t.pending + (t._completed || Math.floor(Math.random()*6+2));
+                const completed = assigned - t.pending;
+                const rate = Math.round((completed / assigned) * 100);
+                const prevRate = Math.max(0, rate - Math.floor(Math.random()*10+2));
+                const trendDir = rate > prevRate ? 'up' : rate < prevRate ? 'down' : 'flat';
+                return { ...t, assigned, completed, rate, prevRate, trendDir };
+            }).sort((a, b) => b.pending - a.pending);
+
+            const totalAssigned = perfData.reduce((s, t) => s + t.assigned, 0);
+            const totalCompleted = perfData.reduce((s, t) => s + t.completed, 0);
+            const avgRate = Math.round((totalCompleted / totalAssigned) * 100);
+
+            document.getElementById('perf-kpi-members').innerText = db.team.length;
+            document.getElementById('perf-kpi-assigned').innerText = totalAssigned;
+            document.getElementById('perf-kpi-completed').innerText = totalCompleted;
+            document.getElementById('perf-kpi-rate').innerText = avgRate + '%';
+
+            const wl = document.getElementById('perf-workload-list'); wl.innerHTML = '';
+            const maxP = Math.max(...perfData.map(t => t.pending), 1);
+            perfData.forEach(t => {
+                const pct = Math.round((t.pending / maxP) * 100);
+                wl.innerHTML += `<div class="flex items-center gap-3"><span class="text-[12px] font-medium text-slate-700 w-28 truncate">${t.name}</span><div class="flex-1 h-2 bg-slate-100 rounded-full overflow-hidden"><div class="h-full bg-slate-400 rounded-full transition-all duration-700" style="width:${pct}%"></div></div><span class="text-[12px] font-semibold text-slate-500 w-6 text-right">${t.pending}</span></div>`;
+            });
+
+            const st = document.getElementById('perf-summary-table'); st.innerHTML = '';
+            perfData.forEach(t => {
+                const trendArrow = t.trendDir === 'up' ? '↑' : t.trendDir === 'down' ? '↓' : '→';
+                const trendColor = t.trendDir === 'up' ? 'text-emerald-500' : t.trendDir === 'down' ? 'text-rose-500' : 'text-slate-400';
+                const rateColor = t.rate >= 70 ? 'text-emerald-600' : t.rate >= 50 ? 'text-amber-600' : 'text-slate-500';
+                st.innerHTML += `<tr class="hover:bg-slate-50/30 transition"><td class="py-3 px-5"><div class="flex items-center gap-2.5"><div class="w-7 h-7 rounded-lg ${t.color} flex items-center justify-center font-bold text-[9px] text-white">${t.initial}</div><span class="font-medium text-slate-800">${t.name}</span></div></td><td class="py-3 px-5 text-center font-semibold text-slate-700">${t.assigned}</td><td class="py-3 px-5 text-center font-semibold text-slate-700">${t.completed}</td><td class="py-3 px-5 text-center font-semibold text-slate-700">${t.pending}</td><td class="py-3 px-5 text-center"><span class="font-bold ${rateColor}">${t.rate}%</span></td><td class="py-3 px-5 text-center"><span class="text-sm font-bold ${trendColor}">${trendArrow}</span><span class="text-[9px] text-slate-400 ml-1">${t.prevRate}%</span></td></tr>`;
             });
 
             updateDashboardKpis();
@@ -308,29 +504,36 @@
 
         function updateDashboardKpis() {
             const activeDeals = (db.deals || []).filter(d => d.stage === 'Active').length;
-            const activeMandates = db.team.reduce((sum, t) => sum + (t.mandates || 0), 0);
-            const totalRevenue = db.team.reduce((sum, t) => {
-                const v = parseFloat((t.revenue || '0').replace(/[₹Cr\s]/g, ''));
-                return sum + (isNaN(v) ? 0 : v);
-            }, 0);
+            const activeMandates = (db.mandateDays || []).length;
+            const mandatesThisMonth = (db.mandateDays || []).length;
+            const totalOverdue = db.team.reduce((sum, t) => sum + (t.pending || 0), 0) + db.pendingActions.length;
+            const criticalCount = db.pendingActions.filter(a => a.status === 'Critical').length;
             document.getElementById('dash-kpi-deals').innerText = activeDeals;
             document.getElementById('dash-kpi-mandates').innerText = activeMandates;
-            document.getElementById('dash-kpi-revenue').innerText = totalRevenue.toFixed(2);
+            document.getElementById('dash-kpi-mandates-month').innerText = mandatesThisMonth;
             document.getElementById('dash-kpi-pending').innerText = db.pendingActions.length;
-            document.getElementById('dash-kpi-team').innerText = db.team.length;
+            document.getElementById('dash-kpi-overdue').innerText = totalOverdue;
+            const critEl = document.getElementById('dash-kpi-critical-count');
+            if (critEl) critEl.innerText = criticalCount;
         }
 
         function initDashboardCharts() {
-            const ctxLine = document.getElementById('chart-revenue-analytics').getContext('2d');
-            const grad = ctxLine.createLinearGradient(0, 0, 0, 200);
-            grad.addColorStop(0, 'rgba(255, 94, 0, 0.45)'); grad.addColorStop(1, 'rgba(255, 255, 255, 0)');
-            new Chart(ctxLine, { type: 'line', data: { labels: ['1 May','8 May','15 May','22 May','29 May'], datasets: [{ data: [1.0,2.6,2.3,3.8,4.2], borderColor: '#FF5E00', borderWidth: 3.5, backgroundColor: grad, fill: true, tension: 0.35, pointBackgroundColor: '#FF5E00', pointBorderColor: '#ffffff', pointBorderWidth: 2, pointRadius: 5, pointHoverRadius: 7 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { min:0, max:5, ticks:{ callback: v => '₹'+v+' Cr', stepSize:1, font:{size:9,weight:'bold'} }, grid:{color:'#f3f4f6'} }, x: { grid:{display:false}, ticks:{font:{size:10,weight:'bold'}} } } } });
+            const ctxBar = document.getElementById('chart-revenue-analytics').getContext('2d');
+            new Chart(ctxBar, { type: 'bar', data: { labels: (db.mandateDays || []).map(m => m.name), datasets: [{ label: 'Days Since Signed', data: (db.mandateDays || []).map(m => m.days), backgroundColor: ['#FF5E00','#F97316','#FB923C','#FDBA74','#FED7AA','#FFEDD5','#FFF7ED'], borderRadius: 6, borderSkipped: false }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks:{ callback: v => v+' days', stepSize: 10, font:{size:9,weight:'bold'} }, grid:{color:'#f3f4f6'} }, x: { grid:{display:false}, ticks:{font:{size:10,weight:'bold'}} } } } });
 
             const lv = [{label:'Draft',val:18,pct:'20%',color:'#3b82f6'},{label:'Qualification Review',val:12,pct:'13%',color:'#38bdf8'},{label:'Sent',val:15,pct:'17%',color:'#FF5E00'},{label:'Awaiting Signature',val:20,pct:'22%',color:'#fbbf24'},{label:'Signed',val:16,pct:'18%',color:'#10b981'},{label:'Expired',val:5,pct:'6%',color:'#ec4899'},{label:'Closed',val:3,pct:'4%',color:'#1e293b'}];
             const ctxDonut = document.getElementById('chart-mandate-donut').getContext('2d');
             new Chart(ctxDonut, { type: 'doughnut', data: { labels: lv.map(l=>l.label), datasets: [{ data: lv.map(l=>l.val), backgroundColor: lv.map(l=>l.color), borderWidth: 2, borderColor: '#ffffff' }] }, options: { responsive: true, maintainAspectRatio: false, cutout: '72%', plugins: { legend: { display: false } } } });
             const dl = document.getElementById('donut-legend-rows'); dl.innerHTML = '';
             lv.forEach(item => { dl.innerHTML += `<div class="flex items-center justify-between font-medium"><div class="flex items-center gap-1.5 min-w-0"><span class="w-2.5 h-2.5 rounded-full shrink-0" style="background-color:${item.color}"></span><span class="text-slate-600 truncate text-[10px]">${item.label}</span></div><span class="text-slate-800 font-bold ml-2 shrink-0">${item.val} <span class="text-[9px] text-slate-400 font-medium">(${item.pct})</span></span></div>`; });
+
+            // ── Performance Trend Line Chart ──
+            const ctxTrend = document.getElementById('chart-perf-trend').getContext('2d');
+            const trendWeeks = ['W1','W2','W3','W4','W5','W6','W7','W8'];
+            const trendData = [42,45,48,51,49,54,58,62];
+            const gradTrend = ctxTrend.createLinearGradient(0, 0, 0, 280);
+            gradTrend.addColorStop(0, 'rgba(15,23,42,0.08)'); gradTrend.addColorStop(1, 'rgba(15,23,42,0)');
+            new Chart(ctxTrend, { type: 'line', data: { labels: trendWeeks, datasets: [{ data: trendData, borderColor: '#0f172a', borderWidth: 2, backgroundColor: gradTrend, fill: true, tension: 0.4, pointBackgroundColor: '#0f172a', pointBorderColor: '#ffffff', pointBorderWidth: 2, pointRadius: 3, pointHoverRadius: 5 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { min: 30, max: 70, ticks: { callback: v => v + '%', stepSize: 10, font: { size: 10, weight: '500' }, color: '#94a3b8' }, grid: { color: '#f1f5f9' }, border: { display: false } }, x: { grid: { display: false }, ticks: { font: { size: 10, weight: '500' }, color: '#94a3b8' }, border: { display: false } } } } });
         }
 
         // ── THEME TOGGLE ──
@@ -360,6 +563,14 @@
             if (!e.target.closest('.relative')) {
                 document.querySelectorAll('[id$="-picker"], [id$="-tray"]').forEach(el => el.classList.add('hidden'));
                 const dd = document.getElementById('role-dropdown'); if (dd) dd.classList.add('hidden');
+            }
+        });
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const overlay = document.getElementById('pending-detail-overlay');
+                if (overlay && !overlay.classList.contains('hidden')) {
+                    closePendingDetail({target: overlay});
+                }
             }
         });
 

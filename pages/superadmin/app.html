@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Charantra — Super Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={theme:{extend:{colors:{brand:{orange:'#FF5E00',orangeHover:'#e04f00',navyDark:'#070C1E',navyMedium:'#0F172A',navyLight:'#1E293B',bgSlate:'#F8FAFC',borderGray:'#E2E8F0'}}}}}</script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body{font-family:'Titillium Web',sans-serif;-webkit-font-smoothing:antialiased;background-color:#F8FAFC;}
+        ::-webkit-scrollbar{width:6px;height:6px}::-webkit-scrollbar-track{background:rgba(0,0,0,.02)}::-webkit-scrollbar-thumb{background:rgba(0,0,0,.15);border-radius:4px}
+        #app-sidebar.collapsed{width:64px!important}#app-sidebar.collapsed .sidebar-label{display:none}#app-sidebar.collapsed .sidebar-arrow{display:none}#app-sidebar.collapsed .sidebar-logo{width:32px!important;min-width:32px!important}#app-sidebar.collapsed .sidebar-collapse-icon{transform:rotate(180deg)}#app-sidebar.collapsed button{justify-content:center;padding-left:8px;padding-right:8px}#app-sidebar.collapsed nav>div>button{justify-content:center}#app-sidebar.collapsed .sidebar-section-div{max-height:0!important}
+        .nav-active{background:#FF5E00!important;color:#fff!important;font-weight:600!important}
+    </style>
+</head>
+<body class="overflow-hidden h-screen flex text-slate-800 bg-brand-bgSlate">
+<div class="flex w-full h-full">
+
+<aside id="app-sidebar" class="w-64 bg-brand-navyDark text-slate-300 flex flex-col h-full shrink-0 border-r border-slate-900 z-30 justify-between select-none transition-all duration-300">
+    <div class="flex flex-col overflow-y-auto">
+        <div class="p-4 flex items-center justify-between border-b border-slate-900/60">
+            <div class="flex items-center gap-3 overflow-hidden"><a href="#dashboard"><img src="/assets/logo.png" width="160" class="sidebar-logo" style="height:auto;min-width:120px"></a></div>
+            <button onclick="toggleSidebarCollapse()" class="text-slate-500 hover:text-white p-1 rounded transition shrink-0"><i class="fa-solid fa-outdent text-xs sidebar-collapse-icon"></i></button>
+        </div>
+        <nav class="px-3 space-y-1 text-sm" id="sidebar-nav">
+        </nav>
+    </div>
+    <div class="p-4 text-center text-xs text-slate-600 border-t border-slate-900"><p class="sidebar-label">© 2026 Charantra</p></div>
+</aside>
+
+<main class="flex-1 flex flex-col h-full overflow-hidden">
+    <header class="h-16 border-b border-brand-borderGray bg-white flex items-center justify-between px-8 shrink-0 select-none">
+        <div class="relative w-96"><span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400"><i class="fa-solid fa-magnifying-glass text-xs"></i></span><input type="text" id="header-search" oninput="handleSearch(this.value)" class="w-full bg-slate-50 border border-slate-200 rounded-lg py-1.5 pl-9 pr-4 text-xs focus:outline-none focus:border-brand-orange transition" placeholder="Search..."></div>
+        <div class="flex items-center gap-5">
+            <div class="flex items-center gap-1 border border-slate-200 rounded-lg px-2.5 py-1 bg-slate-50 text-xs text-slate-600"><span class="font-semibold text-slate-700">INR (₹)</span><i class="fa-solid fa-chevron-down text-[9px] text-slate-400"></i></div>
+            <a href="/pages/superadmin/operations-center.html" class="flex items-center gap-2 border border-brand-orange/50 rounded-lg px-3 py-1 bg-brand-orange/5 text-xs text-brand-orange font-bold hover:bg-brand-orange hover:text-white transition"><i class="fa-solid fa-radar text-[11px]"></i><span>Ops Center</span></a>
+            <div class="flex items-center gap-3 border-l border-slate-200 pl-4">
+                <div class="text-right"><p class="text-xs font-bold text-slate-900 leading-none">KARTHIK</p><p class="text-[9px] text-brand-orange font-bold uppercase tracking-wider mt-0.5">SUPER ADMIN <i class="fa-solid fa-chevron-down text-[7px] text-slate-400 ml-1"></i></p></div>
+                <div class="relative"><button onclick="toggleRoleDropdown()" class="w-10 h-10 rounded-full bg-[#FF5E00] text-white font-extrabold text-sm flex items-center justify-center shadow hover:shadow-md transition cursor-pointer">K</button><div id="role-dropdown" class="hidden absolute right-0 mt-2 w-52 bg-white border border-slate-200 rounded-xl shadow-xl z-50 text-xs overflow-hidden"><div class="px-4 py-3 border-b border-slate-100 font-bold text-slate-700">Switch Role</div><button onclick="switchRole('superadmin')" class="w-full text-left px-4 py-2.5 hover:bg-slate-50 text-slate-700 font-medium flex items-center gap-2.5 border-b border-slate-50"><i class="fa-solid fa-crown text-brand-orange w-4"></i> Super Admin</button><button onclick="switchRole('admin')" class="w-full text-left px-4 py-2.5 hover:bg-slate-50 text-slate-700 font-medium flex items-center gap-2.5 border-b border-slate-50"><i class="fa-solid fa-shield-halved text-violet-500 w-4"></i> Admin</button><button onclick="switchRole('ib')" class="w-full text-left px-4 py-2.5 hover:bg-slate-50 text-slate-700 font-medium flex items-center gap-2.5 border-b border-slate-50"><i class="fa-solid fa-briefcase text-blue-500 w-4"></i> Investment Banker</button><button onclick="switchRole('ba')" class="w-full text-left px-4 py-2.5 hover:bg-slate-50 text-slate-700 font-medium flex items-center gap-2.5"><i class="fa-solid fa-chart-line text-emerald-500 w-4"></i> Business Analyst</button></div></div>
+            </div>
+        </div>
+    </header>
+    <div class="flex-1 overflow-y-auto p-8" id="app-content"></div>
+</main>
+</div>
+
+<script>
+// === SIDEBAR BUILDER ===
+const sidebarItems = [
+    { id:'dashboard', icon:'fa-table-columns', label:'Dashboard', link:true },
+    { id:'crm', icon:'fa-users', label:'CRM', children:[
+        { id:'crm-investor', icon:'fa-hand-holding-dollar', label:'Investors', view:'crm', param:'Investor' },
+        { id:'crm-investee', icon:'fa-rocket', label:'Investees', view:'crm', param:'Investee' },
+        { id:'crm-buyer', icon:'fa-cart-shopping', label:'Buyers', view:'crm', param:'Buyer' },
+        { id:'crm-seller', icon:'fa-tags', label:'Sellers', view:'crm', param:'Seller' },
+        { id:'crm-advisor', icon:'fa-comments', label:'Advisors', view:'crm', param:'Advisor' },
+    ]},
+    { id:'mandates', icon:'fa-file-contract', label:'Deals', link:true },
+    { id:'deals', icon:'fa-briefcase', label:'Active Mandates', children:[
+        { id:'deals-equity', icon:'fa-sitemap', label:'Equity Flow', view:'deals', param:'equity' },
+        { id:'deals-ma', icon:'fa-bezier-curve', label:'M&A Flow', view:'deals', param:'ma' },
+    ]},
+    { id:'divider' },
+    { id:'dataroom', icon:'fa-hard-drive', label:'Data Room', link:true },
+    { id:'team', icon:'fa-users-gear', label:'Team Management', link:true },
+    { id:'payments', icon:'fa-receipt', label:'Payments', link:true },
+    { id:'reports', icon:'fa-chart-simple', label:'Reports', link:true },
+    { id:'settings', icon:'fa-gear', label:'Settings & Logs', link:true },
+];
+
+function buildSidebar() {
+    const nav = document.getElementById('sidebar-nav');
+    nav.innerHTML = '';
+    sidebarItems.forEach(item => {
+        if (item.id === 'divider') {
+            nav.innerHTML += '<div class="border-t border-slate-900/50 my-2"></div>';
+            return;
+        }
+        if (item.children) {
+            nav.innerHTML += `<div class="space-y-0.5"><button onclick="toggleSidebarSection('sec-${item.id}')" class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><span class="flex items-center gap-3"><i class="fa-solid ${item.icon} text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">${item.label}</span></span><i class="fa-solid fa-chevron-down text-[9px] transition-transform duration-200 sidebar-arrow" id="arrow-sec-${item.id}"></i></button><div id="sec-${item.id}" class="pl-5 pr-1 space-y-0.5 overflow-hidden sidebar-section-div" style="max-height:0;transition:max-height 0.3s ease">`;
+            item.children.forEach(ch => {
+                nav.innerHTML += `<button onclick="navigateTo('${ch.view}','${ch.param}')" class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden" id="sub-${ch.id}"><i class="fa-solid ${ch.icon} text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">${ch.label}</span></button>`;
+            });
+            nav.innerHTML += '</div></div>';
+        } else {
+            nav.innerHTML += `<button onclick="navigateTo('${item.id}')" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden" id="nav-${item.id}"><i class="fa-solid ${item.icon} text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">${item.label}</span></button>`;
+        }
+    });
+}
+
+function toggleSidebarCollapse(){document.getElementById('app-sidebar').classList.toggle('collapsed')}
+function toggleSidebarSection(id){if(document.getElementById('app-sidebar').classList.contains('collapsed'))return;const el=document.getElementById(id),arrow=document.getElementById('arrow-'+id);if(el){const o=el.style.maxHeight!=='0px'&&el.style.maxHeight!=='';el.style.maxHeight=o?'0':'200px'}if(arrow)arrow.style.transform=arrow.style.transform==='rotate(180deg)'?'rotate(0deg)':'rotate(180deg)'}
+function toggleRoleDropdown(){document.getElementById('role-dropdown').classList.toggle('hidden')}
+function switchRole(role){const base={'superadmin':'/pages/superadmin','admin':'/pages/admin','ib':'/pages/ib','ba':'/pages/ba'};window.location.href=(base[role]||'/pages/superadmin')+'/app.html'+window.location.hash}
+
+// === DATA STORE ===
+const DB = {
+    users:[
+        {id:"USR-001",name:"Sequoia Capital India",email:"info@sequoiacap.com",company:"Sequoia Capital India",type:"Investor",status:"Active",date:"2026-04-12",lastActive:"2h ago",assigned:"Sarah Chen",initial:"SC",bgClass:"bg-emerald-50 text-emerald-600"},
+        {id:"USR-002",name:"TechVentures Fund",email:"contact@techventures.com",company:"TechVentures Fund",type:"Investor",status:"Active",date:"2026-04-10",lastActive:"1d ago",assigned:"Akash Kumar",initial:"TV",bgClass:"bg-purple-50 text-purple-600"},
+        {id:"USR-003",name:"GreenField Capital",email:"hello@greenfieldcap.com",company:"GreenField Capital",type:"Investor",status:"On Hold",date:"2026-04-05",lastActive:"4d ago",assigned:"Sarah Chen",initial:"GC",bgClass:"bg-amber-50 text-amber-500"},
+        {id:"USR-004",name:"Elevation Capital",email:"investor@elevation.in",company:"Elevation Capital",type:"Investor",status:"Active",date:"2026-04-01",lastActive:"3h ago",assigned:"Akash Kumar",initial:"EL",bgClass:"bg-blue-50 text-blue-600"},
+        {id:"USR-005",name:"Blume Ventures",email:"partners@blume.vc",company:"Blume Ventures",type:"Investor",status:"Inactive",date:"2026-03-28",lastActive:"15d ago",assigned:"Raj Mehta",initial:"BC",bgClass:"bg-rose-50 text-rose-600"},
+        {id:"USR-009",name:"TechVenture Solutions",email:"sarah@techventure.com",company:"TechVenture Solutions",type:"Investee",status:"Active",date:"2026-01-20",lastActive:"2h ago",assigned:"Akash Kumar",initial:"TV",bgClass:"bg-emerald-50 text-emerald-600"},
+        {id:"USR-011",name:"Vertex Tech Partners",email:"info@vertexpartners.com",company:"Vertex Partners Ltd",type:"Buyer",status:"Active",date:"2026-03-22",lastActive:"1d ago",assigned:"Priya Sharma",initial:"VP",bgClass:"bg-teal-50 text-teal-600"},
+        {id:"USR-013",name:"Mittal Asset Holdings",email:"corp@mittalassets.in",company:"Mittal Assets",type:"Seller",status:"On Hold",date:"2026-03-01",lastActive:"3d ago",assigned:"Sarah Chen",initial:"MA",bgClass:"bg-amber-50 text-amber-500"},
+    ],
+    pendingActions:[
+        {id:"ACT-001",name:"GreenField Capital",subtitle:"Unreviewed NDA agreement",status:"Critical",dueText:"Due in 3h",bg:"bg-rose-50 text-rose-700"},
+        {id:"ACT-002",name:"TechVentures Fund",subtitle:"KYC verification pending",status:"High",dueText:"Due in 1d",bg:"bg-amber-50 text-amber-700"},
+    ],
+    recentActivities:[
+        {title:"Sequoia Capital NDA approved",timeText:"5 min ago",icon:"fa-circle-check text-emerald-600",bg:"bg-emerald-50"},
+        {title:"New mandate created: Elevation Capital",timeText:"1h ago",icon:"fa-file-signature text-brand-orange",bg:"bg-orange-50"},
+        {title:"VDR key authorized for TechVentures",timeText:"3h ago",icon:"fa-hard-drive text-indigo-600",bg:"bg-indigo-50"},
+    ],
+    team:[
+        {name:"Sarah Chen",initial:"SC",role:"Investment Banker",deals:28,revenue:"₹1.40 Cr",perf:"98%",color:"bg-indigo-600 text-white",mandates:15},
+        {name:"Akash Kumar",initial:"AK",role:"Admin",deals:24,revenue:"₹1.20 Cr",perf:"94%",color:"bg-emerald-600 text-white",mandates:18},
+        {name:"Raj Mehta",initial:"RM",role:"Business Analyst",deals:20,revenue:"₹0.90 Cr",perf:"89%",color:"bg-violet-600 text-white",mandates:12},
+        {name:"Priya Sharma",initial:"PS",role:"Investment Banker",deals:18,revenue:"₹0.65 Cr",perf:"85%",color:"bg-amber-600 text-white",mandates:10},
+    ],
+    deals:[
+        {id:"DL-001",flow:"equity",sideA:"TechVenture Solutions",sideB:"Sequoia Capital India",amount:"₹12 Cr",stage:"Due Diligence",matchRate:"92%",date:"2026-05-15"},
+        {id:"DL-002",flow:"equity",sideA:"Hindustan Enterprises",sideB:"Elevation Capital",amount:"₹8 Cr",stage:"Term Sheet",matchRate:"85%",date:"2026-05-10"},
+        {id:"DL-003",flow:"ma",sideA:"Pinnacle Corp",sideB:"Vertex Tech Partners",amount:"₹45 Cr",stage:"LOI Signed",matchRate:"78%",date:"2026-04-28"},
+        {id:"DL-004",flow:"ma",sideA:"Mittal Assets",sideB:"Teton Group",amount:"₹32 Cr",stage:"NDA Signed",matchRate:"65%",date:"2026-04-20"},
+        {id:"DL-005",flow:"equity",sideA:"GreenField Capital",sideB:"Blume Ventures",amount:"₹5 Cr",stage:"Closed",matchRate:"96%",date:"2026-03-15"},
+    ],
+    mandates:[
+        {id:"MND-001",client:"TechVenture Solutions",target:"Series B - $12M Equity",fee:"₹1.80 Cr",status:"Signed",date:"2026-05-01"},
+        {id:"MND-002",client:"Pinnacle Corp",target:"M&A - Strategic Sale",fee:"₹3.20 Cr",status:"Awaiting Signature",date:"2026-04-15"},
+    ]
+};
+
+// === ROUTER ===
+let currentView = 'dashboard';
+let currentParam = '';
+
+function navigateTo(view, param) {
+    currentView = view;
+    currentParam = param || '';
+    window.location.hash = param ? `#${view}/${param}` : `#${view}`;
+    renderView();
+    highlightSidebar();
+}
+
+function highlightSidebar() {
+    document.querySelectorAll('#sidebar-nav button').forEach(b => b.classList.remove('nav-active'));
+    document.querySelectorAll('#sidebar-nav button').forEach(b => { if(!b.classList.contains('nav-active')) b.classList.add('text-slate-400'); });
+    
+    sidebarItems.forEach(item => {
+        if (item.children) {
+            item.children.forEach(ch => {
+                if (ch.view === currentView && ch.param === currentParam) {
+                    const btn = document.getElementById('sub-'+ch.id);
+                    if (btn) { btn.classList.add('nav-active'); btn.classList.remove('text-slate-400'); }
+                    // Expand parent section
+                    const sec = document.getElementById('sec-'+item.id);
+                    if (sec) sec.style.maxHeight = '200px';
+                    const arrow = document.getElementById('arrow-sec-'+item.id);
+                    if (arrow) arrow.style.transform = 'rotate(180deg)';
+                }
+            });
+        }
+    });
+    
+    const mainBtn = document.getElementById('nav-'+currentView);
+    if (mainBtn && !currentParam) { mainBtn.classList.add('nav-active'); mainBtn.classList.remove('text-slate-400'); }
+}
+
+// === VIEW RENDERERS ===
+function renderDashboard() {
+    const c = document.getElementById('app-content');
+    c.innerHTML = `<section class="space-y-6 fade-in"><div class="flex justify-between items-center"><div><h2 class="text-2xl font-bold text-slate-900">Dashboard Overview</h2><p class="text-slate-500 text-xs mt-1">Real-time business overview and key performance metrics.</p></div></div>
+    <div class="grid grid-cols-1 md:grid-cols-5 gap-5">
+        ${[{label:'Active Deals',val:142,change:'+15%',icon:'fa-briefcase',color:'indigo'},{label:'Active Mandates',val:89,change:'+12%',icon:'fa-file-signature',color:'emerald'},{label:'Revenue (₹ Cr)',val:'4.20',change:'+22%',icon:'fa-indian-rupee-sign',color:'violet'},{label:'Pending Compliance',val:12,change:'-5%',icon:'fa-clock-rotate-left',color:'amber'},{label:'Platform Users',val:386,change:'+11%',icon:'fa-user-plus',color:'blue'}].map(c=>`<div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-start gap-4 hover:shadow-md transition"><div class="p-3 rounded-xl bg-${c.color}-50 text-${c.color}-600 flex items-center justify-center shrink-0"><i class="fa-solid ${c.icon} text-lg"></i></div><div class="space-y-1"><span class="text-[11px] text-slate-400 font-bold uppercase tracking-wider block">${c.label}</span><h3 class="text-2xl font-extrabold text-slate-900">${c.val}</h3><p class="text-[11px] font-bold text-emerald-600 flex items-center gap-1 mt-1"><i class="fa-solid fa-caret-up"></i><span>${c.change}</span><span class="text-slate-400 font-medium">vs last month</span></p></div></div>`).join('')}
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div class="lg:col-span-2 bg-white rounded-2xl border border-slate-100 p-5 shadow-sm"><div class="border-b border-slate-50 pb-3"><h4 class="text-sm font-bold text-slate-800">Revenue Analytics</h4></div><div class="h-[220px] mt-3"><canvas id="chart-rev"></canvas></div></div>
+        <div class="bg-white rounded-2xl border border-slate-100 p-5 shadow-sm"><div class="border-b border-slate-50 pb-3"><h4 class="text-sm font-bold text-slate-800">Mandate Status</h4></div><div class="flex items-center gap-4 my-2"><div class="w-[140px] h-[140px] shrink-0"><canvas id="chart-donut"></canvas></div><div class="space-y-1.5 flex-1 text-[10px]" id="donut-legend"></div></div></div>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="bg-white rounded-2xl border border-slate-100 p-5 shadow-sm"><div class="border-b border-slate-50 pb-3 flex justify-between items-center"><div><h4 class="text-sm font-bold text-slate-800">Pending Actions</h4></div><a href="#dataroom" onclick="navigateTo('dataroom')" class="text-brand-orange hover:text-brand-orangeHover text-xs font-bold">View All</a></div><div class="divide-y divide-slate-50 max-h-[220px] overflow-y-auto" id="pending-actions-body"></div></div>
+        <div class="bg-white rounded-2xl border border-slate-100 p-5 shadow-sm"><div class="border-b border-slate-50 pb-3"><h4 class="text-sm font-bold text-slate-800">Recent Activities</h4></div><div class="space-y-4 max-h-[300px] overflow-y-auto" id="recent-activities-body"></div></div>
+    </div>
+    <div class="bg-white rounded-2xl border border-slate-100 p-5 shadow-sm"><div class="border-b border-slate-50 pb-3"><h4 class="text-sm font-bold text-slate-800">Team Performance</h4></div><div class="overflow-x-auto"><table class="w-full text-left text-xs"><thead><tr class="text-slate-400 uppercase text-[10px] border-b border-slate-100"><th class="pb-2">Team Member</th><th class="pb-2 text-center">Deals</th><th class="pb-2 text-center">Mandates</th><th class="pb-2 text-right">Revenue</th><th class="pb-2 text-right">Perf</th></tr></thead><tbody id="team-table-body"></tbody></table></div></div></section>`;
+    setTimeout(()=>{renderDashboardData();initCharts();},50);
+}
+
+function renderDashboardData(){
+    const pa=document.getElementById('pending-actions-body');pa.innerHTML='';
+    DB.pendingActions.forEach(a=>{pa.innerHTML+=`<div class="py-3 flex justify-between items-center hover:bg-slate-50/50 px-1 rounded-lg"><div class="space-y-0.5"><h5 class="text-xs font-bold text-slate-800">${a.name}</h5><p class="text-[10px] text-slate-400">${a.subtitle}</p></div><div class="flex items-center gap-2"><span class="text-[10px] font-bold px-2 py-0.5 rounded-md ${a.bg}">${a.status}</span><span class="text-[10px] text-rose-500 font-bold bg-rose-50 px-2 py-0.5 rounded-md">${a.dueText}</span><button onclick="clearAction('${a.id}')" class="bg-brand-orange hover:bg-brand-orangeHover text-white text-[10px] px-2.5 py-1 rounded font-bold">Clear</button></div></div>`});
+    const ra=document.getElementById('recent-activities-body');ra.innerHTML='';
+    DB.recentActivities.forEach(a=>{ra.innerHTML+=`<div class="flex items-center gap-3 py-1 hover:bg-slate-50/50 px-2 rounded-lg"><div class="w-8 h-8 rounded-lg ${a.bg} flex items-center justify-center shrink-0"><i class="fa-solid ${a.icon}"></i></div><div class="flex-1 min-w-0"><p class="text-xs font-bold text-slate-800 truncate">${a.title}</p></div><span class="text-[10px] text-slate-400 font-semibold whitespace-nowrap">${a.timeText}</span></div>`});
+    const tt=document.getElementById('team-table-body');tt.innerHTML='';
+    DB.team.forEach(t=>{const pc=parseInt(t.perf)>=90?'text-emerald-600':'text-amber-600';tt.innerHTML+=`<tr class="hover:bg-slate-50/60"><td class="py-2.5 flex items-center gap-2.5"><div class="w-7 h-7 rounded-lg ${t.color} flex items-center justify-center font-bold text-[10px]">${t.initial}</div><div><span class="font-bold text-slate-800 text-xs">${t.name}</span><span class="text-[9px] text-slate-400 block">${t.role}</span></div></td><td class="py-2.5 text-center font-bold text-slate-700">${t.deals}</td><td class="py-2.5 text-center font-bold text-slate-700">${t.mandates}</td><td class="py-2.5 text-right font-extrabold text-brand-orange">${t.revenue}</td><td class="py-2.5 text-right font-bold ${pc}">${t.perf}</td></tr>`});
+}
+
+function clearAction(id){const i=DB.pendingActions.findIndex(a=>a.id===id);if(i>-1){const a=DB.pendingActions[i];DB.pendingActions.splice(i,1);DB.recentActivities.unshift({title:`Cleared: ${a.name}`,timeText:"Just now",icon:"fa-circle-check text-emerald-600",bg:"bg-emerald-50"});renderDashboardData()}}
+
+function initCharts(){setTimeout(()=>{const cl=document.getElementById('chart-rev');if(!cl)return;const g=cl.getContext('2d').createLinearGradient(0,0,0,200);g.addColorStop(0,'rgba(255,94,0,0.45)');g.addColorStop(1,'rgba(255,255,255,0)');new Chart(cl,{type:'line',data:{labels:['1 May','8 May','15 May','22 May','29 May'],datasets:[{data:[1.0,2.6,2.3,3.8,4.2],borderColor:'#FF5E00',borderWidth:3.5,backgroundColor:g,fill:true,tension:0.35,pointBackgroundColor:'#FF5E00',pointBorderColor:'#fff',pointBorderWidth:2,pointRadius:5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{min:0,max:5,ticks:{callback:v=>'₹'+v+' Cr',stepSize:1,font:{size:9,weight:'bold'}},grid:{color:'#f3f4f6'}},x:{grid:{display:false},ticks:{font:{size:10,weight:'bold'}}}}}});
+const lv=[{label:'Draft',val:18,pct:'20%',color:'#3b82f6'},{label:'Qual Review',val:12,pct:'13%',color:'#38bdf8'},{label:'Sent',val:15,pct:'17%',color:'#FF5E00'},{label:'Awaiting Sig',val:20,pct:'22%',color:'#fbbf24'},{label:'Signed',val:16,pct:'18%',color:'#10b981'},{label:'Expired',val:5,pct:'6%',color:'#ec4899'},{label:'Closed',val:3,pct:'4%',color:'#1e293b'}];
+const cd=document.getElementById('chart-donut');if(!cd)return;new Chart(cd,{type:'doughnut',data:{labels:lv.map(l=>l.label),datasets:[{data:lv.map(l=>l.val),backgroundColor:lv.map(l=>l.color),borderWidth:2,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,cutout:'72%',plugins:{legend:{display:false}}}});
+const dl=document.getElementById('donut-legend');dl.innerHTML='';lv.forEach(i=>{dl.innerHTML+=`<div class="flex items-center justify-between font-medium"><div class="flex items-center gap-1.5 min-w-0"><span class="w-2.5 h-2.5 rounded-full shrink-0" style="background:${i.color}"></span><span class="text-slate-600 truncate text-[10px]">${i.label}</span></div><span class="text-slate-800 font-bold ml-2">${i.val} <span class="text-[9px] text-slate-400">(${i.pct})</span></span></div>`})},200)}
+
+function renderCRM() {
+    const type = currentParam || 'Investor';
+    const filtered = DB.users.filter(u => u.type === type);
+    const total = DB.users.length, active = DB.users.filter(u=>u.status==='Active').length;
+    const c = document.getElementById('app-content');
+    c.innerHTML = `<section class="space-y-6 fade-in">
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4"><div><h2 class="text-2xl font-bold text-slate-900">${type}s Directory</h2><p class="text-slate-500 text-xs mt-1">Manage all ${type.toLowerCase()} profiles onboarded.</p></div></div>
+    <div class="flex flex-wrap gap-3">
+        ${[{l:'Total',v:total,cl:'purple',ic:'fa-users'},{l:'Active',v:active,cl:'emerald',ic:'fa-circle-user'},{l:'On Hold',v:DB.users.filter(u=>u.status==='On Hold').length,cl:'amber',ic:'fa-clock-rotate-left'},{l:'Inactive',v:DB.users.filter(u=>u.status==='Inactive').length,cl:'red',ic:'fa-user-slash'}].map(k=>`<div class="bg-white border border-slate-200 rounded-xl px-4 py-2.5 shadow-sm flex items-center gap-3"><div class="p-2 rounded-lg bg-${k.cl}-50 text-${k.cl}-600"><i class="fa-solid ${k.ic} text-sm"></i></div><span class="text-[11px] font-bold text-slate-400 uppercase">${k.l}</span><span class="text-lg font-extrabold text-slate-900">${k.v}</span></div>`).join('')}
+    </div>
+    <div class="bg-white rounded-2xl border border-slate-100 overflow-hidden shadow-sm">
+        <div class="overflow-x-auto"><table class="w-full text-left text-xs"><thead><tr class="bg-slate-50 border-b border-slate-100 text-slate-500 text-[10px] uppercase font-bold"><th class="p-4 w-12 text-center"><input type="checkbox" class="accent-brand-orange cursor-pointer rounded"></th><th class="p-4">Name</th><th class="p-4">Company</th><th class="p-4">Type</th><th class="p-4">Status</th><th class="p-4">Date</th><th class="p-4">Last Active</th><th class="p-4">Assigned</th><th class="p-4 text-center">Actions</th></tr></thead><tbody id="crm-table-body"></tbody></table></div>
+    </div></section>`;
+    setTimeout(()=>renderCrmTable(filtered),50);
+}
+
+function renderCrmTable(users){
+    const tb=document.getElementById('crm-table-body');tb.innerHTML='';
+    users.forEach(u=>{let sc="bg-emerald-50 text-emerald-700";if(u.status==='On Hold')sc="bg-amber-50 text-amber-700";else if(u.status==='Inactive')sc="bg-slate-100 text-slate-500";
+    tb.innerHTML+=`<tr class="hover:bg-slate-50/60 border-b border-slate-100"><td class="p-4 text-center"><input type="checkbox" class="accent-brand-orange cursor-pointer rounded"></td><td class="p-4 flex items-center gap-3"><div class="w-8 h-8 rounded-lg ${u.bgClass} flex items-center justify-center font-bold text-xs">${u.initial}</div><div><a href="#crm-detail/${encodeURIComponent(u.name)}" onclick="navigateTo('crm-detail','${u.name}')" class="font-bold text-slate-900 hover:text-brand-orange hover:underline">${u.name}</a><span class="text-[10px] text-slate-400 block mt-0.5">${u.email}</span></div></td><td class="p-4 font-semibold text-slate-700">${u.company}</td><td class="p-4"><span class="bg-purple-50 text-purple-600 text-[10px] font-bold px-2 py-0.5 rounded-full">${u.type}</span></td><td class="p-4"><span class="text-[10px] font-bold px-2 py-0.5 rounded-full border ${sc}">${u.status}</span></td><td class="p-4 text-slate-500">${u.date}</td><td class="p-4 text-slate-500">${u.lastActive}</td><td class="p-4 font-bold text-slate-700">${u.assigned}</td><td class="p-4 text-center"><div class="flex items-center justify-center gap-1"><a href="#crm-detail/${encodeURIComponent(u.name)}" onclick="navigateTo('crm-detail','${u.name}')" class="text-slate-400 hover:text-brand-orange p-1.5 rounded"><i class="fa-solid fa-eye text-xs"></i></a><button class="text-slate-400 hover:text-blue-500 p-1.5 rounded"><i class="fa-regular fa-comment-dots text-xs"></i></button><button onclick="deleteUser('${u.id}')" class="text-rose-400 hover:text-rose-600 p-1.5 rounded"><i class="fa-solid fa-trash text-xs"></i></button></div></td></tr>`});
+}
+
+function deleteUser(id){DB.users=DB.users.filter(u=>u.id!==id);renderCRM()}
+
+function renderCRMDetail(){
+    const name = decodeURIComponent(currentParam||'');
+    const c = document.getElementById('app-content');
+    c.innerHTML = `<section class="space-y-6 fade-in">
+    <div class="flex items-center gap-3 border-b border-slate-200 pb-4"><button onclick="navigateTo('crm','Investor')" class="bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 text-xs font-bold px-3 py-2 rounded-lg flex items-center gap-2"><i class="fa-solid fa-arrow-left text-brand-orange"></i> Back</button><div><h2 class="text-2xl font-bold text-slate-900">${name}</h2><p class="text-slate-500 text-xs mt-1">Company profile and fundraising details.</p></div></div>
+    <div class="bg-white rounded-2xl border border-slate-200 p-6"><h4 class="font-bold text-sm text-slate-900 mb-4">Company Overview</h4><div class="grid grid-cols-2 gap-4 text-xs"><div><span class="text-[10px] text-slate-400 font-bold uppercase block">Company Name</span><span class="font-bold text-slate-800">${name}</span></div><div><span class="text-[10px] text-slate-400 font-bold uppercase block">Status</span><span class="font-semibold text-slate-700">Active Profile</span></div></div></div>
+    <div class="bg-white rounded-2xl border border-slate-200 p-6"><h4 class="font-bold text-sm text-slate-900 mb-4">Notes</h4><textarea id="crm-note" rows="3" class="w-full text-xs p-3 border border-slate-200 rounded-xl focus:outline-none focus:border-brand-orange" placeholder="Private notes..."></textarea><div class="flex justify-end mt-2"><button onclick="saveNote('${name}')" class="bg-brand-orange hover:bg-brand-orangeHover text-white text-xs font-bold px-4 py-1.5 rounded-lg">Save Note</button></div></div></section>`;
+    setTimeout(()=>{const n=localStorage.getItem('note_'+name);if(n)document.getElementById('crm-note').value=n},50);
+}
+
+function saveNote(name){localStorage.setItem('note_'+name,document.getElementById('crm-note').value)}
+
+function renderDeals(){
+    const flow = currentParam || 'equity';
+    const filtered = DB.deals.filter(d => d.flow === flow);
+    const title = flow === 'equity' ? 'Equity Flow Deals' : 'M&A Flow Deals';
+    const desc = flow === 'equity' ? 'Fundraising between Investees and Investors.' : 'Mergers, Acquisitions, and Corporate Buyouts.';
+    const c = document.getElementById('app-content');
+    c.innerHTML = `<section class="space-y-6 fade-in"><div><h2 class="text-2xl font-extrabold text-slate-950">Active Mandates</h2><p class="text-slate-500 text-xs mt-1">${desc}</p></div>
+    <div class="bg-white rounded-2xl border border-slate-100 overflow-hidden shadow-sm"><div class="p-4 border-b border-slate-100 flex justify-between items-center"><h3 class="text-sm font-bold text-slate-900">${title}</h3><span class="text-xs text-slate-400">${filtered.length} deals</span></div>
+    <div class="overflow-x-auto"><table class="w-full text-left text-xs"><thead><tr class="bg-slate-50 border-b border-slate-100 text-slate-500 text-[10px] uppercase font-bold"><th class="p-4">Deal ID</th><th class="p-4">${flow==='equity'?'Investee':'Seller'}</th><th class="p-4">${flow==='equity'?'Investor':'Buyer'}</th><th class="p-4">Amount</th><th class="p-4">Stage</th><th class="p-4">Match</th><th class="p-4">Date</th></tr></thead><tbody id="deals-table-body"></tbody></table></div></div></section>`;
+    setTimeout(()=>renderDealsTable(filtered),50);
+}
+
+function renderDealsTable(deals){
+    const tb=document.getElementById('deals-table-body');tb.innerHTML='';
+    if(!deals.length){tb.innerHTML='<tr><td colspan="7" class="p-10 text-center text-slate-400">No deals found.</td></tr>';return}
+    deals.forEach(d=>{const sc=d.stage==='Closed'?'bg-emerald-50 text-emerald-700':d.stage==='Due Diligence'?'bg-blue-50 text-blue-700':'bg-amber-50 text-amber-700';tb.innerHTML+=`<tr class="hover:bg-slate-50/60 border-b border-slate-100"><td class="p-4 font-bold text-slate-700">${d.id}</td><td class="p-4 font-semibold text-slate-800">${d.sideA}</td><td class="p-4 text-slate-600">${d.sideB}</td><td class="p-4 font-extrabold text-brand-orange">${d.amount}</td><td class="p-4"><span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${sc}">${d.stage}</span></td><td class="p-4 font-bold text-emerald-600">${d.matchRate}</td><td class="p-4 text-slate-500">${d.date}</td></tr>`})}
+
+function renderMandates(){
+    const c = document.getElementById('app-content');
+    c.innerHTML = `<section class="space-y-6 fade-in"><div><h2 class="text-2xl font-extrabold text-slate-950">Deals</h2><p class="text-slate-500 text-xs mt-1">Direct regulatory overview over investment advisory contracts.</p></div>
+    <div class="bg-white rounded-2xl border border-slate-100 overflow-hidden shadow-sm"><div class="overflow-x-auto"><table class="w-full text-left text-xs"><thead><tr class="bg-slate-50 border-b border-slate-100 text-slate-500 text-[10px] uppercase font-bold"><th class="p-4">Ref ID</th><th class="p-4">Client</th><th class="p-4">Scope</th><th class="p-4">Fee</th><th class="p-4">Status</th><th class="p-4">Date</th></tr></thead><tbody>${DB.mandates.map(m=>`<tr class="hover:bg-slate-50/60 border-b border-slate-100"><td class="p-4 font-bold text-slate-700">${m.id}</td><td class="p-4 font-bold text-slate-800">${m.client}</td><td class="p-4 text-slate-500">${m.target}</td><td class="p-4 font-extrabold text-brand-orange">${m.fee}</td><td class="p-4"><span class="bg-emerald-50 text-emerald-700 text-[10px] font-extrabold px-2.5 py-1 rounded-lg">${m.status}</span></td><td class="p-4 text-slate-400">${m.date}</td></tr>`).join('')}</tbody></table></div></div></section>`;
+}
+
+function renderPlaceholder(title, icon){const c=document.getElementById('app-content');c.innerHTML=`<section class="flex items-center justify-center h-full"><div class="text-center space-y-4"><div class="w-16 h-16 rounded-2xl bg-slate-100 flex items-center justify-center mx-auto"><i class="fa-solid ${icon} text-2xl text-slate-400"></i></div><h2 class="text-xl font-bold text-slate-700">${title}</h2><p class="text-slate-400 text-xs">Coming soon.</p></div></section>`}
+
+function renderView(){
+    switch(currentView){
+        case 'dashboard': renderDashboard(); break;
+        case 'crm': renderCRM(); break;
+        case 'crm-detail': renderCRMDetail(); break;
+        case 'deals': renderDeals(); break;
+        case 'mandates': renderMandates(); break;
+        case 'dataroom': renderPlaceholder('Data Room','fa-hard-drive'); break;
+        case 'team': renderPlaceholder('Team Management','fa-users-gear'); break;
+        case 'payments': renderPlaceholder('Payments','fa-receipt'); break;
+        case 'reports': renderPlaceholder('Reports','fa-chart-simple'); break;
+        case 'settings': renderPlaceholder('Settings & Logs','fa-gear'); break;
+        default: renderDashboard();
+    }
+}
+
+function handleSearch(term){console.log('Search:',term)}
+
+// Init
+window.onload = function(){
+    buildSidebar();
+    const hash = window.location.hash.replace('#','');
+    if (hash) {
+        const parts = hash.split('/');
+        currentView = parts[0];
+        currentParam = parts[1] || '';
+    }
+    renderView();
+    highlightSidebar();
+};
+
+window.addEventListener('hashchange', function(){
+    const hash = window.location.hash.replace('#','');
+    if (hash) {
+        const parts = hash.split('/');
+        currentView = parts[0];
+        currentParam = parts[1] || '';
+    }
+    renderView();
+    highlightSidebar();
+});
+
+window.addEventListener('click', function(e){
+    if(!e.target.closest('.relative')) document.getElementById('role-dropdown')?.classList.add('hidden');
+});
+</script>
+</body>
+</html>

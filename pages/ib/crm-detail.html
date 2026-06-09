@@ -90,7 +90,13 @@
 
                     <a href="/pages/ib/mandates.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><i class="fa-solid fa-file-contract text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Mandates & Projects</span></button></a>
 
-                    <a href="/pages/ib/deals.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><i class="fa-solid fa-briefcase text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Deals & Pipeline</span></button></a>
+                    <div class="space-y-0.5">
+                        <button onclick="toggleSidebarSection('deals-section')" class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><span class="flex items-center gap-3"><i class="fa-solid fa-briefcase text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Deals & Pipeline</span></span><i class="fa-solid fa-chevron-down text-[9px] ml-2 transition-transform duration-200 sidebar-arrow" id="arrow-deals-section"></i></button>
+                        <div id="deals-section" class="pl-5 pr-1 space-y-0.5 overflow-hidden sidebar-section-div" style="max-height:0;transition:max-height 0.3s ease">
+                            <a href="/pages/ib/deals.html?flow=equity" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-sitemap text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Equity Flow</span></button></a>
+                            <a href="/pages/ib/deals.html?flow=ma" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-bezier-curve text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">M&A Flow</span></button></a>
+                        </div>
+                    </div>
 
                     <a href="/pages/ib/dataroom.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><i class="fa-solid fa-hard-drive text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Data Room</span></button></a>
 
@@ -157,23 +163,23 @@
                 <section class="space-y-6">
                     
                     <!-- Back navigation & action buttons -->
-                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-200 pb-4 select-none">
-                        <div class="flex items-center gap-3">
-                            <a href="/pages/ib/crm.html" class="text-slate-500 hover:text-brand-orange text-xs font-bold flex items-center gap-1.5 transition">
-                                <i class="fa-solid fa-arrow-left"></i> Back to Directory
-                            </a>
+                    <div class="space-y-4 border-b border-slate-200 pb-4 select-none">
+                        <a href="/pages/ib/crm.html" class="text-slate-500 hover:text-brand-orange text-xs font-bold flex items-center gap-1.5 transition w-fit">
+                            <i class="fa-solid fa-arrow-left"></i> Back to Directory
+                        </a>
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                             <div>
                                 <h2 class="text-2xl font-bold tracking-tight text-slate-900" id="detail-company-title">TechVenture Solutions</h2>
                                 <p class="text-slate-500 text-xs mt-1" id="detail-company-subtitle">Manage your fundraising persona and materials.</p>
                             </div>
-                        </div>
-                        <div class="flex items-center gap-3">
-                            <button onclick="simulateSendMessage()" class="bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 text-xs font-bold px-4 py-2.5 rounded-lg shadow-sm transition flex items-center gap-2">
-                                <i class="fa-regular fa-comment-dots text-brand-orange"></i> Send Message
-                            </button>
-                            <a id="deal-workspace-link" href="/pages/ib/deals.html" class="bg-brand-orange hover:bg-brand-orangeHover text-white text-xs font-bold px-4 py-2.5 rounded-lg shadow-sm transition flex items-center gap-2">
-                                <i class="fa-solid fa-briefcase"></i> View Deal Workspace
-                            </a>
+                            <div class="flex items-center gap-3">
+                                <button onclick="simulateSendMessage()" class="bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 text-xs font-bold px-4 py-2.5 rounded-lg shadow-sm transition flex items-center gap-2">
+                                    <i class="fa-regular fa-comment-dots text-brand-orange"></i> Send Message
+                                </button>
+                                <a id="deal-workspace-link" href="/pages/ib/deals.html" class="bg-brand-orange hover:bg-brand-orangeHover text-white text-xs font-bold px-4 py-2.5 rounded-lg shadow-sm transition flex items-center gap-2">
+                                    <i class="fa-solid fa-briefcase"></i> View Deal Workspace
+                                </a>
+                            </div>
                         </div>
                     </div>
 

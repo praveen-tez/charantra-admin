@@ -1,0 +1,20 @@
+--- a/pages/superadmin/dashboard.html
++++ b/pages/superadmin/dashboard.html
+@@ -107,7 +107,13 @@
+                     </a>
+ 
+-                    <a href="/pages/superadmin/deals.html" class="block">
+-                        <button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden">
+-                            <i class="fa-solid fa-briefcase text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Deals & Pipeline</span>
+-                        </button>
+-                    </a>
++                    <div class="space-y-0.5">
++                        <button onclick="toggleSidebarSection('deals-section')" class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><span class="flex items-center gap-3"><i class="fa-solid fa-briefcase text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Deals & Pipeline</span></span><i class="fa-solid fa-chevron-down text-[9px] ml-2 transition-transform duration-200 sidebar-arrow" id="arrow-deals-section"></i></button>
++                        <div id="deals-section" class="pl-5 pr-1 space-y-0.5 overflow-hidden sidebar-section-div" style="max-height:0;transition:max-height 0.3s ease">
++                            <a href="/pages/superadmin/deals.html?flow=equity" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-sitemap text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Equity Flow</span></button></a>
++                            <a href="/pages/superadmin/deals.html?flow=ma" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-bezier-curve text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">M&A Flow</span></button></a>
++                        </div>
++                    </div>
+ 
+                     <a href="/pages/superadmin/dataroom.html" class="block">
+                         <button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden">

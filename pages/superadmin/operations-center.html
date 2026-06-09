@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Charantra - Operations Center</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            orange: '#FF5E00',
+                            orangeHover: '#e04f00',
+                            navyDark: '#070C1E',
+                            navyMedium: '#0F172A',
+                            navyLight: '#1E293B',
+                            bgSlate: '#F8FAFC',
+                            borderGray: '#E2E8F0'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Titillium Web', sans-serif; -webkit-font-smoothing: antialiased; background-color: #F8FAFC; }
+        .dark body,.dark { background-color:#050A30 !important; color:#F1F5F9 !important }
+        .dark .bg-white { background-color:#1E293B !important }
+        .dark .bg-slate-50 { background-color:#1E293B !important }
+        .dark .bg-brand-bgSlate { background-color:#050A30 !important }
+        .dark .text-slate-900 { color:#F1F5F9 !important }
+        .dark .text-slate-800 { color:#E2E8F0 !important }
+        .dark .text-slate-700 { color:#CBD5E1 !important }
+        .dark .text-slate-600 { color:#94A3B8 !important }
+        .dark .text-slate-500,.dark .text-slate-400 { color:#64748B !important }
+        .dark .border-slate-100,.dark .border-slate-200,.dark .border-brand-borderGray { border-color:#334155 !important }
+        .dark .border-slate-50 { border-color:#1E293B !important }
+        .dark .shadow-sm { box-shadow:0 1px 2px rgba(0,0,0,0.3) !important }
+        .dark .hover\:bg-slate-50:hover { background-color:#334155 !important }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(0,0,0,0.02); }
+        ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.25); }
+        #app-sidebar.collapsed { width: 64px !important; }
+        #app-sidebar.collapsed .sidebar-label { display: none; }
+        #app-sidebar.collapsed .sidebar-arrow { display: none; }
+        #app-sidebar.collapsed .sidebar-logo { width: 32px !important; min-width: 32px !important; }
+        #app-sidebar.collapsed .sidebar-collapse-icon { transform: rotate(180deg); }
+        #app-sidebar.collapsed button { justify-content: center; padding-left: 8px; padding-right: 8px; }
+        #app-sidebar.collapsed nav > div > button { justify-content: center; }
+        #app-sidebar.collapsed .sidebar-section-div { max-height: 0 !important; }
+        .sidebar-section-open { max-height: 200px !important; }
+        .ops-pulse { animation: opsPulse 2s ease-in-out infinite; }
+        @keyframes opsPulse { 0%,100% { box-shadow: 0 0 0 0 rgba(255,94,0,0.4); } 50% { box-shadow: 0 0 0 6px rgba(255,94,0,0); } }
+        .severity-critical { border-left: 3px solid #EF4444; }
+        .severity-high { border-left: 3px solid #F97316; }
+        .severity-medium { border-left: 3px solid #EAB308; }
+        .health-green { background: #10B981; }
+        .health-amber { background: #F59E0B; }
+        .health-red { background: #EF4444; }
+        .health-gray { background: #94A3B8; }
+    </style>
+</head>
+<body class="overflow-hidden h-screen flex text-slate-800 bg-brand-bgSlate">
+
+    <div class="flex w-full h-full">
+
+        <!-- STANDARD SIDEBAR -->
+        <aside id="app-sidebar" class="w-64 bg-brand-navyDark text-slate-300 flex flex-col h-full shrink-0 border-r border-slate-900 z-30 justify-between select-none transition-all duration-300">
+            <div class="flex flex-col overflow-y-auto">
+                <div class="p-4 flex items-center justify-between border-b border-slate-900/60">
+                    <div class="flex items-center gap-3 overflow-hidden">
+                        <a href="/index.html"><img src="/assets/logo.png" width="160" alt="Charantra Logo" class="sidebar-logo" style="height: auto; min-width: 120px;"></a>
+                    </div>
+                    <button onclick="toggleSidebarCollapse()" class="text-slate-500 hover:text-white p-1 rounded transition shrink-0" title="Toggle Sidebar"><i class="fa-solid fa-outdent text-xs sidebar-collapse-icon"></i></button>
+                </div>
+
+                <nav class="px-3 space-y-1 text-sm">
+                    <a href="/pages/superadmin/dashboard.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><i class="fa-solid fa-table-columns text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Dashboard</span></button></a>
+
+                    <a href="/pages/superadmin/operations-center.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-bold text-white bg-brand-orange transition duration-150 overflow-hidden"><i class="fa-solid fa-radar text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Operations Center</span></button></a>
+
+                    <div class="space-y-0.5">
+                        <button onclick="toggleSidebarSection('crm-section')" class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><span class="flex items-center gap-3"><i class="fa-solid fa-users text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">CRM</span></span><i class="fa-solid fa-chevron-down text-[9px] transition-transform duration-200 sidebar-arrow" id="arrow-crm-section"></i></button>
+                        <div id="crm-section" class="pl-5 pr-1 space-y-0.5 overflow-hidden sidebar-section-div" style="max-height:0;transition:max-height 0.3s ease">
+                            <a href="/pages/superadmin/crm.html?type=Investor" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-hand-holding-dollar text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Investors</span></button></a>
+                            <a href="/pages/superadmin/crm.html?type=Investee" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-rocket text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Investees</span></button></a>
+                            <a href="/pages/superadmin/crm.html?type=Buyer" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-cart-shopping text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Buyers</span></button></a>
+                            <a href="/pages/superadmin/crm.html?type=Seller" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-tag text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Sellers</span></button></a>
+                            <a href="/pages/superadmin/crm.html?type=Lender" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-building-columns text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Lenders</span></button></a>
+                        </div>
+                    </div>
+
+                    <a href="/pages/superadmin/deals.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><i class="fa-solid fa-handshake text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Active Mandates</span></button></a>
+                    <a href="/pages/superadmin/mandates.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><i class="fa-solid fa-file-contract text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Deals</span></button></a>
+                    <a href="/pages/superadmin/dataroom.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><i class="fa-solid fa-hard-drive text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Data Room</span></button></a>
+
+                    <div class="space-y-0.5">
+                        <button onclick="toggleSidebarSection('team-section')" class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><span class="flex items-center gap-3"><i class="fa-solid fa-user-group text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Team Management</span></span><i class="fa-solid fa-chevron-down text-[9px] transition-transform duration-200 sidebar-arrow" id="arrow-team-section"></i></button>
+                        <div id="team-section" class="pl-5 pr-1 space-y-0.5 overflow-hidden sidebar-section-div" style="max-height:0;transition:max-height 0.3s ease">
+                            <a href="/pages/superadmin/team.html?view=members" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-users-gear text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Team Members</span></button></a>
+                            <a href="/pages/superadmin/team.html?view=roles" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-shield-halved text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Roles & Permissions</span></button></a>
+                        </div>
+                    </div>
+
+                    <div class="space-y-0.5">
+                        <button onclick="toggleSidebarSection('payments-section')" class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><span class="flex items-center gap-3"><i class="fa-solid fa-receipt text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Payments</span></span><i class="fa-solid fa-chevron-down text-[9px] transition-transform duration-200 sidebar-arrow" id="arrow-payments-section"></i></button>
+                        <div id="payments-section" class="pl-5 pr-1 space-y-0.5 overflow-hidden sidebar-section-div" style="max-height:0;transition:max-height 0.3s ease">
+                            <a href="/pages/superadmin/payments.html?view=invoices" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-file-invoice text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Invoices</span></button></a>
+                            <a href="/pages/superadmin/payments.html?view=ledger" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-book text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Ledger</span></button></a>
+                        </div>
+                    </div>
+
+                    <a href="/pages/superadmin/reports.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><i class="fa-solid fa-chart-simple text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Reports</span></button></a>
+                    <a href="/pages/superadmin/settings.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><i class="fa-solid fa-gear text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Settings & Logs</span></button></a>
+                </nav>
+            </div>
+            <div class="p-4 text-center text-xs text-slate-600 border-t border-slate-900"><p class="sidebar-label">© 2026 Charantra</p></div>
+        </aside>
+
+        <!-- MAIN VIEW WRAPPER -->
+        <main class="flex-1 flex flex-col h-full overflow-hidden">
+
+            <!-- TOP NAV BAR -->
+            <header class="h-16 border-b border-brand-borderGray bg-white flex items-center justify-between px-8 shrink-0 select-none">
+                <div class="w-96 relative">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400"><i class="fa-solid fa-magnifying-glass text-xs"></i></span>
+                    <input type="text" class="w-full bg-slate-50 border border-slate-200 rounded-lg py-1.5 pl-9 pr-4 text-xs focus:outline-none focus:border-brand-orange transition" placeholder="Search operations, deals, issues...">
+                </div>
+                <div class="flex items-center gap-5">
+                    <div class="flex items-center gap-1 border border-slate-200 rounded-lg px-2.5 py-1 bg-slate-50 text-xs text-slate-600"><span class="font-semibold text-slate-700">INR (₹)</span><i class="fa-solid fa-chevron-down text-[9px] text-slate-400"></i></div>
+                    <a href="/pages/superadmin/operations-center.html" class="flex items-center gap-2 border border-brand-orange/50 rounded-lg px-3 py-1 bg-brand-orange/5 text-xs text-brand-orange font-bold hover:bg-brand-orange hover:text-white transition ops-pulse"><i class="fa-solid fa-radar text-[11px]"></i><span>Operations Center</span></a>
+                    <button onclick="toggleTheme()" class="p-2 text-slate-500 hover:text-brand-orange hover:bg-slate-100 rounded-full transition" title="Toggle theme"><i id="theme-icon" class="fa-regular fa-moon text-lg"></i></button>
+                    <div class="relative">
+                        <button class="p-2 text-slate-500 hover:text-brand-orange hover:bg-slate-100 rounded-full transition relative"><i class="fa-regular fa-bell text-lg"></i><span class="absolute top-1.5 right-1.5 w-4 h-4 bg-red-500 text-[10px] text-white font-extrabold flex items-center justify-center rounded-full">7</span></button>
+                    </div>
+                    <div class="flex items-center gap-3 border-l border-slate-200 pl-4">
+                        <div class="text-right"><p class="text-xs font-bold text-slate-900 leading-none">KARTHIK</p><p class="text-[9px] text-brand-orange font-bold uppercase tracking-wider mt-0.5" id="role-label">SUPER ADMIN <i class="fa-solid fa-chevron-down text-[7px] text-slate-400 ml-1"></i></p></div>
+                        <div class="relative">
+                            <button onclick="toggleRoleDropdown()" class="w-10 h-10 rounded-full bg-[#FF5E00] text-white font-extrabold text-sm flex items-center justify-center shadow hover:shadow-md transition cursor-pointer">K</button>
+                            <div id="role-dropdown" class="hidden absolute right-0 mt-2 w-52 bg-white border border-slate-200 rounded-xl shadow-xl z-50 text-xs overflow-hidden">
+                                <div class="px-4 py-3 border-b border-slate-100 font-bold text-slate-700">Switch Role</div>
+                                <button onclick="switchToRole('superadmin')" class="w-full text-left px-4 py-2.5 hover:bg-slate-50 text-slate-700 font-medium flex items-center gap-2.5 border-b border-slate-50"><i class="fa-solid fa-crown text-brand-orange w-4"></i> Super Admin</button>
+                                <button onclick="switchToRole('admin')" class="w-full text-left px-4 py-2.5 hover:bg-slate-50 text-slate-700 font-medium flex items-center gap-2.5 border-b border-slate-50"><i class="fa-solid fa-shield-halved text-violet-500 w-4"></i> Admin</button>
+                                <button onclick="switchToRole('ib')" class="w-full text-left px-4 py-2.5 hover:bg-slate-50 text-slate-700 font-medium flex items-center gap-2.5 border-b border-slate-50"><i class="fa-solid fa-briefcase text-blue-500 w-4"></i> Investment Banker</button>
+                                <button onclick="switchToRole('ba')" class="w-full text-left px-4 py-2.5 hover:bg-slate-50 text-slate-700 font-medium flex items-center gap-2.5"><i class="fa-solid fa-chart-line text-emerald-500 w-4"></i> Business Analyst</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- MAIN CONTENT -->
+            <div class="flex-1 overflow-y-auto p-8" id="main-content-scrollable">
+
+                <!-- PAGE HEADER -->
+                <div class="flex justify-between items-start mb-8">
+                    <div>
+                        <div class="flex items-center gap-3 mb-1">
+                            <h2 class="text-2xl font-extrabold tracking-tight text-slate-950">Operations Center</h2>
+                            <span class="bg-brand-orange/10 text-brand-orange text-[10px] font-bold px-2.5 py-0.5 rounded-full">LIVE</span>
+                        </div>
+                        <p class="text-slate-500 text-xs">Central monitoring workspace — platform health, blockers, issues, and activities at a glance.</p>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="text-[10px] text-slate-400">Auto-refresh: 30s</span>
+                        <button class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold px-3 py-2 rounded-lg transition flex items-center gap-1.5"><i class="fa-solid fa-rotate"></i> Refresh Now</button>
+                    </div>
+                </div>
+
+                <!-- SUMMARY KPI ROW -->
+                <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 mb-8">
+                    <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
+                        <div class="flex items-center gap-2 mb-2"><span class="w-2 h-2 rounded-full bg-red-500"></span><span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Critical</span></div>
+                        <h3 class="text-2xl font-extrabold text-red-600">3</h3>
+                        <p class="text-[10px] text-slate-400 mt-0.5">Needs immediate action</p>
+                    </div>
+                    <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
+                        <div class="flex items-center gap-2 mb-2"><span class="w-2 h-2 rounded-full bg-amber-500"></span><span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Blocked</span></div>
+                        <h3 class="text-2xl font-extrabold text-amber-600">5</h3>
+                        <p class="text-[10px] text-slate-400 mt-0.5">Deals & mandates blocked</p>
+                    </div>
+                    <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
+                        <div class="flex items-center gap-2 mb-2"><span class="w-2 h-2 rounded-full bg-blue-500"></span><span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Pending Approval</span></div>
+                        <h3 class="text-2xl font-extrabold text-blue-600">8</h3>
+                        <p class="text-[10px] text-slate-400 mt-0.5">Awaiting review</p>
+                    </div>
+                    <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
+                        <div class="flex items-center gap-2 mb-2"><span class="w-2 h-2 rounded-full bg-emerald-500"></span><span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Active Deals</span></div>
+                        <h3 class="text-2xl font-extrabold text-emerald-600">12</h3>
+                        <p class="text-[10px] text-slate-400 mt-0.5">Across all stages</p>
+                    </div>
+                    <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
+                        <div class="flex items-center gap-2 mb-2"><span class="w-2 h-2 rounded-full bg-violet-500"></span><span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Overdue</span></div>
+                        <h3 class="text-2xl font-extrabold text-violet-600">4</h3>
+                        <p class="text-[10px] text-slate-400 mt-0.5">Tasks past deadline</p>
+                    </div>
+                </div>
+
+                <!-- TWO-COLUMN LAYOUT: LEFT (main feed) + RIGHT (side panels) -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+                    <!-- LEFT COLUMN: 2/3 width -->
+                    <div class="lg:col-span-2 space-y-6">
+
+                        <!-- PENDING ACTIONS -->
+                        <section class="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
+                            <div class="px-5 py-4 border-b border-slate-100 flex justify-between items-center">
+                                <div class="flex items-center gap-2">
+                                    <i class="fa-solid fa-clipboard-list text-brand-orange text-sm"></i>
+                                    <h3 class="font-bold text-slate-800 text-sm">Pending Actions</h3>
+                                    <span class="bg-red-100 text-red-600 text-[10px] font-bold px-2 py-0.5 rounded-full">3 Critical</span>
+                                </div>
+                                <button class="text-[10px] text-brand-orange font-bold hover:underline">View All →</button>
+                            </div>
+                            <div class="divide-y divide-slate-50">
+                                <div class="severity-critical px-5 py-3.5 hover:bg-slate-50/50 transition">
+                                    <div class="flex justify-between items-start">
+                                        <div class="flex-1 min-w-0">
+                                            <div class="flex items-center gap-2 mb-0.5">
+                                                <span class="text-[10px] bg-red-100 text-red-700 font-bold px-2 py-0.5 rounded">CRITICAL</span>
+                                                <span class="text-[10px] text-slate-400">DEAL-104</span>
+                                            </div>
+                                            <h4 class="text-xs font-bold text-slate-800">Buyer dropped out — M&A deal for Nexus Technologies at risk</h4>
+                                            <p class="text-[10px] text-slate-400 mt-0.5">LOI was expected by 05 Jun. No response from buyer's counsel for 72 hours.</p>
+                                        </div>
+                                        <div class="flex items-center gap-2 shrink-0 ml-4">
+                                            <span class="text-[10px] font-bold text-red-500 bg-red-50 px-2 py-0.5 rounded whitespace-nowrap">Overdue 3d</span>
+                                            <button class="bg-brand-orange hover:bg-brand-orangeHover text-white text-[10px] font-bold px-3 py-1.5 rounded-lg transition whitespace-nowrap">Take Action</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="severity-high px-5 py-3.5 hover:bg-slate-50/50 transition">
+                                    <div class="flex justify-between items-start">
+                                        <div class="flex-1 min-w-0">
+                                            <div class="flex items-center gap-2 mb-0.5">
+                                                <span class="text-[10px] bg-amber-100 text-amber-700 font-bold px-2 py-0.5 rounded">HIGH</span>
+                                                <span class="text-[10px] text-slate-400">MND-022</span>
+                                            </div>
+                                            <h4 class="text-xs font-bold text-slate-800">KYC documents expired for 3 investee profiles</h4>
+                                            <p class="text-[10px] text-slate-400 mt-0.5">GreenTech Solar, BioFuel India, and AeroParts Pvt Ltd — mandates on hold.</p>
+                                        </div>
+                                        <div class="flex items-center gap-2 shrink-0 ml-4">
+                                            <span class="text-[10px] font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded whitespace-nowrap">Due Today</span>
+                                            <button class="bg-brand-orange hover:bg-brand-orangeHover text-white text-[10px] font-bold px-3 py-1.5 rounded-lg transition whitespace-nowrap">Review</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="severity-critical px-5 py-3.5 hover:bg-slate-50/50 transition">
+                                    <div class="flex justify-between items-start">
+                                        <div class="flex-1 min-w-0">
+                                            <div class="flex items-center gap-2 mb-0.5">
+                                                <span class="text-[10px] bg-red-100 text-red-700 font-bold px-2 py-0.5 rounded">CRITICAL</span>
+                                                <span class="text-[10px] text-slate-400">ESC-007</span>
+                                            </div>
+                                            <h4 class="text-xs font-bold text-slate-800">Issue Raised: Advisor commission dispute on DEAL-098</h4>
+                                            <p class="text-[10px] text-slate-400 mt-0.5">Two advisors claiming origination credit. Legal team awaiting Super Admin directive.</p>
+                                        </div>
+                                        <div class="flex items-center gap-2 shrink-0 ml-4">
+                                            <span class="text-[10px] font-bold text-red-500 bg-red-50 px-2 py-0.5 rounded whitespace-nowrap">Raised</span>
+                                            <button class="bg-brand-orange hover:bg-brand-orangeHover text-white text-[10px] font-bold px-3 py-1.5 rounded-lg transition whitespace-nowrap">Fix</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="severity-high px-5 py-3.5 hover:bg-slate-50/50 transition">
+                                    <div class="flex justify-between items-start">
+                                        <div class="flex-1 min-w-0">
+                                            <div class="flex items-center gap-2 mb-0.5">
+                                                <span class="text-[10px] bg-amber-100 text-amber-700 font-bold px-2 py-0.5 rounded">HIGH</span>
+                                                <span class="text-[10px] text-slate-400">APR-015</span>
+                                            </div>
+                                            <h4 class="text-xs font-bold text-slate-800">Mandate extension approval pending for 4 days</h4>
+                                            <p class="text-[10px] text-slate-400 mt-0.5">Phoenix Capital mandate expires in 2 days. IB team awaiting extension sign-off.</p>
+                                        </div>
+                                        <div class="flex items-center gap-2 shrink-0 ml-4">
+                                            <span class="text-[10px] font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded whitespace-nowrap">2d Remaining</span>
+                                            <button class="bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 text-[10px] font-bold px-3 py-1.5 rounded-lg transition whitespace-nowrap">Approve</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="severity-medium px-5 py-3.5 hover:bg-slate-50/50 transition">
+                                    <div class="flex justify-between items-start">
+                                        <div class="flex-1 min-w-0">
+                                            <div class="flex items-center gap-2 mb-0.5">
+                                                <span class="text-[10px] bg-yellow-100 text-yellow-700 font-bold px-2 py-0.5 rounded">MEDIUM</span>
+                                                <span class="text-[10px] text-slate-400">INV-033</span>
+                                            </div>
+                                            <h4 class="text-xs font-bold text-slate-800">New investor registration requires compliance check</h4>
+                                            <p class="text-[10px] text-slate-400 mt-0.5">Global Ventures Fund LP — $200M AUM, first-time platform participant.</p>
+                                        </div>
+                                        <div class="flex items-center gap-2 shrink-0 ml-4">
+                                            <span class="text-[10px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded whitespace-nowrap">Pending</span>
+                                            <button class="bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 text-[10px] font-bold px-3 py-1.5 rounded-lg transition whitespace-nowrap">Check</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- BLOCKERS & ESCALATIONS -->
+                        <section class="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
+                            <div class="px-5 py-4 border-b border-slate-100 flex justify-between items-center">
+                                <div class="flex items-center gap-2">
+                                    <i class="fa-solid fa-triangle-exclamation text-red-500 text-sm"></i>
+                                    <h3 class="font-bold text-slate-800 text-sm">Blockers & Issues</h3>
+                                    <span class="bg-red-100 text-red-600 text-[10px] font-bold px-2 py-0.5 rounded-full">5 Active</span>
+                                </div>
+                            </div>
+                            <div class="divide-y divide-slate-50">
+                                <div class="px-5 py-3.5 hover:bg-slate-50/50 transition flex items-start gap-4">
+                                    <div class="w-2 h-2 rounded-full bg-red-500 mt-1.5 shrink-0"></div>
+                                    <div class="flex-1 min-w-0">
+                                        <div class="flex justify-between items-start">
+                                            <div>
+                                                <h4 class="text-xs font-bold text-slate-800">DEAL-101 blocked — Due Diligence paused</h4>
+                                                <p class="text-[10px] text-slate-400 mt-0.5">Buyer's legal team not responding for 6 days. Deal in DD stage for 3 weeks.</p>
+                                            </div>
+                                            <span class="text-[10px] font-bold text-red-600 bg-red-50 px-2 py-0.5 rounded whitespace-nowrap ml-3">6d No Update</span>
+                                        </div>
+                                        <div class="flex items-center gap-3 mt-2">
+                                            <span class="text-[10px] text-slate-400"><i class="fa-solid fa-user mr-1"></i>Rajesh M.</span>
+                                            <span class="text-[10px] text-slate-400"><i class="fa-solid fa-calendar mr-1"></i>Logged 02 Jun</span>
+                                            <button class="text-[10px] text-brand-orange font-bold hover:underline">Send to Legal →</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="px-5 py-3.5 hover:bg-slate-50/50 transition flex items-start gap-4">
+                                    <div class="w-2 h-2 rounded-full bg-amber-500 mt-1.5 shrink-0"></div>
+                                    <div class="flex-1 min-w-0">
+                                        <div class="flex justify-between items-start">
+                                            <div>
+                                                <h4 class="text-xs font-bold text-slate-800">MND-018 — Valuation gap: seller asking 2.3x vs buyer offer 1.6x</h4>
+                                                <p class="text-[10px] text-slate-400 mt-0.5">Negotiation stuck. IB team asking for Super Admin help.</p>
+                                            </div>
+                                            <span class="text-[10px] font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded whitespace-nowrap ml-3">Stuck</span>
+                                        </div>
+                                        <div class="flex items-center gap-3 mt-2">
+                                            <span class="text-[10px] text-slate-400"><i class="fa-solid fa-user mr-1"></i>Priya S.</span>
+                                            <span class="text-[10px] text-slate-400"><i class="fa-solid fa-calendar mr-1"></i>Logged 04 Jun</span>
+                                            <button class="text-[10px] text-brand-orange font-bold hover:underline">Set Up Meeting →</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="px-5 py-3.5 hover:bg-slate-50/50 transition flex items-start gap-4">
+                                    <div class="w-2 h-2 rounded-full bg-red-500 mt-1.5 shrink-0"></div>
+                                    <div class="flex-1 min-w-0">
+                                        <div class="flex justify-between items-start">
+                                            <div>
+                                                <h4 class="text-xs font-bold text-slate-800">Compliance hold: 2 deals flagged by audit for documentation gaps</h4>
+                                                <p class="text-[10px] text-slate-400 mt-0.5">DEAL-087 and DEAL-093 — missing board resolution copies and shareholder consents.</p>
+                                            </div>
+                                            <span class="text-[10px] font-bold text-red-600 bg-red-50 px-2 py-0.5 rounded whitespace-nowrap ml-3">Compliance Hold</span>
+                                        </div>
+                                        <div class="flex items-center gap-3 mt-2">
+                                            <span class="text-[10px] text-slate-400"><i class="fa-solid fa-user mr-1"></i>Audit Team</span>
+                                            <span class="text-[10px] text-slate-400"><i class="fa-solid fa-calendar mr-1"></i>Flagged 01 Jun</span>
+                                            <button class="text-[10px] text-brand-orange font-bold hover:underline">View Findings →</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- DEAL HEALTH & PROGRESS -->
+                        <section class="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
+                            <div class="px-5 py-4 border-b border-slate-100 flex justify-between items-center">
+                                <div class="flex items-center gap-2">
+                                    <i class="fa-solid fa-heart-pulse text-emerald-500 text-sm"></i>
+                                    <h3 class="font-bold text-slate-800 text-sm">Deal Health & Progress</h3>
+                                </div>
+                                <span class="text-[10px] text-slate-400">12 Active Deals</span>
+                            </div>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-xs">
+                                    <thead>
+                                        <tr class="border-b border-slate-100 text-slate-400 font-bold uppercase tracking-wider text-[10px]">
+                                            <th class="text-left px-5 py-3">Deal</th>
+                                            <th class="text-left px-5 py-3">Stage</th>
+                                            <th class="text-left px-5 py-3">Health</th>
+                                            <th class="text-left px-5 py-3">Days In Stage</th>
+                                            <th class="text-left px-5 py-3">Last Activity</th>
+                                            <th class="text-left px-5 py-3">Risk</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-slate-50">
+                                        <tr class="hover:bg-slate-50/50 transition">
+                                            <td class="px-5 py-3"><span class="font-bold text-slate-800">DEAL-104</span><p class="text-[10px] text-slate-400">Nexus Technologies M&A</p></td>
+                                            <td class="px-5 py-3"><span class="bg-blue-100 text-blue-700 text-[10px] font-bold px-2 py-0.5 rounded">LOI / Term Sheet</span></td>
+                                            <td class="px-5 py-3"><span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full health-red"></span>Critical</span></td>
+                                            <td class="px-5 py-3 font-bold text-red-600">18 days</td>
+                                            <td class="px-5 py-3 text-slate-400">03 Jun 2026</td>
+                                            <td class="px-5 py-3"><span class="bg-red-100 text-red-700 text-[10px] font-bold px-2 py-0.5 rounded">Buyer Not Responding</span></td>
+                                        </tr>
+                                        <tr class="hover:bg-slate-50/50 transition">
+                                            <td class="px-5 py-3"><span class="font-bold text-slate-800">DEAL-101</span><p class="text-[10px] text-slate-400">AeroParts Equity Raise</p></td>
+                                            <td class="px-5 py-3"><span class="bg-indigo-100 text-indigo-700 text-[10px] font-bold px-2 py-0.5 rounded">Due Diligence</span></td>
+                                            <td class="px-5 py-3"><span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full health-red"></span>Blocked</span></td>
+                                            <td class="px-5 py-3 font-bold text-red-600">21 days</td>
+                                            <td class="px-5 py-3 text-slate-400">02 Jun 2026</td>
+                                            <td class="px-5 py-3"><span class="bg-red-100 text-red-700 text-[10px] font-bold px-2 py-0.5 rounded">DD Paused</span></td>
+                                        </tr>
+                                        <tr class="hover:bg-slate-50/50 transition">
+                                            <td class="px-5 py-3"><span class="font-bold text-slate-800">DEAL-098</span><p class="text-[10px] text-slate-400">GreenTech Series B</p></td>
+                                            <td class="px-5 py-3"><span class="bg-emerald-100 text-emerald-700 text-[10px] font-bold px-2 py-0.5 rounded">Negotiation</span></td>
+                                            <td class="px-5 py-3"><span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full health-amber"></span>At Risk</span></td>
+                                            <td class="px-5 py-3 font-bold text-amber-600">12 days</td>
+                                            <td class="px-5 py-3 text-slate-400">05 Jun 2026</td>
+                                            <td class="px-5 py-3"><span class="bg-amber-100 text-amber-700 text-[10px] font-bold px-2 py-0.5 rounded">Commission Dispute</span></td>
+                                        </tr>
+                                        <tr class="hover:bg-slate-50/50 transition">
+                                            <td class="px-5 py-3"><span class="font-bold text-slate-800">DEAL-085</span><p class="text-[10px] text-slate-400">BioFuel India M&A</p></td>
+                                            <td class="px-5 py-3"><span class="bg-violet-100 text-violet-700 text-[10px] font-bold px-2 py-0.5 rounded">Closing</span></td>
+                                            <td class="px-5 py-3"><span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full health-green"></span>On Track</span></td>
+                                            <td class="px-5 py-3 font-bold text-slate-600">5 days</td>
+                                            <td class="px-5 py-3 text-slate-400">06 Jun 2026</td>
+                                            <td class="px-5 py-3"><span class="bg-emerald-100 text-emerald-700 text-[10px] font-bold px-2 py-0.5 rounded">Low</span></td>
+                                        </tr>
+                                        <tr class="hover:bg-slate-50/50 transition">
+                                            <td class="px-5 py-3"><span class="font-bold text-slate-800">DEAL-077</span><p class="text-[10px] text-slate-400">CloudFirst SaaS Acquisition</p></td>
+                                            <td class="px-5 py-3"><span class="bg-slate-100 text-slate-600 text-[10px] font-bold px-2 py-0.5 rounded">Sourcing</span></td>
+                                            <td class="px-5 py-3"><span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full health-gray"></span>Inactive</span></td>
+                                            <td class="px-5 py-3 font-bold text-slate-500">34 days</td>
+                                            <td class="px-5 py-3 text-slate-400">28 Apr 2026</td>
+                                            <td class="px-5 py-3"><span class="bg-slate-100 text-slate-600 text-[10px] font-bold px-2 py-0.5 rounded">Stale</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </section>
+
+                        <!-- GLOBAL ACTIVITY TIMELINE -->
+                        <section class="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
+                            <div class="px-5 py-4 border-b border-slate-100 flex justify-between items-center">
+                                <div class="flex items-center gap-2">
+                                    <i class="fa-solid fa-clock-rotate-left text-slate-500 text-sm"></i>
+                                    <h3 class="font-bold text-slate-800 text-sm">Global Activity Timeline</h3>
+                                </div>
+                                <span class="text-[10px] text-slate-400">Last 48 hours</span>
+                            </div>
+                            <div class="px-5 py-2 space-y-0 divide-y divide-slate-50">
+                                <div class="flex gap-3 py-3">
+                                    <div class="w-8 h-8 rounded-lg bg-red-50 flex items-center justify-center shrink-0"><i class="fa-solid fa-triangle-exclamation text-red-500 text-xs"></i></div>
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-xs text-slate-800"><span class="font-bold">Deal Alert:</span> Buyer not responding on DEAL-104 for 72 hours</p>
+                                        <div class="flex items-center gap-3 mt-1">
+                                            <span class="text-[10px] text-slate-400"><i class="fa-solid fa-user mr-1"></i>System</span>
+                                            <span class="text-[10px] text-slate-400"><i class="fa-solid fa-clock mr-1"></i>Today, 09:45 AM</span>
+                                            <span class="text-[10px] bg-red-100 text-red-600 px-1.5 py-0.5 rounded font-bold">Critical</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex gap-3 py-3">
+                                    <div class="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center shrink-0"><i class="fa-solid fa-check-circle text-emerald-500 text-xs"></i></div>
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-xs text-slate-800"><span class="font-bold">Deal Closed:</span> DEAL-072 — MedTech Innovations acquired by HealthCorp for ₹48 Cr</p>
+                                        <div class="flex items-center gap-3 mt-1">
+                                            <span class="text-[10px] text-slate-400"><i class="fa-solid fa-user mr-1"></i>Ananya K.</span>
+                                            <span class="text-[10px] text-slate-400"><i class="fa-solid fa-clock mr-1"></i>Yesterday, 04:30 PM</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex gap-3 py-3">
+                                    <div class="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center shrink-0"><i class="fa-solid fa-file-signature text-blue-500 text-xs"></i></div>
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-xs text-slate-800"><span class="font-bold">Mandate Signed:</span> New fundraising mandate for FinCore Payments — ₹120 Cr target</p>
+                                        <div class="flex items-center gap-3 mt-1">
+                                            <span class="text-[10px] text-slate-400"><i class="fa-solid fa-user mr-1"></i>Vikram R.</span>
+                                            <span class="text-[10px] text-slate-400"><i class="fa-solid fa-clock mr-1"></i>Yesterday, 02:15 PM</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex gap-3 py-3">
+                                    <div class="w-8 h-8 rounded-lg bg-amber-50 flex items-center justify-center shrink-0"><i class="fa-solid fa-comment-dots text-amber-500 text-xs"></i></div>
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-xs text-slate-800"><span class="font-bold">New Issue:</span> Advisor commission dispute filed for DEAL-098</p>
+                                        <div class="flex items-center gap-3 mt-1">
+                                            <span class="text-[10px] text-slate-400"><i class="fa-solid fa-user mr-1"></i>Priya S.</span>
+                                            <span class="text-[10px] text-slate-400"><i class="fa-solid fa-clock mr-1"></i>Yesterday, 11:00 AM</span>
+                                            <span class="text-[10px] bg-amber-100 text-amber-600 px-1.5 py-0.5 rounded font-bold">Raised</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex gap-3 py-3">
+                                    <div class="w-8 h-8 rounded-lg bg-violet-50 flex items-center justify-center shrink-0"><i class="fa-solid fa-user-plus text-violet-500 text-xs"></i></div>
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-xs text-slate-800"><span class="font-bold">New Registration:</span> Global Ventures Fund LP registered as investor — $200M AUM</p>
+                                        <div class="flex items-center gap-3 mt-1">
+                                            <span class="text-[10px] text-slate-400"><i class="fa-solid fa-user mr-1"></i>System</span>
+                                            <span class="text-[10px] text-slate-400"><i class="fa-solid fa-clock mr-1"></i>07 Jun 2026, 03:45 PM</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex gap-3 py-3">
+                                    <div class="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center shrink-0"><i class="fa-solid fa-file-pdf text-slate-500 text-xs"></i></div>
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-xs text-slate-800"><span class="font-bold">Document Uploaded:</span> 14 files added to Data Room for DEAL-085</p>
+                                        <div class="flex items-center gap-3 mt-1">
+                                            <span class="text-[10px] text-slate-400"><i class="fa-solid fa-user mr-1"></i>Arjun M.</span>
+                                            <span class="text-[10px] text-slate-400"><i class="fa-solid fa-clock mr-1"></i>07 Jun 2026, 10:20 AM</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                    </div>
+
+                    <!-- RIGHT COLUMN: 1/3 width -->
+                    <div class="space-y-6">
+
+                        <!-- ATTENTION REQUIRED CONVERSATIONS -->
+                        <section class="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
+                            <div class="px-5 py-4 border-b border-slate-100 flex justify-between items-center">
+                                <div class="flex items-center gap-2">
+                                    <i class="fa-solid fa-message text-blue-500 text-sm"></i>
+                                    <h3 class="font-bold text-slate-800 text-sm">Attention Required</h3>
+                                </div>
+                                <span class="bg-blue-100 text-blue-600 text-[10px] font-bold px-2 py-0.5 rounded-full">4 Unread</span>
+                            </div>
+                            <div class="divide-y divide-slate-50">
+                                <div class="px-5 py-3 hover:bg-slate-50/50 transition cursor-pointer">
+                                    <div class="flex items-start gap-3">
+                                        <div class="w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center text-[10px] font-extrabold shrink-0">RK</div>
+                                        <div class="flex-1 min-w-0">
+                                            <div class="flex justify-between items-start">
+                                                <h4 class="text-xs font-bold text-slate-800">Rajesh Kumar</h4>
+                                                <span class="text-[9px] text-slate-400">10m ago</span>
+                                            </div>
+                                            <p class="text-[10px] text-slate-500 mt-0.5 line-clamp-2">"Need your sign-off on the revised term sheet for DEAL-104. Buyer's counsel raised 3 new conditions..."</p>
+                                            <span class="text-[9px] bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded mt-1 inline-block">DEAL-104</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="px-5 py-3 hover:bg-slate-50/50 transition cursor-pointer">
+                                    <div class="flex items-start gap-3">
+                                        <div class="w-8 h-8 rounded-full bg-violet-500 text-white flex items-center justify-center text-[10px] font-extrabold shrink-0">PS</div>
+                                        <div class="flex-1 min-w-0">
+                                            <div class="flex justify-between items-start">
+                                                <h4 class="text-xs font-bold text-slate-800">Priya Sharma</h4>
+                                                <span class="text-[9px] text-slate-400">1h ago</span>
+                                            </div>
+                                            <p class="text-[10px] text-slate-500 mt-0.5 line-clamp-2">"Issue filed — two IBs claiming origination on DEAL-098. Need your help..."</p>
+                                            <span class="text-[9px] bg-red-100 text-red-600 px-1.5 py-0.5 rounded mt-1 inline-block">ESC-007</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="px-5 py-3 hover:bg-slate-50/50 transition cursor-pointer">
+                                    <div class="flex items-start gap-3">
+                                        <div class="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center text-[10px] font-extrabold shrink-0">AM</div>
+                                        <div class="flex-1 min-w-0">
+                                            <div class="flex justify-between items-start">
+                                                <h4 class="text-xs font-bold text-slate-800">Arjun Mehta</h4>
+                                                <span class="text-[9px] text-slate-400">3h ago</span>
+                                            </div>
+                                            <p class="text-[10px] text-slate-500 mt-0.5 line-clamp-2">"Data room ready for DEAL-085. 14 docs uploaded. Buyer's DD team requesting access..."</p>
+                                            <span class="text-[9px] bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded mt-1 inline-block">DEAL-085</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="px-5 py-3 hover:bg-slate-50/50 transition cursor-pointer">
+                                    <div class="flex items-start gap-3">
+                                        <div class="w-8 h-8 rounded-full bg-amber-500 text-white flex items-center justify-center text-[10px] font-extrabold shrink-0">AK</div>
+                                        <div class="flex-1 min-w-0">
+                                            <div class="flex justify-between items-start">
+                                                <h4 class="text-xs font-bold text-slate-800">Ananya Kapoor</h4>
+                                                <span class="text-[9px] text-slate-400">5h ago</span>
+                                            </div>
+                                            <p class="text-[10px] text-slate-500 mt-0.5 line-clamp-2">"Deal closed! DEAL-072 — all docs signed. Commission calculation ready for review..."</p>
+                                            <span class="text-[9px] bg-emerald-100 text-emerald-700 px-1.5 py-0.5 rounded mt-1 inline-block">DEAL-072</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="px-5 py-3 border-t border-slate-50 text-center">
+                                <button class="text-[10px] text-brand-orange font-bold hover:underline">Open All Conversations →</button>
+                            </div>
+                        </section>
+
+                        <!-- UPCOMING MEETINGS -->
+                        <section class="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
+                            <div class="px-5 py-4 border-b border-slate-100 flex justify-between items-center">
+                                <div class="flex items-center gap-2">
+                                    <i class="fa-solid fa-calendar-check text-violet-500 text-sm"></i>
+                                    <h3 class="font-bold text-slate-800 text-sm">Upcoming Meetings</h3>
+                                </div>
+                                <span class="text-[10px] text-slate-400">Next 7 days</span>
+                            </div>
+                            <div class="divide-y divide-slate-50">
+                                <div class="px-5 py-3 hover:bg-slate-50/50 transition">
+                                    <div class="flex items-start gap-3">
+                                        <div class="text-center shrink-0 w-10">
+                                            <p class="text-xs font-extrabold text-brand-orange">TODAY</p>
+                                            <p class="text-lg font-extrabold text-slate-800">3:00</p>
+                                            <p class="text-[9px] text-slate-400">PM</p>
+                                        </div>
+                                        <div class="flex-1 min-w-0">
+                                            <h4 class="text-xs font-bold text-slate-800">DEAL-104 Buyer Call</h4>
+                                            <p class="text-[10px] text-slate-400">Nexus Tech — Follow-up with buyer's counsel</p>
+                                            <div class="flex items-center gap-2 mt-1.5">
+                                                <span class="text-[9px] bg-red-100 text-red-600 px-1.5 py-0.5 rounded font-bold">Critical</span>
+                                                <span class="text-[9px] text-slate-400"><i class="fa-solid fa-user mr-1"></i>Rajesh, Priya +2</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="px-5 py-3 hover:bg-slate-50/50 transition">
+                                    <div class="flex items-start gap-3">
+                                        <div class="text-center shrink-0 w-10">
+                                            <p class="text-xs font-extrabold text-slate-500">TUE</p>
+                                            <p class="text-lg font-extrabold text-slate-800">11:00</p>
+                                            <p class="text-[9px] text-slate-400">AM</p>
+                                        </div>
+                                        <div class="flex-1 min-w-0">
+                                            <h4 class="text-xs font-bold text-slate-800">Weekly Pipeline Review</h4>
+                                            <p class="text-[10px] text-slate-400">All-hands deal status update — 12 active deals</p>
+                                            <div class="flex items-center gap-2 mt-1.5">
+                                                <span class="text-[9px] bg-blue-100 text-blue-600 px-1.5 py-0.5 rounded font-bold">Recurring</span>
+                                                <span class="text-[9px] text-slate-400"><i class="fa-solid fa-user mr-1"></i>All IBs</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="px-5 py-3 hover:bg-slate-50/50 transition">
+                                    <div class="flex items-start gap-3">
+                                        <div class="text-center shrink-0 w-10">
+                                            <p class="text-xs font-extrabold text-slate-500">WED</p>
+                                            <p class="text-lg font-extrabold text-slate-800">2:30</p>
+                                            <p class="text-[9px] text-slate-400">PM</p>
+                                        </div>
+                                        <div class="flex-1 min-w-0">
+                                            <h4 class="text-xs font-bold text-slate-800">Compliance Audit Review</h4>
+                                            <p class="text-[10px] text-slate-400">DEAL-087 & DEAL-093 documentation gaps</p>
+                                            <div class="flex items-center gap-2 mt-1.5">
+                                                <span class="text-[9px] bg-amber-100 text-amber-600 px-1.5 py-0.5 rounded font-bold">Mandatory</span>
+                                                <span class="text-[9px] text-slate-400"><i class="fa-solid fa-user mr-1"></i>Audit + Legal</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="px-5 py-3 hover:bg-slate-50/50 transition">
+                                    <div class="flex items-start gap-3">
+                                        <div class="text-center shrink-0 w-10">
+                                            <p class="text-xs font-extrabold text-slate-500">FRI</p>
+                                            <p class="text-lg font-extrabold text-slate-800">4:00</p>
+                                            <p class="text-[9px] text-slate-400">PM</p>
+                                        </div>
+                                        <div class="flex-1 min-w-0">
+                                            <h4 class="text-xs font-bold text-slate-800">Global Ventures Onboarding</h4>
+                                            <p class="text-[10px] text-slate-400">Investor intro call — $200M AUM fund</p>
+                                            <div class="flex items-center gap-2 mt-1.5">
+                                                <span class="text-[9px] bg-emerald-100 text-emerald-700 px-1.5 py-0.5 rounded font-bold">New</span>
+                                                <span class="text-[9px] text-slate-400"><i class="fa-solid fa-user mr-1"></i>Karthik, Vikram</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- OVERDUE TASKS & APPROVALS -->
+                        <section class="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
+                            <div class="px-5 py-4 border-b border-slate-100 flex justify-between items-center">
+                                <div class="flex items-center gap-2">
+                                    <i class="fa-solid fa-hourglass-half text-red-500 text-sm"></i>
+                                    <h3 class="font-bold text-slate-800 text-sm">Overdue Tasks & Approvals</h3>
+                                </div>
+                                <span class="bg-red-100 text-red-600 text-[10px] font-bold px-2 py-0.5 rounded-full">4 Overdue</span>
+                            </div>
+                            <div class="divide-y divide-slate-50">
+                                <div class="px-5 py-3 hover:bg-slate-50/50 transition">
+                                    <div class="flex items-start justify-between">
+                                        <div class="flex-1 min-w-0">
+                                            <h4 class="text-xs font-bold text-slate-800">KYC Re-verification — 3 Investee Profiles</h4>
+                                            <p class="text-[10px] text-slate-400">GreenTech Solar, BioFuel India, AeroParts</p>
+                                        </div>
+                                        <span class="text-[10px] font-bold text-red-500 bg-red-50 px-2 py-0.5 rounded whitespace-nowrap ml-3">Due Today</span>
+                                    </div>
+                                </div>
+                                <div class="px-5 py-3 hover:bg-slate-50/50 transition">
+                                    <div class="flex items-start justify-between">
+                                        <div class="flex-1 min-w-0">
+                                            <h4 class="text-xs font-bold text-slate-800">Mandate Extension — Phoenix Capital</h4>
+                                            <p class="text-[10px] text-slate-400">Expires in 2 days. IB team submitted 4 days ago.</p>
+                                        </div>
+                                        <span class="text-[10px] font-bold text-red-500 bg-red-50 px-2 py-0.5 rounded whitespace-nowrap ml-3">4d Pending</span>
+                                    </div>
+                                </div>
+                                <div class="px-5 py-3 hover:bg-slate-50/50 transition">
+                                    <div class="flex items-start justify-between">
+                                        <div class="flex-1 min-w-0">
+                                            <h4 class="text-xs font-bold text-slate-800">Invoice Approval — INV-2026-047</h4>
+                                            <p class="text-[10px] text-slate-400">₹3.2L — Success fee for DEAL-072 closing</p>
+                                        </div>
+                                        <span class="text-[10px] font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded whitespace-nowrap ml-3">2d Pending</span>
+                                    </div>
+                                </div>
+                                <div class="px-5 py-3 hover:bg-slate-50/50 transition">
+                                    <div class="flex items-start justify-between">
+                                        <div class="flex-1 min-w-0">
+                                            <h4 class="text-xs font-bold text-slate-800">Role Permission Update — New IB Hire</h4>
+                                            <p class="text-[10px] text-slate-400">Siddharth N. joined 05 Jun — access not provisioned</p>
+                                        </div>
+                                        <span class="text-[10px] font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded whitespace-nowrap ml-3">3d Pending</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- RECENT CRITICAL UPDATES -->
+                        <section class="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
+                            <div class="px-5 py-4 border-b border-slate-100">
+                                <div class="flex items-center gap-2">
+                                    <i class="fa-solid fa-bolt text-amber-500 text-sm"></i>
+                                    <h3 class="font-bold text-slate-800 text-sm">Recent Critical Updates</h3>
+                                </div>
+                            </div>
+                            <div class="divide-y divide-slate-50">
+                                <div class="px-5 py-3 hover:bg-slate-50/50 transition">
+                                    <p class="text-[10px] text-slate-400 mb-1">08 Jun, 09:45</p>
+                                    <p class="text-xs text-slate-800"><span class="font-bold text-red-600">⚠</span> DEAL-104 buyer not responding — 72-hour alert triggered</p>
+                                </div>
+                                <div class="px-5 py-3 hover:bg-slate-50/50 transition">
+                                    <p class="text-[10px] text-slate-400 mb-1">07 Jun, 06:30</p>
+                                    <p class="text-xs text-slate-800"><span class="font-bold text-red-600">⚠</span> Audit flagged DEAL-087 & DEAL-093 for documentation gaps</p>
+                                </div>
+                                <div class="px-5 py-3 hover:bg-slate-50/50 transition">
+                                    <p class="text-[10px] text-slate-400 mb-1">07 Jun, 02:15</p>
+                                    <p class="text-xs text-slate-800"><span class="font-bold text-emerald-600">✓</span> FinCore Payments mandate signed — ₹120 Cr target</p>
+                                </div>
+                                <div class="px-5 py-3 hover:bg-slate-50/50 transition">
+                                    <p class="text-[10px] text-slate-400 mb-1">06 Jun, 04:30</p>
+                                    <p class="text-xs text-slate-800"><span class="font-bold text-emerald-600">✓</span> DEAL-072 closed — MedTech acquired by HealthCorp (₹48 Cr)</p>
+                                </div>
+                                <div class="px-5 py-3 hover:bg-slate-50/50 transition">
+                                    <p class="text-[10px] text-slate-400 mb-1">06 Jun, 11:00</p>
+                                    <p class="text-xs text-slate-800"><span class="font-bold text-amber-600">!</span> Advisor commission dispute filed — DEAL-098</p>
+                                </div>
+                            </div>
+                        </section>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function toggleTheme(){document.documentElement.classList.toggle('dark');const d=document.documentElement.classList.contains('dark');document.getElementById('theme-icon').className=d?'fa-solid fa-sun text-lg text-amber-400':'fa-regular fa-moon text-lg';localStorage.setItem('charantra-theme',d?'dark':'light')}
+        (function(){if(localStorage.getItem('charantra-theme')==='dark'){document.documentElement.classList.add('dark');document.addEventListener('DOMContentLoaded',()=>{const i=document.getElementById('theme-icon');if(i)i.className='fa-solid fa-sun text-lg text-amber-400'})}})()
+        function toggleSidebarCollapse(){document.getElementById('app-sidebar').classList.toggle('collapsed');document.querySelectorAll('.sidebar-section-div').forEach(el=>{if(document.getElementById('app-sidebar').classList.contains('collapsed'))el.style.maxHeight='0'})}
+        function toggleSidebarSection(id){if(document.getElementById('app-sidebar').classList.contains('collapsed'))return;const el=document.getElementById(id),arrow=document.getElementById('arrow-'+id);if(el){const open=el.style.maxHeight!=='0px'&&el.style.maxHeight!=='';el.style.maxHeight=open?'0':'200px'}if(arrow)arrow.style.transform=arrow.style.transform==='rotate(180deg)'?'rotate(0deg)':'rotate(180deg)'}
+        function toggleRoleDropdown(){document.getElementById('role-dropdown').classList.toggle('hidden')}
+        function switchToRole(role){localStorage.setItem('charantra-role',role);const r={'superadmin':'/pages/superadmin/dashboard.html','admin':'/pages/admin/dashboard.html','ib':'/pages/ib/deals.html','ba':'/pages/ba/reports.html'};window.location.href=r[role]||'/index.html'}
+        (function(){const role=localStorage.getItem('charantra-role')||'superadmin';const labels={'superadmin':'SUPER ADMIN','admin':'ADMIN','ib':'INVESTMENT BANKER','ba':'BUSINESS ANALYST'};const el=document.getElementById('role-label');if(el)el.innerText=labels[role]||'SUPER ADMIN'})()
+        window.addEventListener('click',function(e){if(!e.target.closest('.relative')){const dd=document.getElementById('role-dropdown');if(dd)dd.classList.add('hidden')}})
+    </script>
+</body>
+</html>

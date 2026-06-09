@@ -107,8 +107,9 @@
                 <nav class="px-3 space-y-1 text-sm">
                     <a href="/pages/superadmin/dashboard.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><i class="fa-solid fa-table-columns text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Dashboard</span></button></a>
                     
+                    
                     <div class="space-y-0.5">
-                        <button onclick="toggleSidebarSection('crm-section')" class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><span class="flex items-center gap-3"><i class="fa-solid fa-users text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">CRM & Users</span></span><i class="fa-solid fa-chevron-down text-[9px] transition-transform duration-200 sidebar-arrow" id="arrow-crm-section"></i></button>
+                        <button onclick="toggleSidebarSection('crm-section')" class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><span class="flex items-center gap-3"><i class="fa-solid fa-users text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">CRM</span></span><i class="fa-solid fa-chevron-down text-[9px] ml-2 transition-transform duration-200 sidebar-arrow" id="arrow-crm-section"></i></button>
                         <div id="crm-section" class="pl-5 pr-1 space-y-0.5 overflow-hidden sidebar-section-div" style="max-height:0;transition:max-height 0.3s ease">
                             <a href="/pages/superadmin/crm.html?type=Investor" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-hand-holding-dollar text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Investors</span></button></a>
                             <a href="/pages/superadmin/crm.html?type=Investee" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-rocket text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Investees</span></button></a>
@@ -118,22 +119,28 @@
                         </div>
                     </div>
 
-                    <a href="/pages/superadmin/mandates.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><i class="fa-solid fa-file-contract text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Mandates & Projects</span></button></a>
+                    <a href="/pages/superadmin/mandates.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><i class="fa-solid fa-file-contract text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Deals</span></button></a>
 
-                    <a href="/pages/superadmin/deals.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><i class="fa-solid fa-briefcase text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Deals & Pipeline</span></button></a>
+                    <div class="space-y-0.5">
+                        <button onclick="toggleSidebarSection('deals-section')" class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><span class="flex items-center gap-3"><i class="fa-solid fa-briefcase text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Active Mandates</span></span><i class="fa-solid fa-chevron-down text-[9px] ml-2 transition-transform duration-200 sidebar-arrow" id="arrow-deals-section"></i></button>
+                        <div id="deals-section" class="pl-5 pr-1 space-y-0.5 overflow-hidden sidebar-section-div" style="max-height:0;transition:max-height 0.3s ease">
+                            <a href="/pages/superadmin/deals.html?flow=equity" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-sitemap text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Equity Flow</span></button></a>
+                            <a href="/pages/superadmin/deals.html?flow=ma" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-bezier-curve text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">M&A Flow</span></button></a>
+                        </div>
+                    </div>
 
                     <a href="/pages/superadmin/dataroom.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><i class="fa-solid fa-hard-drive text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Data Room</span></button></a>
 
                     <div class="space-y-0.5">
-                        <button onclick="toggleSidebarSection('team-section')" class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg font-bold text-white bg-brand-orange transition duration-150 overflow-hidden"><span class="flex items-center gap-3"><i class="fa-solid fa-user-group text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Team Management</span></span><i class="fa-solid fa-chevron-down text-[9px] transition-transform duration-200 sidebar-arrow" id="arrow-team-section"></i></button>
+                        <button onclick="toggleSidebarSection('team-section')" class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg font-bold text-white bg-brand-orange transition duration-150 overflow-hidden"><span class="flex items-center gap-3"><i class="fa-solid fa-user-group text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Team Management</span></span><i class="fa-solid fa-chevron-down text-[9px] ml-2 transition-transform duration-200 sidebar-arrow" id="arrow-team-section"></i></button>
                         <div id="team-section" class="pl-5 pr-1 space-y-0.5 overflow-hidden sidebar-section-div" style="max-height:200px;transition:max-height 0.3s ease">
-                            <a href="/pages/superadmin/team.html?view=members" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-users-gear text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Team Members</span></button></a>
-                            <a href="/pages/superadmin/team.html?view=roles" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-shield-halved text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Roles & Permissions</span></button></a>
+                            <button onclick="switchTeamView('members')" id="team-sub-members" class="w-full text-left py-1.5 px-3 rounded text-xs text-white bg-brand-orange transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-users-gear text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Team Members</span></button>
+                            <button onclick="switchTeamView('roles')" id="team-sub-roles" class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-shield-halved text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Roles & Permissions</span></button>
                         </div>
                     </div>
 
                     <div class="space-y-0.5">
-                        <button onclick="toggleSidebarSection('payments-section')" class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><span class="flex items-center gap-3"><i class="fa-solid fa-receipt text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Payments</span></span><i class="fa-solid fa-chevron-down text-[9px] transition-transform duration-200 sidebar-arrow" id="arrow-payments-section"></i></button>
+                        <button onclick="toggleSidebarSection('payments-section')" class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><span class="flex items-center gap-3"><i class="fa-solid fa-receipt text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Payments</span></span><i class="fa-solid fa-chevron-down text-[9px] ml-2 transition-transform duration-200 sidebar-arrow" id="arrow-payments-section"></i></button>
                         <div id="payments-section" class="pl-5 pr-1 space-y-0.5 overflow-hidden sidebar-section-div" style="max-height:0;transition:max-height 0.3s ease">
                             <a href="/pages/superadmin/payments.html?view=invoices" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-file-invoice text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Invoices</span></button></a>
                             <a href="/pages/superadmin/payments.html?view=ledger" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-book text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Ledger</span></button></a>
@@ -164,6 +171,7 @@
                         <span class="font-bold text-slate-700">INR (₹)</span>
                         <i class="fa-solid fa-chevron-down text-[9px] text-slate-400"></i>
                     </div>
+                    <a href="/pages/superadmin/operations-center.html" class="flex items-center gap-2 border border-brand-orange/50 rounded-lg px-3 py-1 bg-brand-orange/5 text-xs text-brand-orange font-bold hover:bg-brand-orange hover:text-white transition"><i class="fa-solid fa-radar text-[11px]"></i><span>Operations Center</span></a>
                     <button onclick="toggleTheme()" class="p-2 text-slate-500 hover:text-brand-orange hover:bg-slate-100 rounded-full transition" title="Toggle theme"><i id="theme-icon" class="fa-regular fa-moon text-lg"></i></button>
 
                     <div class="relative">
@@ -256,10 +264,10 @@
                         <div class="flex gap-2 w-full sm:w-auto">
                             <select id="role-filter" onchange="filterTeamMembers()" class="bg-slate-50 border border-slate-200 rounded-lg text-xs py-1.5 px-3 text-slate-600 focus:outline-none focus:border-brand-orange">
                                 <option value="ALL">All Roles</option>
-                                <option value="Senior Associate">Senior Associate</option>
-                                <option value="Associate Partner">Associate Partner</option>
-                                <option value="Compliance Officer">Compliance Officer</option>
-                                <option value="Investment Banking Analyst">Investment Banking Analyst</option>
+                                <option value="Admin">Admin</option>
+                                <option value="Investment Banker">Investment Banker</option>
+                                <option value="Business Analyst">Business Analyst</option>
+                                
                             </select>
                             <button onclick="resetTeamFilters()" class="bg-slate-100 text-slate-600 hover:bg-slate-200 text-xs px-3.5 py-1.5 rounded-lg font-bold transition">Reset</button>
                         </div>
@@ -279,7 +287,6 @@
                                         <th class="p-4 font-bold">Designation Role</th>
                                         <th class="p-4 font-bold">Contact Email</th>
                                         <th class="p-4 font-bold">Mobile Number</th>
-                                        <th class="p-4 font-bold">Assigned Permissions</th>
                                         <th class="p-4 font-bold">Status</th>
                                         <th class="p-4 font-bold text-right">Access Management</th>
                                     </tr>
@@ -312,8 +319,8 @@
                             <div class="space-y-2 text-xs text-slate-600">
                                 <div class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500 text-[10px]"></i> Dashboard & Analytics</div>
                                 <div class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500 text-[10px]"></i> CRM & User Directory</div>
-                                <div class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500 text-[10px]"></i> Mandates & Projects</div>
-                                <div class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500 text-[10px]"></i> Deals & Pipeline</div>
+                                <div class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500 text-[10px]"></i> Deals</div>
+                                <div class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500 text-[10px]"></i> Active Mandates</div>
                                 <div class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500 text-[10px]"></i> Data Room Access</div>
                                 <div class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500 text-[10px]"></i> Team Management</div>
                                 <div class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500 text-[10px]"></i> Payments & Billing</div>
@@ -331,8 +338,8 @@
                                 </div>
                             </div>
                             <div class="space-y-2 text-xs text-slate-600">
-                                <div class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500 text-[10px]"></i> Deals & Pipeline</div>
-                                <div class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500 text-[10px]"></i> Mandates & Projects</div>
+                                <div class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500 text-[10px]"></i> Active Mandates</div>
+                                <div class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500 text-[10px]"></i> Deals</div>
                                 <div class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500 text-[10px]"></i> Data Room Access</div>
                                 <div class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500 text-[10px]"></i> CRM Directory</div>
                                 <div class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-500 text-[10px]"></i> Reports</div>
@@ -397,7 +404,7 @@
                 <section id="view-mandates" class="hidden space-y-6">
                     <div class="bg-white p-8 rounded-xl border border-slate-100 text-center space-y-3">
                         <i class="fa-solid fa-file-contract text-4xl text-brand-orange"></i>
-                        <h3 class="text-lg font-extrabold text-slate-900">Mandates & Projects Workspace</h3>
+                        <h3 class="text-lg font-extrabold text-slate-900">Deals Workspace</h3>
                         <p class="text-xs text-slate-500 max-w-md mx-auto">Verify legal advisory mandates agreements.</p>
                         <button onclick="switchView('team')" class="bg-brand-orange hover:bg-brand-orangeHover text-white text-xs font-bold px-4 py-2.5 rounded-lg shadow-sm transition">Return to Team Panel</button>
                     </div>
@@ -444,8 +451,8 @@
     </div>
 
     <!-- SECURE DRAWER: REGISTER NEW TEAM LOGIN (Form checklist matching image requirements) -->
-    <div id="modal-create-team-login" class="hidden fixed inset-0 bg-slate-900/30 backdrop-blur-sm flex justify-center items-center z-40">
-        <div class="bg-white w-full max-w-md rounded-xl shadow-2xl border border-slate-200 flex flex-col m-4">
+    <div id="modal-create-team-login" class="hidden fixed inset-0 bg-slate-900/30 backdrop-blur-sm flex justify-center items-start sm:items-center z-40 overflow-y-auto p-4">
+        <div class="bg-white w-full max-w-lg rounded-xl shadow-2xl border border-slate-200 flex flex-col max-h-[90vh] my-auto">
             
             <!-- Side drawer header -->
             <div class="p-5 border-b border-slate-100 flex justify-between items-center">
@@ -460,7 +467,7 @@
             </div>
 
             <!-- Side drawer scroll form -->
-            <form id="form-team-login" onsubmit="handleCreateTeamLogin(event)" class="flex-1 overflow-y-auto p-6 space-y-4">
+            <form id="form-team-login" onsubmit="handleCreateTeamLogin(event)" class="overflow-y-auto p-4 sm:p-6 space-y-4 flex-1">
                 
                 <!-- General Login Name -->
                 <div>
@@ -574,7 +581,7 @@
                 {
                     id: "TM-001",
                     name: "Karthik",
-                    role: "Senior Associate",
+                    role: "Admin",
                     email: "karthik@charantra.com",
                     mobile: "+91 98765 43210",
                     permissions: ["Mandates", "Payments", "Monitoring", "Templates"],
@@ -583,7 +590,7 @@
                 {
                     id: "TM-002",
                     name: "Sarah Chen",
-                    role: "Associate Partner",
+                    role: "Investment Banker",
                     email: "sarah.chen@charantra.com",
                     mobile: "+91 91234 56789",
                     permissions: ["Mandates", "Monitoring"],
@@ -592,7 +599,7 @@
                 {
                     id: "TM-003",
                     name: "Priya Sharma",
-                    role: "Compliance Officer",
+                    role: "Business Analyst",
                     email: "priya.sharma@charantra.com",
                     mobile: "+91 99887 76655",
                     permissions: ["Payments", "Templates"],
@@ -601,7 +608,7 @@
                 {
                     id: "TM-004",
                     name: "Raj Mehta",
-                    role: "Investment Banking Analyst",
+                    role: "Investment Banker",
                     email: "raj.mehta@charantra.com",
                     mobile: "+91 95432 10987",
                     permissions: ["Mandates", "Payments", "Monitoring"],
@@ -680,25 +687,6 @@
             listToRender.forEach(member => {
                 const isOnline = member.status === "Active";
                 
-                // Construct styled permission badges
-                let badgesHtml = '';
-                member.permissions.forEach(perm => {
-                    let badgeColor = "bg-slate-100 text-slate-600 border-slate-200";
-                    if (perm === "Mandates") badgeColor = "bg-orange-50 text-brand-orange border-orange-200/55";
-                    if (perm === "Payments") badgeColor = "bg-emerald-50 text-emerald-700 border-emerald-200/55";
-                    if (perm === "Monitoring") badgeColor = "bg-indigo-50 text-indigo-700 border-indigo-200/55";
-                    if (perm === "Templates") badgeColor = "bg-purple-50 text-purple-700 border-purple-200/55";
-
-                    badgesHtml += `
-                        <span class="inline-flex items-center text-[10px] font-bold px-2 py-0.5 rounded-full border ${badgeColor} select-none">
-                            ${perm}
-                        </span>
-                    `;
-                });
-
-                if (member.permissions.length === 0) {
-                    badgesHtml = `<span class="text-slate-400 text-[10px] font-medium italic">No privileges assigned</span>`;
-                }
 
                 listBody.innerHTML += `
                     <tr class="hover:bg-slate-50/70 transition border-b border-slate-100">
@@ -728,12 +716,6 @@
                             <span class="text-slate-500 font-medium text-xs">${member.mobile}</span>
                         </td>
 
-                        <!-- Perm Badge elements -->
-                        <td class="p-4">
-                            <div class="flex flex-wrap gap-1.5 max-w-xs">
-                                ${badgesHtml}
-                            </div>
-                        </td>
 
                         <!-- Active status -->
                         <td class="p-4">
@@ -962,15 +944,24 @@
         })();
         window.addEventListener('click', function(e) { if (!e.target.closest('.relative')) { const dd = document.getElementById('role-dropdown'); if (dd) dd.classList.add('hidden'); } });
 
-        // Handle Roles & Permissions view from URL
-        (function() {
-            const params = new URLSearchParams(window.location.search);
-            if (params.get('view') === 'roles') {
-                document.addEventListener('DOMContentLoaded', function() {
-                    document.getElementById('view-roles').classList.remove('hidden');
-                    document.getElementById('view-team').classList.add('hidden');
-                });
+        // Team tabs switching
+        function switchTeamView(view) {
+            const membersBtn = document.getElementById('team-sub-members');
+            const rolesBtn = document.getElementById('team-sub-roles');
+            const membersView = document.getElementById('view-team');
+            const rolesView = document.getElementById('view-roles');
+            
+            if (view === 'members') {
+                membersView.classList.remove('hidden');
+                rolesView.classList.add('hidden');
+                membersBtn.className = 'w-full text-left py-1.5 px-3 rounded text-xs text-white bg-brand-orange transition flex items-center gap-2 overflow-hidden';
+                rolesBtn.className = 'w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden';
+            } else {
+                membersView.classList.add('hidden');
+                rolesView.classList.remove('hidden');
+                membersBtn.className = 'w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden';
+                rolesBtn.className = 'w-full text-left py-1.5 px-3 rounded text-xs text-white bg-brand-orange transition flex items-center gap-2 overflow-hidden';
             }
-        })();
+        }
     </script>
 </body>
