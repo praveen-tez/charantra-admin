@@ -12,8 +12,8 @@
                 extend: {
                     colors: {
                         brand: {
-                            orange: '#FF5E00',
-                            orangeHover: '#e04f00',
+                            orange: '#FF751F',
+                            orangeHover: '#e0651a',
                             navyDark: '#070C1E',
                             navyMedium: '#0F172A',
                             navyLight: '#1E293B',
@@ -81,7 +81,7 @@
         /* Audio player waveform mockup styling */
         .waveform-bar {
             width: 4px;
-            background-color: #FF5E00;
+            background-color: #FF751F;
             border-radius: 2px;
             margin: 0 1px;
             transition: height 0.3s ease;
@@ -2821,7 +2821,7 @@
         function initDashboardCharts() {
             const ctxLine = document.getElementById('chart-revenue-analytics').getContext('2d');
             const grad = ctxLine.createLinearGradient(0, 0, 0, 200);
-            grad.addColorStop(0, 'rgba(255, 94, 0, 0.45)');
+            grad.addColorStop(0, 'rgba(255, 117, 31, 0.45)');
             grad.addColorStop(1, 'rgba(255, 255, 255, 0)');
 
             new Chart(ctxLine, {
@@ -2830,12 +2830,12 @@
                     labels: ['1 May', '8 May', '15 May', '22 May', '29 May'],
                     datasets: [{
                         data: [1.0, 2.6, 2.3, 3.8, 4.2], 
-                        borderColor: '#FF5E00',
+                        borderColor: '#FF751F',
                         borderWidth: 3.5,
                         backgroundColor: grad,
                         fill: true,
                         tension: 0.35,
-                        pointBackgroundColor: '#FF5E00',
+                        pointBackgroundColor: '#FF751F',
                         pointBorderColor: '#ffffff',
                         pointBorderWidth: 2,
                         pointRadius: 5,

@@ -6,7 +6,7 @@
     <title>Charantra - CRM & Users Directory</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        tailwind.config = { theme: { extend: { colors: { brand: { orange: '#FF5E00', orangeHover: '#e04f00', navyDark: '#070C1E', navyMedium: '#0F172A', navyLight: '#1E293B', bgSlate: '#F8FAFC', borderGray: '#E2E8F0' } } } } }
+        tailwind.config = { theme: { extend: { colors: { brand: { orange: '#FF751F', orangeHover: '#e0651a', navyDark: '#070C1E', navyMedium: '#0F172A', navyLight: '#1E293B', bgSlate: '#F8FAFC', borderGray: '#E2E8F0' } } } } }
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -37,7 +37,7 @@
         #app-sidebar.collapsed button { justify-content: center; padding-left: 8px; padding-right: 8px; }
         #app-sidebar.collapsed nav > div > button { justify-content: center; }
         #app-sidebar.collapsed .sidebar-section-div { max-height: 0 !important; }
-        .sub-active { background: #FF5E00 !important; color: #fff !important; font-weight: 600 !important; }
+        .sub-active { background: #FF751F !important; color: #fff !important; font-weight: 600 !important; }
     </style>
 </head>
 <body class="overflow-hidden h-screen flex text-slate-800 bg-brand-bgSlate">
@@ -133,7 +133,7 @@
             <div class="flex-1 overflow-y-auto p-8">
                 <section class="space-y-6">
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                        <div><h2 class="text-2xl font-bold tracking-tight text-slate-900" id="crm-title-header">CRM Directory</h2><p class="text-slate-500 text-xs mt-1" id="crm-desc-header">Manage all onboarded platform participants.</p></div>
+                        <div><h2 class="text-2xl font-bold tracking-tight text-slate-900" id="crm-title-header">CRM</h2><p class="text-slate-500 text-xs mt-1" id="crm-desc-header">Manage all onboarded platform participants.</p></div>
                         <div class="flex items-center gap-2 select-none">
                             <div class="relative inline-block">
                                 <button onclick="toggleDropdown('export-actions-menu')" class="bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 text-xs font-bold px-4 py-2.5 rounded-lg flex items-center gap-2 shadow-sm transition"><i class="fa-solid fa-download"></i> Export <i class="fa-solid fa-chevron-down text-[10px]"></i></button>

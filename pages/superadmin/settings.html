@@ -11,8 +11,8 @@
                 extend: {
                     colors: {
                         brand: {
-                            orange: '#FF5E00',
-                            orangeHover: '#e04f00',
+                            orange: '#FF751F',
+                            orangeHover: '#e0651a',
                             navyDark: '#070C1E',
                             navyMedium: '#0F172A',
                             navyLight: '#1E293B',
@@ -53,7 +53,7 @@
         #app-sidebar.collapsed button { justify-content: center; padding-left: 8px; padding-right: 8px; }
         #app-sidebar.collapsed nav > div > button { justify-content: center; }
         #app-sidebar.collapsed .sidebar-section-div { max-height: 0 !important; }
-        .tab-active { color: #FF5E00 !important; border-bottom: 2px solid #FF5E00 !important; }
+        .tab-active { color: #FF751F !important; border-bottom: 2px solid #FF751F !important; }
     </style>
 </head>
 <body class="overflow-hidden h-screen flex text-slate-800 bg-brand-bgSlate">
@@ -132,7 +132,7 @@
         <p class="text-[9px] text-brand-orange font-bold uppercase tracking-wider mt-0.5" id="role-label">SUPER ADMIN <i class="fa-solid fa-chevron-down text-[7px] text-slate-400 ml-1"></i></p>
     </div>
     <div class="relative">
-        <button onclick="toggleRoleDropdown()" class="w-10 h-10 rounded-full bg-[#FF5E00] text-white font-extrabold text-sm flex items-center justify-center shadow hover:shadow-md transition cursor-pointer">K</button>
+        <button onclick="toggleRoleDropdown()" class="w-10 h-10 rounded-full bg-[#FF751F] text-white font-extrabold text-sm flex items-center justify-center shadow hover:shadow-md transition cursor-pointer">K</button>
         <div id="role-dropdown" class="hidden absolute right-0 mt-2 w-52 bg-white border border-slate-200 rounded-xl shadow-xl z-50 text-xs overflow-hidden">
             <div class="px-4 py-3 border-b border-slate-100 font-bold text-slate-700">Switch Role</div>
             <button onclick="switchToRole('superadmin')" class="w-full text-left px-4 py-2.5 hover:bg-slate-50 text-slate-700 font-medium flex items-center gap-2.5 border-b border-slate-50"><i class="fa-solid fa-crown text-brand-orange w-4"></i> Super Admin</button>

@@ -11,8 +11,8 @@
                 extend: {
                     colors: {
                         brand: {
-                            orange: '#FF5E00',
-                            orangeHover: '#e04f00',
+                            orange: '#FF751F',
+                            orangeHover: '#e0651a',
                             navyDark: '#070C1E',
                             navyMedium: '#0F172A',
                             navyLight: '#1E293B',
@@ -25,6 +25,7 @@
         }
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         body {
@@ -58,7 +59,54 @@
         #app-sidebar.collapsed button { justify-content: center; padding-left: 8px; padding-right: 8px; }
         #app-sidebar.collapsed nav > div > button { justify-content: center; }
         #app-sidebar.collapsed .sidebar-section-div { max-height: 0 !important; }
-        .waveform-bar { width: 4px; background-color: #FF5E00; border-radius: 2px; margin: 0 1px; transition: height 0.3s ease; }
+        .waveform-bar { width: 4px; background-color: #FF751F; border-radius: 2px; margin: 0 1px; transition: height 0.3s ease; }
+
+        /* ── Entity section show/hide ── */
+        [data-entities] { display: none; }
+        .entity-Investor [data-entities~="Investor"] { display: block; }
+        .entity-Investor [data-entities~="Investor"].flex { display: flex; }
+        .entity-Investor [data-entities~="Investor"].grid { display: grid; }
+        .entity-Investor [data-entities~="Investor"].table { display: table; }
+        .entity-Investee [data-entities~="Investee"] { display: block; }
+        .entity-Investee [data-entities~="Investee"].flex { display: flex; }
+        .entity-Investee [data-entities~="Investee"].grid { display: grid; }
+        .entity-Investee [data-entities~="Investee"].table { display: table; }
+        .entity-Seller [data-entities~="Seller"] { display: block; }
+        .entity-Seller [data-entities~="Seller"].flex { display: flex; }
+        .entity-Seller [data-entities~="Seller"].grid { display: grid; }
+        .entity-Seller [data-entities~="Seller"].table { display: table; }
+        .entity-Buyer [data-entities~="Buyer"] { display: block; }
+        .entity-Buyer [data-entities~="Buyer"].flex { display: flex; }
+        .entity-Buyer [data-entities~="Buyer"].grid { display: grid; }
+        .entity-Buyer [data-entities~="Buyer"].table { display: table; }
+        .entity-Advisor [data-entities~="Advisor"] { display: block; }
+        .entity-Advisor [data-entities~="Advisor"].flex { display: flex; }
+        .entity-Advisor [data-entities~="Advisor"].grid { display: grid; }
+        .entity-Advisor [data-entities~="Advisor"].table { display: table; }
+        .entity-Partner [data-entities~="Partner"] { display: block; }
+        .entity-Partner [data-entities~="Partner"].flex { display: flex; }
+        .entity-Partner [data-entities~="Partner"].grid { display: grid; }
+        .entity-Partner [data-entities~="Partner"].table { display: table; }
+        .entity-SME [data-entities~="SME"] { display: block; }
+        .entity-SME [data-entities~="SME"].flex { display: flex; }
+        .entity-SME [data-entities~="SME"].grid { display: grid; }
+        .entity-SME [data-entities~="SME"].table { display: table; }
+
+        /* ── Entity badge colors ── */
+        .badge-Investor { background:#D1FAE5; color:#065F46; }
+        .badge-Investee { background:#DBEAFE; color:#1E40AF; }
+        .badge-Seller { background:#FEF3C7; color:#92400E; }
+        .badge-Buyer { background:#EDE9FE; color:#5B21B6; }
+        .badge-Advisor { background:#E0E7FF; color:#3730A3; }
+        .badge-Partner { background:#CCFBF1; color:#0F766E; }
+        .badge-SME { background:#F1F5F9; color:#475569; }
+        .dark .badge-Investor { background:#064E3B; color:#6EE7B7; }
+        .dark .badge-Investee { background:#1E3A5F; color:#93C5FD; }
+        .dark .badge-Seller { background:#78350F; color:#FCD34D; }
+        .dark .badge-Buyer { background:#3B1F6E; color:#C4B5FD; }
+        .dark .badge-Advisor { background:#312E81; color:#A5B4FC; }
+        .dark .badge-Partner { background:#134E4A; color:#5EEAD4; }
+        .dark .badge-SME { background:#334155; color:#94A3B8; }
     </style>
 </head>
 <body class="overflow-hidden h-screen flex text-slate-800 bg-brand-bgSlate">
@@ -78,7 +126,7 @@
                     <a href="/pages/admin/dashboard.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><i class="fa-solid fa-table-columns text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Dashboard</span></button></a>
                     
                     <div class="space-y-0.5">
-                        <button onclick="toggleSidebarSection('crm-section')" class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg font-bold text-white transition duration-150 overflow-hidden"><span class="flex items-center gap-3"><i class="fa-solid fa-users text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">CRM & Users</span></span><i class="fa-solid fa-chevron-down text-[9px] transition-transform duration-200 sidebar-arrow" id="arrow-crm-section" style="transform:rotate(180deg)"></i></button>
+                        <button onclick="toggleSidebarSection('crm-section')" class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg font-bold text-white transition duration-150 overflow-hidden"><span class="flex items-center gap-3"><i class="fa-solid fa-users text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">CRM</span></span><i class="fa-solid fa-chevron-down text-[9px] transition-transform duration-200 sidebar-arrow" id="arrow-crm-section" style="transform:rotate(180deg)"></i></button>
                         <div id="crm-section" class="pl-5 pr-1 space-y-0.5 overflow-hidden sidebar-section-div" style="max-height:200px;transition:max-height 0.3s ease">
                             <a href="/pages/admin/crm.html?type=Investor" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-hand-holding-dollar text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Investors</span></button></a>
                             <a href="/pages/admin/crm.html?type=Investee" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-rocket text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Investees</span></button></a>
@@ -88,23 +136,13 @@
                         </div>
                     </div>
 
-                    <a href="/pages/admin/mandates.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><i class="fa-solid fa-file-contract text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Mandates & Projects</span></button></a>
+                    <a href="/pages/admin/mandates.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><i class="fa-solid fa-file-contract text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Deals</span></button></a>
 
-                                        <div class="space-y-0.5">
-                        <button onclick="toggleSidebarSection('deals-section')" class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><span class="flex items-center gap-3"><i class="fa-solid fa-briefcase text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Deals & Pipeline</span></span><i class="fa-solid fa-chevron-down text-[9px] ml-2 transition-transform duration-200 sidebar-arrow" id="arrow-deals-section"></i></button>
+                    <div class="space-y-0.5">
+                        <button onclick="toggleSidebarSection('deals-section')" class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><span class="flex items-center gap-3"><i class="fa-solid fa-briefcase text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Active Mandates</span></span><i class="fa-solid fa-chevron-down text-[9px] ml-2 transition-transform duration-200 sidebar-arrow" id="arrow-deals-section"></i></button>
                         <div id="deals-section" class="pl-5 pr-1 space-y-0.5 overflow-hidden sidebar-section-div" style="max-height:0;transition:max-height 0.3s ease">
                             <a href="/pages/admin/deals.html?flow=equity" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-sitemap text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Equity Flow</span></button></a>
                             <a href="/pages/admin/deals.html?flow=ma" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-bezier-curve text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">M&A Flow</span></button></a>
-                        </div>
-                    </div>
-
-                    <a href="/pages/admin/dataroom.html" class="block"><button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><i class="fa-solid fa-hard-drive text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Data Room</span></button></a>
-
-                    <div class="space-y-0.5">
-                        <button onclick="toggleSidebarSection('team-section')" class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition duration-150 overflow-hidden"><span class="flex items-center gap-3"><i class="fa-solid fa-user-group text-sm shrink-0"></i><span class="sidebar-label whitespace-nowrap">Team Management</span></span><i class="fa-solid fa-chevron-down text-[9px] transition-transform duration-200 sidebar-arrow" id="arrow-team-section"></i></button>
-                        <div id="team-section" class="pl-5 pr-1 space-y-0.5 overflow-hidden sidebar-section-div" style="max-height:0;transition:max-height 0.3s ease">
-                            <a href="/pages/admin/team.html?view=members" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-users-gear text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Team Members</span></button></a>
-                            <a href="/pages/admin/team.html?view=roles" class="block"><button class="w-full text-left py-1.5 px-3 rounded text-xs text-slate-400 hover:bg-slate-900 hover:text-white transition flex items-center gap-2 overflow-hidden"><i class="fa-solid fa-shield-halved text-[10px] w-4 text-center shrink-0"></i><span class="sidebar-label whitespace-nowrap">Roles & Permissions</span></button></a>
                         </div>
                     </div>
 
@@ -135,267 +173,674 @@
                         <span class="font-semibold text-slate-700">INR (₹)</span>
                         <i class="fa-solid fa-chevron-down text-[9px] text-slate-400"></i>
                     </div>
+                    <a href="/pages/admin/operations-center.html" class="flex items-center gap-2 border border-brand-orange/50 rounded-lg px-3 py-1 bg-brand-orange/5 text-xs text-brand-orange font-bold hover:bg-brand-orange hover:text-white transition"><i class="fa-solid fa-radar text-[11px]"></i><span>Operations Center</span></a>
                     <button onclick="toggleTheme()" class="p-2 text-slate-500 hover:text-brand-orange hover:bg-slate-100 rounded-full transition" title="Toggle theme"><i id="theme-icon" class="fa-regular fa-moon text-lg"></i></button>
                     <div class="flex items-center gap-3 border-l border-slate-200 pl-4">
-                        <div class="text-right">
-                            <p class="text-xs font-bold text-slate-900 leading-none">KARTHIK</p>
-                            <p class="text-[9px] text-violet-500 font-bold uppercase tracking-wider mt-0.5" id="role-label">ADMIN <i class="fa-solid fa-chevron-down text-[7px] text-slate-400 ml-1"></i></p>
-                        </div>
-                        <div class="relative">
-                            <button onclick="toggleRoleDropdown()" class="w-10 h-10 rounded-full bg-violet-600 text-white font-extrabold text-sm flex items-center justify-center shadow hover:shadow-md transition cursor-pointer">K</button>
-                            <div id="role-dropdown" class="hidden absolute right-0 mt-2 w-52 bg-white border border-slate-200 rounded-xl shadow-xl z-50 text-xs overflow-hidden">
-                                <div class="px-4 py-3 border-b border-slate-100 font-bold text-slate-700">Switch Role</div>
-                                <button onclick="switchToRole('superadmin')" class="w-full text-left px-4 py-2.5 hover:bg-slate-50 text-slate-700 font-medium flex items-center gap-2.5 border-b border-slate-50"><i class="fa-solid fa-crown text-brand-orange w-4"></i> Super Admin</button>
-                                <button onclick="switchToRole('admin')" class="w-full text-left px-4 py-2.5 hover:bg-slate-50 text-slate-700 font-medium flex items-center gap-2.5 border-b border-slate-50"><i class="fa-solid fa-shield-halved text-violet-500 w-4"></i> Admin</button>
-                                <button onclick="switchToRole('ib')" class="w-full text-left px-4 py-2.5 hover:bg-slate-50 text-slate-700 font-medium flex items-center gap-2.5 border-b border-slate-50"><i class="fa-solid fa-briefcase text-blue-500 w-4"></i> Investment Banker</button>
-                                <button onclick="switchToRole('ba')" class="w-full text-left px-4 py-2.5 hover:bg-slate-50 text-slate-700 font-medium flex items-center gap-2.5"><i class="fa-solid fa-chart-line text-emerald-500 w-4"></i> Business Analyst</button>
-                            </div>
-                        </div>
-                    </div>
+    <div class="text-right">
+        <p class="text-xs font-bold text-slate-900 leading-none">KARTHIK</p>
+        <p class="text-[9px] text-brand-orange font-bold uppercase tracking-wider mt-0.5" id="role-label">SUPER ADMIN <i class="fa-solid fa-chevron-down text-[7px] text-slate-400 ml-1"></i></p>
+    </div>
+    <div class="relative">
+        <button onclick="toggleRoleDropdown()" class="w-10 h-10 rounded-full bg-[#FF751F] text-white font-extrabold text-sm flex items-center justify-center shadow hover:shadow-md transition cursor-pointer">K</button>
+        <div id="role-dropdown" class="hidden absolute right-0 mt-2 w-52 bg-white border border-slate-200 rounded-xl shadow-xl z-50 text-xs overflow-hidden">
+            <div class="px-4 py-3 border-b border-slate-100 font-bold text-slate-700">Switch Role</div>
+            <button onclick="switchToRole('superadmin')" class="w-full text-left px-4 py-2.5 hover:bg-slate-50 text-slate-700 font-medium flex items-center gap-2.5 border-b border-slate-50"><i class="fa-solid fa-crown text-brand-orange w-4"></i> Super Admin</button>
+            <button onclick="switchToRole('admin')" class="w-full text-left px-4 py-2.5 hover:bg-slate-50 text-slate-700 font-medium flex items-center gap-2.5 border-b border-slate-50"><i class="fa-solid fa-shield-halved text-violet-500 w-4"></i> Admin</button>
+            <button onclick="switchToRole('ib')" class="w-full text-left px-4 py-2.5 hover:bg-slate-50 text-slate-700 font-medium flex items-center gap-2.5 border-b border-slate-50"><i class="fa-solid fa-briefcase text-blue-500 w-4"></i> Investment Banker</button>
+            <button onclick="switchToRole('ba')" class="w-full text-left px-4 py-2.5 hover:bg-slate-50 text-slate-700 font-medium flex items-center gap-2.5"><i class="fa-solid fa-chart-line text-emerald-500 w-4"></i> Business Analyst</button>
+        </div>
+    </div>
+</div>
                 </div>
             </header>
 
-            <!-- COMPANY DETAIL CONTENT -->
-            <div class="flex-1 overflow-y-auto p-8">
+            <!-- ════════════════════════════════════════════════════════ -->
+            <!-- COMPANY DETAIL CONTENT — REBUILT FOR 7 ENTITY TYPES     -->
+            <!-- ════════════════════════════════════════════════════════ -->
+            <div class="flex-1 overflow-y-auto p-8" id="detail-content-root">
                 <section class="space-y-6">
-                    
-                    <!-- Back navigation & action buttons -->
-                    <div class="space-y-4 border-b border-slate-200 pb-4 select-none">
-                        <a href="/pages/admin/crm.html" class="text-slate-500 hover:text-brand-orange text-xs font-bold flex items-center gap-1.5 transition w-fit">
-                            <i class="fa-solid fa-arrow-left"></i> Back to Directory
-                        </a>
-                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                            <div>
-                                <h2 class="text-2xl font-bold tracking-tight text-slate-900" id="detail-company-title">TechVenture Solutions</h2>
-                                <p class="text-slate-500 text-xs mt-1" id="detail-company-subtitle">Manage your fundraising persona and materials.</p>
+
+                    <!-- ── Breadcrumb trail ── -->
+                    <nav class="flex items-center gap-1.5 text-xs text-slate-400 mb-5 select-none" id="breadcrumb-nav">
+                        <a href="/pages/admin/crm.html?type=Investee" id="back-to-crm-link" class="hover:text-brand-orange transition-colors">Investees</a>
+                        <i data-lucide="chevron-right" class="w-3 h-3"></i>
+                        <span class="font-bold text-slate-900" id="breadcrumb-current">TechVenture Solutions</span>
+                    </nav>
+
+                    <!-- ── Modern Profile Header ── -->
+                    <div class="flex flex-col lg:flex-row lg:items-start justify-between gap-6 mb-6">
+                        <div class="flex items-start gap-5">
+                            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-brand-orange to-amber-500 flex items-center justify-center text-white font-extrabold text-2xl shrink-0 shadow-lg shadow-brand-orange/20" id="profile-avatar-initials">TS</div>
+                            <div class="space-y-1">
+                                <div class="flex items-center gap-3 flex-wrap">
+                                    <h2 class="text-2xl font-extrabold tracking-tight text-slate-900" id="detail-company-title">TechVenture Solutions</h2>
+                                    <span class="text-[11px] font-bold uppercase px-3 py-1 rounded-full tracking-wide badge-Investee" id="detail-type-badge">Investee</span>
+                                    <span class="flex items-center gap-1.5 text-[11px] font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full" id="detail-status-badge"><i data-lucide="circle" class="w-1.5 h-1.5 fill-current"></i> Active</span>
+                                </div>
+                                <p class="text-slate-500 text-sm" id="detail-company-subtitle">SaaS / AI — Founded Jan 2024</p>
                             </div>
-                            <div class="flex items-center gap-3">
-                                <button onclick="simulateSendMessage()" class="bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 text-xs font-bold px-4 py-2.5 rounded-lg shadow-sm transition flex items-center gap-2">
-                                    <i class="fa-regular fa-comment-dots text-brand-orange"></i> Send Message
-                                </button>
-                                <a id="deal-workspace-link" href="/pages/admin/deals.html" class="bg-brand-orange hover:bg-brand-orangeHover text-white text-xs font-bold px-4 py-2.5 rounded-lg shadow-sm transition flex items-center gap-2">
-                                    <i class="fa-solid fa-briefcase"></i> View Deal Workspace
+                        </div>
+                        <div class="flex items-center gap-2.5 flex-wrap">
+                            <button onclick="simulateSendMessage()" class="h-10 px-4 bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 text-xs font-bold rounded-xl shadow-sm transition flex items-center gap-2">
+                                <i data-lucide="message-circle" class="w-4 h-4 text-brand-orange"></i> Send Message
+                            </button>
+                            <button onclick="simulateAction('edit')" class="h-10 px-4 bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 text-xs font-bold rounded-xl shadow-sm transition flex items-center gap-2">
+                                <i data-lucide="pen-square" class="w-4 h-4 text-slate-400"></i> Edit Profile
+                            </button>
+                            <button onclick="simulateAction('upload')" class="h-10 px-4 bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 text-xs font-bold rounded-xl shadow-sm transition flex items-center gap-2">
+                                <i data-lucide="upload" class="w-4 h-4 text-slate-400"></i> Upload Docs
+                            </button>
+                            <button onclick="simulateAction('note')" class="h-10 px-4 bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 text-xs font-bold rounded-xl shadow-sm transition flex items-center gap-2">
+                                <i data-lucide="sticky-note" class="w-4 h-4 text-slate-400"></i> Add Notes
+                            </button>
+                            <button onclick="simulateAction('assign')" class="h-10 px-5 bg-brand-orange hover:bg-brand-orangeHover text-white text-xs font-bold rounded-xl shadow-sm shadow-brand-orange/20 transition flex items-center gap-2">
+                                <i data-lucide="user-plus" class="w-4 h-4"></i> Assign Team
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- ── Tab Navigation ── -->
+                    <div class="flex border-b border-slate-100/60 overflow-x-auto select-none" id="tab-nav-bar">
+                        <button onclick="switchDetailsTab('Overview')" id="tab-Overview" class="tab-transition border-b-2 border-brand-orange text-brand-orange px-5 py-3 text-xs font-bold whitespace-nowrap flex items-center gap-2"><i data-lucide="layout-grid" class="w-3.5 h-3.5"></i> Overview</button>
+                        <button onclick="switchDetailsTab('Documents')" id="tab-Documents" class="tab-transition border-b-2 border-transparent text-slate-400 hover:text-slate-700 px-5 py-3 text-xs font-medium whitespace-nowrap flex items-center gap-2"><i data-lucide="file-text" class="w-3.5 h-3.5"></i> Documents</button>
+                        <button onclick="switchDetailsTab('Timeline')" id="tab-Timeline" class="tab-transition border-b-2 border-transparent text-slate-400 hover:text-slate-700 px-5 py-3 text-xs font-medium whitespace-nowrap flex items-center gap-2"><i data-lucide="clock" class="w-3.5 h-3.5"></i> Timeline</button>
+                        <button onclick="switchDetailsTab('Communications')" id="tab-Communications" class="tab-transition border-b-2 border-transparent text-slate-400 hover:text-slate-700 px-5 py-3 text-xs font-medium whitespace-nowrap flex items-center gap-2"><i data-lucide="mail" class="w-3.5 h-3.5"></i> Communications</button>
+                        <button onclick="switchDetailsTab('Contacts')" id="tab-Contacts" class="tab-transition border-b-2 border-transparent text-slate-400 hover:text-slate-700 px-5 py-3 text-xs font-medium whitespace-nowrap flex items-center gap-2"><i data-lucide="users" class="w-3.5 h-3.5"></i> Contacts</button>
+                        <button onclick="switchDetailsTab('Notes')" id="tab-Notes" class="tab-transition border-b-2 border-transparent text-slate-400 hover:text-slate-700 px-5 py-3 text-xs font-medium whitespace-nowrap flex items-center gap-2"><i data-lucide="notebook-pen" class="w-3.5 h-3.5"></i> Internal Notes</button>
+                    </div>
+
+                    <!-- ════════════════════════════════════════════════════ -->
+                    <!-- TAB: OVERVIEW                                     -->
+                    <!-- ════════════════════════════════════════════════════ -->
+                    <div id="details-panel-Overview" class="space-y-5">
+
+                        <!-- ── SHARED: Company Info card ── -->
+                        <div class="bg-white rounded-2xl border border-slate-100/60 p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)] space-y-5">
+                            <h4 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2.5 flex items-center gap-2"><i data-lucide="building-2" class="w-4 h-4 text-brand-orange"></i> Company Information</h4>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                                <div><span class="text-[11px] text-slate-400 font-bold uppercase tracking-wider">Company Name</span><p class="text-sm font-bold text-slate-800 mt-1" id="ci-name">—</p></div>
+                                <div><span class="text-[11px] text-slate-400 font-bold uppercase tracking-wider">Industry</span><p class="text-sm font-bold text-slate-800 mt-1" id="ci-industry">—</p></div>
+                                <div><span class="text-[11px] text-slate-400 font-bold uppercase tracking-wider">Entity Type</span><p class="text-sm font-bold text-slate-800 mt-1" id="ci-type">—</p></div>
+                                <div><span class="text-[11px] text-slate-400 font-bold uppercase tracking-wider">Founded / Since</span><p class="text-sm font-bold text-slate-800 mt-1" id="ci-founded">—</p></div>
+                                <div><span class="text-[11px] text-slate-400 font-bold uppercase tracking-wider">Email</span><p class="text-sm font-bold text-brand-orange mt-1" id="ci-email">—</p></div>
+                                <div><span class="text-[11px] text-slate-400 font-bold uppercase tracking-wider">Status</span><p class="text-sm font-bold text-emerald-600 mt-1" id="ci-status">Active</p></div>
+                                <div class="sm:col-span-2"><span class="text-[11px] text-slate-400 font-bold uppercase tracking-wider">About</span><p class="text-xs text-slate-600 mt-1 leading-relaxed" id="ci-about">—</p></div>
+                            </div>
+                        </div>
+
+                        <!-- ═══════════════════════════════════════════ -->
+                        <!-- INVESTOR SECTIONS                         -->
+                        <!-- ═══════════════════════════════════════════ -->
+                        <div data-entities="Investor" class="bg-white rounded-2xl border border-slate-100/60 p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)] space-y-5">
+                            <h4 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2.5 flex items-center gap-2"><i data-lucide="target" class="w-4 h-4 text-brand-orange"></i> Investment Preferences</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                                <div class="bg-slate-50 p-4 rounded-xl space-y-1"><span class="text-[11px] text-slate-400 uppercase font-bold">Ticket Size</span><p class="text-sm font-extrabold text-slate-900 ">₹5 Cr – ₹50 Cr</p></div>
+                                <div class="bg-slate-50 p-4 rounded-xl space-y-1"><span class="text-[11px] text-slate-400 uppercase font-bold">Preferred Sectors</span><p class="text-sm font-extrabold text-slate-900 ">SaaS, Fintech, AI</p></div>
+                                <div class="bg-slate-50 p-4 rounded-xl space-y-1"><span class="text-[11px] text-slate-400 uppercase font-bold">Preferred Geography</span><p class="text-sm font-extrabold text-slate-900 ">India, SEA</p></div>
+                                <div class="bg-slate-50 p-4 rounded-xl space-y-1"><span class="text-[11px] text-slate-400 uppercase font-bold">Preferred Stage</span><p class="text-sm font-extrabold text-slate-900 ">Series A – C</p></div>
+                            </div>
+                        </div>
+
+                        <div data-entities="Investor" class="bg-white rounded-2xl border border-slate-100/60 p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)] space-y-5">
+                            <h4 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2.5 flex items-center gap-2"><i data-lucide="lightbulb" class="w-4 h-4 text-brand-orange"></i> Active Opportunities</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div class="bg-indigo-50 p-4 rounded-xl space-y-1"><span class="text-[11px] text-indigo-400 uppercase font-bold">Evaluating</span><p class="text-sm font-extrabold text-slate-900 ">3 Deals</p></div>
+                                <div class="bg-amber-50 p-4 rounded-xl space-y-1"><span class="text-[11px] text-amber-400 uppercase font-bold">In Due Diligence</span><p class="text-sm font-extrabold text-slate-900 ">1 Deal</p></div>
+                                <div class="bg-emerald-50 p-4 rounded-xl space-y-1"><span class="text-[11px] text-emerald-400 uppercase font-bold">Term Sheet Issued</span><p class="text-sm font-extrabold text-slate-900 ">1 Deal</p></div>
+                            </div>
+                        </div>
+
+                        <div data-entities="Investor" class="bg-white rounded-2xl border border-slate-100/60 p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)] space-y-5">
+                            <h4 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2.5 flex items-center gap-2"><i data-lucide="list-checks" class="w-4 h-4 text-brand-orange"></i> Past Deals With Charantra</h4>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-xs">
+                                    <thead>
+                                        <tr class="text-slate-400 uppercase text-[10px] tracking-wider border-b border-slate-100">
+                                            <th class="text-left pb-2 font-bold">Company</th><th class="text-left pb-2 font-bold">Round</th><th class="text-right pb-2 font-bold">Amount</th><th class="text-right pb-2 font-bold">Year</th><th class="text-right pb-2 font-bold">Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-slate-50">
+                                        <tr><td class="py-2.5 font-bold text-slate-700">Razorpay</td><td class="py-2.5 text-slate-600">Series D</td><td class="py-2.5 text-right font-bold text-slate-700">₹1,200 Cr</td><td class="py-2.5 text-right text-slate-500">2024</td><td class="py-2.5 text-right"><span class="text-emerald-600 font-bold">Closed</span></td></tr>
+                                        <tr><td class="py-2.5 font-bold text-slate-700">CRED</td><td class="py-2.5 text-slate-600">Series E</td><td class="py-2.5 text-right font-bold text-slate-700">₹850 Cr</td><td class="py-2.5 text-right text-slate-500">2023</td><td class="py-2.5 text-right"><span class="text-emerald-600 font-bold">Closed</span></td></tr>
+                                        <tr><td class="py-2.5 font-bold text-slate-700">Slice</td><td class="py-2.5 text-slate-600">Series C</td><td class="py-2.5 text-right font-bold text-slate-700">₹400 Cr</td><td class="py-2.5 text-right text-slate-500">2023</td><td class="py-2.5 text-right"><span class="text-emerald-600 font-bold">Closed</span></td></tr>
+                                        <tr><td class="py-2.5 font-bold text-slate-700">Fi Money</td><td class="py-2.5 text-slate-600">Series B</td><td class="py-2.5 text-right font-bold text-slate-700">₹200 Cr</td><td class="py-2.5 text-right text-slate-500">2022</td><td class="py-2.5 text-right"><span class="text-emerald-600 font-bold">Closed</span></td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div data-entities="Investor" class="bg-white rounded-2xl border border-slate-100/60 p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)] space-y-5">
+                            <h4 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2.5 flex items-center gap-2"><i data-lucide="heart-pulse" class="w-4 h-4 text-brand-orange"></i> Relationship Health</h4>
+                            <div class="flex items-center gap-4 flex-wrap">
+                                <div class="flex-1 min-w-[200px]"><div class="flex justify-between text-xs mb-1"><span class="text-slate-600 font-bold">Engagement Score</span><span class="text-emerald-600 font-extrabold">85/100</span></div><div class="w-full bg-slate-100 rounded-full h-2"><div class="bg-emerald-500 h-2 rounded-full" style="width:85%"></div></div></div>
+                                <div class="text-right"><span class="text-[11px] text-slate-400 block">Last Contact</span><span class="text-sm font-extrabold text-slate-800">2 days ago</span></div>
+                                <div class="text-right"><span class="text-[11px] text-slate-400 block">Relationship Since</span><span class="text-sm font-extrabold text-slate-800">Feb 2023</span></div>
+                                <span class="px-3 py-1 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700">Healthy</span>
+                            </div>
+                        </div>
+
+                        <!-- ═══════════════════════════════════════════ -->
+                        <!-- INVESTEE SECTIONS (Rich)                  -->
+                        <!-- ═══════════════════════════════════════════ -->
+                        <div data-entities="Investee" class="bg-white rounded-2xl border border-slate-100/60 p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)] space-y-5">
+                            <h4 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2.5 flex items-center gap-2"><i data-lucide="user" class="w-4 h-4 text-brand-orange"></i> Founder Details</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div class="md:col-span-1 flex flex-col items-center text-center space-y-2 bg-slate-50 p-4 rounded-xl">
+                                    <div class="w-16 h-16 rounded-full bg-brand-orange/10 text-brand-orange font-extrabold text-lg flex items-center justify-center">SK</div>
+                                    <div><p class="font-bold text-sm text-slate-800">Sarah Kapoor</p><p class="text-[10px] text-slate-400">Founder & CEO</p></div>
+                                </div>
+                                <div class="md:col-span-2 space-y-2">
+                                    <div><span class="text-[11px] text-slate-400 font-bold uppercase tracking-wider">Background</span><p class="text-xs text-slate-600 mt-0.5">Ex-McKinsey, IIT Bombay alum. 12+ years in enterprise SaaS and AI product leadership. Previously led product at Freshworks for 4 years, scaling their CRM suite to 50K+ customers.</p></div>
+                                    <div class="grid grid-cols-2 gap-3">
+                                        <div><span class="text-[11px] text-slate-400 font-bold uppercase tracking-wider">LinkedIn</span><p class="text-xs font-bold text-blue-600 mt-0.5">linkedin.com/in/sarahkapoor</p></div>
+                                        <div><span class="text-[11px] text-slate-400 font-bold uppercase tracking-wider">Previous Exits</span><p class="text-xs font-bold text-slate-700 mt-0.5">1 (SupportBot → Zendesk, 2021)</p></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div data-entities="Investee" class="bg-white rounded-2xl border border-slate-100/60 p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)] space-y-5">
+                            <h4 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2.5 flex items-center gap-2"><i data-lucide="banknote" class="w-4 h-4 text-brand-orange"></i> Funding Ask</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+                                <div class="bg-slate-50 p-4 rounded-xl space-y-1"><span class="text-[11px] text-slate-400 uppercase font-bold">Amount Raising</span><p class="text-xl font-extrabold text-slate-900 ">₹5.00 Cr</p></div>
+                                <div class="bg-slate-50 p-4 rounded-xl space-y-1"><span class="text-[11px] text-slate-400 uppercase font-bold">Pre-Money Valuation</span><p class="text-xl font-extrabold text-slate-900 ">₹25.00 Cr</p></div>
+                                <div class="bg-slate-50 p-4 rounded-xl space-y-1"><span class="text-[11px] text-slate-400 uppercase font-bold">Committed</span><p class="text-xl font-extrabold text-emerald-600">₹2.00 Cr</p></div>
+                                <div class="bg-slate-50 p-4 rounded-xl space-y-1"><span class="text-[11px] text-slate-400 uppercase font-bold">Round</span><p class="text-xl font-extrabold text-slate-900 ">Series A</p></div>
+                            </div>
+                            <div class="bg-slate-50 p-4 rounded-xl space-y-2">
+                                <h5 class="text-xs font-bold text-slate-800 uppercase">Use of Funds</h5>
+                                <ul class="space-y-1 text-xs text-slate-600">
+                                    <li>• 45% — AI Core Algorithm R&D</li>
+                                    <li>• 30% — Enterprise Customer Acquisition</li>
+                                    <li>• 15% — Platform Infrastructure & Security</li>
+                                    <li>• 10% — Talent Expansion & Working Capital</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- PQR section (Investee + Seller) -->
+                        <div data-entities="Investee Seller" class="bg-white rounded-2xl border border-slate-100/60 p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)] space-y-5">
+                            <h4 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2.5 flex items-center gap-2"><i data-lucide="file-check" class="w-4 h-4 text-brand-orange"></i> PQR (Profile Quality Report)</h4>
+                            <div class="flex flex-wrap items-center gap-3 mb-3">
+                                <button onclick="simulateAction('pqr-generate')" class="bg-brand-orange hover:bg-brand-orangeHover text-white text-xs font-bold px-4 py-2 rounded-lg transition flex items-center gap-2"><i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Generate PQR</button>
+                                <button onclick="simulateAction('pqr-view')" class="bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 text-xs font-bold px-4 py-2 rounded-lg transition flex items-center gap-2"><i data-lucide="eye" class="w-3.5 h-3.5"></i> View Latest</button>
+                                <button onclick="simulateAction('pqr-download')" class="bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 text-xs font-bold px-4 py-2 rounded-lg transition flex items-center gap-2"><i data-lucide="download" class="w-3.5 h-3.5"></i> Download PDF</button>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+                                <div class="flex justify-between bg-slate-50 p-3 rounded-lg"><span class="text-slate-500">Status</span><span class="font-bold text-emerald-600">Complete</span></div>
+                                <div class="flex justify-between bg-slate-50 p-3 rounded-lg"><span class="text-slate-500">Last Generated</span><span class="font-bold text-slate-700">08 Jun 2026</span></div>
+                                <div class="flex justify-between bg-slate-50 p-3 rounded-lg"><span class="text-slate-500">Score</span><span class="font-bold text-brand-orange">87/100</span></div>
+                            </div>
+                            <div class="bg-amber-50/60 border border-amber-100 p-3 rounded-lg text-xs text-amber-800">
+                                <span class="font-bold">Notes:</span> KYC documents verified. Financial model v3 reviewed. Cap table needs minor update for ESOP pool.
+                            </div>
+                        </div>
+
+                        <!-- Audio & Video (Investee + Seller) -->
+                        <div data-entities="Investee Seller" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <div class="bg-white rounded-2xl border border-slate-100/60 p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04)] space-y-3">
+                                <div class="flex justify-between items-center text-slate-400 text-[10px] uppercase font-extrabold tracking-wider">
+                                    <span>Founder Introduction Video</span>
+                                </div>
+                                <div class="relative rounded-xl overflow-hidden aspect-[16/9] bg-slate-950 flex items-center justify-center">
+                                    <div class="absolute inset-0 bg-cover bg-center opacity-60" style="background-image: url('https://placehold.co/600x400/0f172a/ff5e00?text=Founder+Video');"></div>
+                                    <button onclick="simulateMediaAction('video')" class="relative z-10 w-14 h-14 bg-white/90 hover:bg-white text-brand-orange hover:scale-105 active:scale-95 transition rounded-full flex items-center justify-center shadow-lg cursor-pointer">
+                                        <i data-lucide="play" class="w-6 h-6 ml-0.5"></i>
+                                    </button>
+                                    <span class="absolute bottom-3 left-3 bg-slate-900/80 text-white text-[10px] font-bold px-2 py-0.5 rounded">03:42</span>
+                                </div>
+                            </div>
+                            <div class="bg-white rounded-2xl border border-slate-100/60 p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04)] flex flex-col justify-between">
+                                <div class="flex justify-between items-center text-slate-400 text-[10px] uppercase font-extrabold tracking-wider">
+                                    <span>Founder Audio Pitch</span>
+                                </div>
+                                <div class="bg-slate-50 p-4 rounded-xl flex items-center gap-3 border border-slate-100 my-2">
+                                    <button onclick="simulateMediaAction('audio')" class="w-10 h-10 bg-brand-orange hover:bg-brand-orangeHover hover:scale-105 transition rounded-full text-white flex items-center justify-center shrink-0 shadow-sm">
+                                        <i id="audio-control-icon" data-lucide="play" class="w-4 h-4 ml-0.5"></i>
+                                    </button>
+                                    <div class="flex-1 min-w-0">
+                                        <h5 class="text-xs font-bold text-slate-800 truncate">Audio_Pitch_SARAH.mp3</h5>
+                                        <span class="text-[9px] text-slate-400 font-semibold" id="audio-timer">01:28</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-end justify-between h-8 px-2" id="waveform-container"></div>
+                            </div>
+                        </div>
+
+                        <!-- Deal Readiness (Investee) -->
+                        <div data-entities="Investee" class="bg-white rounded-2xl border border-slate-100/60 p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)] space-y-5">
+                            <h4 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2.5 flex items-center gap-2"><i data-lucide="gauge" class="w-4 h-4 text-brand-orange"></i> Deal Readiness</h4>
+                            <div class="flex items-center gap-4 mb-4">
+                                <div class="text-center">
+                                    <div class="w-20 h-20 rounded-full border-4 border-brand-orange flex items-center justify-center"><span class="text-xl font-extrabold text-slate-900 ">78%</span></div>
+                                    <span class="text-[10px] text-slate-400 font-bold mt-1 block">Profile Complete</span>
+                                </div>
+                                <div class="flex-1 space-y-2">
+                                    <div class="flex justify-between text-xs"><span class="text-slate-500">Pitch Deck</span><span class="font-bold text-emerald-600"><i data-lucide="check" class="w-3 h-3 inline"></i> Uploaded</span></div>
+                                    <div class="flex justify-between text-xs"><span class="text-slate-500">Financial Model</span><span class="font-bold text-emerald-600"><i data-lucide="check" class="w-3 h-3 inline"></i> Uploaded</span></div>
+                                    <div class="flex justify-between text-xs"><span class="text-slate-500">KYC Verified</span><span class="font-bold text-emerald-600"><i data-lucide="check" class="w-3 h-3 inline"></i> Verified</span></div>
+                                    <div class="flex justify-between text-xs"><span class="text-slate-500">Cap Table</span><span class="font-bold text-amber-600"><i data-lucide="alert-circle" class="w-3 h-3 inline"></i> Needs Update</span></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Top-Down / Bottom-Up (Investee) -->
+                        <div data-entities="Investee" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="bg-white rounded-2xl border border-slate-100/60 p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)] space-y-5">
+                                <h4 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2.5 flex items-center gap-2"><i data-lucide="trending-up" class="w-4 h-4 text-brand-orange"></i> Top-Down Market View</h4>
+                                <div class="space-y-3">
+                                    <div class="flex justify-between text-xs"><span class="text-slate-500">TAM</span><span class="font-bold text-slate-700">₹12,000 Cr</span></div>
+                                    <div class="flex justify-between text-xs"><span class="text-slate-500">SAM</span><span class="font-bold text-slate-700">₹3,500 Cr</span></div>
+                                    <div class="flex justify-between text-xs"><span class="text-slate-500">SOM</span><span class="font-bold text-slate-700">₹180 Cr</span></div>
+                                </div>
+                            </div>
+                            <div class="bg-white rounded-2xl border border-slate-100/60 p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)] space-y-5">
+                                <h4 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2.5 flex items-center gap-2"><i data-lucide="bar-chart-3" class="w-4 h-4 text-brand-orange"></i> Bottom-Up Financials</h4>
+                                <div class="space-y-3">
+                                    <div class="flex justify-between text-xs"><span class="text-slate-500">FY25 Revenue</span><span class="font-bold text-slate-700">₹0.80 Cr</span></div>
+                                    <div class="flex justify-between text-xs"><span class="text-slate-500">MRR</span><span class="font-bold text-slate-700">₹7.5 L</span></div>
+                                    <div class="flex justify-between text-xs"><span class="text-slate-500">Gross Margin</span><span class="font-bold text-emerald-600">78%</span></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Client Pipeline (Investee) -->
+                        <div data-entities="Investee" class="bg-white rounded-2xl border border-slate-100/60 p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)] space-y-5">
+                            <h4 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2.5 flex items-center gap-2"><i data-lucide="users" class="w-4 h-4 text-brand-orange"></i> Client Pipeline</h4>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-xs">
+                                    <thead>
+                                        <tr class="text-slate-400 uppercase text-[10px] tracking-wider border-b border-slate-100">
+                                            <th class="text-left pb-2 font-bold">Client</th><th class="text-left pb-2 font-bold">Stage</th><th class="text-right pb-2 font-bold">ACV</th><th class="text-center pb-2 font-bold">Probability</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-slate-50">
+                                        <tr><td class="py-2.5 font-bold text-slate-700">HDFC Bank</td><td class="py-2.5 text-slate-600">Contracting</td><td class="py-2.5 text-right font-bold text-slate-700">₹32 L</td><td class="py-2.5 text-center"><span class="bg-emerald-50 text-emerald-700 text-[10px] font-bold px-2 py-0.5 rounded-full">85%</span></td></tr>
+                                        <tr><td class="py-2.5 font-bold text-slate-700">ICICI Prudential</td><td class="py-2.5 text-slate-600">Negotiation</td><td class="py-2.5 text-right font-bold text-slate-700">₹28 L</td><td class="py-2.5 text-center"><span class="bg-amber-50 text-amber-700 text-[10px] font-bold px-2 py-0.5 rounded-full">60%</span></td></tr>
+                                        <tr><td class="py-2.5 font-bold text-slate-700">Tata Digital</td><td class="py-2.5 text-slate-600">POC</td><td class="py-2.5 text-right font-bold text-slate-700">₹18 L</td><td class="py-2.5 text-center"><span class="bg-slate-100 text-slate-600 text-[10px] font-bold px-2 py-0.5 rounded-full">35%</span></td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- ═══════════════════════════════════════════ -->
+                        <!-- BUYER SECTIONS                           -->
+                        <!-- ═══════════════════════════════════════════ -->
+                        <div data-entities="Buyer" class="bg-white rounded-2xl border border-slate-100/60 p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)] space-y-5">
+                            <h4 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2.5 flex items-center gap-2"><i data-lucide="search" class="w-4 h-4 text-brand-orange"></i> Acquisition Criteria</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div class="bg-slate-50 p-4 rounded-xl space-y-1"><span class="text-[11px] text-slate-400 uppercase font-bold">Target Revenue</span><p class="text-sm font-extrabold text-slate-900 ">₹30 Cr – ₹200 Cr</p></div>
+                                <div class="bg-slate-50 p-4 rounded-xl space-y-1"><span class="text-[11px] text-slate-400 uppercase font-bold">Target EBITDA</span><p class="text-sm font-extrabold text-slate-900 ">15%+ margin</p></div>
+                                <div class="bg-slate-50 p-4 rounded-xl space-y-1"><span class="text-[11px] text-slate-400 uppercase font-bold">Sectors of Interest</span><p class="text-sm font-extrabold text-slate-900 ">Enterprise SaaS, Fintech</p></div>
+                            </div>
+                        </div>
+
+                        <div data-entities="Buyer" class="bg-white rounded-2xl border border-slate-100/60 p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)] space-y-5">
+                            <h4 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2.5 flex items-center gap-2"><i data-lucide="briefcase" class="w-4 h-4 text-brand-orange"></i> Active Mandates</h4>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-xs">
+                                    <thead>
+                                        <tr class="text-slate-400 uppercase text-[10px] tracking-wider border-b border-slate-100">
+                                            <th class="text-left pb-2 font-bold">Target</th><th class="text-left pb-2 font-bold">Sector</th><th class="text-right pb-2 font-bold">Ask</th><th class="text-right pb-2 font-bold">Offer</th><th class="text-center pb-2 font-bold">Match</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-slate-50">
+                                        <tr><td class="py-2.5 font-bold text-slate-700">Pinnacle Corp</td><td class="py-2.5 text-slate-600">Enterprise Software</td><td class="py-2.5 text-right font-bold text-slate-700">₹210 Cr</td><td class="py-2.5 text-right font-bold text-slate-700">₹190 Cr</td><td class="py-2.5 text-center"><span class="bg-emerald-50 text-emerald-700 text-[10px] font-bold px-2 py-0.5 rounded-full">90%</span></td></tr>
+                                        <tr><td class="py-2.5 font-bold text-slate-700">DataVault Systems</td><td class="py-2.5 text-slate-600">IT Services</td><td class="py-2.5 text-right font-bold text-slate-700">₹22 Cr</td><td class="py-2.5 text-right font-bold text-slate-700">₹95 Cr</td><td class="py-2.5 text-center"><span class="bg-emerald-50 text-emerald-700 text-[10px] font-bold px-2 py-0.5 rounded-full">88%</span></td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- ═══════════════════════════════════════════ -->
+                        <!-- SELLER SECTIONS (Rich)                   -->
+                        <!-- ═══════════════════════════════════════════ -->
+                        <div data-entities="Seller" class="bg-white rounded-2xl border border-slate-100/60 p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)] space-y-5">
+                            <h4 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2.5 flex items-center gap-2"><i data-lucide="building-2" class="w-4 h-4 text-brand-orange"></i> Company Overview</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                                <div class="bg-slate-50 p-4 rounded-xl space-y-1"><span class="text-[11px] text-slate-400 uppercase font-bold">Revenue (FY25)</span><p class="text-xl font-extrabold text-slate-900 ">₹48.50 Cr</p></div>
+                                <div class="bg-slate-50 p-4 rounded-xl space-y-1"><span class="text-[11px] text-slate-400 uppercase font-bold">EBITDA</span><p class="text-xl font-extrabold text-slate-900 ">₹14.20 Cr</p></div>
+                                <div class="bg-slate-50 p-4 rounded-xl space-y-1"><span class="text-[11px] text-slate-400 uppercase font-bold">EBITDA Margin</span><p class="text-xl font-extrabold text-emerald-600">29%</p></div>
+                                <div class="bg-slate-50 p-4 rounded-xl space-y-1"><span class="text-[11px] text-slate-400 uppercase font-bold">Transaction Type</span><p class="text-xl font-extrabold text-slate-900 ">Majority Sale</p></div>
+                            </div>
+                        </div>
+
+                        <!-- M&A Readiness (Seller) -->
+                        <div data-entities="Seller" class="bg-white rounded-2xl border border-slate-100/60 p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)] space-y-5">
+                            <h4 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2.5 flex items-center gap-2"><i data-lucide="clipboard-check" class="w-4 h-4 text-brand-orange"></i> M&A Readiness</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div class="bg-slate-50 p-4 rounded-xl space-y-2">
+                                    <div class="flex items-center justify-between"><span class="text-xs font-bold text-slate-700">NDA Status</span><span class="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">Executed</span></div>
+                                    <p class="text-[10px] text-slate-400">6 NDAs signed with qualified buyers</p>
+                                </div>
+                                <div class="bg-slate-50 p-4 rounded-xl space-y-2">
+                                    <div class="flex items-center justify-between"><span class="text-xs font-bold text-slate-700">CIM Status</span><span class="text-[10px] font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full">Drafting</span></div>
+                                    <p class="text-[10px] text-slate-400">Vendor due diligence underway — 65% complete</p>
+                                </div>
+                                <div class="bg-slate-50 p-4 rounded-xl space-y-2">
+                                    <div class="flex items-center justify-between"><span class="text-xs font-bold text-slate-700">DD Readiness</span><span class="text-[10px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full">Not Started</span></div>
+                                    <p class="text-[10px] text-slate-400">Data room setup pending — target: 15 Jun</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Seller Documents -->
+                        <div data-entities="Seller" class="bg-white rounded-2xl border border-slate-100/60 p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)] space-y-5">
+                            <h4 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2.5 flex items-center gap-2"><i data-lucide="folder-open" class="w-4 h-4 text-brand-orange"></i> Key Documents</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                                <a href="#" class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100 hover:border-brand-orange/30 transition group">
+                                    <div class="flex items-center gap-2.5 min-w-0"><i data-lucide="file-text" class="w-4 h-4 text-blue-500"></i><span class="text-xs font-bold text-slate-700 truncate">CIM_Q2_2026.pdf</span></div>
+                                    <i data-lucide="download" class="w-3.5 h-3.5 text-slate-300 group-hover:text-brand-orange transition"></i>
+                                </a>
+                                <a href="#" class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100 hover:border-brand-orange/30 transition group">
+                                    <div class="flex items-center gap-2.5 min-w-0"><i data-lucide="file-text" class="w-4 h-4 text-amber-500"></i><span class="text-xs font-bold text-slate-700 truncate">NDA_Template.pdf</span></div>
+                                    <i data-lucide="download" class="w-3.5 h-3.5 text-slate-300 group-hover:text-brand-orange transition"></i>
+                                </a>
+                                <a href="#" class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100 hover:border-brand-orange/30 transition group">
+                                    <div class="flex items-center gap-2.5 min-w-0"><i data-lucide="table" class="w-4 h-4 text-blue-500"></i><span class="text-xs font-bold text-slate-700 truncate">Cap_Table_Q2_2026.xlsx</span></div>
+                                    <i data-lucide="download" class="w-3.5 h-3.5 text-slate-300 group-hover:text-brand-orange transition"></i>
                                 </a>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Sub-Navigation Tabs -->
-                    <div class="flex border-b border-slate-200 overflow-x-auto select-none">
-                        <button onclick="switchDetailsTab('Overview')" id="tab-Overview" class="tab-transition border-b-2 border-brand-orange text-brand-orange px-4 py-2.5 text-xs font-bold whitespace-nowrap">Overview</button>
-                        <button onclick="switchDetailsTab('Financials')" id="tab-Financials" class="tab-transition border-b-2 border-transparent text-slate-500 hover:text-slate-900 px-4 py-2.5 text-xs font-medium whitespace-nowrap">Financials</button>
-                        <button onclick="switchDetailsTab('Funding Ask')" id="tab-Funding-Ask" class="tab-transition border-b-2 border-transparent text-slate-500 hover:text-slate-900 px-4 py-2.5 text-xs font-medium whitespace-nowrap">Funding Ask</button>
-                        <button onclick="switchDetailsTab('Team')" id="tab-Team" class="tab-transition border-b-2 border-transparent text-slate-500 hover:text-slate-900 px-4 py-2.5 text-xs font-medium whitespace-nowrap">Team</button>
-                        <button onclick="switchDetailsTab('Documents')" id="tab-Documents" class="tab-transition border-b-2 border-transparent text-slate-500 hover:text-slate-900 px-4 py-2.5 text-xs font-medium whitespace-nowrap">Documents</button>
-                        <button onclick="switchDetailsTab('Market Opportunity')" id="tab-Market" class="tab-transition border-b-2 border-transparent text-slate-500 hover:text-slate-900 px-4 py-2.5 text-xs font-medium whitespace-nowrap">Market Opportunity</button>
-                        <button onclick="switchDetailsTab('Communications')" id="tab-Communications" class="tab-transition border-b-2 border-transparent text-slate-500 hover:text-slate-900 px-4 py-2.5 text-xs font-medium whitespace-nowrap">Communications</button>
-                        <button onclick="switchDetailsTab('Notes')" id="tab-Notes" class="tab-transition border-b-2 border-transparent text-slate-500 hover:text-slate-900 px-4 py-2.5 text-xs font-medium whitespace-nowrap">Notes</button>
-                    </div>
-
-                    <!-- Subtab Content Frames -->
-                    <div id="company-subtab-container" class="space-y-6">
-                        
-                        <!-- OVERVIEW TAB -->
-                        <div id="details-panel-Overview" class="space-y-6">
-                            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                                <!-- Founder Video -->
-                                <div class="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-sm space-y-3">
-                                    <div class="flex justify-between items-center text-slate-400 text-[10px] uppercase font-extrabold tracking-wider">
-                                        <span>Founder Introduction Video</span>
-                                    </div>
-                                    <div class="relative rounded-xl overflow-hidden aspect-[16/9] bg-slate-950 flex items-center justify-center">
-                                        <div class="absolute inset-0 bg-cover bg-center opacity-60" style="background-image: url('https://placehold.co/600x400/0f172a/ff5e00?text=Founder+Introduction');"></div>
-                                        <button onclick="simulateMediaAction('video')" class="relative z-10 w-14 h-14 bg-white/90 hover:bg-white text-brand-orange hover:scale-105 active:scale-95 transition rounded-full flex items-center justify-center shadow-lg cursor-pointer">
-                                            <i class="fa-solid fa-play text-xl ml-1"></i>
-                                        </button>
-                                        <span class="absolute bottom-3 left-3 bg-slate-900/80 text-white text-[10px] font-bold px-2 py-0.5 rounded">03:42</span>
-                                    </div>
-                                </div>
-
-                                <!-- Audio Pitch -->
-                                <div class="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-sm flex flex-col justify-between">
-                                    <div class="flex justify-between items-center text-slate-400 text-[10px] uppercase font-extrabold tracking-wider">
-                                        <span>Founder Audio Pitch</span>
-                                    </div>
-                                    <div class="bg-slate-50 p-4 rounded-xl flex items-center gap-3 border border-slate-100 my-2">
-                                        <button onclick="simulateMediaAction('audio')" class="w-10 h-10 bg-brand-orange hover:bg-brand-orangeHover hover:scale-105 transition rounded-full text-white flex items-center justify-center shrink-0 shadow-sm">
-                                            <i id="audio-control-icon" class="fa-solid fa-play text-xs ml-0.5"></i>
-                                        </button>
-                                        <div class="flex-1 min-w-0">
-                                            <h5 class="text-xs font-bold text-slate-800 truncate">Audio_Pitch_SARAH.mp3</h5>
-                                            <span class="text-[9px] text-slate-400 font-semibold" id="audio-timer">01:28</span>
-                                        </div>
-                                    </div>
-                                    <div class="flex items-end justify-between h-8 px-2" id="waveform-container"></div>
-                                </div>
-
-                                <!-- Review Summary -->
-                                <div class="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-sm space-y-4">
-                                    <div class="text-slate-400 text-[10px] uppercase font-extrabold tracking-wider"><span>Review Summary</span></div>
-                                    <div class="space-y-2">
-                                        <div class="flex items-center justify-between text-xs"><span class="flex items-center gap-2 font-semibold text-slate-600"><i class="fa-solid fa-circle-check text-emerald-500"></i> Profile Created</span><i class="fa-solid fa-check text-emerald-500"></i></div>
-                                        <div class="flex items-center justify-between text-xs"><span class="flex items-center gap-2 font-semibold text-slate-600"><i class="fa-solid fa-circle-check text-emerald-500"></i> KYC Verified</span><i class="fa-solid fa-check text-emerald-500"></i></div>
-                                        <div class="flex items-center justify-between text-xs"><span class="flex items-center gap-2 font-semibold text-slate-600"><i class="fa-solid fa-circle-check text-emerald-500"></i> Documents Uploaded</span><i class="fa-solid fa-check text-emerald-500"></i></div>
-                                        <div class="flex items-center justify-between text-xs"><span class="flex items-center gap-2 font-semibold text-slate-600"><i class="fa-solid fa-circle-check text-emerald-500"></i> Video / Audio Submitted</span><i class="fa-solid fa-check text-emerald-500"></i></div>
-                                    </div>
-                                    <div class="border-t border-slate-100 pt-3">
-                                        <div class="flex items-start gap-2 text-xs bg-amber-50/60 p-2 rounded-lg text-amber-800 border border-amber-100">
-                                            <i class="fa-solid fa-triangle-exclamation text-brand-orange mt-0.5"></i>
-                                            <div><p class="font-bold text-[11px]">Additional Information Requested</p><p class="text-[9px] text-slate-500 mt-0.5">Last Updated: 2 days ago</p></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Company Overview + Side Widgets -->
-                            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                                <div class="lg:col-span-2 space-y-6">
-                                    <!-- Company Overview Card -->
-                                    <div class="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-sm space-y-4">
-                                        <h4 class="font-bold text-sm text-slate-900 border-b border-slate-50 pb-2">Company Overview</h4>
-                                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                            <div class="md:col-span-1 space-y-3 text-xs">
-                                                <div class="border-b border-slate-50 pb-2"><span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">Company Name</span><span class="font-bold text-slate-800" id="overview-card-name">TechVenture Solutions</span></div>
-                                                <div class="border-b border-slate-50 pb-2"><span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">Industry</span><span class="font-semibold text-slate-700">SaaS / AI</span></div>
-                                                <div class="border-b border-slate-50 pb-2"><span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">Founded</span><span class="font-semibold text-slate-700">Jan 2024</span></div>
-                                                <div class="border-b border-slate-50 pb-2"><span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">Website</span><a href="#" class="text-brand-orange font-bold hover:underline flex items-center gap-1">www.techventure.com <i class="fa-solid fa-up-right-from-square text-[9px]"></i></a></div>
-                                            </div>
-                                            <div class="md:col-span-2 space-y-4">
-                                                <div><span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider block mb-1">About the Company</span><p class="text-xs text-slate-600 leading-relaxed" id="overview-card-about">TechVenture Solutions is revolutionizing the customer service industry with state-of-the-art AI. Our proprietary engine allows brands to automate up to 70% of support tickets.</p></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- Key Highlights -->
-                                    <div class="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-sm space-y-4">
-                                        <h4 class="font-bold text-sm text-slate-900">Key Highlights</h4>
-                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                            <div class="bg-slate-50 p-4 rounded-xl"><h5 class="text-xs font-bold text-slate-800">Annual Recurring Revenue</h5><p class="text-lg font-extrabold text-slate-900 mt-1">₹2.40 Cr</p><p class="text-[10px] text-emerald-600 font-bold mt-1"><i class="fa-solid fa-caret-up"></i> 28% YoY</p></div>
-                                            <div class="bg-slate-50 p-4 rounded-xl"><h5 class="text-xs font-bold text-slate-800">Enterprise Clients</h5><p class="text-lg font-extrabold text-slate-900 mt-1">42</p><p class="text-[10px] text-emerald-600 font-bold mt-1"><i class="fa-solid fa-caret-up"></i> 15% vs last quarter</p></div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Right Side Widgets -->
-                                <div class="space-y-6">
-                                    <!-- Onboarding Status -->
-                                    <div class="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-sm space-y-4">
-                                        <div class="flex justify-between items-center border-b border-slate-50 pb-2"><span class="text-slate-400 text-[10px] uppercase font-extrabold tracking-wider">Onboarding Status</span></div>
-                                        <div class="space-y-2 text-xs">
-                                            <div class="flex justify-between font-semibold text-slate-700"><span>Profile Created</span><span class="text-slate-400">21 Apr 2025</span></div>
-                                            <div class="flex justify-between font-semibold text-slate-700"><span>Auto Approved</span><span class="text-slate-400">21 Apr 2025</span></div>
-                                            <div class="flex justify-between font-semibold text-slate-700"><span>Documents Submitted</span><span class="text-slate-400">21 Apr 2025</span></div>
-                                            <div class="flex justify-between font-bold text-slate-800 border-t border-slate-50 pt-2"><span>Last Activity</span><span class="text-brand-orange">2 hours ago</span></div>
-                                        </div>
-                                    </div>
-                                    <!-- Engagement Overview -->
-                                    <div class="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-sm space-y-4">
-                                        <span class="text-slate-400 text-[10px] uppercase font-extrabold tracking-wider block border-b border-slate-50 pb-2">Engagement Overview</span>
-                                        <div class="space-y-3 text-xs">
-                                            <div class="flex justify-between items-center text-slate-600"><span class="flex items-center gap-2"><i class="fa-regular fa-comment text-slate-400"></i> Messages Sent</span><span class="font-bold text-slate-800">3</span></div>
-                                            <div class="flex justify-between items-center text-slate-600"><span class="flex items-center gap-2"><i class="fa-regular fa-circle-question text-slate-400"></i> Info Requested</span><span class="font-bold text-slate-800">2</span></div>
-                                            <div class="flex justify-between items-center text-slate-600"><span class="flex items-center gap-2"><i class="fa-regular fa-circle-check text-slate-400"></i> Responses Received</span><span class="font-bold text-slate-800">1</span></div>
-                                            <div class="flex justify-between items-center border-t border-slate-50 pt-2 font-bold text-amber-800"><span class="flex items-center gap-2"><i class="fa-solid fa-triangle-exclamation text-brand-orange"></i> Pending Actions</span><span class="text-brand-orange">2</span></div>
-                                        </div>
-                                    </div>
-                                    <!-- Pitch Deck -->
-                                    <div class="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-sm space-y-3">
-                                        <div class="flex justify-between items-center text-slate-400 text-[10px] uppercase font-extrabold tracking-wider"><span>Pitch Deck Materials</span></div>
-                                        <div class="space-y-2">
-                                            <div class="flex items-center justify-between p-2.5 bg-slate-50 rounded-xl border border-slate-100"><div class="flex items-center gap-2.5 min-w-0"><i class="fa-solid fa-file-pdf text-red-500"></i><span class="text-xs font-bold text-slate-700 truncate">Series_B_Pitch_Deck.pdf</span></div><button class="text-brand-orange hover:text-brand-orangeHover text-[10px] font-bold"><i class="fa-solid fa-download"></i></button></div>
-                                            <div class="flex items-center justify-between p-2.5 bg-slate-50 rounded-xl border border-slate-100"><div class="flex items-center gap-2.5 min-w-0"><i class="fa-solid fa-file-excel text-emerald-600"></i><span class="text-xs font-bold text-slate-700 truncate">Financial_Model_v3.xlsx</span></div><button class="text-brand-orange hover:text-brand-orangeHover text-[10px] font-bold"><i class="fa-solid fa-download"></i></button></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- FINANCIALS TAB -->
-                        <div id="details-panel-Financials" class="hidden bg-white rounded-2xl border border-slate-200 p-6 space-y-4">
-                            <h4 class="font-bold text-sm text-slate-900">Financial Performance Dashboard</h4>
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <div class="bg-slate-50 p-4 rounded-xl space-y-1"><span class="text-[10px] text-slate-400 uppercase font-bold">Revenue (FY25)</span><p class="text-xl font-extrabold text-slate-900">₹2.40 Cr</p></div>
-                                <div class="bg-slate-50 p-4 rounded-xl space-y-1"><span class="text-[10px] text-slate-400 uppercase font-bold">EBITDA Margin</span><p class="text-xl font-extrabold text-slate-900">22%</p></div>
-                                <div class="bg-slate-50 p-4 rounded-xl space-y-1"><span class="text-[10px] text-slate-400 uppercase font-bold">Burn Rate</span><p class="text-xl font-extrabold text-slate-900">₹18L/mo</p></div>
-                            </div>
-                        </div>
-
-                        <!-- FUNDING ASK TAB -->
-                        <div id="details-panel-Funding-Ask" class="hidden bg-white rounded-2xl border border-slate-200 p-6 space-y-4">
-                            <h4 class="font-bold text-sm text-slate-900">Capital Sourcing Allocation Matrix</h4>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div class="bg-slate-50 p-4 rounded-xl space-y-2">
-                                    <h5 class="text-xs font-bold text-slate-800 uppercase">Use of Sourced Funds</h5>
-                                    <ul class="space-y-1 text-xs text-slate-600">
-                                        <li>• 45% AI Core Algorithm Sourcing R&D</li>
-                                        <li>• 30% Enterprise Customer Acquisition Sales</li>
-                                        <li>• 15% Platform Infrastructure & Security Operations</li>
-                                        <li>• 10% Talent desk Expansion & Working Capital</li>
-                                    </ul>
-                                </div>
-                                <div class="bg-slate-50 p-4 rounded-xl space-y-2">
-                                    <h5 class="text-xs font-bold text-slate-800 uppercase">Current Committed Allocations</h5>
-                                    <p class="text-xs text-slate-600">Lead commitments secured from institutional VC funds totals <span class="font-bold text-slate-800">₹2.00 Cr</span> of the planned ₹5.00 Cr round.</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- TEAM TAB -->
-                        <div id="details-panel-Team" class="hidden bg-white rounded-2xl border border-slate-200 p-6 space-y-4">
-                            <h4 class="font-bold text-sm text-slate-900">Advisory Executive Board</h4>
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <div class="p-4 bg-slate-50 rounded-xl space-y-2"><div class="w-10 h-10 rounded-lg bg-indigo-50 text-brand-orange font-bold flex items-center justify-center text-xs">SM</div><div><h5 class="font-bold text-xs text-slate-800">Dr. Srinivas Murthy</h5><p class="text-[10px] text-slate-400">Chief Science Officer (Founder)</p></div></div>
-                                <div class="p-4 bg-slate-50 rounded-xl space-y-2"><div class="w-10 h-10 rounded-lg bg-purple-50 text-purple-600 font-bold flex items-center justify-center text-xs">AK</div><div><h5 class="font-bold text-xs text-slate-800">Akshara Kumar</h5><p class="text-[10px] text-slate-400">Head of Sourced Operations</p></div></div>
-                                <div class="p-4 bg-slate-50 rounded-xl space-y-2"><div class="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-600 font-bold flex items-center justify-center text-xs">PT</div><div><h5 class="font-bold text-xs text-slate-800">Pranav Trivedi</h5><p class="text-[10px] text-slate-400">Executive Advisor Partner</p></div></div>
-                            </div>
-                        </div>
-
-                        <!-- DOCUMENTS TAB -->
-                        <div id="details-panel-Documents" class="hidden bg-white rounded-2xl border border-slate-200 p-6 space-y-4">
-                            <h4 class="font-bold text-sm text-slate-900">Virtual Data Room Shared Diligence Checklist</h4>
+                        <!-- ═══════════════════════════════════════════ -->
+                        <!-- ADVISOR SECTIONS                         -->
+                        <!-- ═══════════════════════════════════════════ -->
+                        <div data-entities="Advisor" class="bg-white rounded-2xl border border-slate-100/60 p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)] space-y-5">
+                            <h4 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2.5 flex items-center gap-2"><i data-lucide="building" class="w-4 h-4 text-brand-orange"></i> Assigned Companies</h4>
                             <div class="space-y-2">
-                                <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl"><span class="text-xs font-semibold text-slate-700"><i class="fa-solid fa-circle-check text-emerald-500 mr-2"></i>Certificate of Incorporation</span><span class="text-[10px] text-emerald-600 font-bold">Verified</span></div>
-                                <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl"><span class="text-xs font-semibold text-slate-700"><i class="fa-solid fa-circle-check text-emerald-500 mr-2"></i>Audited Financials (FY24-25)</span><span class="text-[10px] text-emerald-600 font-bold">Verified</span></div>
-                                <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl"><span class="text-xs font-semibold text-slate-700"><i class="fa-solid fa-circle-check text-emerald-500 mr-2"></i>IP Assignment Deeds</span><span class="text-[10px] text-emerald-600 font-bold">Verified</span></div>
-                                <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl"><span class="text-xs font-semibold text-slate-700"><i class="fa-solid fa-circle-exclamation text-amber-500 mr-2"></i>Shareholder Agreements</span><span class="text-[10px] text-amber-600 font-bold">Pending</span></div>
+                                <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl"><div class="flex items-center gap-3"><div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 font-bold flex items-center justify-center text-[10px]">TS</div><span class="text-xs font-bold text-slate-700">TechVenture Solutions</span></div><span class="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">Active</span></div>
+                                <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl"><div class="flex items-center gap-3"><div class="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 font-bold flex items-center justify-center text-[10px]">MA</div><span class="text-xs font-bold text-slate-700">Mittal Asset Holdings</span></div><span class="text-[10px] font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full">On Hold</span></div>
+                                <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl"><div class="flex items-center gap-3"><div class="w-8 h-8 rounded-lg bg-purple-50 text-purple-600 font-bold flex items-center justify-center text-[10px]">HE</div><span class="text-xs font-bold text-slate-700">Hindustan Enterprises</span></div><span class="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">Active</span></div>
                             </div>
                         </div>
 
-                        <!-- MARKET OPPORTUNITY TAB -->
-                        <div id="details-panel-Market-Opportunity" class="hidden bg-white rounded-2xl border border-slate-200 p-6 space-y-4">
-                            <h4 class="font-bold text-sm text-slate-900">Market & Competitive Landscape</h4>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div class="bg-slate-50 p-4 rounded-xl"><h5 class="text-xs font-bold text-slate-800">TAM (Total Addressable Market)</h5><p class="text-lg font-extrabold text-slate-900 mt-1">$48B</p></div>
-                                <div class="bg-slate-50 p-4 rounded-xl"><h5 class="text-xs font-bold text-slate-800">SOM (Serviceable Obtainable)</h5><p class="text-lg font-extrabold text-slate-900 mt-1">$2.4B</p></div>
+                        <div data-entities="Advisor" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="bg-white rounded-2xl border border-slate-100/60 p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)] space-y-5">
+                                <h4 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2.5 flex items-center gap-2"><i data-lucide="briefcase" class="w-4 h-4 text-brand-orange"></i> Active Deals</h4>
+                                <div class="space-y-3">
+                                    <div class="flex justify-between items-center"><span class="text-xs font-bold text-slate-700">Equity — Series A (TechVenture)</span><span class="text-[10px] text-brand-orange font-bold">₹5 Cr</span></div>
+                                    <div class="w-full bg-slate-100 rounded-full h-1.5"><div class="bg-brand-orange h-1.5 rounded-full" style="width:65%"></div></div>
+                                    <div class="flex justify-between items-center"><span class="text-xs font-bold text-slate-700">M&A — Pinnacle Corp</span><span class="text-[10px] text-brand-orange font-bold">₹210 Cr</span></div>
+                                    <div class="w-full bg-slate-100 rounded-full h-1.5"><div class="bg-brand-orange h-1.5 rounded-full" style="width:40%"></div></div>
+                                </div>
                             </div>
-                        </div>
-
-                        <!-- COMMUNICATIONS TAB -->
-                        <div id="details-panel-Communications" class="hidden bg-white rounded-2xl border border-slate-200 p-6 space-y-4">
-                            <h4 class="font-bold text-sm text-slate-900">Admin Sourcing Communication Log</h4>
-                            <div class="space-y-3">
-                                <div class="p-3 bg-slate-50 rounded-xl text-xs space-y-1 border border-slate-100">
-                                    <div class="flex justify-between font-bold text-slate-800"><span>Series A Intro Sourcing Mail</span><span class="text-slate-400 text-[10px]">Yesterday</span></div>
-                                    <p class="text-slate-500">Auto-matched with Sequoia Capital representative Sarah Chen. Verification check successful.</p>
+                            <div class="bg-white rounded-2xl border border-slate-100/60 p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)] space-y-5">
+                                <h4 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2.5 flex items-center gap-2"><i data-lucide="trending-up" class="w-4 h-4 text-brand-orange"></i> Performance Metrics</h4>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div class="bg-slate-50 p-4 rounded-xl text-center"><p class="text-2xl font-extrabold text-slate-900 ">12</p><span class="text-[11px] text-slate-400 uppercase font-bold">Deals Closed</span></div>
+                                    <div class="bg-slate-50 p-4 rounded-xl text-center"><p class="text-2xl font-extrabold text-emerald-600">87%</p><span class="text-[11px] text-slate-400 uppercase font-bold">Success Rate</span></div>
+                                    <div class="bg-slate-50 p-4 rounded-xl text-center"><p class="text-2xl font-extrabold text-slate-900 ">₹340 Cr</p><span class="text-[11px] text-slate-400 uppercase font-bold">Total Value</span></div>
+                                    <div class="bg-slate-50 p-4 rounded-xl text-center"><p class="text-2xl font-extrabold text-slate-900 ">4.8 ★</p><span class="text-[11px] text-slate-400 uppercase font-bold">Client Rating</span></div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- NOTES TAB -->
-                        <div id="details-panel-Notes" class="hidden bg-white rounded-2xl border border-slate-200 p-6 space-y-4">
-                            <h4 class="font-bold text-sm text-slate-900">Super Admin Advisory Notes</h4>
-                            <p class="text-xs text-slate-400">Keep private records or notes about this portfolio profile. Notes are securely stored locally.</p>
-                            <textarea id="company-note-textarea" rows="4" class="w-full text-xs p-3 border border-slate-200 rounded-xl focus:outline-none focus:border-brand-orange" placeholder="Type deal notes or milestones..."></textarea>
-                            <div class="flex justify-end">
-                                <button onclick="saveCompanyNote()" class="bg-brand-orange hover:bg-brand-orangeHover text-white text-xs font-bold px-4 py-2.5 rounded-lg shadow-sm transition">Save Note</button>
+                        <!-- ═══════════════════════════════════════════ -->
+                        <!-- PARTNER SECTIONS                         -->
+                        <!-- ═══════════════════════════════════════════ -->
+                        <div data-entities="Partner" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="bg-white rounded-2xl border border-slate-100/60 p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)] space-y-5">
+                                <h4 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2.5 flex items-center gap-2"><i data-lucide="arrow-left-right" class="w-4 h-4 text-brand-orange"></i> Referral Activity</h4>
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div class="bg-slate-50 p-3 rounded-xl text-center"><p class="text-xl font-extrabold text-slate-900 ">24</p><span class="text-[10px] text-slate-400 uppercase font-bold">Referrals Sent</span></div>
+                                    <div class="bg-slate-50 p-3 rounded-xl text-center"><p class="text-xl font-extrabold text-emerald-600">8</p><span class="text-[10px] text-slate-400 uppercase font-bold">Converted</span></div>
+                                    <div class="bg-slate-50 p-3 rounded-xl text-center"><p class="text-xl font-extrabold text-slate-900 ">6</p><span class="text-[10px] text-slate-400 uppercase font-bold">In Progress</span></div>
+                                    <div class="bg-slate-50 p-3 rounded-xl text-center"><p class="text-xl font-extrabold text-amber-600">33%</p><span class="text-[10px] text-slate-400 uppercase font-bold">Conversion Rate</span></div>
+                                </div>
+                            </div>
+                            <div class="bg-white rounded-2xl border border-slate-100/60 p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)] space-y-5">
+                                <h4 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2.5 flex items-center gap-2"><i data-lucide="handshake" class="w-4 h-4 text-brand-orange"></i> Introductions Made</h4>
+                                <div class="space-y-2">
+                                    <div class="flex justify-between items-center p-2.5 bg-slate-50 rounded-lg text-xs"><span class="font-bold text-slate-700">Investor ← Investee</span><span class="text-slate-500">4 intros</span></div>
+                                    <div class="flex justify-between items-center p-2.5 bg-slate-50 rounded-lg text-xs"><span class="font-bold text-slate-700">Buyer ← Seller</span><span class="text-slate-500">2 intros</span></div>
+                                    <div class="flex justify-between items-center p-2.5 bg-slate-50 rounded-lg text-xs"><span class="font-bold text-slate-700">Advisor ← Investee</span><span class="text-slate-500">3 intros</span></div>
+                                </div>
                             </div>
                         </div>
 
-                    </div>
+                        <div data-entities="Partner" class="bg-white rounded-2xl border border-slate-100/60 p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)] space-y-5">
+                            <h4 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2.5 flex items-center gap-2"><i data-lucide="star" class="w-4 h-4 text-brand-orange"></i> Partner Performance</h4>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                <div class="bg-slate-50 p-4 rounded-xl text-center"><p class="text-xl font-extrabold text-slate-900 ">18</p><span class="text-[10px] text-slate-400 uppercase font-bold">Total Deals</span></div>
+                                <div class="bg-slate-50 p-4 rounded-xl text-center"><p class="text-xl font-extrabold text-emerald-600">₹52 Cr</p><span class="text-[10px] text-slate-400 uppercase font-bold">Pipeline Value</span></div>
+                                <div class="bg-slate-50 p-4 rounded-xl text-center"><p class="text-xl font-extrabold text-slate-900 ">4.6 ★</p><span class="text-[10px] text-slate-400 uppercase font-bold">Rating</span></div>
+                                <div class="bg-slate-50 p-4 rounded-xl text-center"><p class="text-xl font-extrabold text-slate-900 ">2022</p><span class="text-[10px] text-slate-400 uppercase font-bold">Partner Since</span></div>
+                            </div>
+                        </div>
+
+                        <!-- ═══════════════════════════════════════════ -->
+                        <!-- SME SECTIONS                             -->
+                        <!-- ═══════════════════════════════════════════ -->
+                        <div data-entities="SME" class="bg-white rounded-2xl border border-slate-100/60 p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)] space-y-5">
+                            <h4 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2.5 flex items-center gap-2"><i data-lucide="lightbulb" class="w-4 h-4 text-brand-orange"></i> Expertise Areas</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="text-xs font-bold text-slate-700 bg-slate-100 px-3 py-1.5 rounded-lg">Valuation Modeling</span>
+                                <span class="text-xs font-bold text-slate-700 bg-slate-100 px-3 py-1.5 rounded-lg">SaaS Metrics</span>
+                                <span class="text-xs font-bold text-slate-700 bg-slate-100 px-3 py-1.5 rounded-lg">M&A Due Diligence</span>
+                                <span class="text-xs font-bold text-slate-700 bg-slate-100 px-3 py-1.5 rounded-lg">Financial Modeling</span>
+                                <span class="text-xs font-bold text-slate-700 bg-slate-100 px-3 py-1.5 rounded-lg">Regulatory Compliance</span>
+                                <span class="text-xs font-bold text-slate-700 bg-slate-100 px-3 py-1.5 rounded-lg">IPO Readiness</span>
+                            </div>
+                        </div>
+
+                        <div data-entities="SME" class="bg-white rounded-2xl border border-slate-100/60 p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)] space-y-5">
+                            <h4 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2.5 flex items-center gap-2"><i data-lucide="clipboard-list" class="w-4 h-4 text-brand-orange"></i> Assigned Engagements</h4>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-xs">
+                                    <thead>
+                                        <tr class="text-slate-400 uppercase text-[10px] tracking-wider border-b border-slate-100">
+                                            <th class="text-left pb-2 font-bold">Engagement</th><th class="text-left pb-2 font-bold">Company</th><th class="text-left pb-2 font-bold">Role</th><th class="text-right pb-2 font-bold">Hours</th><th class="text-center pb-2 font-bold">Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-slate-50">
+                                        <tr><td class="py-2.5 font-bold text-slate-700">Financial Model Review</td><td class="py-2.5 text-slate-600">TechVenture Solutions</td><td class="py-2.5 text-slate-600">Lead SME</td><td class="py-2.5 text-right text-slate-500">12h</td><td class="py-2.5 text-center"><span class="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">Active</span></td></tr>
+                                        <tr><td class="py-2.5 font-bold text-slate-700">Valuation Advisory</td><td class="py-2.5 text-slate-600">Pinnacle Corp</td><td class="py-2.5 text-slate-600">Reviewer</td><td class="py-2.5 text-right text-slate-500">8h</td><td class="py-2.5 text-center"><span class="text-[10px] font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full">Pending</span></td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div data-entities="SME" class="bg-white rounded-2xl border border-slate-100/60 p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)] space-y-5">
+                            <h4 class="text-sm font-bold text-slate-900 border-b border-slate-100 pb-2.5 flex items-center gap-2"><i data-lucide="clock" class="w-4 h-4 text-brand-orange"></i> Availability</h4>
+                            <div class="flex items-center gap-4">
+                                <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-emerald-500"></span><span class="text-xs font-bold text-slate-700">Available for new engagements</span></div>
+                                <span class="text-[10px] text-slate-400">Capacity: 15 hrs/week — Current load: 12 hrs</span>
+                            </div>
+                            <div class="w-full bg-slate-100 rounded-full h-2"><div class="bg-emerald-500 h-2 rounded-full" style="width:80%"></div></div>
+                            <p class="text-[10px] text-slate-400 text-right">80% utilized — 3 hrs/week available</p>
+                        </div>
+
+                    </div><!-- /Overview Tab -->
+
+                    <!-- ════════════════════════════════════════════════════ -->
+                    <!-- TAB: DOCUMENTS                                    -->
+                    <!-- ════════════════════════════════════════════════════ -->
+                    <div id="details-panel-Documents" class="hidden space-y-5">
+                        <div class="bg-white rounded-2xl border border-slate-100/60 p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)] space-y-5">
+                            <div class="flex items-center justify-between">
+                                <h4 class="text-sm font-bold text-slate-900 ">All Documents</h4>
+                                <button onclick="simulateAction('upload')" class="bg-brand-orange hover:bg-brand-orangeHover text-white text-xs font-bold px-3 py-1.5 rounded-lg transition flex items-center gap-2"><i data-lucide="plus" class="w-3.5 h-3.5"></i> Upload</button>
+                            </div>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-xs">
+                                    <thead>
+                                        <tr class="text-slate-400 uppercase text-[10px] tracking-wider border-b border-slate-100">
+                                            <th class="text-left pb-2 font-bold">Document Name</th>
+                                            <th class="text-left pb-2 font-bold">Category</th>
+                                            <th class="text-left pb-2 font-bold">Uploaded</th>
+                                            <th class="text-right pb-2 font-bold">Size</th>
+                                            <th class="text-center pb-2 font-bold">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-slate-50">
+                                        <tr>
+                                            <td class="py-2.5 font-bold text-slate-700"><i data-lucide="file-text" class="w-3.5 h-3.5 text-red-500 inline mr-2"></i>Pitch_Deck_v5.pdf</td>
+                                            <td class="py-2.5 text-slate-500">Pitch Materials</td>
+                                            <td class="py-2.5 text-slate-500">05 Jun 2026</td>
+                                            <td class="py-2.5 text-right text-slate-500">4.2 MB</td>
+                                            <td class="py-2.5 text-center space-x-2"><button class="text-brand-orange hover:text-brand-orangeHover text-[10px] font-bold"><i data-lucide="download" class="w-3.5 h-3.5"></i></button><button class="text-slate-400 hover:text-red-500 text-[10px]"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-2.5 font-bold text-slate-700"><i data-lucide="file-spreadsheet" class="w-3.5 h-3.5 text-emerald-600 inline mr-2"></i>Financial_Model_v3.xlsx</td>
+                                            <td class="py-2.5 text-slate-500">Financials</td>
+                                            <td class="py-2.5 text-slate-500">01 Jun 2026</td>
+                                            <td class="py-2.5 text-right text-slate-500">1.8 MB</td>
+                                            <td class="py-2.5 text-center space-x-2"><button class="text-brand-orange hover:text-brand-orangeHover text-[10px] font-bold"><i data-lucide="download" class="w-3.5 h-3.5"></i></button><button class="text-slate-400 hover:text-red-500 text-[10px]"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-2.5 font-bold text-slate-700"><i data-lucide="image" class="w-3.5 h-3.5 text-blue-500 inline mr-2"></i>KYC_PAN_Card.jpg</td>
+                                            <td class="py-2.5 text-slate-500">KYC Documents</td>
+                                            <td class="py-2.5 text-slate-500">28 May 2026</td>
+                                            <td class="py-2.5 text-right text-slate-500">0.8 MB</td>
+                                            <td class="py-2.5 text-center space-x-2"><button class="text-brand-orange hover:text-brand-orangeHover text-[10px] font-bold"><i data-lucide="download" class="w-3.5 h-3.5"></i></button><button class="text-slate-400 hover:text-red-500 text-[10px]"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div><!-- /Documents Tab -->
+
+                    <!-- ════════════════════════════════════════════════════ -->
+                    <!-- TAB: TIMELINE                                     -->
+                    <!-- ════════════════════════════════════════════════════ -->
+                    <div id="details-panel-Timeline" class="hidden space-y-5">
+                        <div class="bg-white rounded-2xl border border-slate-100/60 p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)] space-y-5">
+                            <h4 class="text-sm font-bold text-slate-900 ">Activity Timeline</h4>
+                            <div class="space-y-0 pl-4 border-l-2 border-slate-100">
+                                <div class="relative pb-5">
+                                    <div class="absolute -left-[21px] w-3 h-3 rounded-full bg-brand-orange border-2 border-white"></div>
+                                    <p class="text-xs font-bold text-slate-700">PQR Generated</p><p class="text-[10px] text-slate-500">08 Jun 2026 — Profile Quality Report completed with score 87/100.</p>
+                                </div>
+                                <div class="relative pb-5">
+                                    <div class="absolute -left-[21px] w-3 h-3 rounded-full bg-blue-500 border-2 border-white"></div>
+                                    <p class="text-xs font-bold text-slate-700">Documents Uploaded</p><p class="text-[10px] text-slate-500">05 Jun 2026 — Pitch deck v5 and updated financial model uploaded.</p>
+                                </div>
+                                <div class="relative pb-5">
+                                    <div class="absolute -left-[21px] w-3 h-3 rounded-full bg-emerald-500 border-2 border-white"></div>
+                                    <p class="text-xs font-bold text-slate-700">Introductory Call — Investor Match</p><p class="text-[10px] text-slate-500">02 Jun 2026 — 30-min call scheduled with Sequoia Capital India.</p>
+                                </div>
+                                <div class="relative pb-5">
+                                    <div class="absolute -left-[21px] w-3 h-3 rounded-full bg-amber-500 border-2 border-white"></div>
+                                    <p class="text-xs font-bold text-slate-700">KYC Initiated</p><p class="text-[10px] text-slate-500">28 May 2026 — KYC document collection started.</p>
+                                </div>
+                                <div class="relative">
+                                    <div class="absolute -left-[21px] w-3 h-3 rounded-full bg-slate-300 border-2 border-white"></div>
+                                    <p class="text-xs font-bold text-slate-700">Profile Created</p><p class="text-[10px] text-slate-500">Company profile registered in Charantra CRM</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- /Timeline Tab -->
+
+                    <!-- ════════════════════════════════════════════════════ -->
+                    <!-- TAB: COMMUNICATIONS                               -->
+                    <!-- ════════════════════════════════════════════════════ -->
+                    <div id="details-panel-Communications" class="hidden space-y-5">
+                        <div class="bg-white rounded-2xl border border-slate-100/60 p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)] space-y-5">
+                            <div class="flex items-center justify-between">
+                                <h4 class="text-sm font-bold text-slate-900 ">Communications Log</h4>
+                                <button onclick="simulateAction('compose')" class="bg-brand-orange hover:bg-brand-orangeHover text-white text-xs font-bold px-3 py-1.5 rounded-lg transition flex items-center gap-2"><i data-lucide="pen-line" class="w-3.5 h-3.5"></i> Compose</button>
+                            </div>
+                            <div class="space-y-3">
+                                <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
+                                    <div class="flex justify-between items-start mb-1">
+                                        <span class="text-xs font-bold text-slate-800">Follow-up on PQR Review</span>
+                                        <span class="text-[10px] text-slate-400">09 Jun 2026</span>
+                                    </div>
+                                    <p class="text-[10px] text-slate-500 mb-1.5">Sent follow-up email requesting updated cap table with ESOP pool details.</p>
+                                    <span class="text-[9px] font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full">Awaiting Response</span>
+                                </div>
+                                <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
+                                    <div class="flex justify-between items-start mb-1">
+                                        <span class="text-xs font-bold text-slate-800">KYC Document Request</span>
+                                        <span class="text-[10px] text-slate-400">05 Jun 2026</span>
+                                    </div>
+                                    <p class="text-[10px] text-slate-500 mb-1.5">Requested PAN, GST registration, and board resolution for KYC verification.</p>
+                                    <span class="text-[9px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">Resolved</span>
+                                </div>
+                                <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
+                                    <div class="flex justify-between items-start mb-1">
+                                        <span class="text-xs font-bold text-slate-800">Introductory Call — Investor Match</span>
+                                        <span class="text-[10px] text-slate-400">02 Jun 2026</span>
+                                    </div>
+                                    <p class="text-[10px] text-slate-500 mb-1.5">30-min intro call scheduled with Sequoia Capital India for potential Series A investment discussion.</p>
+                                    <span class="text-[9px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">Completed</span>
+                                </div>
+                                <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
+                                    <div class="flex justify-between items-start mb-1">
+                                        <span class="text-xs font-bold text-slate-800">Welcome & Onboarding</span>
+                                        <span class="text-[10px] text-slate-400">01 Jun 2026</span>
+                                    </div>
+                                    <p class="text-[10px] text-slate-500 mb-1.5">Welcome email sent with platform onboarding guide and document checklist.</p>
+                                    <span class="text-[9px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">Completed</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- /Communications Tab -->
+
+                    <!-- ============================================================ -->
+                    <!-- TAB: CONTACTS (shared)                               -->
+                    <!-- ============================================================ -->
+                    <div id="details-panel-Contacts" class="hidden space-y-6">
+                        <div class="bg-white rounded-2xl border border-slate-100/60 p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)] space-y-5">
+                            <div class="flex items-center justify-between">
+                                <h4 class="text-sm font-bold text-slate-900 ">Key Contacts</h4>
+                                <button class="bg-brand-orange hover:bg-brand-orangeHover text-white text-xs font-bold px-3 py-1.5 rounded-lg transition flex items-center gap-2"><i data-lucide="plus" class="w-3.5 h-3.5"></i> Add Contact</button>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="flex items-start gap-4 p-4 border border-slate-100 rounded-xl hover:border-slate-200 transition">
+                                    <div class="w-10 h-10 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold text-sm shrink-0">RK</div>
+                                    <div class="flex-1 min-w-0"><p class="text-sm font-bold text-slate-800">Rajesh Kumar</p><p class="text-[10px] text-slate-400">Managing Partner</p><p class="text-[10px] text-brand-orange font-bold mt-1">rajesh@sequoiacap.com</p><p class="text-[10px] text-slate-500">+91 98765 43210</p></div>
+                                </div>
+                                <div class="flex items-start gap-4 p-4 border border-slate-100 rounded-xl hover:border-slate-200 transition">
+                                    <div class="w-10 h-10 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center font-bold text-sm shrink-0">PS</div>
+                                    <div class="flex-1 min-w-0"><p class="text-sm font-bold text-slate-800">Priya Singh</p><p class="text-[10px] text-slate-400">Investment Director</p><p class="text-[10px] text-brand-orange font-bold mt-1">priya@sequoiacap.com</p><p class="text-[10px] text-slate-500">+91 87654 32109</p></div>
+                                </div>
+                                <div class="flex items-start gap-4 p-4 border border-slate-100 rounded-xl hover:border-slate-200 transition">
+                                    <div class="w-10 h-10 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center font-bold text-sm shrink-0">AM</div>
+                                    <div class="flex-1 min-w-0"><p class="text-sm font-bold text-slate-800">Arjun Mehta</p><p class="text-[10px] text-slate-400">CFO</p><p class="text-[10px] text-brand-orange font-bold mt-1">arjun@techventure.com</p><p class="text-[10px] text-slate-500">+91 76543 21098</p></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- /Contacts Tab -->
+
+                    <!-- ============================================================ -->
+                    <!-- TAB: INTERNAL NOTES (shared)                         -->
+                    <!-- ============================================================ -->
+                    <div id="details-panel-Notes" class="hidden space-y-6">
+                        <div class="bg-white rounded-2xl border border-slate-100/60 p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)] space-y-5">
+                            <div class="flex items-center justify-between">
+                                <h4 class="text-sm font-bold text-slate-900 ">Internal Notes</h4>
+                                <button class="bg-brand-orange hover:bg-brand-orangeHover text-white text-xs font-bold px-3 py-1.5 rounded-lg transition flex items-center gap-2"><i data-lucide="plus" class="w-3.5 h-3.5"></i> Add Note</button>
+                            </div>
+                            <div class="space-y-4">
+                                <div class="p-4 bg-amber-50 border border-amber-100 rounded-xl">
+                                    <div class="flex justify-between items-start mb-1"><span class="text-xs font-bold text-slate-800">Due Diligence Follow-up</span><span class="text-[10px] text-slate-400">09 Jun 2026, 2:30 PM -- Karthik (Admin)</span></div>
+                                    <p class="text-[11px] text-slate-600">Need updated cap table with ESOP pool details before next investor call. Sarah mentioned she will share by 15 Jun.</p>
+                                    <div class="flex items-center gap-2 mt-2"><span class="text-[9px] font-bold text-amber-600 bg-amber-100 px-2 py-0.5 rounded-full">Pending</span><span class="text-[9px] text-slate-400">Flagged for weekly review</span></div>
+                                </div>
+                                <div class="p-4 bg-slate-50 border border-slate-100 rounded-xl">
+                                    <div class="flex justify-between items-start mb-1"><span class="text-xs font-bold text-slate-800">Investor Match Strategy</span><span class="text-[10px] text-slate-400">05 Jun 2026, 11:00 AM -- Priya (Analyst)</span></div>
+                                    <p class="text-[11px] text-slate-600">Top 3 investor matches: Sequoia (warm intro via IndusLaw), Accel (cold outreach), Lightspeed (via AKM Global). Prioritize Sequoia given existing relationship.</p>
+                                    <span class="text-[9px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full mt-2 inline-block">Actioned</span>
+                                </div>
+                                <div class="p-4 bg-slate-50 border border-slate-100 rounded-xl">
+                                    <div class="flex justify-between items-start mb-1"><span class="text-xs font-bold text-slate-800">KYC Verification Notes</span><span class="text-[10px] text-slate-400">01 Jun 2026, 3:45 PM -- Karthik (Admin)</span></div>
+                                    <p class="text-[11px] text-slate-600">All documents verified. PAN, GST, and board resolution are clean. No adverse findings. MCA records match submitted documents.</p>
+                                    <span class="text-[9px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full mt-2 inline-block">Verified</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- /Internal Notes Tab -->
+
                 </section>
             </div>
         </main>
     </div>
 
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- SCRIPTS                                                        -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
     <script>
         function toggleDropdown(id) { const el = document.getElementById(id); if(el) el.classList.toggle('hidden'); }
         function toggleTheme(){document.documentElement.classList.toggle('dark');const d=document.documentElement.classList.contains('dark');document.getElementById('theme-icon').className=d?'fa-solid fa-sun text-sm text-amber-400':'fa-solid fa-moon text-sm';localStorage.setItem('charantra-theme',d?'dark':'light')}
@@ -412,41 +857,67 @@
             if (arrow) arrow.style.transform = arrow.style.transform === 'rotate(180deg)' ? 'rotate(0deg)' : 'rotate(180deg)';
         }
 
-        // User database for detail lookup
+        // ── ENTITY BADGE COLOR MAP ──
+        const badgeClasses = {
+            'Investor': 'badge-Investor',
+            'Investee': 'badge-Investee',
+            'Seller': 'badge-Seller',
+            'Buyer': 'badge-Buyer',
+            'Advisor': 'badge-Advisor',
+            'Partner': 'badge-Partner',
+            'SME': 'badge-SME'
+        };
+
+        // ── EXTENDED USER DATABASE — all 7 entity types ──
         const userDb = [
-            { name: "Sequoia Capital India", email: "info@sequoiacap.com", company: "Sequoia Capital India", type: "Investor", industry: "Venture Capital", about: "Sequoia Capital India is a leading venture capital firm investing in early-stage and growth-stage companies across India and Southeast Asia. With over $6B in assets under management, they partner with founders from idea to IPO.", founded: "2000" },
-            { name: "TechVentures Fund", email: "contact@techventures.com", company: "TechVentures Fund", type: "Investor", industry: "Venture Capital / Tech", about: "TechVentures Fund is an early-stage technology investment firm focused on AI, SaaS, and fintech startups across emerging markets." },
-            { name: "TechVenture Solutions", email: "sarah@techventure.com", company: "TechVenture Solutions", type: "Investee", industry: "SaaS / AI", about: "TechVenture Solutions is revolutionizing the customer service industry with state-of-the-art AI. Our proprietary engine allows brands to automate up to 70% of support tickets.", founded: "Jan 2024" },
-            { name: "Hindustan Enterprises", email: "manda@hindustan.co.in", company: "Hindustan Corp", type: "Investee", industry: "Manufacturing / Industrial", about: "Hindustan Enterprises is a diversified industrial conglomerate with interests in manufacturing, logistics, and infrastructure development across India." },
-            { name: "Vertex Tech Partners", email: "info@vertexpartners.com", company: "Vertex Partners Ltd", type: "Buyer", industry: "Technology M&A", about: "Vertex Tech Partners specializes in technology-focused mergers and acquisitions, helping mid-market software companies find strategic buyers." },
-            { name: "Teton Group Ventures", email: "cooper@tetongroup.com", company: "Teton Ventures", type: "Buyer", industry: "Private Equity", about: "Teton Group Ventures is a private equity firm focused on acquiring and scaling enterprise software companies with $50M-$200M in revenue." },
-            { name: "Mittal Asset Holdings", email: "corp@mittalassets.in", company: "Mittal Assets", type: "Seller", industry: "Asset Management", about: "Mittal Asset Holdings manages a diverse portfolio of industrial assets and real estate holdings across India and the Middle East." },
-            { name: "Pinnacle Corp", email: "deals@pinnaclecorp.com", company: "Pinnacle Corp", type: "Seller", industry: "Enterprise Software", about: "Pinnacle Corp is an enterprise software company specializing in ERP and supply chain management solutions for Fortune 500 clients." },
+            // INVESTORS
+            { name: "Sequoia Capital India", email: "info@sequoiacap.com", company: "Sequoia Capital India", type: "Investor", industry: "Venture Capital", about: "Sequoia Capital India is a leading venture capital firm investing in early-stage and growth-stage companies across India and Southeast Asia. With over $6B in assets under management, they partner with founders from idea to IPO.", founded: "2000", status: "Active" },
+            { name: "TechVentures Fund", email: "contact@techventures.com", company: "TechVentures Fund", type: "Investor", industry: "Venture Capital / Tech", about: "TechVentures Fund is an early-stage technology investment firm focused on AI, SaaS, and fintech startups across emerging markets.", founded: "2018", status: "Active" },
+            // INVESTEES
+            { name: "TechVenture Solutions", email: "sarah@techventure.com", company: "TechVenture Solutions", type: "Investee", industry: "SaaS / AI", about: "TechVenture Solutions is revolutionizing the customer service industry with state-of-the-art AI. Our proprietary engine allows brands to automate up to 70% of support tickets.", founded: "Jan 2024", status: "Active" },
+            { name: "Hindustan Enterprises", email: "manda@hindustan.co.in", company: "Hindustan Corp", type: "Investee", industry: "Manufacturing / Industrial", about: "Hindustan Enterprises is a diversified industrial conglomerate with interests in manufacturing, logistics, and infrastructure development across India.", founded: "2015", status: "Active" },
+            // BUYERS
+            { name: "Vertex Tech Partners", email: "info@vertexpartners.com", company: "Vertex Partners Ltd", type: "Buyer", industry: "Technology M&A", about: "Vertex Tech Partners specializes in technology-focused mergers and acquisitions, helping mid-market software companies find strategic buyers.", founded: "2012", status: "Active" },
+            { name: "Teton Group Ventures", email: "cooper@tetongroup.com", company: "Teton Ventures", type: "Buyer", industry: "Private Equity", about: "Teton Group Ventures is a private equity firm focused on acquiring and scaling enterprise software companies with $50M-$200M in revenue.", founded: "2010", status: "Active" },
+            // SELLERS
+            { name: "Mittal Asset Holdings", email: "corp@mittalassets.in", company: "Mittal Assets", type: "Seller", industry: "Asset Management", about: "Mittal Asset Holdings manages a diverse portfolio of industrial assets and real estate holdings across India and the Middle East.", founded: "2008", status: "Active" },
+            { name: "Pinnacle Corp", email: "deals@pinnaclecorp.com", company: "Pinnacle Corp", type: "Seller", industry: "Enterprise Software", about: "Pinnacle Corp is an enterprise software company specializing in ERP and supply chain management solutions for Fortune 500 clients.", founded: "2014", status: "Active" },
+            // ADVISORS
+            { name: "Grant Thornton India", email: "advisory@gtindia.in", company: "Grant Thornton India LLP", type: "Advisor", industry: "Professional Services", about: "Grant Thornton India provides advisory, assurance, and tax services. Their M&A advisory practice has closed 200+ deals across sectors.", founded: "1935", status: "Active" },
+            { name: "AKM Global Advisors", email: "contact@akmglobal.com", company: "AKM Global Advisors", type: "Advisor", industry: "Investment Banking", about: "AKM Global is a boutique investment bank focused on mid-market M&A, capital raising, and strategic advisory for Indian companies.", founded: "2011", status: "Active" },
+            // PARTNERS
+            { name: "IndusLaw Partners", email: "referrals@induslaw.com", company: "IndusLaw", type: "Partner", industry: "Legal Services", about: "IndusLaw is a full-service law firm and a key referral partner for M&A, PE/VC transactions, and regulatory compliance.", founded: "2010", status: "Active" },
+            { name: "Axis Capital Partners", email: "deals@axiscap.in", company: "Axis Capital", type: "Partner", industry: "Financial Services", about: "Axis Capital Partners is a strategic referral partner providing deal origination and investor connections across India and APAC.", founded: "2006", status: "Active" },
+            // SMEs
+            { name: "Rajesh Krishnan", email: "rajesh.k@charantra.com", company: "Charantra SME Panel", type: "SME", industry: "Valuation & Financial Modeling", about: "Rajesh is a CFA charterholder with 18+ years in valuation, M&A modeling, and financial due diligence across 50+ transactions.", founded: "2008", status: "Active" },
+            { name: "Dr. Ananya Sharma", email: "ananya.s@charantra.com", company: "Charantra SME Panel", type: "SME", industry: "Regulatory & Compliance", about: "Dr. Sharma is a former SEBI officer with deep expertise in regulatory compliance, IPO readiness, and corporate governance.", founded: "2005", status: "Active" },
         ];
 
         function getUserByName(name) {
             return userDb.find(u => u.name.toLowerCase() === name.toLowerCase()) || null;
         }
 
-        // Tab switching
+        function getUserByType(type) {
+            return userDb.find(u => u.type.toLowerCase() === type.toLowerCase()) || null;
+        }
+
+        // ── Tab switching ──
         function switchDetailsTab(tabId) {
-            const tabs = ['Overview', 'Financials', 'Funding Ask', 'Team', 'Documents', 'Market Opportunity', 'Communications', 'Notes'];
+            const tabs = ['Overview', 'Contacts', 'Communications', 'Documents', 'Timeline', 'Notes'];
             tabs.forEach(t => {
-                const tabBtn = document.getElementById(`tab-${t.replace(/ /g, '-')}`);
-                const panel = document.getElementById(`details-panel-${t.replace(/ /g, '-')}`);
-                if (tabBtn) tabBtn.className = "tab-transition border-b-2 border-transparent text-slate-500 hover:text-slate-900 px-4 py-2.5 text-xs font-medium whitespace-nowrap";
+                const tabBtn = document.getElementById(`tab-${t}`);
+                const panel = document.getElementById(`details-panel-${t}`);
+                if (tabBtn) tabBtn.className = "tab-transition border-b-2 border-transparent text-slate-400 hover:text-slate-700  px-5 py-3 text-xs font-medium whitespace-nowrap flex items-center gap-2";
                 if (panel) panel.classList.add('hidden');
             });
-            const activeBtn = document.getElementById(`tab-${tabId.replace(/ /g, '-')}`);
-            if (activeBtn) activeBtn.className = "tab-transition border-b-2 border-brand-orange text-brand-orange px-4 py-2.5 text-xs font-bold whitespace-nowrap";
-            const activePanel = document.getElementById(`details-panel-${tabId.replace(/ /g, '-')}`);
+            const activeBtn = document.getElementById(`tab-${tabId}`);
+            if (activeBtn) activeBtn.className = "tab-transition border-b-2 border-brand-orange text-brand-orange px-5 py-3 text-xs font-bold whitespace-nowrap flex items-center gap-2";
+            const activePanel = document.getElementById(`details-panel-${tabId}`);
             if (activePanel) activePanel.classList.remove('hidden');
         }
 
-        function saveCompanyNote() {
-            const companyName = document.getElementById('detail-company-title').innerText;
-            const noteText = document.getElementById('company-note-textarea').value;
-            localStorage.setItem(`note_${companyName}`, noteText);
+        function simulateAction(action) {
+            console.log(`Action triggered: ${action}`);
         }
 
         function simulateSendMessage(userName) {
@@ -457,54 +928,118 @@
         function simulateMediaAction(mediaType) {
             if (mediaType === 'audio') {
                 const icon = document.getElementById('audio-control-icon');
-                if (icon.classList.contains('fa-play')) {
-                    icon.classList.remove('fa-play'); icon.classList.add('fa-pause');
-                    document.querySelectorAll('.waveform-bar').forEach(bar => bar.style.height = `${Math.floor(Math.random() * 20) + 6}px`);
-                } else {
-                    icon.classList.remove('fa-pause'); icon.classList.add('fa-play');
+                if (icon) {
+                    if (icon.getAttribute('data-lucide') === 'play') {
+                        icon.setAttribute('data-lucide', 'pause');
+                        lucide.createIcons();
+                        document.querySelectorAll('.waveform-bar').forEach(bar => bar.style.height = `${Math.floor(Math.random() * 20) + 6}px`);
+                    } else {
+                        icon.setAttribute('data-lucide', 'play');
+                        lucide.createIcons();
+                    }
                 }
             } else {
                 console.log("Playing founder introduction secure presentation video file");
             }
         }
 
-        // Load user from URL param
-        function loadUserFromUrl() {
+        // ── Load entity type & user from URL params ──
+        function loadEntityFromUrl() {
             const params = new URLSearchParams(window.location.search);
+            const entityType = params.get('type');
             const userName = params.get('user');
             const targetTab = params.get('tab');
-            
+
+            let user = null;
+
+            // Determine user: by name first, then fall back to type
             if (userName) {
-                const user = getUserByName(userName);
-                if (user) {
-                    document.getElementById('detail-company-title').innerText = user.name;
-                    document.getElementById('detail-company-subtitle').innerText = user.type + ' — ' + user.industry;
-                    document.getElementById('overview-card-name').innerText = user.name;
-                    if (user.about) {
-                        const aboutEl = document.getElementById('overview-card-about');
-                        if (aboutEl) aboutEl.innerText = user.about;
-                    }
-                    // Update Deal Workspace link to this user's company
-                    const dealLink = document.getElementById('deal-workspace-link');
-                    if (dealLink && user.company) {
-                        dealLink.href = '/pages/admin/deals.html?company=' + encodeURIComponent(user.company);
-                    }
-                    // Update page title
-                    document.title = 'Charantra — ' + user.name;
-                }
+                user = getUserByName(userName);
+            }
+            if (!user && entityType) {
+                user = getUserByType(entityType);
+            }
+            // If nothing matched, default to first Investee
+            if (!user) {
+                user = userDb.find(u => u.type === 'Investee') || userDb[0];
             }
 
-            // Auto-switch to Documents tab if requested
-            if (targetTab === 'Documents') {
-                switchDetailsTab('Documents');
+            const type = user.type || 'Investee';
+
+            // ── Set body class for CSS entity show/hide ──
+            const root = document.getElementById('detail-content-root');
+            // Remove any existing entity classes
+            if (root) {
+                root.className = root.className.replace(/entity-\w+/g, '').trim();
+                root.classList.add('flex-1', 'overflow-y-auto', 'p-8', `entity-${type}`);
+            }
+
+            // ── Update back link to preserve type filter ──
+            const backLink = document.getElementById('back-to-crm-link');
+            if (backLink && entityType) {
+                backLink.href = `/pages/admin/crm.html?type=${encodeURIComponent(entityType)}`;
+            }
+
+            // Update breadcrumb text
+            const typeLabels = {'Investor':'Investors','Investee':'Investees','Seller':'Sellers','Buyer':'Buyers','Advisor':'Advisors','Partner':'Partners','SME':'SMEs'};
+            if (backLink && entityType) backLink.innerText = typeLabels[entityType] || entityType;
+            const bcName = document.getElementById('breadcrumb-current');
+            if (bcName && user) bcName.innerText = user.name;
+
+            // ── Populate profile header ──
+            document.getElementById('detail-company-title').innerText = user.name;
+            document.getElementById('detail-company-subtitle').innerText = `${user.industry} — Founded ${user.founded}`;
+
+            // Avatar initials
+            const initials = user.name.split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
+            const avatarEl = document.getElementById('profile-avatar-initials');
+            if (avatarEl) avatarEl.innerText = initials;
+
+            // Type badge
+            const badgeEl = document.getElementById('detail-type-badge');
+            if (badgeEl) {
+                badgeEl.innerText = type;
+                badgeEl.className = `text-[11px] font-bold uppercase px-3 py-1 rounded-full tracking-wide ${badgeClasses[type] || 'badge-SME'}`;
+            }
+
+            // Status badge
+            const statusBadge = document.getElementById('detail-status-badge');
+            if (statusBadge) {
+                const status = user.status || 'Active';
+                const statusColor = status === 'Active' ? 'text-emerald-600 bg-emerald-50' : 'text-amber-600 bg-amber-50';
+                statusBadge.className = `flex items-center gap-1.5 text-[11px] font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full`;
+                statusBadge.innerHTML = `<i data-lucide="circle" class="w-1.5 h-1.5 fill-current"></i> ${status}`;
+            }
+
+            // Re-initialize Lucide icons
+            lucide.createIcons();
+
+            // ── Populate Company Info card ──
+            document.getElementById('ci-name').innerText = user.company || user.name;
+            document.getElementById('ci-industry').innerText = user.industry;
+            document.getElementById('ci-type').innerText = user.type;
+            document.getElementById('ci-founded').innerText = user.founded;
+            document.getElementById('ci-email').innerText = user.email;
+            document.getElementById('ci-status').innerText = user.status || 'Active';
+            document.getElementById('ci-about').innerText = user.about || '—';
+
+            // ── Update page title ──
+            document.title = `Charantra — ${user.name}`;
+
+            // ── Auto-switch tab if requested ──
+            if (targetTab) {
+                switchDetailsTab(targetTab);
             }
         }
 
-        // Generate waveform bars
+        // ── Init on load ──
         window.onload = function() {
-            // Load user data from URL
-            loadUserFromUrl();
+            loadEntityFromUrl();
 
+            // Re-initialize Lucide icons after load
+            lucide.createIcons();
+
+            // Generate waveform bars
             const container = document.getElementById('waveform-container');
             if (container) {
                 for (let i = 0; i < 28; i++) {
@@ -514,25 +1049,23 @@
                     container.appendChild(bar);
                 }
             }
-
-            // Load saved notes
-            const companyName = document.getElementById('detail-company-title').innerText;
-            const savedNote = localStorage.getItem(`note_${companyName}`);
-            if (savedNote) document.getElementById('company-note-textarea').value = savedNote;
         };
-    
-    function toggleRoleDropdown() { document.getElementById('role-dropdown').classList.toggle('hidden'); }
-    function switchToRole(role) {
-        localStorage.setItem('charantra-role', role);
-        const r = { 'superadmin': '/pages/superadmin/dashboard.html', 'admin': '/pages/admin/dashboard.html', 'ib': '/pages/ib/deals.html', 'ba': '/pages/ba/reports.html' };
-        window.location.href = r[role] || '/index.html';
-    }
-    (function() {
-        const role = localStorage.getItem('charantra-role') || 'admin';
-        const labels = { 'superadmin': 'SUPER ADMIN', 'admin': 'ADMIN', 'ib': 'INVESTMENT BANKER', 'ba': 'BUSINESS ANALYST' };
-        const el = document.getElementById('role-label'); if (el) el.innerText = labels[role] || 'ADMIN';
-    })();
-    window.addEventListener('click', function(e) { if (!e.target.closest('.relative')) { const dd = document.getElementById('role-dropdown'); if (dd) dd.classList.add('hidden'); } });
+    </script>
+
+    <script>
+        // ── ROLE SWITCHER ──
+        function toggleRoleDropdown() { document.getElementById('role-dropdown').classList.toggle('hidden'); }
+        function switchToRole(role) {
+            localStorage.setItem('charantra-role', role);
+            const r = { 'superadmin': '/pages/admin/dashboard.html', 'admin': '/pages/admin/dashboard.html', 'ib': '/pages/ib/deals.html', 'ba': '/pages/ba/reports.html' };
+            window.location.href = r[role] || '/index.html';
+        }
+        (function() {
+            const role = localStorage.getItem('charantra-role') || 'admin';
+            const labels = { 'superadmin': 'SUPER ADMIN', 'admin': 'ADMIN', 'ib': 'INVESTMENT BANKER', 'ba': 'BUSINESS ANALYST' };
+            const el = document.getElementById('role-label'); if (el) el.innerText = labels[role] || 'ADMIN';
+        })();
+        window.addEventListener('click', function(e) { if (!e.target.closest('.relative')) { const dd = document.getElementById('role-dropdown'); if (dd) dd.classList.add('hidden'); } });
     </script>
 </body>
 </html>

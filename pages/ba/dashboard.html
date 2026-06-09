@@ -11,8 +11,8 @@
                 extend: {
                     colors: {
                         brand: {
-                            orange: '#FF5E00',
-                            orangeHover: '#e04f00',
+                            orange: '#FF751F',
+                            orangeHover: '#e0651a',
                             navyDark: '#070C1E',
                             navyMedium: '#0F172A',
                             navyLight: '#1E293B',
@@ -325,10 +325,10 @@
         function initDashboardCharts() {
             const ctxLine = document.getElementById('chart-revenue-analytics').getContext('2d');
             const grad = ctxLine.createLinearGradient(0, 0, 0, 200);
-            grad.addColorStop(0, 'rgba(255, 94, 0, 0.45)'); grad.addColorStop(1, 'rgba(255, 255, 255, 0)');
-            new Chart(ctxLine, { type: 'line', data: { labels: ['1 May','8 May','15 May','22 May','29 May'], datasets: [{ data: [1.0,2.6,2.3,3.8,4.2], borderColor: '#FF5E00', borderWidth: 3.5, backgroundColor: grad, fill: true, tension: 0.35, pointBackgroundColor: '#FF5E00', pointBorderColor: '#ffffff', pointBorderWidth: 2, pointRadius: 5, pointHoverRadius: 7 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { min:0, max:5, ticks:{ callback: v => '₹'+v+' Cr', stepSize:1, font:{size:9,weight:'bold'} }, grid:{color:'#f3f4f6'} }, x: { grid:{display:false}, ticks:{font:{size:10,weight:'bold'}} } } } });
+            grad.addColorStop(0, 'rgba(255, 117, 31, 0.45)'); grad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+            new Chart(ctxLine, { type: 'line', data: { labels: ['1 May','8 May','15 May','22 May','29 May'], datasets: [{ data: [1.0,2.6,2.3,3.8,4.2], borderColor: '#FF751F', borderWidth: 3.5, backgroundColor: grad, fill: true, tension: 0.35, pointBackgroundColor: '#FF751F', pointBorderColor: '#ffffff', pointBorderWidth: 2, pointRadius: 5, pointHoverRadius: 7 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { min:0, max:5, ticks:{ callback: v => '₹'+v+' Cr', stepSize:1, font:{size:9,weight:'bold'} }, grid:{color:'#f3f4f6'} }, x: { grid:{display:false}, ticks:{font:{size:10,weight:'bold'}} } } } });
 
-            const lv = [{label:'Draft',val:18,pct:'20%',color:'#3b82f6'},{label:'Qualification Review',val:12,pct:'13%',color:'#38bdf8'},{label:'Sent',val:15,pct:'17%',color:'#FF5E00'},{label:'Awaiting Signature',val:20,pct:'22%',color:'#fbbf24'},{label:'Signed',val:16,pct:'18%',color:'#10b981'},{label:'Expired',val:5,pct:'6%',color:'#ec4899'},{label:'Closed',val:3,pct:'4%',color:'#1e293b'}];
+            const lv = [{label:'Draft',val:18,pct:'20%',color:'#3b82f6'},{label:'Qualification Review',val:12,pct:'13%',color:'#38bdf8'},{label:'Sent',val:15,pct:'17%',color:'#FF751F'},{label:'Awaiting Signature',val:20,pct:'22%',color:'#fbbf24'},{label:'Signed',val:16,pct:'18%',color:'#10b981'},{label:'Expired',val:5,pct:'6%',color:'#ec4899'},{label:'Closed',val:3,pct:'4%',color:'#1e293b'}];
             const ctxDonut = document.getElementById('chart-mandate-donut').getContext('2d');
             new Chart(ctxDonut, { type: 'doughnut', data: { labels: lv.map(l=>l.label), datasets: [{ data: lv.map(l=>l.val), backgroundColor: lv.map(l=>l.color), borderWidth: 2, borderColor: '#ffffff' }] }, options: { responsive: true, maintainAspectRatio: false, cutout: '72%', plugins: { legend: { display: false } } } });
             const dl = document.getElementById('donut-legend-rows'); dl.innerHTML = '';

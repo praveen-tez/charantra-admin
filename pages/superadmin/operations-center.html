@@ -11,8 +11,8 @@
                 extend: {
                     colors: {
                         brand: {
-                            orange: '#FF5E00',
-                            orangeHover: '#e04f00',
+                            orange: '#FF751F',
+                            orangeHover: '#e0651a',
                             navyDark: '#070C1E',
                             navyMedium: '#0F172A',
                             navyLight: '#1E293B',
@@ -55,7 +55,7 @@
         #app-sidebar.collapsed .sidebar-section-div { max-height: 0 !important; }
         .sidebar-section-open { max-height: 200px !important; }
         .ops-pulse { animation: opsPulse 2s ease-in-out infinite; }
-        @keyframes opsPulse { 0%,100% { box-shadow: 0 0 0 0 rgba(255,94,0,0.4); } 50% { box-shadow: 0 0 0 6px rgba(255,94,0,0); } }
+        @keyframes opsPulse { 0%,100% { box-shadow: 0 0 0 0 rgba(255,117,31,0.4); } 50% { box-shadow: 0 0 0 6px rgba(255,117,31,0); } }
         .severity-critical { border-left: 3px solid #EF4444; }
         .severity-high { border-left: 3px solid #F97316; }
         .severity-medium { border-left: 3px solid #EAB308; }
@@ -141,7 +141,7 @@
                     <div class="flex items-center gap-3 border-l border-slate-200 pl-4">
                         <div class="text-right"><p class="text-xs font-bold text-slate-900 leading-none">KARTHIK</p><p class="text-[9px] text-brand-orange font-bold uppercase tracking-wider mt-0.5" id="role-label">SUPER ADMIN <i class="fa-solid fa-chevron-down text-[7px] text-slate-400 ml-1"></i></p></div>
                         <div class="relative">
-                            <button onclick="toggleRoleDropdown()" class="w-10 h-10 rounded-full bg-[#FF5E00] text-white font-extrabold text-sm flex items-center justify-center shadow hover:shadow-md transition cursor-pointer">K</button>
+                            <button onclick="toggleRoleDropdown()" class="w-10 h-10 rounded-full bg-[#FF751F] text-white font-extrabold text-sm flex items-center justify-center shadow hover:shadow-md transition cursor-pointer">K</button>
                             <div id="role-dropdown" class="hidden absolute right-0 mt-2 w-52 bg-white border border-slate-200 rounded-xl shadow-xl z-50 text-xs overflow-hidden">
                                 <div class="px-4 py-3 border-b border-slate-100 font-bold text-slate-700">Switch Role</div>
                                 <button onclick="switchToRole('superadmin')" class="w-full text-left px-4 py-2.5 hover:bg-slate-50 text-slate-700 font-medium flex items-center gap-2.5 border-b border-slate-50"><i class="fa-solid fa-crown text-brand-orange w-4"></i> Super Admin</button>
